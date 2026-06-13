@@ -4,7 +4,7 @@ import aws_cdk as cdk
 from stacks.main_stack import HackathonStack
 
 app = cdk.App()
-HackathonStack(app, "CircularIntelligenceOS-GraphService",
+HackathonStack(app, "CircularIntelligenceOS-GraphService-V2",
     env=cdk.Environment(
         account=os.getenv('CDK_DEFAULT_ACCOUNT'),
         region=os.getenv('CDK_DEFAULT_REGION')
