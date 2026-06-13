@@ -8,10 +8,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import type { TopReturnCause } from "@/lib/api/service12";
+import type { TopReturnCauseView } from "../../../shared/api/adapters";
 
 interface TopReturnCausesProps {
-  causes: TopReturnCause[];
+  causes: TopReturnCauseView[];
 }
 
 export function TopReturnCauses({ causes }: TopReturnCausesProps) {
