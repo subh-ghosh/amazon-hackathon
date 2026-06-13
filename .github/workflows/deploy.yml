@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    runs-name: Deploy Circular Intelligence API
+    name: Deploy Circular Intelligence API
     runs-on: ubuntu-latest
     
     steps:
