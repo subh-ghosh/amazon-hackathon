@@ -29,13 +29,14 @@ class NeptuneClient:
 
     def __init__(self):
         self._gremlin_client: gremlin_client.Client | None = None
-        self._offline: bool = False  # Set True after first failed connection
+        self._gremlin_offline: bool = False
+        self._opencypher_offline: bool = False
 
     # ── Connection Management ────────────────────
 
     def get_gremlin_client(self) -> gremlin_client.Client:
         """Lazy-initialize and return the Gremlin WebSocket client."""
-        if self._offline:
+        if self._gremlin_offline:
             return None
         if self._gremlin_client is None:
             url = settings.neptune_wss_url
@@ -48,7 +49,7 @@ class NeptuneClient:
                 )
             except Exception as e:
                 logger.warning(f"Neptune Gremlin connection failed: {e}. Running in offline mode.")
-                self._offline = True
+                self._gremlin_offline = True
                 self._gremlin_client = None
         return self._gremlin_client
 
@@ -71,11 +72,11 @@ class NeptuneClient:
             return result_set.all().result(timeout=5)
         except GremlinServerError as e:
             logger.error(f"Gremlin query failed: {e}")
-            self._offline = True
+            self._gremlin_offline = True
             return []
         except Exception as e:
             logger.error(f"Neptune error: {e}")
-            self._offline = True
+            self._gremlin_offline = True
             return []
 
     # ── openCypher Queries ───────────────────────
@@ -85,7 +86,7 @@ class NeptuneClient:
         Execute an openCypher query via Neptune's HTTPS endpoint.
         Returns a list of result rows as dicts.
         """
-        if self._offline:
+        if self._opencypher_offline:
             logger.warning(f"Neptune offline — skipping openCypher query: {query[:80]}...")
             return []
             
@@ -101,19 +102,19 @@ class NeptuneClient:
             return response.json().get("results", [])
         except requests.exceptions.Timeout:
             logger.error(f"Neptune openCypher query timed out at {url}.")
-            self._offline = True
+            self._opencypher_offline = True
             return []
         except requests.exceptions.ConnectionError:
             logger.error(f"Neptune openCypher endpoint unreachable at {url}. Running in offline mode.")
-            self._offline = True
+            self._opencypher_offline = True
             return []
         except requests.exceptions.RequestException as e:
             logger.error(f"Neptune openCypher HTTP error: {e}")
-            self._offline = True
+            self._opencypher_offline = True
             return []
         except Exception as e:
             logger.error(f"openCypher query failed: {e}")
-            self._offline = True
+            self._opencypher_offline = True
             return []
 
     # ── Node Creation (Gremlin) ──────────────────

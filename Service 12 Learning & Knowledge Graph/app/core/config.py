@@ -36,12 +36,14 @@ class Settings(BaseSettings):
     @property
     def neptune_wss_url(self) -> str:
         """WebSocket Secure URL for Gremlin connections."""
-        return f"wss://{self.NEPTUNE_ENDPOINT}:{self.NEPTUNE_PORT}/gremlin"
+        protocol = "ws" if self.NEPTUNE_ENDPOINT == "localhost" else "wss"
+        return f"{protocol}://{self.NEPTUNE_ENDPOINT}:{self.NEPTUNE_PORT}/gremlin"
 
     @property
     def neptune_https_url(self) -> str:
         """HTTPS URL for openCypher queries."""
-        return f"https://{self.NEPTUNE_ENDPOINT}:{self.NEPTUNE_PORT}/openCypher"
+        protocol = "http" if self.NEPTUNE_ENDPOINT == "localhost" else "https"
+        return f"{protocol}://{self.NEPTUNE_ENDPOINT}:{self.NEPTUNE_PORT}/openCypher"
 
     class Config:
         env_file = ".env"
