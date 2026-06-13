@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "baseUrl": ".",
+    "tsBuildInfoFile": "../../node_modules/.cache/tsbuildinfo/executive-dashboard.tsbuildinfo",
     "paths": {
       "@/*": ["./*"]
     }
