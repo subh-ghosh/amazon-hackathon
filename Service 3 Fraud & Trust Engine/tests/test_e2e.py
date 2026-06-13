@@ -12,8 +12,9 @@ def test_full_fraud_flow():
         "payment_method_hash": "PM-001",
         "images": []
     }
-    response = client.post("/api/v1/fraud/score", json=payload)
+    response = client.post("/api/v1/fraud/score", json=payload, headers={"X-Correlation-ID": "test-req-123"})
     assert response.status_code == 200
     data = response.json()
     assert "fraud_score" in data
     assert "trust_score" in data
+    assert response.headers["X-Request-ID"] == "test-req-123"
