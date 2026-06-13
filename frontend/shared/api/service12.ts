@@ -3,7 +3,7 @@ export const SERVICE12_BASE_URL =
   "http://Circul-Graph-ye0M61dV1dYT-1449212263.us-east-1.elb.amazonaws.com";
 
 const INTELLIGENCE_BASE = "/api/v1/intelligence";
-const REQUEST_TIMEOUT_MS = 15000;
+const REQUEST_TIMEOUT_MS = 30000;
 
 export type Service12Json = unknown;
 
@@ -27,6 +27,14 @@ async function request<T = Service12Json>(path: string): Promise<T> {
     }
 
     return (await response.json()) as T;
+  } catch (error) {
+    if (error instanceof Error && error.name === "AbortError") {
+      throw new Error(
+        "Service #12 timed out. Check that the backend ELB is healthy and reachable.",
+      );
+    }
+
+    throw error;
   } finally {
     globalThis.clearTimeout(timeout);
   }
