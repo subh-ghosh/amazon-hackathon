@@ -23,12 +23,15 @@ export default function RootLayout({
               </span>
               <span>Amazon <span className="text-emerald-700">ReLife</span></span>
             </Link>
-            <nav aria-label="Primary navigation" className="flex items-center gap-6 text-sm font-medium text-slate-600">
-              <Link href="/product-twin/P123" className="text-slate-950">
+            <nav aria-label="Primary navigation" className="flex items-center gap-4 text-sm font-medium text-slate-600 sm:gap-6">
+              <Link href="/product-twin/P123" className="hidden hover:text-slate-950 sm:inline">
                 My products
               </Link>
-              <span className="hidden sm:inline">Recovery center</span>
-              <span className="hidden sm:inline">Impact</span>
+              <Link href="/returnless-refund" className="text-slate-950">
+                Refund engine
+              </Link>
+              <span className="hidden lg:inline">Recovery center</span>
+              <span className="hidden lg:inline">Impact</span>
             </nav>
           </div>
         </header>
