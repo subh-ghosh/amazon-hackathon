@@ -31,6 +31,9 @@ export default function RootLayout({
               <Link href="/product-twin/P123" className="hidden hover:text-slate-950 sm:inline">
                 My products
               </Link>
+              <Link href="/returns" className="hover:text-slate-950">
+                Returns
+              </Link>
               <Link href="/returnless-refund" className="hidden hover:text-slate-950 sm:inline">
                 Refund engine
               </Link>
