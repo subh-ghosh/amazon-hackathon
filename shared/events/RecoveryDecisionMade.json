@@ -3,28 +3,21 @@
   "title": "RecoveryDecisionMade",
   "type": "object",
   "required": [
-    "eventType",
-    "returnId",
-    "action",
-    "estimatedRecovery",
+    "event_type",
+    "action_id",
+    "return_id",
+    "action_type",
+    "estimated_value_recovered",
     "timestamp"
   ],
   "properties": {
-    "eventType": {
-      "type": "string"
-    },
-    "returnId": {
-      "type": "string"
-    },
-    "action": {
-      "enum": ["RESTOCK", "LIQUIDATE", "REFURBISH", "RECYCLE", "DESTROY"]
-    },
-    "estimatedRecovery": {
-      "type": "number"
-    },
-    "timestamp": {
-      "type": "string",
-      "format": "date-time"
-    }
+    "event_type": { "type": "string" },
+    "action_id": { "type": "string" },
+    "return_id": { "type": "string" },
+    "action_type": { "type": "string" },
+    "estimated_value_recovered": { "type": "number" },
+    "cost_incurred": { "type": "number", "default": 0.0 },
+    "confidence": { "type": "number", "default": 1.0 },
+    "timestamp": { "type": "string", "format": "date-time" }
   }
 }

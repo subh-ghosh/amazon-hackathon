@@ -1,24 +1,18 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Recovery Action Entity",
+  "title": "RecoveryActionCreateRequest",
   "type": "object",
   "required": [
-    "actionId",
-    "returnId",
-    "actionType"
+    "action_id",
+    "return_id",
+    "action_type"
   ],
   "properties": {
-    "actionId": {
-      "type": "string"
-    },
-    "returnId": {
-      "type": "string"
-    },
-    "actionType": {
-      "enum": ["RESTOCK", "LIQUIDATE", "REFURBISH", "RECYCLE", "DESTROY"]
-    },
-    "recoveredValue": {
-      "type": "number"
-    }
+    "action_id": { "type": "string" },
+    "return_id": { "type": "string" },
+    "action_type": { "type": "string" },
+    "estimated_value_recovered": { "type": "number", "default": 0.0 },
+    "cost_incurred": { "type": "number", "default": 0.0 },
+    "confidence": { "type": "number", "default": 1.0 }
   }
 }

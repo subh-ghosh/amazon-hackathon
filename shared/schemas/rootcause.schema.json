@@ -1,26 +1,17 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Root Cause Entity",
+  "title": "RootCauseCreateRequest",
   "type": "object",
   "required": [
-    "rootCause",
-    "confidence"
+    "cause_id",
+    "return_id",
+    "category"
   ],
   "properties": {
-    "rootCause": {
-      "enum": [
-        "SIZE_MISMATCH",
-        "EXPECTATION_MISMATCH",
-        "PACKAGING_DAMAGE",
-        "COMPATIBILITY_ISSUE",
-        "SELLER_QUALITY_ISSUE",
-        "MANUFACTURING_DEFECT",
-        "COUNTERFEIT",
-        "CUSTOMER_MISUSE"
-      ]
-    },
-    "confidence": {
-      "type": "number"
-    }
+    "cause_id": { "type": "string" },
+    "return_id": { "type": "string" },
+    "category": { "type": "string" },
+    "description": { "type": ["string", "null"] },
+    "confidence": { "type": "number", "default": 1.0 }
   }
 }

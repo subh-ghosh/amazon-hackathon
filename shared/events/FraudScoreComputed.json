@@ -3,36 +3,22 @@
   "title": "FraudScoreComputed",
   "type": "object",
   "required": [
-    "eventType",
-    "returnId",
-    "customerId",
-    "fraudScore",
-    "trustScore",
-    "riskLevel",
+    "event_type",
+    "case_id",
+    "entity_id",
+    "entity_type",
+    "severity",
+    "risk_score",
     "timestamp"
   ],
   "properties": {
-    "eventType": {
-      "type": "string"
-    },
-    "returnId": {
-      "type": "string"
-    },
-    "customerId": {
-      "type": "string"
-    },
-    "fraudScore": {
-      "type": "number"
-    },
-    "trustScore": {
-      "type": "number"
-    },
-    "riskLevel": {
-      "enum": ["LOW", "MEDIUM", "HIGH"]
-    },
-    "timestamp": {
-      "type": "string",
-      "format": "date-time"
-    }
+    "event_type": { "type": "string" },
+    "case_id": { "type": "string" },
+    "entity_id": { "type": "string" },
+    "entity_type": { "type": "string" },
+    "severity": { "type": "string" },
+    "risk_score": { "type": "integer" },
+    "related_return_ids": { "type": "array", "items": { "type": "string" } },
+    "timestamp": { "type": "string", "format": "date-time" }
   }
 }

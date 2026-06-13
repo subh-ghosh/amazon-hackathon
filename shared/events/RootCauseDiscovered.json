@@ -3,32 +3,20 @@
   "title": "RootCauseDiscovered",
   "type": "object",
   "required": [
-    "eventType",
-    "returnId",
-    "productId",
-    "rootCause",
+    "event_type",
+    "cause_id",
+    "return_id",
+    "category",
     "confidence",
     "timestamp"
   ],
   "properties": {
-    "eventType": {
-      "type": "string"
-    },
-    "returnId": {
-      "type": "string"
-    },
-    "productId": {
-      "type": "string"
-    },
-    "rootCause": {
-      "type": "string"
-    },
-    "confidence": {
-      "type": "number"
-    },
-    "timestamp": {
-      "type": "string",
-      "format": "date-time"
-    }
+    "event_type": { "type": "string" },
+    "cause_id": { "type": "string" },
+    "return_id": { "type": "string" },
+    "category": { "type": "string" },
+    "description": { "type": ["string", "null"] },
+    "confidence": { "type": "number" },
+    "timestamp": { "type": "string", "format": "date-time" }
   }
 }

@@ -1,25 +1,22 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Return Entity",
+  "title": "ReturnCreateRequest",
   "type": "object",
   "required": [
-    "returnId",
-    "customerId",
-    "productId",
+    "return_id",
+    "order_id",
+    "customer_id",
+    "product_id",
     "reason"
   ],
   "properties": {
-    "returnId": {
-      "type": "string"
-    },
-    "customerId": {
-      "type": "string"
-    },
-    "productId": {
-      "type": "string"
-    },
-    "reason": {
-      "type": "string"
-    }
+    "return_id": { "type": "string" },
+    "order_id": { "type": "string" },
+    "customer_id": { "type": "string" },
+    "product_id": { "type": "string" },
+    "reason": { "type": "string" },
+    "condition_received": { "type": ["string", "null"] },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "root_cause_id": { "type": ["string", "null"] }
   }
 }

@@ -3,28 +3,22 @@
   "title": "ReturnCreated",
   "type": "object",
   "required": [
-    "eventType",
-    "returnId",
-    "customerId",
-    "productId",
+    "event_type",
+    "return_id",
+    "order_id",
+    "customer_id",
+    "product_id",
+    "reason",
     "timestamp"
   ],
   "properties": {
-    "eventType": {
-      "type": "string"
-    },
-    "returnId": {
-      "type": "string"
-    },
-    "customerId": {
-      "type": "string"
-    },
-    "productId": {
-      "type": "string"
-    },
-    "timestamp": {
-      "type": "string",
-      "format": "date-time"
-    }
+    "event_type": { "type": "string" },
+    "return_id": { "type": "string" },
+    "order_id": { "type": "string" },
+    "customer_id": { "type": "string" },
+    "product_id": { "type": "string" },
+    "reason": { "type": "string" },
+    "condition_received": { "type": ["string", "null"] },
+    "timestamp": { "type": "string", "format": "date-time" }
   }
 }
