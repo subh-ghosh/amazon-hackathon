@@ -379,7 +379,7 @@ function ProductCard({ product }: { product: CustomerSearchProduct }) {
               <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs font-medium text-slate-500">
                 <span className="flex items-center gap-1.5">
                   <Star className="size-3.5 fill-amber-400 text-amber-400" aria-hidden="true" />
-                  {product.rating} ({product.reviewCount.toLocaleString()})
+                  {product.rating} ({product.reviewCount.toLocaleString("en-US")})
                 </span>
                 <span className="flex items-center gap-1.5">
                   <Truck className="size-3.5 text-slate-400" aria-hidden="true" />
