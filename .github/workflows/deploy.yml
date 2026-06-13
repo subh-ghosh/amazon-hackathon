@@ -1,0 +1,49 @@
+name: AWS CDK Deployment
+
+on:
+  push:
+    branches:
+      - master
+      - main
+
+jobs:
+  deploy:
+    runs-name: Deploy Circular Intelligence API
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js (for AWS CDK)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install AWS CDK
+        run: npm install -g aws-cdk
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Install Python Dependencies
+        working-directory: "Service 12 Learning & Knowledge Graph/infra"
+        run: |
+          python -m venv cdk-venv
+          source cdk-venv/bin/activate
+          pip install -r requirements.txt
+
+      - name: Deploy Infrastructure
+        working-directory: "Service 12 Learning & Knowledge Graph/infra"
+        run: |
+          source cdk-venv/bin/activate
+          cdk deploy --require-approval never
