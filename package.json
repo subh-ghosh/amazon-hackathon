@@ -1,0 +1,16 @@
+{
+  "name": "amazon-relife",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "frontend/*"
+  ],
+  "scripts": {
+    "dev:customer": "npm run dev --workspace @relife/customer-app",
+    "dev:ops": "npm run dev --workspace @relife/ops-dashboard",
+    "dev:seller": "npm run dev --workspace @relife/seller-dashboard",
+    "dev:executive": "npm run dev --workspace @relife/executive-dashboard",
+    "build": "npm run build --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present"
+  }
+}
