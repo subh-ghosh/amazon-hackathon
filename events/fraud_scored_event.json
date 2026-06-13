@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FraudScoreComputedEvent",
+  "type": "object",
+  "properties": {
+    "Source": {
+      "type": "string",
+      "const": "aws.circular.intelligence.fte"
+    },
+    "DetailType": {
+      "type": "string",
+      "const": "FraudScoreComputed"
+    },
+    "Detail": {
+      "type": "object",
+      "properties": {
+        "returnId": {
+          "type": "string"
+        },
+        "customerId": {
+          "type": "string"
+        },
+        "productId": {
+          "type": "string"
+        },
+        "fraudScore": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "trustScore": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "authenticityScore": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "riskLevel": {
+          "type": "string",
+          "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"]
+        },
+        "recommendedAction": {
+          "type": "string",
+          "enum": ["AUTO_REFUND", "MANUAL_REVIEW", "HOLD_REFUND_VERIFICATION", "BLOCK_ACCOUNT"]
+        },
+        "flags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["returnId", "customerId", "productId", "fraudScore", "trustScore", "authenticityScore", "riskLevel", "recommendedAction", "flags", "timestamp"]
+    }
+  },
+  "required": ["Source", "DetailType", "Detail"]
+}

@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ReturnRequestedEvent",
+  "type": "object",
+  "properties": {
+    "Source": {
+      "type": "string",
+      "const": "aws.circular.returns"
+    },
+    "DetailType": {
+      "type": "string",
+      "const": "ReturnInitiated"
+    },
+    "Detail": {
+      "type": "object",
+      "properties": {
+        "returnId": {
+          "type": "string",
+          "pattern": "^RET-[0-9]+$"
+        },
+        "customerId": {
+          "type": "string",
+          "pattern": "^CUST-[0-9]+$"
+        },
+        "productId": {
+          "type": "string",
+          "pattern": "^PROD-[A-Z0-9]+$"
+        },
+        "statedReason": {
+          "type": "string",
+          "enum": ["Defective", "Wrong Size", "Performance", "No Longer Needed", "Damaged", "Incorrect Item"]
+        },
+        "customerComment": {
+          "type": "string"
+        },
+        "paymentMethodHash": {
+          "type": "string"
+        },
+        "deviceId": {
+          "type": "string"
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["returnId", "customerId", "productId", "statedReason", "customerComment", "images", "timestamp"]
+    }
+  },
+  "required": ["Source", "DetailType", "Detail"]
+}

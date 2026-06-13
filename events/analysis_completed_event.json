@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ReturnAnalysisCompletedEvent",
+  "type": "object",
+  "properties": {
+    "Source": {
+      "type": "string",
+      "const": "aws.circular.intelligence.tde"
+    },
+    "DetailType": {
+      "type": "string",
+      "const": "ReturnAnalysisCompleted"
+    },
+    "Detail": {
+      "type": "object",
+      "properties": {
+        "returnId": {
+          "type": "string"
+        },
+        "productId": {
+          "type": "string"
+        },
+        "actualRootCause": {
+          "type": "string",
+          "enum": ["Expectation Mismatch", "Wrong Size", "Misleading Listing", "Software Compatibility", "Carrier Damage", "Defective Component", "Fraud Suspected"]
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "recommendations": {
+          "type": "object",
+          "properties": {
+            "routingAction": {
+              "type": "string"
+            },
+            "sellerAction": {
+              "type": "string"
+            }
+          },
+          "required": ["routingAction", "sellerAction"]
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["returnId", "productId", "actualRootCause", "confidence", "evidence", "recommendations", "timestamp"]
+    }
+  },
+  "required": ["Source", "DetailType", "Detail"]
+}
