@@ -85,21 +85,35 @@ class NeptuneClient:
         Execute an openCypher query via Neptune's HTTPS endpoint.
         Returns a list of result rows as dicts.
         """
+        if self._offline:
+            logger.warning(f"Neptune offline — skipping openCypher query: {query[:80]}...")
+            return []
+            
         url = settings.neptune_https_url
         try:
             response = requests.post(
                 url,
                 data=json.dumps({"query": query}),
                 headers={"Content-Type": "application/json"},
-                timeout=30,
+                timeout=(3.0, 5.0), # (connect timeout, read timeout)
             )
             response.raise_for_status()
             return response.json().get("results", [])
+        except requests.exceptions.Timeout:
+            logger.error(f"Neptune openCypher query timed out at {url}.")
+            self._offline = True
+            return []
         except requests.exceptions.ConnectionError:
-            logger.warning(f"Neptune openCypher endpoint unreachable at {url}. Running in offline mode.")
+            logger.error(f"Neptune openCypher endpoint unreachable at {url}. Running in offline mode.")
+            self._offline = True
+            return []
+        except requests.exceptions.RequestException as e:
+            logger.error(f"Neptune openCypher HTTP error: {e}")
+            self._offline = True
             return []
         except Exception as e:
             logger.error(f"openCypher query failed: {e}")
+            self._offline = True
             return []
 
     # ── Node Creation (Gremlin) ──────────────────

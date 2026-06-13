@@ -302,8 +302,15 @@ class GraphService:
         results = self.neptune.execute_opencypher(query)
         return results[0] if results else {}
 
-    def get_graph_stats(self) -> GraphStatsResponse:
+    def get_graph_stats(self) -> dict:
         """High-level counts for each node label."""
+        if getattr(self.neptune, "_offline", False):
+            return {
+                "status": "degraded",
+                "nodes": 0,
+                "edges": 0
+            }
+            
         labels = ["Customer", "Product", "Seller", "Order", "Return",
                    "FraudCase", "RootCause", "RecoveryAction"]
         stats = {}
@@ -313,7 +320,11 @@ class GraphService:
             key = f"total_{label.lower()}s"
             stats[key] = results[0].get("cnt", 0) if results else 0
 
-        return GraphStatsResponse(**stats)
+        # Create schema instance but return as dict to match fallback shape flexibility
+        response = GraphStatsResponse(**stats)
+        response_dict = response.dict()
+        response_dict["status"] = "ok"
+        return response_dict
 
     # ═══════════════════════════════════════════════
     #  ADVANCED ANALYTICS

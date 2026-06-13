@@ -59,7 +59,9 @@ async def top_return_causes(
     limit: int = Query(default=10, le=50),
     graph: GraphService = Depends(get_graph_service),
 ):
-    return {"data": graph.top_return_causes(limit)}
+    if getattr(graph.neptune, "_offline", False):
+        return {"status": "degraded", "data": []}
+    return {"status": "ok", "data": graph.top_return_causes(limit)}
 
 
 @router.get(
@@ -70,7 +72,9 @@ async def fraudulent_products(
     limit: int = Query(default=10, le=50),
     graph: GraphService = Depends(get_graph_service),
 ):
-    return {"data": graph.most_fraudulent_products(limit)}
+    if getattr(graph.neptune, "_offline", False):
+        return {"status": "degraded", "data": []}
+    return {"status": "ok", "data": graph.most_fraudulent_products(limit)}
 
 
 @router.get(
@@ -81,7 +85,9 @@ async def seller_return_analysis(
     limit: int = Query(default=10, le=50),
     graph: GraphService = Depends(get_graph_service),
 ):
-    return {"data": graph.seller_return_analysis(limit)}
+    if getattr(graph.neptune, "_offline", False):
+        return {"status": "degraded", "data": []}
+    return {"status": "ok", "data": graph.seller_return_analysis(limit)}
 
 
 @router.get(
@@ -91,12 +97,13 @@ async def seller_return_analysis(
 async def recovery_effectiveness(
     graph: GraphService = Depends(get_graph_service),
 ):
-    return {"data": graph.recovery_effectiveness()}
+    if getattr(graph.neptune, "_offline", False):
+        return {"status": "degraded", "data": []}
+    return {"status": "ok", "data": graph.recovery_effectiveness()}
 
 
 @router.get(
     "/analytics/graph-stats",
-    response_model=GraphStatsResponse,
     summary="High-level knowledge graph statistics",
 )
 async def graph_stats(

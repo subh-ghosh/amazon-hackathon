@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "FraudCaseCreateRequest",
+  "type": "object",
+  "required": [
+    "case_id",
+    "entity_id",
+    "entity_type",
+    "severity",
+    "risk_score"
+  ],
+  "properties": {
+    "case_id": { "type": "string" },
+    "entity_id": { "type": "string" },
+    "entity_type": { "type": "string", "pattern": "^(Customer|Seller|Product)$" },
+    "severity": { "type": "string" },
+    "risk_score": { "type": "integer", "minimum": 0, "maximum": 100 },
+    "related_return_ids": { "type": "array", "items": { "type": "string" } }
+  }
+}
