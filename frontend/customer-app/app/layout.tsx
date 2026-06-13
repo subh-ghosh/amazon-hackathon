@@ -5,8 +5,9 @@ import { Leaf } from "lucide-react";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Product Digital Twin | Amazon ReLife",
-  description: "Track product condition, utility, repair, and recovery potential.",
+  title: "Amazon ReLife",
+  description:
+    "Shop and manage products with ReLife condition, return, and recovery signals.",
 };
 
 export default function RootLayout({
@@ -24,10 +25,13 @@ export default function RootLayout({
               <span>Amazon <span className="text-emerald-700">ReLife</span></span>
             </Link>
             <nav aria-label="Primary navigation" className="flex items-center gap-4 text-sm font-medium text-slate-600 sm:gap-6">
+              <Link href="/" className="hover:text-slate-950">
+                Search
+              </Link>
               <Link href="/product-twin/P123" className="hidden hover:text-slate-950 sm:inline">
                 My products
               </Link>
-              <Link href="/returnless-refund" className="text-slate-950">
+              <Link href="/returnless-refund" className="hidden hover:text-slate-950 sm:inline">
                 Refund engine
               </Link>
               <span className="hidden lg:inline">Recovery center</span>
