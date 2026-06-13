@@ -1,0 +1,42 @@
+{
+  "family": "truth-discovery-task",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "cpu": "256",
+  "memory": "512",
+  "executionRoleArn": "arn:aws:iam::<ACCOUNT_ID>:role/ecsTaskExecutionRole",
+  "taskRoleArn": "arn:aws:iam::<ACCOUNT_ID>:role/ecsTruthDiscoveryTaskRole",
+  "containerDefinitions": [
+    {
+      "name": "truth-discovery-container",
+      "image": "<ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/truth-discovery-engine:latest",
+      "portMappings": [
+        {
+          "containerPort": 8001,
+          "hostPort": 8001,
+          "protocol": "tcp"
+        }
+      ],
+      "essential": true,
+      "environment": [
+        { "name": "MOCK_AWS", "value": "false" },
+        { "name": "MOCK_BEDROCK", "value": "false" },
+        { "name": "AWS_DEFAULT_REGION", "value": "us-east-1" },
+        { "name": "DYNAMODB_TABLE", "value": "CircularIntelOSStore" },
+        { "name": "EVENT_BUS_NAME", "value": "default" },
+        { "name": "GRAPH_SERVICE_URL", "value": "http://service12.internal:8012" },
+        { "name": "CONFIDENCE_THRESHOLD", "value": "0.60" }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/truth-discovery-engine",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "truth-discovery"
+        }
+      }
+    }
+  ]
+}

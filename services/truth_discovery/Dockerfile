@@ -10,6 +10,7 @@ COPY ./app ./app
 EXPOSE 8001
 
 ENV PYTHONPATH=/app
-ENV MOCK_AWS_SERVICES=true
+ENV MOCK_AWS=true
+ENV MOCK_BEDROCK=true
 
 CMD ["python", "app/main.py"]

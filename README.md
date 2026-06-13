@@ -3,7 +3,7 @@
 
 This repository contains the production-grade codebase skeletons, API routes, AWS SDK integrations, and EventBridge contract files for the AI Intelligence Layer of the **Amazon Circular Intelligence OS**.
 
-Developed to be fully operational within a 48-hour hackathon, this codebase features a dual-mode adapter architecture. By default, it operates in **Mock Mode** (`MOCK_AWS_SERVICES=true`), allowing developers to run, test, and demo all APIs locally without any cloud overhead. Setting `MOCK_AWS_SERVICES=false` activates the live AWS connections to Bedrock, OpenSearch Serverless, Neptune, and DynamoDB.
+Developed to be fully operational within a 48-hour hackathon, this codebase features a dual-mode adapter architecture. By default, it operates in **Mock Mode** (`MOCK_AWS=true` and `MOCK_BEDROCK=true`), allowing developers to run, test, and demo all APIs locally without any cloud overhead. Setting them to `false` activates the live AWS connections to Bedrock, OpenSearch Serverless, Neptune, and DynamoDB.
 
 ---
 
@@ -119,7 +119,7 @@ docker run -p 8002:8002 fraud-trust-service
 
 To deploy these services live in your AWS environment, configure the following settings:
 
-1. **Disable Mocks**: Set `MOCK_AWS_SERVICES=false` in your environment or ECS task definitions.
+1. **Disable Mocks**: Set `MOCK_AWS=false` and `MOCK_BEDROCK=false` in your environment or ECS task definitions.
 2. **Assign IAM Roles**: Ensure your Lambda or ECS Task execution role has the following AWS Permissions:
    - `bedrock:InvokeModel` (for Claude 3.5 and Titan Embeddings)
    - `aoss:APIAccessAll` (for OpenSearch Serverless queries)
@@ -128,7 +128,8 @@ To deploy these services live in your AWS environment, configure the following s
    - `events:PutEvents` (to publish EventBridge events)
 3. **Set Environment Variables**:
    ```env
-   MOCK_AWS_SERVICES=false
+   MOCK_AWS=false
+   MOCK_BEDROCK=false
    AWS_DEFAULT_REGION=us-east-1
    DYNAMODB_TABLE=CircularIntelOSStore
    OPENSEARCH_ENDPOINT=YOUR_OPENSEARCH_COLLECTION_URL
