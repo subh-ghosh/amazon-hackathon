@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Root Cause Entity",
+  "type": "object",
+  "required": [
+    "rootCause",
+    "confidence"
+  ],
+  "properties": {
+    "rootCause": {
+      "enum": [
+        "SIZE_MISMATCH",
+        "EXPECTATION_MISMATCH",
+        "PACKAGING_DAMAGE",
+        "COMPATIBILITY_ISSUE",
+        "SELLER_QUALITY_ISSUE",
+        "MANUFACTURING_DEFECT",
+        "COUNTERFEIT",
+        "CUSTOMER_MISUSE"
+      ]
+    },
+    "confidence": {
+      "type": "number"
+    }
+  }
+}

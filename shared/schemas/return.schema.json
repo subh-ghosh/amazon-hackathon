@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Return Entity",
+  "type": "object",
+  "required": [
+    "returnId",
+    "customerId",
+    "productId",
+    "reason"
+  ],
+  "properties": {
+    "returnId": {
+      "type": "string"
+    },
+    "customerId": {
+      "type": "string"
+    },
+    "productId": {
+      "type": "string"
+    },
+    "reason": {
+      "type": "string"
+    }
+  }
+}

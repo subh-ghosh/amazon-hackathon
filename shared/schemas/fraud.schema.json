@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Fraud Case Entity",
+  "type": "object",
+  "required": [
+    "fraudCaseId",
+    "returnId",
+    "customerId",
+    "fraudType"
+  ],
+  "properties": {
+    "fraudCaseId": {
+      "type": "string"
+    },
+    "returnId": {
+      "type": "string"
+    },
+    "customerId": {
+      "type": "string"
+    },
+    "fraudType": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

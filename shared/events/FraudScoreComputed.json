@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "FraudScoreComputed",
+  "type": "object",
+  "required": [
+    "eventType",
+    "returnId",
+    "customerId",
+    "fraudScore",
+    "trustScore",
+    "riskLevel",
+    "timestamp"
+  ],
+  "properties": {
+    "eventType": {
+      "type": "string"
+    },
+    "returnId": {
+      "type": "string"
+    },
+    "customerId": {
+      "type": "string"
+    },
+    "fraudScore": {
+      "type": "number"
+    },
+    "trustScore": {
+      "type": "number"
+    },
+    "riskLevel": {
+      "enum": ["LOW", "MEDIUM", "HIGH"]
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

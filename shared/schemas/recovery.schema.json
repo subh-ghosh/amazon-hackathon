@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Recovery Action Entity",
+  "type": "object",
+  "required": [
+    "actionId",
+    "returnId",
+    "actionType"
+  ],
+  "properties": {
+    "actionId": {
+      "type": "string"
+    },
+    "returnId": {
+      "type": "string"
+    },
+    "actionType": {
+      "enum": ["RESTOCK", "LIQUIDATE", "REFURBISH", "RECYCLE", "DESTROY"]
+    },
+    "recoveredValue": {
+      "type": "number"
+    }
+  }
+}

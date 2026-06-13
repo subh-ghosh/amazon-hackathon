@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ReturnCreated",
+  "type": "object",
+  "required": [
+    "eventType",
+    "returnId",
+    "customerId",
+    "productId",
+    "timestamp"
+  ],
+  "properties": {
+    "eventType": {
+      "type": "string"
+    },
+    "returnId": {
+      "type": "string"
+    },
+    "customerId": {
+      "type": "string"
+    },
+    "productId": {
+      "type": "string"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}
