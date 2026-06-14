@@ -124,6 +124,20 @@ VPC-3 Product & Business Layer
 
 ---
 
+## 💸 Service #8: Returnless Refund Engine
+**VPC:** VPC-2 — Recovery Layer
+**Status:** ✅ Live (AWS ECS Fargate) — *Validation & Security Hardened* 🔒
+**Base URL:** `http://Circul-Retur-AkanfcKdPytd-593568738.us-east-1.elb.amazonaws.com`
+
+| Method | Endpoint | Purpose |
+|:---|:---|:---|
+| `GET` | `/health` | Health Check |
+| `POST` | `/api/v1/returnless/evaluate` | Evaluates if a return qualifies for a Returnless Refund, Partial Refund, or Donation |
+| `POST` | `/api/v1/returnless/batch-evaluate` | Bulk evaluations (Sync or Async) |
+| `GET` | `/docs` | Swagger UI |
+
+---
+
 ## 🔄 Service #9: Circular Routing Engine
 **VPC:** VPC-4 — Central Knowledge Platform (Cross-Layer Circular Economy)
 **Status:** ✅ Live (AWS ECS Fargate) — *Validation & Security Hardened* 🔒
