@@ -124,6 +124,21 @@ VPC-3 Product & Business Layer
 
 ---
 
+## 🔄 Service #9: Circular Routing Engine
+**VPC:** VPC-4 — Central Knowledge Platform (Cross-Layer Circular Economy)
+**Status:** 🛠️ In Development (Ready for Deployment)
+**Base URL:** TBD
+
+| Method | Endpoint | Purpose |
+|:---|:---|:---|
+| `GET` | `/health` | Health Check |
+| `POST` | `/api/v1/logistics/optimize` | Determines the optimal facility factoring Recovery, Cost, Carbon, and Capacity |
+| `POST` | `/api/v1/logistics/batch-optimize` | Bulk array optimization |
+| `GET` | `/api/v1/logistics/analytics` | Real-time Thread-safe Ops Metrics |
+| `GET` | `/docs` | Swagger UI |
+
+---
+
 ## ♻️ Service #10: Packaging Intelligence
 **VPC:** VPC-1 — Intelligence Layer
 **Status:** ✅ Live (AWS ECS Fargate) — *Validation & Security Hardened* 🔒
