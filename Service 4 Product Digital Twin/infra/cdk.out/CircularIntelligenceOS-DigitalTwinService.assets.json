@@ -1,0 +1,34 @@
+{
+  "version": "35.0.0",
+  "files": {
+    "596660b9348495a6923c562092c85d76e45cf97a3e20bff52c4604869b0f3206": {
+      "source": {
+        "path": "CircularIntelligenceOS-DigitalTwinService.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "706335435423-us-east-1": {
+          "bucketName": "cdk-hnb659fds-assets-706335435423-us-east-1",
+          "objectKey": "596660b9348495a6923c562092c85d76e45cf97a3e20bff52c4604869b0f3206.json",
+          "region": "us-east-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::706335435423:role/cdk-hnb659fds-file-publishing-role-706335435423-us-east-1"
+        }
+      }
+    }
+  },
+  "dockerImages": {
+    "38523035f878328cb49357b1c0c5a93476a4fa37f9d96688f4a78e6c278bd44e": {
+      "source": {
+        "directory": "asset.38523035f878328cb49357b1c0c5a93476a4fa37f9d96688f4a78e6c278bd44e"
+      },
+      "destinations": {
+        "706335435423-us-east-1": {
+          "repositoryName": "cdk-hnb659fds-container-assets-706335435423-us-east-1",
+          "imageTag": "38523035f878328cb49357b1c0c5a93476a4fa37f9d96688f4a78e6c278bd44e",
+          "region": "us-east-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::706335435423:role/cdk-hnb659fds-image-publishing-role-706335435423-us-east-1"
+        }
+      }
+    }
+  }
+}

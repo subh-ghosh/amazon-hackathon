@@ -1,0 +1,1464 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "CircularIntelligenceOS-DigitalTwinService": {
+        "id": "CircularIntelligenceOS-DigitalTwinService",
+        "path": "CircularIntelligenceOS-DigitalTwinService",
+        "children": {
+          "ProductBusinessVpc": {
+            "id": "ProductBusinessVpc",
+            "path": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::VPC",
+                  "aws:cdk:cloudformation:props": {
+                    "cidrBlock": "10.0.0.0/16",
+                    "enableDnsHostnames": true,
+                    "enableDnsSupport": true,
+                    "instanceTenancy": "default",
+                    "tags": [
+                      {
+                        "key": "DomainName",
+                        "value": "VPC-3-ProductBusiness"
+                      },
+                      {
+                        "key": "Name",
+                        "value": "CircularIntelligenceOS/VPC-3-ProductBusinessLayer"
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.CfnVPC",
+                  "version": "2.110.1"
+                }
+              },
+              "PublicSubnet1": {
+                "id": "PublicSubnet1",
+                "path": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc/PublicSubnet1",
+                "children": {
+                  "Subnet": {
+                    "id": "Subnet",
+                    "path": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc/PublicSubnet1/Subnet",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::Subnet",
+                      "aws:cdk:cloudformation:props": {
+                        "availabilityZone": "us-east-1a",
+                        "cidrBlock": "10.0.0.0/18",
+                        "mapPublicIpOnLaunch": true,
+                        "tags": [
+                          {
+                            "key": "aws-cdk:subnet-name",
+                            "value": "Public"
+                          },
+                          {
+                            "key": "aws-cdk:subnet-type",
+                            "value": "Public"
+                          },
+                          {
+                            "key": "DomainName",
+                            "value": "VPC-3-ProductBusiness"
+                          },
+                          {
+                            "key": "Name",
+                            "value": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc/PublicSubnet1"
+                          }
+                        ],
+                        "vpcId": {
+                          "Ref": "ProductBusinessVpcDD02A478"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnSubnet",
+                      "version": "2.110.1"
+                    }
+                  },
+                  "Acl": {
+                    "id": "Acl",
+                    "path": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc/PublicSubnet1/Acl",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.110.1"
+                    }
+                  },
+                  "RouteTable": {
+                    "id": "RouteTable",
+                    "path": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc/PublicSubnet1/RouteTable",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::RouteTable",
+                      "aws:cdk:cloudformation:props": {
+                        "tags": [
+                          {
+                            "key": "DomainName",
+                            "value": "VPC-3-ProductBusiness"
+                          },
+                          {
+                            "key": "Name",
+                            "value": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc/PublicSubnet1"
+                          }
+                        ],
+                        "vpcId": {
+                          "Ref": "ProductBusinessVpcDD02A478"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnRouteTable",
+                      "version": "2.110.1"
+                    }
+                  },
+                  "RouteTableAssociation": {
+                    "id": "RouteTableAssociation",
+                    "path": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc/PublicSubnet1/RouteTableAssociation",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::SubnetRouteTableAssociation",
+                      "aws:cdk:cloudformation:props": {
+                        "routeTableId": {
+                          "Ref": "ProductBusinessVpcPublicSubnet1RouteTable45B46E35"
+                        },
+                        "subnetId": {
+                          "Ref": "ProductBusinessVpcPublicSubnet1Subnet7E2C7F7F"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnSubnetRouteTableAssociation",
+                      "version": "2.110.1"
+                    }
+                  },
+                  "DefaultRoute": {
+                    "id": "DefaultRoute",
+                    "path": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc/PublicSubnet1/DefaultRoute",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::Route",
+                      "aws:cdk:cloudformation:props": {
+                        "destinationCidrBlock": "0.0.0.0/0",
+                        "gatewayId": {
+                          "Ref": "ProductBusinessVpcIGW7E732ADE"
+                        },
+                        "routeTableId": {
+                          "Ref": "ProductBusinessVpcPublicSubnet1RouteTable45B46E35"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnRoute",
+                      "version": "2.110.1"
+                    }
+                  },
+                  "EIP": {
+                    "id": "EIP",
+                    "path": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc/PublicSubnet1/EIP",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::EIP",
+                      "aws:cdk:cloudformation:props": {
+                        "domain": "vpc",
+                        "tags": [
+                          {
+                            "key": "DomainName",
+                            "value": "VPC-3-ProductBusiness"
+                          },
+                          {
+                            "key": "Name",
+                            "value": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc/PublicSubnet1"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnEIP",
+                      "version": "2.110.1"
+                    }
+                  },
+                  "NATGateway": {
+                    "id": "NATGateway",
+                    "path": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc/PublicSubnet1/NATGateway",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::NatGateway",
+                      "aws:cdk:cloudformation:props": {
+                        "allocationId": {
+                          "Fn::GetAtt": [
+                            "ProductBusinessVpcPublicSubnet1EIP8B91909D",
+                            "AllocationId"
+                          ]
+                        },
+                        "subnetId": {
+                          "Ref": "ProductBusinessVpcPublicSubnet1Subnet7E2C7F7F"
+                        },
+                        "tags": [
+                          {
+                            "key": "DomainName",
+                            "value": "VPC-3-ProductBusiness"
+                          },
+                          {
+                            "key": "Name",
+                            "value": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc/PublicSubnet1"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnNatGateway",
+                      "version": "2.110.1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.PublicSubnet",
+                  "version": "2.110.1"
+                }
+              },
+              "PublicSubnet2": {
+                "id": "PublicSubnet2",
+                "path": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc/PublicSubnet2",
+                "children": {
+                  "Subnet": {
+                    "id": "Subnet",
+                    "path": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc/PublicSubnet2/Subnet",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::Subnet",
+                      "aws:cdk:cloudformation:props": {
+                        "availabilityZone": "us-east-1b",
+                        "cidrBlock": "10.0.64.0/18",
+                        "mapPublicIpOnLaunch": true,
+                        "tags": [
+                          {
+                            "key": "aws-cdk:subnet-name",
+                            "value": "Public"
+                          },
+                          {
+                            "key": "aws-cdk:subnet-type",
+                            "value": "Public"
+                          },
+                          {
+                            "key": "DomainName",
+                            "value": "VPC-3-ProductBusiness"
+                          },
+                          {
+                            "key": "Name",
+                            "value": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc/PublicSubnet2"
+                          }
+                        ],
+                        "vpcId": {
+                          "Ref": "ProductBusinessVpcDD02A478"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnSubnet",
+                      "version": "2.110.1"
+                    }
+                  },
+                  "Acl": {
+                    "id": "Acl",
+                    "path": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc/PublicSubnet2/Acl",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.110.1"
+                    }
+                  },
+                  "RouteTable": {
+                    "id": "RouteTable",
+                    "path": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc/PublicSubnet2/RouteTable",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::RouteTable",
+                      "aws:cdk:cloudformation:props": {
+                        "tags": [
+                          {
+                            "key": "DomainName",
+                            "value": "VPC-3-ProductBusiness"
+                          },
+                          {
+                            "key": "Name",
+                            "value": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc/PublicSubnet2"
+                          }
+                        ],
+                        "vpcId": {
+                          "Ref": "ProductBusinessVpcDD02A478"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnRouteTable",
+                      "version": "2.110.1"
+                    }
+                  },
+                  "RouteTableAssociation": {
+                    "id": "RouteTableAssociation",
+                    "path": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc/PublicSubnet2/RouteTableAssociation",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::SubnetRouteTableAssociation",
+                      "aws:cdk:cloudformation:props": {
+                        "routeTableId": {
+                          "Ref": "ProductBusinessVpcPublicSubnet2RouteTable4644F0D8"
+                        },
+                        "subnetId": {
+                          "Ref": "ProductBusinessVpcPublicSubnet2Subnet1E8393F9"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnSubnetRouteTableAssociation",
+                      "version": "2.110.1"
+                    }
+                  },
+                  "DefaultRoute": {
+                    "id": "DefaultRoute",
+                    "path": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc/PublicSubnet2/DefaultRoute",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::Route",
+                      "aws:cdk:cloudformation:props": {
+                        "destinationCidrBlock": "0.0.0.0/0",
+                        "gatewayId": {
+                          "Ref": "ProductBusinessVpcIGW7E732ADE"
+                        },
+                        "routeTableId": {
+                          "Ref": "ProductBusinessVpcPublicSubnet2RouteTable4644F0D8"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnRoute",
+                      "version": "2.110.1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.PublicSubnet",
+                  "version": "2.110.1"
+                }
+              },
+              "PrivateSubnet1": {
+                "id": "PrivateSubnet1",
+                "path": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc/PrivateSubnet1",
+                "children": {
+                  "Subnet": {
+                    "id": "Subnet",
+                    "path": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc/PrivateSubnet1/Subnet",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::Subnet",
+                      "aws:cdk:cloudformation:props": {
+                        "availabilityZone": "us-east-1a",
+                        "cidrBlock": "10.0.128.0/18",
+                        "mapPublicIpOnLaunch": false,
+                        "tags": [
+                          {
+                            "key": "aws-cdk:subnet-name",
+                            "value": "Private"
+                          },
+                          {
+                            "key": "aws-cdk:subnet-type",
+                            "value": "Private"
+                          },
+                          {
+                            "key": "DomainName",
+                            "value": "VPC-3-ProductBusiness"
+                          },
+                          {
+                            "key": "Name",
+                            "value": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc/PrivateSubnet1"
+                          }
+                        ],
+                        "vpcId": {
+                          "Ref": "ProductBusinessVpcDD02A478"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnSubnet",
+                      "version": "2.110.1"
+                    }
+                  },
+                  "Acl": {
+                    "id": "Acl",
+                    "path": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc/PrivateSubnet1/Acl",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.110.1"
+                    }
+                  },
+                  "RouteTable": {
+                    "id": "RouteTable",
+                    "path": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc/PrivateSubnet1/RouteTable",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::RouteTable",
+                      "aws:cdk:cloudformation:props": {
+                        "tags": [
+                          {
+                            "key": "DomainName",
+                            "value": "VPC-3-ProductBusiness"
+                          },
+                          {
+                            "key": "Name",
+                            "value": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc/PrivateSubnet1"
+                          }
+                        ],
+                        "vpcId": {
+                          "Ref": "ProductBusinessVpcDD02A478"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnRouteTable",
+                      "version": "2.110.1"
+                    }
+                  },
+                  "RouteTableAssociation": {
+                    "id": "RouteTableAssociation",
+                    "path": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc/PrivateSubnet1/RouteTableAssociation",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::SubnetRouteTableAssociation",
+                      "aws:cdk:cloudformation:props": {
+                        "routeTableId": {
+                          "Ref": "ProductBusinessVpcPrivateSubnet1RouteTable7304A37A"
+                        },
+                        "subnetId": {
+                          "Ref": "ProductBusinessVpcPrivateSubnet1SubnetE2084611"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnSubnetRouteTableAssociation",
+                      "version": "2.110.1"
+                    }
+                  },
+                  "DefaultRoute": {
+                    "id": "DefaultRoute",
+                    "path": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc/PrivateSubnet1/DefaultRoute",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::Route",
+                      "aws:cdk:cloudformation:props": {
+                        "destinationCidrBlock": "0.0.0.0/0",
+                        "natGatewayId": {
+                          "Ref": "ProductBusinessVpcPublicSubnet1NATGateway62E42DD9"
+                        },
+                        "routeTableId": {
+                          "Ref": "ProductBusinessVpcPrivateSubnet1RouteTable7304A37A"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnRoute",
+                      "version": "2.110.1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.PrivateSubnet",
+                  "version": "2.110.1"
+                }
+              },
+              "PrivateSubnet2": {
+                "id": "PrivateSubnet2",
+                "path": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc/PrivateSubnet2",
+                "children": {
+                  "Subnet": {
+                    "id": "Subnet",
+                    "path": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc/PrivateSubnet2/Subnet",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::Subnet",
+                      "aws:cdk:cloudformation:props": {
+                        "availabilityZone": "us-east-1b",
+                        "cidrBlock": "10.0.192.0/18",
+                        "mapPublicIpOnLaunch": false,
+                        "tags": [
+                          {
+                            "key": "aws-cdk:subnet-name",
+                            "value": "Private"
+                          },
+                          {
+                            "key": "aws-cdk:subnet-type",
+                            "value": "Private"
+                          },
+                          {
+                            "key": "DomainName",
+                            "value": "VPC-3-ProductBusiness"
+                          },
+                          {
+                            "key": "Name",
+                            "value": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc/PrivateSubnet2"
+                          }
+                        ],
+                        "vpcId": {
+                          "Ref": "ProductBusinessVpcDD02A478"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnSubnet",
+                      "version": "2.110.1"
+                    }
+                  },
+                  "Acl": {
+                    "id": "Acl",
+                    "path": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc/PrivateSubnet2/Acl",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.110.1"
+                    }
+                  },
+                  "RouteTable": {
+                    "id": "RouteTable",
+                    "path": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc/PrivateSubnet2/RouteTable",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::RouteTable",
+                      "aws:cdk:cloudformation:props": {
+                        "tags": [
+                          {
+                            "key": "DomainName",
+                            "value": "VPC-3-ProductBusiness"
+                          },
+                          {
+                            "key": "Name",
+                            "value": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc/PrivateSubnet2"
+                          }
+                        ],
+                        "vpcId": {
+                          "Ref": "ProductBusinessVpcDD02A478"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnRouteTable",
+                      "version": "2.110.1"
+                    }
+                  },
+                  "RouteTableAssociation": {
+                    "id": "RouteTableAssociation",
+                    "path": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc/PrivateSubnet2/RouteTableAssociation",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::SubnetRouteTableAssociation",
+                      "aws:cdk:cloudformation:props": {
+                        "routeTableId": {
+                          "Ref": "ProductBusinessVpcPrivateSubnet2RouteTableB5A915D1"
+                        },
+                        "subnetId": {
+                          "Ref": "ProductBusinessVpcPrivateSubnet2Subnet8B268BDB"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnSubnetRouteTableAssociation",
+                      "version": "2.110.1"
+                    }
+                  },
+                  "DefaultRoute": {
+                    "id": "DefaultRoute",
+                    "path": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc/PrivateSubnet2/DefaultRoute",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::Route",
+                      "aws:cdk:cloudformation:props": {
+                        "destinationCidrBlock": "0.0.0.0/0",
+                        "natGatewayId": {
+                          "Ref": "ProductBusinessVpcPublicSubnet1NATGateway62E42DD9"
+                        },
+                        "routeTableId": {
+                          "Ref": "ProductBusinessVpcPrivateSubnet2RouteTableB5A915D1"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnRoute",
+                      "version": "2.110.1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.PrivateSubnet",
+                  "version": "2.110.1"
+                }
+              },
+              "IGW": {
+                "id": "IGW",
+                "path": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc/IGW",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::InternetGateway",
+                  "aws:cdk:cloudformation:props": {
+                    "tags": [
+                      {
+                        "key": "DomainName",
+                        "value": "VPC-3-ProductBusiness"
+                      },
+                      {
+                        "key": "Name",
+                        "value": "CircularIntelligenceOS/VPC-3-ProductBusinessLayer"
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.CfnInternetGateway",
+                  "version": "2.110.1"
+                }
+              },
+              "VPCGW": {
+                "id": "VPCGW",
+                "path": "CircularIntelligenceOS-DigitalTwinService/ProductBusinessVpc/VPCGW",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::VPCGatewayAttachment",
+                  "aws:cdk:cloudformation:props": {
+                    "internetGatewayId": {
+                      "Ref": "ProductBusinessVpcIGW7E732ADE"
+                    },
+                    "vpcId": {
+                      "Ref": "ProductBusinessVpcDD02A478"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.CfnVPCGatewayAttachment",
+                  "version": "2.110.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ec2.Vpc",
+              "version": "2.110.1"
+            }
+          },
+          "ProductDigitalTwinTable": {
+            "id": "ProductDigitalTwinTable",
+            "path": "CircularIntelligenceOS-DigitalTwinService/ProductDigitalTwinTable",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "CircularIntelligenceOS-DigitalTwinService/ProductDigitalTwinTable/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::DynamoDB::Table",
+                  "aws:cdk:cloudformation:props": {
+                    "attributeDefinitions": [
+                      {
+                        "attributeName": "productId",
+                        "attributeType": "S"
+                      }
+                    ],
+                    "billingMode": "PAY_PER_REQUEST",
+                    "keySchema": [
+                      {
+                        "attributeName": "productId",
+                        "keyType": "HASH"
+                      }
+                    ],
+                    "tableName": "ProductDigitalTwin"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_dynamodb.CfnTable",
+                  "version": "2.110.1"
+                }
+              },
+              "ScalingRole": {
+                "id": "ScalingRole",
+                "path": "CircularIntelligenceOS-DigitalTwinService/ProductDigitalTwinTable/ScalingRole",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.110.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_dynamodb.Table",
+              "version": "2.110.1"
+            }
+          },
+          "DigitalTwinCluster": {
+            "id": "DigitalTwinCluster",
+            "path": "CircularIntelligenceOS-DigitalTwinService/DigitalTwinCluster",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "CircularIntelligenceOS-DigitalTwinService/DigitalTwinCluster/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::ECS::Cluster",
+                  "aws:cdk:cloudformation:props": {}
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ecs.CfnCluster",
+                  "version": "2.110.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ecs.Cluster",
+              "version": "2.110.1"
+            }
+          },
+          "DigitalTwinService": {
+            "id": "DigitalTwinService",
+            "path": "CircularIntelligenceOS-DigitalTwinService/DigitalTwinService",
+            "children": {
+              "LB": {
+                "id": "LB",
+                "path": "CircularIntelligenceOS-DigitalTwinService/DigitalTwinService/LB",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "CircularIntelligenceOS-DigitalTwinService/DigitalTwinService/LB/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+                      "aws:cdk:cloudformation:props": {
+                        "loadBalancerAttributes": [
+                          {
+                            "key": "deletion_protection.enabled",
+                            "value": "false"
+                          }
+                        ],
+                        "scheme": "internet-facing",
+                        "securityGroups": [
+                          {
+                            "Fn::GetAtt": [
+                              "DigitalTwinServiceLBSecurityGroup39EE85C5",
+                              "GroupId"
+                            ]
+                          }
+                        ],
+                        "subnets": [
+                          {
+                            "Ref": "ProductBusinessVpcPublicSubnet1Subnet7E2C7F7F"
+                          },
+                          {
+                            "Ref": "ProductBusinessVpcPublicSubnet2Subnet1E8393F9"
+                          }
+                        ],
+                        "type": "application"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.CfnLoadBalancer",
+                      "version": "2.110.1"
+                    }
+                  },
+                  "SecurityGroup": {
+                    "id": "SecurityGroup",
+                    "path": "CircularIntelligenceOS-DigitalTwinService/DigitalTwinService/LB/SecurityGroup",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "CircularIntelligenceOS-DigitalTwinService/DigitalTwinService/LB/SecurityGroup/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::EC2::SecurityGroup",
+                          "aws:cdk:cloudformation:props": {
+                            "groupDescription": "Automatically created Security Group for ELB CircularIntelligenceOSDigitalTwinServiceLB7059F08F",
+                            "securityGroupIngress": [
+                              {
+                                "cidrIp": "0.0.0.0/0",
+                                "ipProtocol": "tcp",
+                                "fromPort": 80,
+                                "toPort": 80,
+                                "description": "Allow from anyone on port 80"
+                              }
+                            ],
+                            "vpcId": {
+                              "Ref": "ProductBusinessVpcDD02A478"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroup",
+                          "version": "2.110.1"
+                        }
+                      },
+                      "to CircularIntelligenceOSDigitalTwinServiceSecurityGroup60171312:8004": {
+                        "id": "to CircularIntelligenceOSDigitalTwinServiceSecurityGroup60171312:8004",
+                        "path": "CircularIntelligenceOS-DigitalTwinService/DigitalTwinService/LB/SecurityGroup/to CircularIntelligenceOSDigitalTwinServiceSecurityGroup60171312:8004",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::EC2::SecurityGroupEgress",
+                          "aws:cdk:cloudformation:props": {
+                            "description": "Load balancer to target",
+                            "destinationSecurityGroupId": {
+                              "Fn::GetAtt": [
+                                "DigitalTwinServiceSecurityGroup2C05F98D",
+                                "GroupId"
+                              ]
+                            },
+                            "fromPort": 8004,
+                            "groupId": {
+                              "Fn::GetAtt": [
+                                "DigitalTwinServiceLBSecurityGroup39EE85C5",
+                                "GroupId"
+                              ]
+                            },
+                            "ipProtocol": "tcp",
+                            "toPort": 8004
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroupEgress",
+                          "version": "2.110.1"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.SecurityGroup",
+                      "version": "2.110.1"
+                    }
+                  },
+                  "PublicListener": {
+                    "id": "PublicListener",
+                    "path": "CircularIntelligenceOS-DigitalTwinService/DigitalTwinService/LB/PublicListener",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "CircularIntelligenceOS-DigitalTwinService/DigitalTwinService/LB/PublicListener/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::ElasticLoadBalancingV2::Listener",
+                          "aws:cdk:cloudformation:props": {
+                            "defaultActions": [
+                              {
+                                "type": "forward",
+                                "targetGroupArn": {
+                                  "Ref": "DigitalTwinServiceLBPublicListenerECSGroupD267AAF9"
+                                }
+                              }
+                            ],
+                            "loadBalancerArn": {
+                              "Ref": "DigitalTwinServiceLB5816AA62"
+                            },
+                            "port": 80,
+                            "protocol": "HTTP"
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.CfnListener",
+                          "version": "2.110.1"
+                        }
+                      },
+                      "ECSGroup": {
+                        "id": "ECSGroup",
+                        "path": "CircularIntelligenceOS-DigitalTwinService/DigitalTwinService/LB/PublicListener/ECSGroup",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "CircularIntelligenceOS-DigitalTwinService/DigitalTwinService/LB/PublicListener/ECSGroup/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+                              "aws:cdk:cloudformation:props": {
+                                "healthCheckPath": "/health",
+                                "matcher": {
+                                  "httpCode": "200"
+                                },
+                                "port": 80,
+                                "protocol": "HTTP",
+                                "targetGroupAttributes": [
+                                  {
+                                    "key": "stickiness.enabled",
+                                    "value": "false"
+                                  }
+                                ],
+                                "targetType": "ip",
+                                "vpcId": {
+                                  "Ref": "ProductBusinessVpcDD02A478"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.CfnTargetGroup",
+                              "version": "2.110.1"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.ApplicationTargetGroup",
+                          "version": "2.110.1"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.ApplicationListener",
+                      "version": "2.110.1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.ApplicationLoadBalancer",
+                  "version": "2.110.1"
+                }
+              },
+              "LoadBalancerDNS": {
+                "id": "LoadBalancerDNS",
+                "path": "CircularIntelligenceOS-DigitalTwinService/DigitalTwinService/LoadBalancerDNS",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.110.1"
+                }
+              },
+              "ServiceURL": {
+                "id": "ServiceURL",
+                "path": "CircularIntelligenceOS-DigitalTwinService/DigitalTwinService/ServiceURL",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.110.1"
+                }
+              },
+              "TaskDef": {
+                "id": "TaskDef",
+                "path": "CircularIntelligenceOS-DigitalTwinService/DigitalTwinService/TaskDef",
+                "children": {
+                  "TaskRole": {
+                    "id": "TaskRole",
+                    "path": "CircularIntelligenceOS-DigitalTwinService/DigitalTwinService/TaskDef/TaskRole",
+                    "children": {
+                      "ImportTaskRole": {
+                        "id": "ImportTaskRole",
+                        "path": "CircularIntelligenceOS-DigitalTwinService/DigitalTwinService/TaskDef/TaskRole/ImportTaskRole",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.Resource",
+                          "version": "2.110.1"
+                        }
+                      },
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "CircularIntelligenceOS-DigitalTwinService/DigitalTwinService/TaskDef/TaskRole/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                          "aws:cdk:cloudformation:props": {
+                            "assumeRolePolicyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": "sts:AssumeRole",
+                                  "Effect": "Allow",
+                                  "Principal": {
+                                    "Service": "ecs-tasks.amazonaws.com"
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                          "version": "2.110.1"
+                        }
+                      },
+                      "DefaultPolicy": {
+                        "id": "DefaultPolicy",
+                        "path": "CircularIntelligenceOS-DigitalTwinService/DigitalTwinService/TaskDef/TaskRole/DefaultPolicy",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "CircularIntelligenceOS-DigitalTwinService/DigitalTwinService/TaskDef/TaskRole/DefaultPolicy/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                              "aws:cdk:cloudformation:props": {
+                                "policyDocument": {
+                                  "Statement": [
+                                    {
+                                      "Action": [
+                                        "dynamodb:BatchGetItem",
+                                        "dynamodb:GetRecords",
+                                        "dynamodb:GetShardIterator",
+                                        "dynamodb:Query",
+                                        "dynamodb:GetItem",
+                                        "dynamodb:Scan",
+                                        "dynamodb:ConditionCheckItem",
+                                        "dynamodb:BatchWriteItem",
+                                        "dynamodb:PutItem",
+                                        "dynamodb:UpdateItem",
+                                        "dynamodb:DeleteItem",
+                                        "dynamodb:DescribeTable"
+                                      ],
+                                      "Effect": "Allow",
+                                      "Resource": [
+                                        {
+                                          "Fn::GetAtt": [
+                                            "ProductDigitalTwinTableEC3AF912",
+                                            "Arn"
+                                          ]
+                                        },
+                                        {
+                                          "Ref": "AWS::NoValue"
+                                        }
+                                      ]
+                                    }
+                                  ],
+                                  "Version": "2012-10-17"
+                                },
+                                "policyName": "DigitalTwinServiceTaskDefTaskRoleDefaultPolicy77ECD746",
+                                "roles": [
+                                  {
+                                    "Ref": "DigitalTwinServiceTaskDefTaskRole7EB8093D"
+                                  }
+                                ]
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                              "version": "2.110.1"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.Policy",
+                          "version": "2.110.1"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Role",
+                      "version": "2.110.1"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "CircularIntelligenceOS-DigitalTwinService/DigitalTwinService/TaskDef/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::ECS::TaskDefinition",
+                      "aws:cdk:cloudformation:props": {
+                        "containerDefinitions": [
+                          {
+                            "essential": true,
+                            "image": {
+                              "Fn::Sub": "706335435423.dkr.ecr.us-east-1.${AWS::URLSuffix}/cdk-hnb659fds-container-assets-706335435423-us-east-1:38523035f878328cb49357b1c0c5a93476a4fa37f9d96688f4a78e6c278bd44e"
+                            },
+                            "name": "web",
+                            "portMappings": [
+                              {
+                                "containerPort": 8004,
+                                "protocol": "tcp"
+                              }
+                            ],
+                            "logConfiguration": {
+                              "logDriver": "awslogs",
+                              "options": {
+                                "awslogs-group": {
+                                  "Ref": "DigitalTwinServiceTaskDefwebLogGroup62CFAF42"
+                                },
+                                "awslogs-stream-prefix": "DigitalTwinService",
+                                "awslogs-region": "us-east-1"
+                              }
+                            },
+                            "environment": [
+                              {
+                                "name": "ENVIRONMENT",
+                                "value": "production"
+                              },
+                              {
+                                "name": "DYNAMODB_TABLE_NAME",
+                                "value": {
+                                  "Ref": "ProductDigitalTwinTableEC3AF912"
+                                }
+                              },
+                              {
+                                "name": "AWS_REGION",
+                                "value": "us-east-1"
+                              }
+                            ]
+                          }
+                        ],
+                        "cpu": "256",
+                        "executionRoleArn": {
+                          "Fn::GetAtt": [
+                            "DigitalTwinServiceTaskDefExecutionRoleFD6A878C",
+                            "Arn"
+                          ]
+                        },
+                        "family": "CircularIntelligenceOSDigitalTwinServiceTaskDef22743CA0",
+                        "memory": "512",
+                        "networkMode": "awsvpc",
+                        "requiresCompatibilities": [
+                          "FARGATE"
+                        ],
+                        "taskRoleArn": {
+                          "Fn::GetAtt": [
+                            "DigitalTwinServiceTaskDefTaskRole7EB8093D",
+                            "Arn"
+                          ]
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ecs.CfnTaskDefinition",
+                      "version": "2.110.1"
+                    }
+                  },
+                  "web": {
+                    "id": "web",
+                    "path": "CircularIntelligenceOS-DigitalTwinService/DigitalTwinService/TaskDef/web",
+                    "children": {
+                      "AssetImage": {
+                        "id": "AssetImage",
+                        "path": "CircularIntelligenceOS-DigitalTwinService/DigitalTwinService/TaskDef/web/AssetImage",
+                        "children": {
+                          "Staging": {
+                            "id": "Staging",
+                            "path": "CircularIntelligenceOS-DigitalTwinService/DigitalTwinService/TaskDef/web/AssetImage/Staging",
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.AssetStaging",
+                              "version": "2.110.1"
+                            }
+                          },
+                          "Repository": {
+                            "id": "Repository",
+                            "path": "CircularIntelligenceOS-DigitalTwinService/DigitalTwinService/TaskDef/web/AssetImage/Repository",
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_ecr.RepositoryBase",
+                              "version": "2.110.1"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_ecr_assets.DockerImageAsset",
+                          "version": "2.110.1"
+                        }
+                      },
+                      "LogGroup": {
+                        "id": "LogGroup",
+                        "path": "CircularIntelligenceOS-DigitalTwinService/DigitalTwinService/TaskDef/web/LogGroup",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "CircularIntelligenceOS-DigitalTwinService/DigitalTwinService/TaskDef/web/LogGroup/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Logs::LogGroup",
+                              "aws:cdk:cloudformation:props": {}
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_logs.CfnLogGroup",
+                              "version": "2.110.1"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_logs.LogGroup",
+                          "version": "2.110.1"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ecs.ContainerDefinition",
+                      "version": "2.110.1"
+                    }
+                  },
+                  "ExecutionRole": {
+                    "id": "ExecutionRole",
+                    "path": "CircularIntelligenceOS-DigitalTwinService/DigitalTwinService/TaskDef/ExecutionRole",
+                    "children": {
+                      "ImportExecutionRole": {
+                        "id": "ImportExecutionRole",
+                        "path": "CircularIntelligenceOS-DigitalTwinService/DigitalTwinService/TaskDef/ExecutionRole/ImportExecutionRole",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.Resource",
+                          "version": "2.110.1"
+                        }
+                      },
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "CircularIntelligenceOS-DigitalTwinService/DigitalTwinService/TaskDef/ExecutionRole/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                          "aws:cdk:cloudformation:props": {
+                            "assumeRolePolicyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": "sts:AssumeRole",
+                                  "Effect": "Allow",
+                                  "Principal": {
+                                    "Service": "ecs-tasks.amazonaws.com"
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                          "version": "2.110.1"
+                        }
+                      },
+                      "DefaultPolicy": {
+                        "id": "DefaultPolicy",
+                        "path": "CircularIntelligenceOS-DigitalTwinService/DigitalTwinService/TaskDef/ExecutionRole/DefaultPolicy",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "CircularIntelligenceOS-DigitalTwinService/DigitalTwinService/TaskDef/ExecutionRole/DefaultPolicy/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                              "aws:cdk:cloudformation:props": {
+                                "policyDocument": {
+                                  "Statement": [
+                                    {
+                                      "Action": [
+                                        "ecr:BatchCheckLayerAvailability",
+                                        "ecr:GetDownloadUrlForLayer",
+                                        "ecr:BatchGetImage"
+                                      ],
+                                      "Effect": "Allow",
+                                      "Resource": {
+                                        "Fn::Join": [
+                                          "",
+                                          [
+                                            "arn:",
+                                            {
+                                              "Ref": "AWS::Partition"
+                                            },
+                                            ":ecr:us-east-1:706335435423:repository/cdk-hnb659fds-container-assets-706335435423-us-east-1"
+                                          ]
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "Action": "ecr:GetAuthorizationToken",
+                                      "Effect": "Allow",
+                                      "Resource": "*"
+                                    },
+                                    {
+                                      "Action": [
+                                        "logs:CreateLogStream",
+                                        "logs:PutLogEvents"
+                                      ],
+                                      "Effect": "Allow",
+                                      "Resource": {
+                                        "Fn::GetAtt": [
+                                          "DigitalTwinServiceTaskDefwebLogGroup62CFAF42",
+                                          "Arn"
+                                        ]
+                                      }
+                                    }
+                                  ],
+                                  "Version": "2012-10-17"
+                                },
+                                "policyName": "DigitalTwinServiceTaskDefExecutionRoleDefaultPolicy2BF26581",
+                                "roles": [
+                                  {
+                                    "Ref": "DigitalTwinServiceTaskDefExecutionRoleFD6A878C"
+                                  }
+                                ]
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                              "version": "2.110.1"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.Policy",
+                          "version": "2.110.1"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Role",
+                      "version": "2.110.1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ecs.FargateTaskDefinition",
+                  "version": "2.110.1"
+                }
+              },
+              "Service": {
+                "id": "Service",
+                "path": "CircularIntelligenceOS-DigitalTwinService/DigitalTwinService/Service",
+                "children": {
+                  "Service": {
+                    "id": "Service",
+                    "path": "CircularIntelligenceOS-DigitalTwinService/DigitalTwinService/Service/Service",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::ECS::Service",
+                      "aws:cdk:cloudformation:props": {
+                        "cluster": {
+                          "Ref": "DigitalTwinClusterAB00DA11"
+                        },
+                        "deploymentConfiguration": {
+                          "maximumPercent": 200,
+                          "minimumHealthyPercent": 50,
+                          "alarms": {
+                            "alarmNames": [],
+                            "enable": false,
+                            "rollback": false
+                          }
+                        },
+                        "desiredCount": 2,
+                        "enableEcsManagedTags": false,
+                        "healthCheckGracePeriodSeconds": 60,
+                        "launchType": "FARGATE",
+                        "loadBalancers": [
+                          {
+                            "targetGroupArn": {
+                              "Ref": "DigitalTwinServiceLBPublicListenerECSGroupD267AAF9"
+                            },
+                            "containerName": "web",
+                            "containerPort": 8004
+                          }
+                        ],
+                        "networkConfiguration": {
+                          "awsvpcConfiguration": {
+                            "assignPublicIp": "DISABLED",
+                            "subnets": [
+                              {
+                                "Ref": "ProductBusinessVpcPrivateSubnet1SubnetE2084611"
+                              },
+                              {
+                                "Ref": "ProductBusinessVpcPrivateSubnet2Subnet8B268BDB"
+                              }
+                            ],
+                            "securityGroups": [
+                              {
+                                "Fn::GetAtt": [
+                                  "DigitalTwinServiceSecurityGroup2C05F98D",
+                                  "GroupId"
+                                ]
+                              }
+                            ]
+                          }
+                        },
+                        "taskDefinition": {
+                          "Ref": "DigitalTwinServiceTaskDef2E8E0850"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ecs.CfnService",
+                      "version": "2.110.1"
+                    }
+                  },
+                  "SecurityGroup": {
+                    "id": "SecurityGroup",
+                    "path": "CircularIntelligenceOS-DigitalTwinService/DigitalTwinService/Service/SecurityGroup",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "CircularIntelligenceOS-DigitalTwinService/DigitalTwinService/Service/SecurityGroup/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::EC2::SecurityGroup",
+                          "aws:cdk:cloudformation:props": {
+                            "groupDescription": "CircularIntelligenceOS-DigitalTwinService/DigitalTwinService/Service/SecurityGroup",
+                            "securityGroupEgress": [
+                              {
+                                "cidrIp": "0.0.0.0/0",
+                                "description": "Allow all outbound traffic by default",
+                                "ipProtocol": "-1"
+                              }
+                            ],
+                            "vpcId": {
+                              "Ref": "ProductBusinessVpcDD02A478"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroup",
+                          "version": "2.110.1"
+                        }
+                      },
+                      "from CircularIntelligenceOSDigitalTwinServiceLBSecurityGroupCC01C29C:8004": {
+                        "id": "from CircularIntelligenceOSDigitalTwinServiceLBSecurityGroupCC01C29C:8004",
+                        "path": "CircularIntelligenceOS-DigitalTwinService/DigitalTwinService/Service/SecurityGroup/from CircularIntelligenceOSDigitalTwinServiceLBSecurityGroupCC01C29C:8004",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::EC2::SecurityGroupIngress",
+                          "aws:cdk:cloudformation:props": {
+                            "description": "Load balancer to target",
+                            "fromPort": 8004,
+                            "groupId": {
+                              "Fn::GetAtt": [
+                                "DigitalTwinServiceSecurityGroup2C05F98D",
+                                "GroupId"
+                              ]
+                            },
+                            "ipProtocol": "tcp",
+                            "sourceSecurityGroupId": {
+                              "Fn::GetAtt": [
+                                "DigitalTwinServiceLBSecurityGroup39EE85C5",
+                                "GroupId"
+                              ]
+                            },
+                            "toPort": 8004
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroupIngress",
+                          "version": "2.110.1"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.SecurityGroup",
+                      "version": "2.110.1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ecs.FargateService",
+                  "version": "2.110.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ecs_patterns.ApplicationLoadBalancedFargateService",
+              "version": "2.110.1"
+            }
+          },
+          "DigitalTwinServiceURL": {
+            "id": "DigitalTwinServiceURL",
+            "path": "CircularIntelligenceOS-DigitalTwinService/DigitalTwinServiceURL",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
+              "version": "2.110.1"
+            }
+          },
+          "CDKMetadata": {
+            "id": "CDKMetadata",
+            "path": "CircularIntelligenceOS-DigitalTwinService/CDKMetadata",
+            "children": {
+              "Default": {
+                "id": "Default",
+                "path": "CircularIntelligenceOS-DigitalTwinService/CDKMetadata/Default",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.110.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.6.0"
+            }
+          },
+          "BootstrapVersion": {
+            "id": "BootstrapVersion",
+            "path": "CircularIntelligenceOS-DigitalTwinService/BootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnParameter",
+              "version": "2.110.1"
+            }
+          },
+          "CheckBootstrapVersion": {
+            "id": "CheckBootstrapVersion",
+            "path": "CircularIntelligenceOS-DigitalTwinService/CheckBootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnRule",
+              "version": "2.110.1"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.110.1"
+        }
+      },
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree",
+        "constructInfo": {
+          "fqn": "constructs.Construct",
+          "version": "10.6.0"
+        }
+      }
+    },
+    "constructInfo": {
+      "fqn": "aws-cdk-lib.App",
+      "version": "2.110.1"
+    }
+  }
+}
