@@ -137,6 +137,20 @@ VPC-3 Product & Business Layer
 
 ---
 
+## 📈 Service #11: Seller Intelligence Engine
+**VPC:** VPC-3 — Product & Business Layer
+**Status:** ✅ Live (AWS ECS Fargate) — *Validation & Security Hardened* 🔒
+**Base URL:** `http://Circul-Selle-Q7zRyEczbzCg-2088084796.us-east-1.elb.amazonaws.com`
+
+| Method | Endpoint | Purpose |
+|:---|:---|:---|
+| `GET` | `/health` | Health Check |
+| `POST` | `/api/v1/seller/analyze` | Generates seller health, fraud, return, and sustainability scores based on historical behavior |
+| `GET` | `/api/v1/seller/{sellerId}/dashboard` | Retrieves the aggregated Seller Intelligence Dashboard and insights |
+| `GET` | `/docs` | Swagger UI |
+
+---
+
 ## 🧠 Service #12: Learning & Knowledge Graph
 **VPC:** VPC-4 — Central Knowledge Platform
 **Status:** ✅ Live (AWS ECS Fargate + Neptune Graph DB)
