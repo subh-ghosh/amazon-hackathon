@@ -30,21 +30,16 @@ VPC-3 Product & Business Layer
 
 ---
 
-## 🔮 Service #1: Return Prevention Engine
+## 🔍 Service #2: Truth Discovery Engine
 **VPC:** VPC-1 — Intelligence Layer
-**Status:** ✅ Live (AWS ECS Fargate)
-**Base URL:** `http://Circul-Preve-K69JmPrE-10298347.us-east-1.elb.amazonaws.com`
-**Swagger URL:** `http://Circul-Preve-K69JmPrE-10298347.us-east-1.elb.amazonaws.com/docs`
-**Health URL:** `http://Circul-Preve-K69JmPrE-10298347.us-east-1.elb.amazonaws.com/health`
-**Owner:** AI Solutions Architect Team
-**VPC Assignment:** VPC-1 Intelligence Layer
+**Status:** ✅ Live (AWS ECS Fargate) — *Validation & Security Hardened* 🔒
+**Base URL:** `http://Circul-Truth-HR7ES9usthBv-33182633.us-east-1.elb.amazonaws.com`
 
 | Method | Endpoint | Purpose |
 |:---|:---|:---|
 | `GET` | `/health` | Health Check |
-| `POST` | `/api/v1/prevention/analyze` | Predict return risk & get recommendations |
+| `POST` | `/api/v1/truth/analyze` | Run AI-driven root cause detection on a customer return |
 | `GET` | `/docs` | Swagger UI |
-| `GET` | `/openapi.json` | OpenAPI JSON Schema |
 
 ---
 
@@ -59,6 +54,22 @@ VPC-3 Product & Business Layer
 | `POST` | `/api/v1/fraud/score` | Score a return for fraud risk |
 | `GET` | `/docs` | Swagger UI |
 | `GET` | `/metrics` | Service Metrics |
+
+---
+
+## 📦 Service #4: Product Digital Twin
+**VPC:** VPC-3 — Product & Business Layer
+**Status:** ✅ Live (AWS ECS Fargate)
+**Base URL:** `http://Circul-Digit-XXDMcCWoqhd0-1019952249.us-east-1.elb.amazonaws.com`
+
+| Method | Endpoint | Purpose |
+|:---|:---|:---|
+| `GET`  | `/health` | Health Check |
+| `POST` | `/api/v1/products` | Create a new Digital Twin |
+| `GET`  | `/api/v1/products/{product_id}` | Fetch full Twin state |
+| `POST` | `/api/v1/products/{product_id}/events` | Process FRAUD or RECOVERY events |
+| `GET`  | `/api/v1/products/{product_id}/timeline` | Fetch chronological event timeline |
+| `GET`  | `/docs` | Swagger UI |
 
 ---
 
