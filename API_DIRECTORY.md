@@ -124,6 +124,19 @@ VPC-3 Product & Business Layer
 
 ---
 
+## ♻️ Service #10: Packaging Intelligence
+**VPC:** VPC-1 — Intelligence Layer
+**Status:** ✅ Live (AWS ECS Fargate) — *Validation & Security Hardened* 🔒
+**Base URL:** `http://Circul-Packa-OuyTkY5MjPWJ-2071671797.us-east-1.elb.amazonaws.com`
+
+| Method | Endpoint | Purpose |
+|:---|:---|:---|
+| `GET` | `/health` | Health Check |
+| `POST` | `/api/v1/packaging/analyze` | Analyzes sustainability, efficiency, recyclability, carbon footprint, and returns optimization recommendations. |
+| `GET` | `/docs` | Swagger UI |
+
+---
+
 ## 🧠 Service #12: Learning & Knowledge Graph
 **VPC:** VPC-4 — Central Knowledge Platform
 **Status:** ✅ Live (AWS ECS Fargate + Neptune Graph DB)
