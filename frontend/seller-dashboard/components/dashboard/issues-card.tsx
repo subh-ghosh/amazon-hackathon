@@ -54,9 +54,12 @@ export function IssuesCard({
               </Badge>
             </div>
             <p className="mt-1 text-sm leading-5 text-slate-500">{issue.detail}</p>
-            <p className="mt-2 text-xs font-medium text-slate-400">
-              {issue.affectedOrders} affected orders
-            </p>
+            <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-medium text-slate-400">
+              <span>{issue.affectedOrders} affected returns</span>
+              {typeof issue.returnCorrelation === "number" && (
+                <span>{issue.returnCorrelation}% return correlation</span>
+              )}
+            </div>
           </div>
         ))}
       </CardContent>

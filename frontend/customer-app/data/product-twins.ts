@@ -1,14 +1,19 @@
 import type { ProductDigitalTwin } from "@/types/product-twin";
+import { circularDemoProduct } from "../../shared/demo/circular-demo-data";
 import { getProductIntelligence } from "../../shared/api/service12";
 
 export const productTwins: ProductDigitalTwin[] = [
   {
     productId: "P123",
-    conditionScore: 92,
-    utilityScore: 96,
-    returnCount: 1,
-    fraudFlags: ["No active fraud pattern", "Verified serial number"],
-    currentRecoveryDecision: "Resell",
+    conditionScore: 82,
+    utilityScore: 88,
+    returnCount: circularDemoProduct.returnCount,
+    fraudFlags: [
+      `Fraud score: ${circularDemoProduct.fraudScore}`,
+      "Repeat return pattern detected",
+      "Verified serial number",
+    ],
+    currentRecoveryDecision: "Refurbish",
     product: {
       name: "Echo Show 10",
       category: "Smart Home",
@@ -18,7 +23,7 @@ export const productTwins: ProductDigitalTwin[] = [
       purchaseDate: "2025-01-18",
       warrantyExpires: "2027-01-18",
       currentOwner: "Aarav Mehta",
-      condition: "Excellent",
+      condition: "Good",
     },
     repairHistory: [
       {
@@ -49,6 +54,14 @@ export const productTwins: ProductDigitalTwin[] = [
         valueRecovered: 219,
         carbonAvoidedKg: 8.4,
       },
+      {
+        id: "REC-P123-REFURBISH",
+        date: "2026-04-22",
+        channel: "Refurbishment",
+        outcome: `${circularDemoProduct.recoveryDecision} through ${circularDemoProduct.warehouseId}`,
+        valueRecovered: circularDemoProduct.recoveredValue,
+        carbonAvoidedKg: circularDemoProduct.carbonAvoidedKg,
+      },
     ],
   },
 ];
@@ -59,6 +72,10 @@ export function getProductTwin(productId: string) {
 
 export async function getProductTwinFromService12(productId: string) {
   const fallback = getProductTwin(productId);
+
+  if (process.env.NEXT_PUBLIC_DEMO_MODE === "true") {
+    return fallback;
+  }
 
   try {
     const product = await getProductIntelligence(productId);
@@ -78,8 +95,11 @@ function getMockProductTwin(productId: string): ProductDigitalTwin {
     productId,
     conditionScore: 78,
     utilityScore: 82,
-    returnCount: 2,
-    fraudFlags: ["Mock data", "Backend twin unavailable"],
+    returnCount: circularDemoProduct.returnCount,
+    fraudFlags: [
+      `Fraud score: ${circularDemoProduct.fraudScore}`,
+      "Demo Mode fallback",
+    ],
     currentRecoveryDecision: "Refurbish",
     product: {
       name: "Unknown Product Twin",
@@ -109,8 +129,8 @@ function getMockProductTwin(productId: string): ProductDigitalTwin {
         date: "2026-04-22",
         channel: "Return",
         outcome: "Mock recovery record generated while backend is unavailable",
-        valueRecovered: 86,
-        carbonAvoidedKg: 5.8,
+        valueRecovered: circularDemoProduct.recoveredValue,
+        carbonAvoidedKg: circularDemoProduct.carbonAvoidedKg,
       },
     ],
   };

@@ -27,6 +27,11 @@ import {
   getRecoveryEffectiveness,
   getTopReturnCauses,
 } from "../../../shared/api/service12";
+import {
+  circularDemoRecoveryMix,
+  circularDemoReturnCauses,
+  circularDemoSeller,
+} from "../../../shared/demo/circular-demo-data";
 
 type Resource<T> = {
   data: T | null;
@@ -58,6 +63,15 @@ export function ExecutiveDashboardView() {
   function loadTopReturnCauses() {
     setTopReturnCauses((current) => ({ ...current, loading: true, error: null }));
 
+    if (process.env.NEXT_PUBLIC_DEMO_MODE === "true") {
+      setTopReturnCauses({
+        data: [...circularDemoReturnCauses],
+        loading: false,
+        error: null,
+      });
+      return;
+    }
+
     getTopReturnCauses()
       .then((payload) => {
         setTopReturnCauses({
@@ -82,6 +96,15 @@ export function ExecutiveDashboardView() {
       error: null,
     }));
 
+    if (process.env.NEXT_PUBLIC_DEMO_MODE === "true") {
+      setRecoveryEffectiveness({
+        data: circularDemoRecoveryMix.map((channel) => ({ ...channel })),
+        loading: false,
+        error: null,
+      });
+      return;
+    }
+
     getRecoveryEffectiveness()
       .then((payload) => {
         setRecoveryEffectiveness({
@@ -101,6 +124,27 @@ export function ExecutiveDashboardView() {
 
   function loadGraphStats() {
     setGraphStats((current) => ({ ...current, loading: true, error: null }));
+
+    if (process.env.NEXT_PUBLIC_DEMO_MODE === "true") {
+      setGraphStats({
+        data: {
+          totalCustomers: 1,
+          totalProducts: 1,
+          totalSellers: 1,
+          totalOrders: circularDemoSeller.totalOrders,
+          totalReturns: circularDemoSeller.totalReturns,
+          totalFraudCases: circularDemoSeller.fraudCases,
+          totalRootCauses: circularDemoReturnCauses.length,
+          totalRecoveryActions: circularDemoRecoveryMix.reduce(
+            (total, channel) => total + channel.units,
+            0,
+          ),
+        },
+        loading: false,
+        error: null,
+      });
+      return;
+    }
 
     getGraphStats()
       .then((payload) => {

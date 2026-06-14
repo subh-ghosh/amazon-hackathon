@@ -21,6 +21,7 @@ export interface SellerIssue {
   title: string;
   detail: string;
   affectedOrders: number;
+  returnCorrelation?: number;
   severity: IssueSeverity;
 }
 

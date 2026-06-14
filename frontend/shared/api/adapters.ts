@@ -46,6 +46,7 @@ export interface SellerDashboardViewModel {
     title: string;
     detail: string;
     affectedOrders: number;
+    returnCorrelation?: number;
     severity: "High" | "Medium" | "Low";
   }>;
   fraudExposure: {

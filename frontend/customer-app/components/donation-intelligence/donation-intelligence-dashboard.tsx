@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
 import {
   ArrowRight,
   BadgeCheck,
@@ -9,6 +12,7 @@ import {
   PackageCheck,
   ShieldCheck,
   Sparkles,
+  Search,
   Users,
 } from "lucide-react";
 
@@ -115,6 +119,10 @@ const donationOptions: DonationOption[] = [
   },
 ];
 
+const categoryFilters = ["All", ...Array.from(new Set(donationOptions.map((option) => option.productCategory)))];
+const conditionFilters = ["All", "New", "Open box", "Functional", "Good", "Sealed"];
+const locationFilters = ["All", ...Array.from(new Set(donationOptions.map((option) => option.recommendedRegion)))];
+
 const regionRankings: RegionRank[] = [
   {
     region: "Delhi NCR",
@@ -146,39 +154,6 @@ const regionRankings: RegionRank[] = [
   },
 ];
 
-const selectedDonation = donationOptions[0];
-
-const impactSummary = [
-  {
-    label: "Social impact score",
-    value: `${selectedDonation.socialImpactScore}/100`,
-    detail: "Highest weighted match",
-    icon: Sparkles,
-    accent: "emerald",
-  },
-  {
-    label: "Estimated beneficiaries",
-    value: selectedDonation.estimatedBeneficiaries.toLocaleString("en-US"),
-    detail: "Across first allocation batch",
-    icon: Users,
-    accent: "blue",
-  },
-  {
-    label: "Carbon savings",
-    value: `${selectedDonation.carbonSavingsKg} kg`,
-    detail: "CO2e avoided vs disposal",
-    icon: Leaf,
-    accent: "emerald",
-  },
-  {
-    label: "Donation readiness",
-    value: "97%",
-    detail: "NGO capacity and compliance",
-    icon: BadgeCheck,
-    accent: "blue",
-  },
-] as const;
-
 const fitStyles: Record<Fit, string> = {
   "Best fit": "border-emerald-200 bg-emerald-50 text-emerald-700",
   "Strong fit": "border-blue-200 bg-blue-50 text-blue-700",
@@ -191,8 +166,105 @@ const accentStyles = {
 } as const;
 
 export function DonationIntelligenceDashboard() {
+  const [query, setQuery] = useState("");
+  const [category, setCategory] = useState("All");
+  const [condition, setCondition] = useState("All");
+  const [location, setLocation] = useState("All");
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    const timeout = window.setTimeout(() => setLoading(false), 220);
+
+    return () => window.clearTimeout(timeout);
+  }, [query, category, condition, location]);
+
+  const filteredOptions = useMemo(() => {
+    const normalizedQuery = query.trim().toLowerCase();
+
+    return donationOptions.filter((option) => {
+      const searchable = [
+        option.productCategory,
+        option.productCondition,
+        option.recommendedNgo,
+        option.recommendedRegion,
+        option.donationRecommendation,
+      ]
+        .join(" ")
+        .toLowerCase();
+      const matchesQuery =
+        normalizedQuery.length === 0 || searchable.includes(normalizedQuery);
+      const matchesCategory =
+        category === "All" || option.productCategory === category;
+      const matchesCondition =
+        condition === "All" ||
+        option.productCondition.toLowerCase().includes(condition.toLowerCase());
+      const matchesLocation =
+        location === "All" || option.recommendedRegion === location;
+
+      return matchesQuery && matchesCategory && matchesCondition && matchesLocation;
+    });
+  }, [category, condition, location, query]);
+
+  const selectedDonation = filteredOptions[0] ?? null;
+  const impactSummary = selectedDonation
+    ? [
+        {
+          label: "Social impact score",
+          value: `${selectedDonation.socialImpactScore}/100`,
+          detail: "Highest weighted match",
+          icon: Sparkles,
+          accent: "emerald",
+        },
+        {
+          label: "Estimated beneficiaries",
+          value: selectedDonation.estimatedBeneficiaries.toLocaleString("en-US"),
+          detail: "Across first allocation batch",
+          icon: Users,
+          accent: "blue",
+        },
+        {
+          label: "Carbon savings",
+          value: `${selectedDonation.carbonSavingsKg} kg`,
+          detail: "CO2e avoided vs disposal",
+          icon: Leaf,
+          accent: "emerald",
+        },
+        {
+          label: "Donation readiness",
+          value: "97%",
+          detail: "NGO capacity and compliance",
+          icon: BadgeCheck,
+          accent: "blue",
+        },
+      ] as const
+    : [];
+
   return (
     <div className="space-y-6">
+      <Card>
+        <CardContent className="grid gap-4 p-4 md:grid-cols-[1.3fr_1fr_1fr_1fr]">
+          <label className="block">
+            <span className="text-sm font-semibold text-slate-800">Search</span>
+            <div className="relative mt-2">
+              <Search
+                className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400"
+                aria-hidden="true"
+              />
+              <input
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder="NGO, region, category, or reason"
+                className="h-11 w-full rounded-lg border bg-white pl-10 pr-3 text-sm font-medium text-slate-800 outline-none transition focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/15"
+              />
+            </div>
+          </label>
+          <SelectFilter label="Product Category" value={category} options={categoryFilters} onChange={setCategory} />
+          <SelectFilter label="Condition" value={condition} options={conditionFilters} onChange={setCondition} />
+          <SelectFilter label="Location" value={location} options={locationFilters} onChange={setLocation} />
+        </CardContent>
+      </Card>
+
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {impactSummary.map((item) => (
           <Card key={item.label}>
@@ -219,6 +291,13 @@ export function DonationIntelligenceDashboard() {
             </CardContent>
           </Card>
         ))}
+        {impactSummary.length === 0 && (
+          <Card className="md:col-span-2 xl:col-span-4">
+            <CardContent className="flex min-h-32 items-center justify-center p-5 text-center text-sm text-slate-500">
+              No donation recommendation matches the current filters.
+            </CardContent>
+          </Card>
+        )}
       </section>
 
       <section className="grid gap-6 xl:grid-cols-[1.35fr_0.65fr]">
@@ -233,11 +312,16 @@ export function DonationIntelligenceDashboard() {
                 </CardDescription>
               </div>
               <Badge className="border-emerald-200 bg-emerald-50 text-emerald-700">
-                5 eligible routes
+                {filteredOptions.length} eligible routes
               </Badge>
             </div>
           </CardHeader>
           <CardContent>
+            {loading ? (
+              <StateCard label="Loading donation recommendations..." />
+            ) : filteredOptions.length === 0 ? (
+              <StateCard label="No NGO recommendations found for these filters." />
+            ) : (
             <Table>
               <TableHeader>
                 <TableRow>
@@ -252,7 +336,7 @@ export function DonationIntelligenceDashboard() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {donationOptions.map((option) => (
+                {filteredOptions.map((option) => (
                   <TableRow key={`${option.productCategory}-${option.recommendedNgo}`}>
                     <TableCell className="min-w-44 font-medium text-slate-900">
                       {option.productCategory}
@@ -285,6 +369,7 @@ export function DonationIntelligenceDashboard() {
                 ))}
               </TableBody>
             </Table>
+            )}
           </CardContent>
         </Card>
 
@@ -299,25 +384,33 @@ export function DonationIntelligenceDashboard() {
             <div className="mt-7 flex size-14 items-center justify-center rounded-2xl bg-emerald-400/10 text-emerald-400">
               <ShieldCheck className="size-7" aria-hidden="true" />
             </div>
-            <p className="mt-6 text-3xl font-bold tracking-tight">
-              Donate to {selectedDonation.recommendedNgo}
-            </p>
-            <p className="mt-3 text-sm leading-6 text-slate-400">
-              {selectedDonation.productCategory} returns are functional but not
-              resale-ready. The strongest outcome is donation in{" "}
-              {selectedDonation.recommendedRegion}, where NGO capacity, need,
-              and carbon avoidance align.
-            </p>
+            {selectedDonation ? (
+              <>
+                <p className="mt-6 text-3xl font-bold tracking-tight">
+                  Donate to {selectedDonation.recommendedNgo}
+                </p>
+                <p className="mt-3 text-sm leading-6 text-slate-400">
+                  {selectedDonation.productCategory} returns are functional but not
+                  resale-ready. The strongest outcome is donation in{" "}
+                  {selectedDonation.recommendedRegion}, where NGO capacity, need,
+                  and carbon avoidance align.
+                </p>
 
-            <dl className="mt-8 grid gap-3 border-t border-slate-800 pt-5">
-              <DecisionMetric label="Product Category" value={selectedDonation.productCategory} />
-              <DecisionMetric label="Product Condition" value={selectedDonation.productCondition} />
-              <DecisionMetric label="Recommended Region" value={selectedDonation.recommendedRegion} />
-              <DecisionMetric
-                label="Social Impact Score"
-                value={`${selectedDonation.socialImpactScore}/100`}
-              />
-            </dl>
+                <dl className="mt-8 grid gap-3 border-t border-slate-800 pt-5">
+                  <DecisionMetric label="Product Category" value={selectedDonation.productCategory} />
+                  <DecisionMetric label="Product Condition" value={selectedDonation.productCondition} />
+                  <DecisionMetric label="Recommended Region" value={selectedDonation.recommendedRegion} />
+                  <DecisionMetric
+                    label="Social Impact Score"
+                    value={`${selectedDonation.socialImpactScore}/100`}
+                  />
+                </dl>
+              </>
+            ) : (
+              <div className="mt-6 rounded-xl border border-slate-700 bg-slate-900/70 p-4 text-sm text-slate-400">
+                Adjust search or filters to find an eligible NGO route.
+              </div>
+            )}
 
             <div className="mt-auto pt-8">
               <div className="rounded-xl border border-slate-700 bg-slate-900/70 p-4">
@@ -328,7 +421,7 @@ export function DonationIntelligenceDashboard() {
                       Donation Recommendation
                     </p>
                     <p className="mt-1 text-sm leading-6 text-slate-400">
-                      {selectedDonation.donationRecommendation}
+                      {selectedDonation?.donationRecommendation ?? "No recommendation available."}
                     </p>
                   </div>
                 </div>
@@ -412,6 +505,41 @@ export function DonationIntelligenceDashboard() {
           </CardContent>
         </Card>
       </section>
+    </div>
+  );
+}
+
+function SelectFilter({
+  label,
+  value,
+  options,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  options: string[];
+  onChange: (value: string) => void;
+}) {
+  return (
+    <label className="block">
+      <span className="text-sm font-semibold text-slate-800">{label}</span>
+      <select
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        className="mt-2 h-11 w-full rounded-lg border bg-white px-3 text-sm font-medium text-slate-800 outline-none transition focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/15"
+      >
+        {options.map((option) => (
+          <option key={option}>{option}</option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
+function StateCard({ label }: { label: string }) {
+  return (
+    <div className="flex min-h-48 items-center justify-center rounded-lg border bg-slate-50 p-6 text-center text-sm font-medium text-slate-500">
+      {label}
     </div>
   );
 }

@@ -1,3 +1,5 @@
+import { circularDemoProduct } from "../demo/circular-demo-data";
+
 const REQUEST_TIMEOUT_MS = 30000;
 
 const SERVICE3_PROXY_PATH = "/api/recovery-workflow/s3";
@@ -542,7 +544,10 @@ function toTruthDiscoveryRequest(product: ProductDetailsPayload) {
 }
 
 function fallbackFraudTrustPayload(product: ProductDetailsPayload) {
-  const score = fraudScore(product.returnReason);
+  const score =
+    product.productId === circularDemoProduct.productId
+      ? circularDemoProduct.fraudScorePercent
+      : fraudScore(product.returnReason);
 
   return {
     fraudScore: score,
@@ -558,24 +563,25 @@ function fallbackFraudTrustPayload(product: ProductDetailsPayload) {
 
 function fallbackSimulationPayload(product: ProductDetailsPayload) {
   const value = estimatedValue(product);
+  const p123 = product.productId === circularDemoProduct.productId;
 
   return {
     scenarios: [
       {
         id: "SIM-RESALE",
         scenario: "Resell",
-        recoveryValue: Number((value * 0.91).toFixed(2)),
+        recoveryValue: p123 ? 162 : Number((value * 0.91).toFixed(2)),
         carbonImpact: 11.8,
         processingTimeDays: 2,
-        confidence: 0.93,
+        confidence: p123 ? 0.84 : 0.93,
       },
       {
         id: "SIM-REFURBISH",
         scenario: "Refurbish",
-        recoveryValue: Number((value * 0.78).toFixed(2)),
-        carbonImpact: 15.4,
+        recoveryValue: p123 ? circularDemoProduct.recoveredValue : Number((value * 0.78).toFixed(2)),
+        carbonImpact: p123 ? circularDemoProduct.carbonAvoidedKg : 15.4,
         processingTimeDays: 5,
-        confidence: 0.88,
+        confidence: p123 ? 0.91 : 0.88,
       },
       {
         id: "SIM-DONATE",
@@ -612,7 +618,7 @@ function fallbackLogisticsPayload(
 ) {
   return {
     warehouse: "BLR Reverse Logistics Center 04",
-    route: `Customer pickup -> Bengaluru sort center -> ${decision.decision} lane`,
+    route: `Customer pickup -> Bengaluru sort center -> ${circularDemoProduct.warehouseId} ${decision.decision} lane`,
     estimatedCost: 14.75,
     eta: "2 days",
   };

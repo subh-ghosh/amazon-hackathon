@@ -1,4 +1,5 @@
 import type { ExecutiveDashboardData } from "@/types/executive-impact";
+import { circularDemoProduct } from "../../shared/demo/circular-demo-data";
 
 export const executiveDashboardData: ExecutiveDashboardData = {
   reportingPeriod: "Year to date · January 1 - June 13, 2026",
@@ -69,9 +70,9 @@ export const executiveDashboardData: ExecutiveDashboardData = {
       "Recovery operations are outperforming plan, with revenue growth and landfill diversion both accelerating.",
     insights: [
       {
-        title: "Revenue momentum is strengthening",
+        title: "P123 recovery story is aligned",
         detail:
-          "June recovered revenue is tracking 16% above the Q2 monthly average.",
+          `${circularDemoProduct.productId} is demoed as ${circularDemoProduct.returnCount} returns, fraud score ${circularDemoProduct.fraudScore}, ${circularDemoProduct.recoveryDecision} via ${circularDemoProduct.warehouseId}, and $${circularDemoProduct.recoveredValue} recovered value.`,
       },
       {
         title: "Returnless refunds are scaling efficiently",

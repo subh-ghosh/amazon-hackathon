@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   ArrowRight,
   CheckCircle2,
@@ -30,14 +30,14 @@ type ProductCategory = (typeof categories)[number]["name"];
 interface EngineInputs {
   productValue: number;
   shippingCost: number;
-  recoveryCost: number;
+  handlingCost: number;
   category: ProductCategory;
 }
 
 const initialInputs: EngineInputs = {
   productValue: 39.99,
   shippingCost: 13.85,
-  recoveryCost: 31.4,
+  handlingCost: 31.4,
   category: "Consumer Electronics",
 };
 
@@ -47,7 +47,7 @@ const currencyFormatter = new Intl.NumberFormat("en-US", {
 });
 
 function getDecision(inputs: EngineInputs) {
-  const returnCost = inputs.shippingCost + inputs.recoveryCost;
+  const returnCost = inputs.shippingCost + inputs.handlingCost;
   const keepItem = returnCost > inputs.productValue;
   const savings = Math.abs(returnCost - inputs.productValue);
   const costDifference = Math.abs(returnCost - inputs.productValue);
@@ -63,10 +63,19 @@ function getDecision(inputs: EngineInputs) {
 
 export function ReturnlessRefundEngine() {
   const [inputs, setInputs] = useState<EngineInputs>(initialInputs);
+  const [loading, setLoading] = useState(false);
   const decision = useMemo(() => getDecision(inputs), [inputs]);
+  const empty = inputs.productValue === 0 && inputs.shippingCost === 0 && inputs.handlingCost === 0;
   const comparisonMax = Math.max(decision.returnCost, inputs.productValue, 1);
   const productBarWidth = (inputs.productValue / comparisonMax) * 100;
   const returnBarWidth = (decision.returnCost / comparisonMax) * 100;
+
+  useEffect(() => {
+    setLoading(true);
+    const timeout = window.setTimeout(() => setLoading(false), 220);
+
+    return () => window.clearTimeout(timeout);
+  }, [inputs]);
 
   function updateNumber(field: keyof Omit<EngineInputs, "category">, value: string) {
     setInputs((current) => ({
@@ -108,11 +117,11 @@ export function ReturnlessRefundEngine() {
               onChange={(value) => updateNumber("shippingCost", value)}
             />
             <MoneyInput
-              id="recovery-cost"
-              label="Recovery cost"
-              hint="Inspection, processing, and resale"
-              value={inputs.recoveryCost}
-              onChange={(value) => updateNumber("recoveryCost", value)}
+              id="handling-cost"
+              label="Handling cost"
+              hint="Inspection, processing, and disposition"
+              value={inputs.handlingCost}
+              onChange={(value) => updateNumber("handlingCost", value)}
             />
             <label className="block" htmlFor="product-category">
               <span className="text-sm font-semibold text-slate-800">
@@ -166,28 +175,36 @@ export function ReturnlessRefundEngine() {
                     Engine recommendation
                   </p>
                 </div>
-                <div
-                  className={cn(
-                    "mt-6 flex size-14 items-center justify-center rounded-2xl",
-                    decision.keepItem
-                      ? "bg-emerald-400/10 text-emerald-400"
-                      : "bg-blue-400/10 text-blue-400",
-                  )}
-                >
-                  {decision.keepItem ? (
-                    <WalletCards className="size-7" aria-hidden="true" />
-                  ) : (
-                    <RotateCcw className="size-7" aria-hidden="true" />
-                  )}
-                </div>
-                <p className="mt-6 text-3xl font-bold tracking-tight sm:text-4xl">
-                  {decision.keepItem ? "Refund + Keep Item" : "Return Product"}
-                </p>
-                <p className="mt-3 max-w-lg text-sm leading-6 text-slate-400">
-                  {decision.keepItem
-                    ? `The ${currencyFormatter.format(decision.returnCost)} return cost exceeds the product value. Issue a full refund and let the customer keep the item.`
-                    : `The product value exceeds the ${currencyFormatter.format(decision.returnCost)} return cost. Route the item through the standard return flow.`}
-                </p>
+                {loading ? (
+                  <ResultState title="Evaluating refund path..." detail="Comparing product value with shipping and handling cost." />
+                ) : empty ? (
+                  <ResultState title="No refund inputs yet" detail="Enter product value, return shipping cost, and handling cost to generate a decision." />
+                ) : (
+                  <>
+                    <div
+                      className={cn(
+                        "mt-6 flex size-14 items-center justify-center rounded-2xl",
+                        decision.keepItem
+                          ? "bg-emerald-400/10 text-emerald-400"
+                          : "bg-blue-400/10 text-blue-400",
+                      )}
+                    >
+                      {decision.keepItem ? (
+                        <WalletCards className="size-7" aria-hidden="true" />
+                      ) : (
+                        <RotateCcw className="size-7" aria-hidden="true" />
+                      )}
+                    </div>
+                    <p className="mt-6 text-3xl font-bold tracking-tight sm:text-4xl">
+                      {decision.keepItem ? "Refund & Keep Item" : "Process Return"}
+                    </p>
+                    <p className="mt-3 max-w-lg text-sm leading-6 text-slate-400">
+                      {decision.keepItem
+                        ? `Return shipping plus handling is ${currencyFormatter.format(decision.returnCost)}, which is greater than the ${currencyFormatter.format(inputs.productValue)} product value.`
+                        : `Return shipping plus handling is ${currencyFormatter.format(decision.returnCost)}, which is less than or equal to the ${currencyFormatter.format(inputs.productValue)} product value.`}
+                    </p>
+                  </>
+                )}
                 <div className="mt-8 flex items-center gap-2 border-t border-slate-800 pt-5 text-sm text-slate-300">
                   <CheckCircle2
                     className={cn(
@@ -244,7 +261,7 @@ export function ReturnlessRefundEngine() {
             />
             <div className="grid gap-3 border-t pt-5 sm:grid-cols-3">
               <CostDetail label="Return shipping" value={inputs.shippingCost} />
-              <CostDetail label="Recovery processing" value={inputs.recoveryCost} />
+              <CostDetail label="Handling cost" value={inputs.handlingCost} />
               <CostDetail label="Total return cost" value={decision.returnCost} strong />
             </div>
           </CardContent>
@@ -324,6 +341,15 @@ function MoneyInput({ id, label, hint, value, onChange }: MoneyInputProps) {
         />
       </div>
     </label>
+  );
+}
+
+function ResultState({ title, detail }: { title: string; detail: string }) {
+  return (
+    <div className="mt-6 rounded-xl border border-slate-800 bg-slate-900/70 p-5">
+      <p className="text-xl font-bold tracking-tight text-white">{title}</p>
+      <p className="mt-2 text-sm leading-6 text-slate-400">{detail}</p>
+    </div>
   );
 }
 
