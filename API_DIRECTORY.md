@@ -37,7 +37,7 @@ This document serves as the central registry for all deployed microservices with
 **Base URL:** `http://Circul-Simul-SzjwBMv6t7vM-2094024921.us-east-1.elb.amazonaws.com`
 
 ### Endpoints
-* **Interactive API Docs (Swagger):** `[Base_URL]/docs`
+* **Interactive API Docs (Swagger):** `http://Circul-Simul-SzjwBMv6t7vM-2094024921.us-east-1.elb.amazonaws.com/docs`
 * **Run Simulation (Core Logic):** `POST /api/v1/simulation/run`
 * **Health Check:** `GET /health`
 
