@@ -7,6 +7,7 @@ import {
 import { ProductInformationCard } from "@/components/product-twin/product-information-card";
 import { RecoverySimulator } from "@/components/product-twin/recovery-simulator";
 import { ScoreCard } from "@/components/product-twin/score-card";
+import { TwinRiskCard } from "@/components/product-twin/twin-risk-card";
 import type { ProductDigitalTwin } from "@/types/product-twin";
 
 interface ProductTwinViewProps {
@@ -33,6 +34,7 @@ export function ProductTwinView({ twin }: ProductTwinViewProps) {
           accent="blue"
         />
       </section>
+      <TwinRiskCard twin={twin} />
       <RepairHistoryTable records={twin.repairHistory} />
       <RecoveryHistoryTable records={twin.recoveryHistory} />
       <RecoverySimulator twin={twin} />

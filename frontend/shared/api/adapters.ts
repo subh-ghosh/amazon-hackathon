@@ -66,6 +66,18 @@ export interface SellerDashboardViewModel {
       color: string;
     }>;
   };
+  topReturnedProducts: Array<{
+    productId: string;
+    productName: string;
+    returns: number;
+    returnRate: number;
+  }>;
+  productRiskRankings: Array<{
+    productId: string;
+    productName: string;
+    riskScore: number;
+    driver: string;
+  }>;
 }
 
 export interface FraudAlertView {

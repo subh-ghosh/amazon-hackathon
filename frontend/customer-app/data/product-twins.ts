@@ -6,6 +6,8 @@ export const productTwins: ProductDigitalTwin[] = [
     conditionScore: 92,
     utilityScore: 96,
     returnCount: 1,
+    fraudFlags: ["No active fraud pattern", "Verified serial number"],
+    currentRecoveryDecision: "Resell",
     product: {
       name: "Echo Show 10",
       category: "Smart Home",
@@ -51,5 +53,48 @@ export const productTwins: ProductDigitalTwin[] = [
 ];
 
 export function getProductTwin(productId: string) {
-  return productTwins.find((twin) => twin.productId === productId);
+  return productTwins.find((twin) => twin.productId === productId) ?? getMockProductTwin(productId);
+}
+
+function getMockProductTwin(productId: string): ProductDigitalTwin {
+  return {
+    productId,
+    conditionScore: 78,
+    utilityScore: 82,
+    returnCount: 2,
+    fraudFlags: ["Mock data", "Backend twin unavailable"],
+    currentRecoveryDecision: "Refurbish",
+    product: {
+      name: "Unknown Product Twin",
+      category: "Marketplace",
+      brand: "Amazon",
+      model: "Mock profile",
+      serialNumber: `SN-${productId}`,
+      purchaseDate: "2025-11-03",
+      warrantyExpires: "2027-11-03",
+      currentOwner: "Customer",
+      condition: "Good",
+    },
+    repairHistory: [
+      {
+        id: "REP-MOCK-1",
+        date: "2026-03-14",
+        service: "Functional inspection",
+        provider: "Amazon ReLife Center",
+        partsReplaced: [],
+        cost: 0,
+        status: "Completed",
+      },
+    ],
+    recoveryHistory: [
+      {
+        id: "REC-MOCK-1",
+        date: "2026-04-22",
+        channel: "Return",
+        outcome: "Mock recovery record generated while backend is unavailable",
+        valueRecovered: 86,
+        carbonAvoidedKg: 5.8,
+      },
+    ],
+  };
 }

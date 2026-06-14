@@ -36,6 +36,8 @@ export interface ProductDigitalTwin {
   conditionScore: number;
   utilityScore: number;
   returnCount: number;
+  fraudFlags: string[];
+  currentRecoveryDecision: "Resell" | "Refurbish" | "Repair" | "Donate" | "Recycle";
   repairHistory: RepairRecord[];
   recoveryHistory: RecoveryRecord[];
   product: ProductInformation;

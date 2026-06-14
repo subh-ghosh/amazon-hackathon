@@ -37,7 +37,9 @@ export default function RootLayout({
               <Link href="/returnless-refund" className="hidden hover:text-slate-950 sm:inline">
                 Refund engine
               </Link>
-              <span className="hidden lg:inline">Recovery center</span>
+              <Link href="/recovery-workflow" className="hidden hover:text-slate-950 lg:inline">
+                Recovery center
+              </Link>
               <span className="hidden lg:inline">Impact</span>
             </nav>
           </div>
