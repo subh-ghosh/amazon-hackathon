@@ -127,7 +127,7 @@ VPC-3 Product & Business Layer
 ## ♻️ Service #10: Packaging Intelligence
 **VPC:** VPC-1 — Intelligence Layer
 **Status:** ✅ Live (AWS ECS Fargate) — *Validation & Security Hardened* 🔒
-**Base URL:** `http://Circul-Packa-OuyTkY5MjPWJ-2071671797.us-east-1.elb.amazonaws.com`
+**Base URL:** `http://Circul-Packa-AN1B5mVKsku9-408281128.us-east-1.elb.amazonaws.com`
 
 | Method | Endpoint | Purpose |
 |:---|:---|:---|
@@ -152,24 +152,6 @@ VPC-3 Product & Business Layer
 | `GET` | `/api/v1/returns` | Returns graph |
 | `GET` | `/api/v1/recovery-actions` | Recovery actions graph |
 | `GET` | `/docs` | Swagger UI |
-
----
-
-## 📦 Service #10: Packaging Intelligence
-**VPC:** VPC-1 — Intelligence Layer
-**Status:** ✅ Live (AWS ECS Fargate)
-**Base URL:** `http://Circul-Packa-b3m8VxW0Yk7t-294029482.us-east-1.elb.amazonaws.com`
-**Swagger URL:** `http://Circul-Packa-b3m8VxW0Yk7t-294029482.us-east-1.elb.amazonaws.com/docs`
-**Health URL:** `http://Circul-Packa-b3m8VxW0Yk7t-294029482.us-east-1.elb.amazonaws.com/health`
-**Owner:** AI Solutions Architect Team
-**VPC Assignment:** VPC-1 Intelligence Layer
-
-| Method | Endpoint | Purpose |
-|:---|:---|:---|
-| `GET` | `/health` | Health Check |
-| `POST` | `/api/v1/packaging/analyze` | Analyze packaging sustainability, efficiency, and carbon footprint |
-| `GET` | `/docs` | Swagger UI |
-| `GET` | `/openapi.json` | OpenAPI JSON Schema |
 
 ---
 
