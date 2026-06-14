@@ -11,11 +11,8 @@ class SimulatorStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        # 1. VPC (Using 1 NAT Gateway to save costs)
-        vpc = ec2.Vpc(self, "SimulatorVpc",
-            max_azs=2,
-            nat_gateways=1
-        )
+        # VPC-2: Recovery Domain (shared with S6 + S7)
+        vpc = ec2.Vpc.from_lookup(self, "RecoveryVpc", vpc_id="vpc-09cbbfc645f9e53da")
 
         # 2. ECS Fargate Cluster & Service
         cluster = ecs.Cluster(self, "SimulatorCluster", vpc=vpc)

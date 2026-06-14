@@ -4,17 +4,17 @@
     "id": "App",
     "path": "",
     "children": {
-      "CircularIntelligenceOS-SimulatorService": {
-        "id": "CircularIntelligenceOS-SimulatorService",
-        "path": "CircularIntelligenceOS-SimulatorService",
+      "CircularIntelligenceOS-LogisticsService": {
+        "id": "CircularIntelligenceOS-LogisticsService",
+        "path": "CircularIntelligenceOS-LogisticsService",
         "children": {
-          "RecoveryVpc": {
-            "id": "RecoveryVpc",
-            "path": "CircularIntelligenceOS-SimulatorService/RecoveryVpc",
+          "LogisticsVpc": {
+            "id": "LogisticsVpc",
+            "path": "CircularIntelligenceOS-LogisticsService/LogisticsVpc",
             "children": {
               "PublicSubnet1": {
                 "id": "PublicSubnet1",
-                "path": "CircularIntelligenceOS-SimulatorService/RecoveryVpc/PublicSubnet1",
+                "path": "CircularIntelligenceOS-LogisticsService/LogisticsVpc/PublicSubnet1",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.Resource",
                   "version": "2.110.1"
@@ -22,7 +22,7 @@
               },
               "PublicSubnet2": {
                 "id": "PublicSubnet2",
-                "path": "CircularIntelligenceOS-SimulatorService/RecoveryVpc/PublicSubnet2",
+                "path": "CircularIntelligenceOS-LogisticsService/LogisticsVpc/PublicSubnet2",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.Resource",
                   "version": "2.110.1"
@@ -30,7 +30,7 @@
               },
               "PrivateSubnet1": {
                 "id": "PrivateSubnet1",
-                "path": "CircularIntelligenceOS-SimulatorService/RecoveryVpc/PrivateSubnet1",
+                "path": "CircularIntelligenceOS-LogisticsService/LogisticsVpc/PrivateSubnet1",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.Resource",
                   "version": "2.110.1"
@@ -38,7 +38,7 @@
               },
               "PrivateSubnet2": {
                 "id": "PrivateSubnet2",
-                "path": "CircularIntelligenceOS-SimulatorService/RecoveryVpc/PrivateSubnet2",
+                "path": "CircularIntelligenceOS-LogisticsService/LogisticsVpc/PrivateSubnet2",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.Resource",
                   "version": "2.110.1"
@@ -50,13 +50,13 @@
               "version": "2.110.1"
             }
           },
-          "SimulatorCluster": {
-            "id": "SimulatorCluster",
-            "path": "CircularIntelligenceOS-SimulatorService/SimulatorCluster",
+          "LogisticsCluster": {
+            "id": "LogisticsCluster",
+            "path": "CircularIntelligenceOS-LogisticsService/LogisticsCluster",
             "children": {
               "Resource": {
                 "id": "Resource",
-                "path": "CircularIntelligenceOS-SimulatorService/SimulatorCluster/Resource",
+                "path": "CircularIntelligenceOS-LogisticsService/LogisticsCluster/Resource",
                 "attributes": {
                   "aws:cdk:cloudformation:type": "AWS::ECS::Cluster",
                   "aws:cdk:cloudformation:props": {}
@@ -72,17 +72,17 @@
               "version": "2.110.1"
             }
           },
-          "SimulatorService": {
-            "id": "SimulatorService",
-            "path": "CircularIntelligenceOS-SimulatorService/SimulatorService",
+          "LogisticsService": {
+            "id": "LogisticsService",
+            "path": "CircularIntelligenceOS-LogisticsService/LogisticsService",
             "children": {
               "LB": {
                 "id": "LB",
-                "path": "CircularIntelligenceOS-SimulatorService/SimulatorService/LB",
+                "path": "CircularIntelligenceOS-LogisticsService/LogisticsService/LB",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "CircularIntelligenceOS-SimulatorService/SimulatorService/LB/Resource",
+                    "path": "CircularIntelligenceOS-LogisticsService/LogisticsService/LB/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
                       "aws:cdk:cloudformation:props": {
@@ -96,7 +96,7 @@
                         "securityGroups": [
                           {
                             "Fn::GetAtt": [
-                              "SimulatorServiceLBSecurityGroup8ECB8505",
+                              "LogisticsServiceLBSecurityGroup94D322EB",
                               "GroupId"
                             ]
                           }
@@ -115,15 +115,15 @@
                   },
                   "SecurityGroup": {
                     "id": "SecurityGroup",
-                    "path": "CircularIntelligenceOS-SimulatorService/SimulatorService/LB/SecurityGroup",
+                    "path": "CircularIntelligenceOS-LogisticsService/LogisticsService/LB/SecurityGroup",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "CircularIntelligenceOS-SimulatorService/SimulatorService/LB/SecurityGroup/Resource",
+                        "path": "CircularIntelligenceOS-LogisticsService/LogisticsService/LB/SecurityGroup/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::EC2::SecurityGroup",
                           "aws:cdk:cloudformation:props": {
-                            "groupDescription": "Automatically created Security Group for ELB CircularIntelligenceOSSimulatorServiceLB7C919D8B",
+                            "groupDescription": "Automatically created Security Group for ELB CircularIntelligenceOSLogisticsServiceLB714292B8",
                             "securityGroupIngress": [
                               {
                                 "cidrIp": "0.0.0.0/0",
@@ -141,28 +141,28 @@
                           "version": "2.110.1"
                         }
                       },
-                      "to CircularIntelligenceOSSimulatorServiceSecurityGroup21DE61BD:8005": {
-                        "id": "to CircularIntelligenceOSSimulatorServiceSecurityGroup21DE61BD:8005",
-                        "path": "CircularIntelligenceOS-SimulatorService/SimulatorService/LB/SecurityGroup/to CircularIntelligenceOSSimulatorServiceSecurityGroup21DE61BD:8005",
+                      "to CircularIntelligenceOSLogisticsServiceSecurityGroup1F43CEA6:8007": {
+                        "id": "to CircularIntelligenceOSLogisticsServiceSecurityGroup1F43CEA6:8007",
+                        "path": "CircularIntelligenceOS-LogisticsService/LogisticsService/LB/SecurityGroup/to CircularIntelligenceOSLogisticsServiceSecurityGroup1F43CEA6:8007",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::EC2::SecurityGroupEgress",
                           "aws:cdk:cloudformation:props": {
                             "description": "Load balancer to target",
                             "destinationSecurityGroupId": {
                               "Fn::GetAtt": [
-                                "SimulatorServiceSecurityGroupB79C0C29",
+                                "LogisticsServiceSecurityGroup2D677BB9",
                                 "GroupId"
                               ]
                             },
-                            "fromPort": 8005,
+                            "fromPort": 8007,
                             "groupId": {
                               "Fn::GetAtt": [
-                                "SimulatorServiceLBSecurityGroup8ECB8505",
+                                "LogisticsServiceLBSecurityGroup94D322EB",
                                 "GroupId"
                               ]
                             },
                             "ipProtocol": "tcp",
-                            "toPort": 8005
+                            "toPort": 8007
                           }
                         },
                         "constructInfo": {
@@ -178,11 +178,11 @@
                   },
                   "PublicListener": {
                     "id": "PublicListener",
-                    "path": "CircularIntelligenceOS-SimulatorService/SimulatorService/LB/PublicListener",
+                    "path": "CircularIntelligenceOS-LogisticsService/LogisticsService/LB/PublicListener",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "CircularIntelligenceOS-SimulatorService/SimulatorService/LB/PublicListener/Resource",
+                        "path": "CircularIntelligenceOS-LogisticsService/LogisticsService/LB/PublicListener/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::ElasticLoadBalancingV2::Listener",
                           "aws:cdk:cloudformation:props": {
@@ -190,12 +190,12 @@
                               {
                                 "type": "forward",
                                 "targetGroupArn": {
-                                  "Ref": "SimulatorServiceLBPublicListenerECSGroupC3B9603C"
+                                  "Ref": "LogisticsServiceLBPublicListenerECSGroupB220AF90"
                                 }
                               }
                             ],
                             "loadBalancerArn": {
-                              "Ref": "SimulatorServiceLB458E15A4"
+                              "Ref": "LogisticsServiceLBDC5D127F"
                             },
                             "port": 80,
                             "protocol": "HTTP"
@@ -208,11 +208,11 @@
                       },
                       "ECSGroup": {
                         "id": "ECSGroup",
-                        "path": "CircularIntelligenceOS-SimulatorService/SimulatorService/LB/PublicListener/ECSGroup",
+                        "path": "CircularIntelligenceOS-LogisticsService/LogisticsService/LB/PublicListener/ECSGroup",
                         "children": {
                           "Resource": {
                             "id": "Resource",
-                            "path": "CircularIntelligenceOS-SimulatorService/SimulatorService/LB/PublicListener/ECSGroup/Resource",
+                            "path": "CircularIntelligenceOS-LogisticsService/LogisticsService/LB/PublicListener/ECSGroup/Resource",
                             "attributes": {
                               "aws:cdk:cloudformation:type": "AWS::ElasticLoadBalancingV2::TargetGroup",
                               "aws:cdk:cloudformation:props": {
@@ -257,7 +257,7 @@
               },
               "LoadBalancerDNS": {
                 "id": "LoadBalancerDNS",
-                "path": "CircularIntelligenceOS-SimulatorService/SimulatorService/LoadBalancerDNS",
+                "path": "CircularIntelligenceOS-LogisticsService/LogisticsService/LoadBalancerDNS",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnOutput",
                   "version": "2.110.1"
@@ -265,7 +265,7 @@
               },
               "ServiceURL": {
                 "id": "ServiceURL",
-                "path": "CircularIntelligenceOS-SimulatorService/SimulatorService/ServiceURL",
+                "path": "CircularIntelligenceOS-LogisticsService/LogisticsService/ServiceURL",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnOutput",
                   "version": "2.110.1"
@@ -273,15 +273,15 @@
               },
               "TaskDef": {
                 "id": "TaskDef",
-                "path": "CircularIntelligenceOS-SimulatorService/SimulatorService/TaskDef",
+                "path": "CircularIntelligenceOS-LogisticsService/LogisticsService/TaskDef",
                 "children": {
                   "TaskRole": {
                     "id": "TaskRole",
-                    "path": "CircularIntelligenceOS-SimulatorService/SimulatorService/TaskDef/TaskRole",
+                    "path": "CircularIntelligenceOS-LogisticsService/LogisticsService/TaskDef/TaskRole",
                     "children": {
                       "ImportTaskRole": {
                         "id": "ImportTaskRole",
-                        "path": "CircularIntelligenceOS-SimulatorService/SimulatorService/TaskDef/TaskRole/ImportTaskRole",
+                        "path": "CircularIntelligenceOS-LogisticsService/LogisticsService/TaskDef/TaskRole/ImportTaskRole",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.Resource",
                           "version": "2.110.1"
@@ -289,7 +289,7 @@
                       },
                       "Resource": {
                         "id": "Resource",
-                        "path": "CircularIntelligenceOS-SimulatorService/SimulatorService/TaskDef/TaskRole/Resource",
+                        "path": "CircularIntelligenceOS-LogisticsService/LogisticsService/TaskDef/TaskRole/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::IAM::Role",
                           "aws:cdk:cloudformation:props": {
@@ -320,7 +320,7 @@
                   },
                   "Resource": {
                     "id": "Resource",
-                    "path": "CircularIntelligenceOS-SimulatorService/SimulatorService/TaskDef/Resource",
+                    "path": "CircularIntelligenceOS-LogisticsService/LogisticsService/TaskDef/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::ECS::TaskDefinition",
                       "aws:cdk:cloudformation:props": {
@@ -328,12 +328,12 @@
                           {
                             "essential": true,
                             "image": {
-                              "Fn::Sub": "706335435423.dkr.ecr.us-east-1.${AWS::URLSuffix}/cdk-hnb659fds-container-assets-706335435423-us-east-1:8c5730bc93c216294d94c34b82f3be67a2f05a0973dd02080d7405f1bae089ae"
+                              "Fn::Sub": "706335435423.dkr.ecr.us-east-1.${AWS::URLSuffix}/cdk-hnb659fds-container-assets-706335435423-us-east-1:ec8df2abc47ff9dbed27ac180023cb289ea69ae31985b188f36b08122d3afd0a"
                             },
                             "name": "web",
                             "portMappings": [
                               {
-                                "containerPort": 8005,
+                                "containerPort": 8007,
                                 "protocol": "tcp"
                               }
                             ],
@@ -341,9 +341,9 @@
                               "logDriver": "awslogs",
                               "options": {
                                 "awslogs-group": {
-                                  "Ref": "SimulatorServiceTaskDefwebLogGroup55501020"
+                                  "Ref": "LogisticsServiceTaskDefwebLogGroupE9A1FA01"
                                 },
-                                "awslogs-stream-prefix": "SimulatorService",
+                                "awslogs-stream-prefix": "LogisticsService",
                                 "awslogs-region": "us-east-1"
                               }
                             },
@@ -358,11 +358,11 @@
                         "cpu": "256",
                         "executionRoleArn": {
                           "Fn::GetAtt": [
-                            "SimulatorServiceTaskDefExecutionRoleC45B9898",
+                            "LogisticsServiceTaskDefExecutionRoleA2A9E37E",
                             "Arn"
                           ]
                         },
-                        "family": "CircularIntelligenceOSSimulatorServiceTaskDef7812DF22",
+                        "family": "CircularIntelligenceOSLogisticsServiceTaskDef227BB42A",
                         "memory": "512",
                         "networkMode": "awsvpc",
                         "requiresCompatibilities": [
@@ -370,7 +370,7 @@
                         ],
                         "taskRoleArn": {
                           "Fn::GetAtt": [
-                            "SimulatorServiceTaskDefTaskRole72B90681",
+                            "LogisticsServiceTaskDefTaskRole688E0BCD",
                             "Arn"
                           ]
                         }
@@ -383,15 +383,15 @@
                   },
                   "web": {
                     "id": "web",
-                    "path": "CircularIntelligenceOS-SimulatorService/SimulatorService/TaskDef/web",
+                    "path": "CircularIntelligenceOS-LogisticsService/LogisticsService/TaskDef/web",
                     "children": {
                       "AssetImage": {
                         "id": "AssetImage",
-                        "path": "CircularIntelligenceOS-SimulatorService/SimulatorService/TaskDef/web/AssetImage",
+                        "path": "CircularIntelligenceOS-LogisticsService/LogisticsService/TaskDef/web/AssetImage",
                         "children": {
                           "Staging": {
                             "id": "Staging",
-                            "path": "CircularIntelligenceOS-SimulatorService/SimulatorService/TaskDef/web/AssetImage/Staging",
+                            "path": "CircularIntelligenceOS-LogisticsService/LogisticsService/TaskDef/web/AssetImage/Staging",
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.AssetStaging",
                               "version": "2.110.1"
@@ -399,7 +399,7 @@
                           },
                           "Repository": {
                             "id": "Repository",
-                            "path": "CircularIntelligenceOS-SimulatorService/SimulatorService/TaskDef/web/AssetImage/Repository",
+                            "path": "CircularIntelligenceOS-LogisticsService/LogisticsService/TaskDef/web/AssetImage/Repository",
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.aws_ecr.RepositoryBase",
                               "version": "2.110.1"
@@ -413,11 +413,11 @@
                       },
                       "LogGroup": {
                         "id": "LogGroup",
-                        "path": "CircularIntelligenceOS-SimulatorService/SimulatorService/TaskDef/web/LogGroup",
+                        "path": "CircularIntelligenceOS-LogisticsService/LogisticsService/TaskDef/web/LogGroup",
                         "children": {
                           "Resource": {
                             "id": "Resource",
-                            "path": "CircularIntelligenceOS-SimulatorService/SimulatorService/TaskDef/web/LogGroup/Resource",
+                            "path": "CircularIntelligenceOS-LogisticsService/LogisticsService/TaskDef/web/LogGroup/Resource",
                             "attributes": {
                               "aws:cdk:cloudformation:type": "AWS::Logs::LogGroup",
                               "aws:cdk:cloudformation:props": {}
@@ -441,11 +441,11 @@
                   },
                   "ExecutionRole": {
                     "id": "ExecutionRole",
-                    "path": "CircularIntelligenceOS-SimulatorService/SimulatorService/TaskDef/ExecutionRole",
+                    "path": "CircularIntelligenceOS-LogisticsService/LogisticsService/TaskDef/ExecutionRole",
                     "children": {
                       "ImportExecutionRole": {
                         "id": "ImportExecutionRole",
-                        "path": "CircularIntelligenceOS-SimulatorService/SimulatorService/TaskDef/ExecutionRole/ImportExecutionRole",
+                        "path": "CircularIntelligenceOS-LogisticsService/LogisticsService/TaskDef/ExecutionRole/ImportExecutionRole",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.Resource",
                           "version": "2.110.1"
@@ -453,7 +453,7 @@
                       },
                       "Resource": {
                         "id": "Resource",
-                        "path": "CircularIntelligenceOS-SimulatorService/SimulatorService/TaskDef/ExecutionRole/Resource",
+                        "path": "CircularIntelligenceOS-LogisticsService/LogisticsService/TaskDef/ExecutionRole/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::IAM::Role",
                           "aws:cdk:cloudformation:props": {
@@ -478,11 +478,11 @@
                       },
                       "DefaultPolicy": {
                         "id": "DefaultPolicy",
-                        "path": "CircularIntelligenceOS-SimulatorService/SimulatorService/TaskDef/ExecutionRole/DefaultPolicy",
+                        "path": "CircularIntelligenceOS-LogisticsService/LogisticsService/TaskDef/ExecutionRole/DefaultPolicy",
                         "children": {
                           "Resource": {
                             "id": "Resource",
-                            "path": "CircularIntelligenceOS-SimulatorService/SimulatorService/TaskDef/ExecutionRole/DefaultPolicy/Resource",
+                            "path": "CircularIntelligenceOS-LogisticsService/LogisticsService/TaskDef/ExecutionRole/DefaultPolicy/Resource",
                             "attributes": {
                               "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
                               "aws:cdk:cloudformation:props": {
@@ -510,7 +510,7 @@
                                       "Effect": "Allow",
                                       "Resource": {
                                         "Fn::GetAtt": [
-                                          "SimulatorServiceTaskDefwebLogGroup55501020",
+                                          "LogisticsServiceTaskDefwebLogGroupE9A1FA01",
                                           "Arn"
                                         ]
                                       }
@@ -518,10 +518,10 @@
                                   ],
                                   "Version": "2012-10-17"
                                 },
-                                "policyName": "SimulatorServiceTaskDefExecutionRoleDefaultPolicy6803DB23",
+                                "policyName": "LogisticsServiceTaskDefExecutionRoleDefaultPolicyDEB2D8A0",
                                 "roles": [
                                   {
-                                    "Ref": "SimulatorServiceTaskDefExecutionRoleC45B9898"
+                                    "Ref": "LogisticsServiceTaskDefExecutionRoleA2A9E37E"
                                   }
                                 ]
                               }
@@ -551,16 +551,16 @@
               },
               "Service": {
                 "id": "Service",
-                "path": "CircularIntelligenceOS-SimulatorService/SimulatorService/Service",
+                "path": "CircularIntelligenceOS-LogisticsService/LogisticsService/Service",
                 "children": {
                   "Service": {
                     "id": "Service",
-                    "path": "CircularIntelligenceOS-SimulatorService/SimulatorService/Service/Service",
+                    "path": "CircularIntelligenceOS-LogisticsService/LogisticsService/Service/Service",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::ECS::Service",
                       "aws:cdk:cloudformation:props": {
                         "cluster": {
-                          "Ref": "SimulatorCluster941920A9"
+                          "Ref": "LogisticsClusterE9D35369"
                         },
                         "deploymentConfiguration": {
                           "maximumPercent": 200,
@@ -578,10 +578,10 @@
                         "loadBalancers": [
                           {
                             "targetGroupArn": {
-                              "Ref": "SimulatorServiceLBPublicListenerECSGroupC3B9603C"
+                              "Ref": "LogisticsServiceLBPublicListenerECSGroupB220AF90"
                             },
                             "containerName": "web",
-                            "containerPort": 8005
+                            "containerPort": 8007
                           }
                         ],
                         "networkConfiguration": {
@@ -594,7 +594,7 @@
                             "securityGroups": [
                               {
                                 "Fn::GetAtt": [
-                                  "SimulatorServiceSecurityGroupB79C0C29",
+                                  "LogisticsServiceSecurityGroup2D677BB9",
                                   "GroupId"
                                 ]
                               }
@@ -602,7 +602,7 @@
                           }
                         },
                         "taskDefinition": {
-                          "Ref": "SimulatorServiceTaskDef9745247D"
+                          "Ref": "LogisticsServiceTaskDef6A7EF11D"
                         }
                       }
                     },
@@ -613,15 +613,15 @@
                   },
                   "SecurityGroup": {
                     "id": "SecurityGroup",
-                    "path": "CircularIntelligenceOS-SimulatorService/SimulatorService/Service/SecurityGroup",
+                    "path": "CircularIntelligenceOS-LogisticsService/LogisticsService/Service/SecurityGroup",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "CircularIntelligenceOS-SimulatorService/SimulatorService/Service/SecurityGroup/Resource",
+                        "path": "CircularIntelligenceOS-LogisticsService/LogisticsService/Service/SecurityGroup/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::EC2::SecurityGroup",
                           "aws:cdk:cloudformation:props": {
-                            "groupDescription": "CircularIntelligenceOS-SimulatorService/SimulatorService/Service/SecurityGroup",
+                            "groupDescription": "CircularIntelligenceOS-LogisticsService/LogisticsService/Service/SecurityGroup",
                             "securityGroupEgress": [
                               {
                                 "cidrIp": "0.0.0.0/0",
@@ -637,28 +637,28 @@
                           "version": "2.110.1"
                         }
                       },
-                      "from CircularIntelligenceOSSimulatorServiceLBSecurityGroup8C3621C6:8005": {
-                        "id": "from CircularIntelligenceOSSimulatorServiceLBSecurityGroup8C3621C6:8005",
-                        "path": "CircularIntelligenceOS-SimulatorService/SimulatorService/Service/SecurityGroup/from CircularIntelligenceOSSimulatorServiceLBSecurityGroup8C3621C6:8005",
+                      "from CircularIntelligenceOSLogisticsServiceLBSecurityGroup64B9BD23:8007": {
+                        "id": "from CircularIntelligenceOSLogisticsServiceLBSecurityGroup64B9BD23:8007",
+                        "path": "CircularIntelligenceOS-LogisticsService/LogisticsService/Service/SecurityGroup/from CircularIntelligenceOSLogisticsServiceLBSecurityGroup64B9BD23:8007",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::EC2::SecurityGroupIngress",
                           "aws:cdk:cloudformation:props": {
                             "description": "Load balancer to target",
-                            "fromPort": 8005,
+                            "fromPort": 8007,
                             "groupId": {
                               "Fn::GetAtt": [
-                                "SimulatorServiceSecurityGroupB79C0C29",
+                                "LogisticsServiceSecurityGroup2D677BB9",
                                 "GroupId"
                               ]
                             },
                             "ipProtocol": "tcp",
                             "sourceSecurityGroupId": {
                               "Fn::GetAtt": [
-                                "SimulatorServiceLBSecurityGroup8ECB8505",
+                                "LogisticsServiceLBSecurityGroup94D322EB",
                                 "GroupId"
                               ]
                             },
-                            "toPort": 8005
+                            "toPort": 8007
                           }
                         },
                         "constructInfo": {
@@ -684,9 +684,9 @@
               "version": "2.110.1"
             }
           },
-          "SimulatorServiceURL": {
-            "id": "SimulatorServiceURL",
-            "path": "CircularIntelligenceOS-SimulatorService/SimulatorServiceURL",
+          "LogisticsServiceURL": {
+            "id": "LogisticsServiceURL",
+            "path": "CircularIntelligenceOS-LogisticsService/LogisticsServiceURL",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnOutput",
               "version": "2.110.1"
@@ -694,11 +694,11 @@
           },
           "CDKMetadata": {
             "id": "CDKMetadata",
-            "path": "CircularIntelligenceOS-SimulatorService/CDKMetadata",
+            "path": "CircularIntelligenceOS-LogisticsService/CDKMetadata",
             "children": {
               "Default": {
                 "id": "Default",
-                "path": "CircularIntelligenceOS-SimulatorService/CDKMetadata/Default",
+                "path": "CircularIntelligenceOS-LogisticsService/CDKMetadata/Default",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
                   "version": "2.110.1"
@@ -712,7 +712,7 @@
           },
           "BootstrapVersion": {
             "id": "BootstrapVersion",
-            "path": "CircularIntelligenceOS-SimulatorService/BootstrapVersion",
+            "path": "CircularIntelligenceOS-LogisticsService/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
               "version": "2.110.1"
@@ -720,7 +720,7 @@
           },
           "CheckBootstrapVersion": {
             "id": "CheckBootstrapVersion",
-            "path": "CircularIntelligenceOS-SimulatorService/CheckBootstrapVersion",
+            "path": "CircularIntelligenceOS-LogisticsService/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
               "version": "2.110.1"

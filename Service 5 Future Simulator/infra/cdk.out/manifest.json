@@ -18,7 +18,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::706335435423:role/cdk-hnb659fds-deploy-role-706335435423-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::706335435423:role/cdk-hnb659fds-cfn-exec-role-706335435423-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-706335435423-us-east-1/8614c8be7de2db0b88680f95be9d05e29acec005827361dd98849e67253248bb.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-706335435423-us-east-1/342684ab48b0c7f15868c26d03dbf98560b2ed442e50199301bae2f66e0a5b7e.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -34,132 +34,6 @@
         "CircularIntelligenceOS-SimulatorService.assets"
       ],
       "metadata": {
-        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "SimulatorVpcD06CA084"
-          }
-        ],
-        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/PublicSubnet1/Subnet": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "SimulatorVpcPublicSubnet1SubnetCD3E13C0"
-          }
-        ],
-        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/PublicSubnet1/RouteTable": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "SimulatorVpcPublicSubnet1RouteTable8500D7CD"
-          }
-        ],
-        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/PublicSubnet1/RouteTableAssociation": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "SimulatorVpcPublicSubnet1RouteTableAssociationFD24B26F"
-          }
-        ],
-        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/PublicSubnet1/DefaultRoute": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "SimulatorVpcPublicSubnet1DefaultRoute877F6EC5"
-          }
-        ],
-        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/PublicSubnet1/EIP": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "SimulatorVpcPublicSubnet1EIP35C9E925"
-          }
-        ],
-        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/PublicSubnet1/NATGateway": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "SimulatorVpcPublicSubnet1NATGateway1CDDF83A"
-          }
-        ],
-        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/PublicSubnet2/Subnet": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "SimulatorVpcPublicSubnet2SubnetA91F98FF"
-          }
-        ],
-        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/PublicSubnet2/RouteTable": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "SimulatorVpcPublicSubnet2RouteTableDD90DC23"
-          }
-        ],
-        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/PublicSubnet2/RouteTableAssociation": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "SimulatorVpcPublicSubnet2RouteTableAssociationBF105320"
-          }
-        ],
-        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/PublicSubnet2/DefaultRoute": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "SimulatorVpcPublicSubnet2DefaultRoute84AA02BA"
-          }
-        ],
-        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/PrivateSubnet1/Subnet": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "SimulatorVpcPrivateSubnet1Subnet388F17DA"
-          }
-        ],
-        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/PrivateSubnet1/RouteTable": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "SimulatorVpcPrivateSubnet1RouteTable7DEC6CDE"
-          }
-        ],
-        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/PrivateSubnet1/RouteTableAssociation": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "SimulatorVpcPrivateSubnet1RouteTableAssociationB676E2FD"
-          }
-        ],
-        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/PrivateSubnet1/DefaultRoute": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "SimulatorVpcPrivateSubnet1DefaultRoute437BEA7B"
-          }
-        ],
-        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/PrivateSubnet2/Subnet": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "SimulatorVpcPrivateSubnet2Subnet95DF59C7"
-          }
-        ],
-        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/PrivateSubnet2/RouteTable": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "SimulatorVpcPrivateSubnet2RouteTable91618887"
-          }
-        ],
-        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/PrivateSubnet2/RouteTableAssociation": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "SimulatorVpcPrivateSubnet2RouteTableAssociation8AE0D83C"
-          }
-        ],
-        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/PrivateSubnet2/DefaultRoute": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "SimulatorVpcPrivateSubnet2DefaultRoute3FDC28D3"
-          }
-        ],
-        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/IGW": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "SimulatorVpcIGW89E642E1"
-          }
-        ],
-        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/VPCGW": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "SimulatorVpcVPCGWCC605D90"
-          }
-        ],
         "/CircularIntelligenceOS-SimulatorService/SimulatorCluster/Resource": [
           {
             "type": "aws:cdk:logicalId",
