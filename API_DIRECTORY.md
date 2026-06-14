@@ -30,6 +30,19 @@ VPC-3 Product & Business Layer
 
 ---
 
+## 🔍 Service #2: Truth Discovery Engine
+**VPC:** VPC-1 — Intelligence Layer
+**Status:** ✅ Live (AWS ECS Fargate) — *Validation & Security Hardened* 🔒
+**Base URL:** `http://Circul-Truth-HR7ES9usthBv-33182633.us-east-1.elb.amazonaws.com`
+
+| Method | Endpoint | Purpose |
+|:---|:---|:---|
+| `GET` | `/health` | Health Check |
+| `POST` | `/api/v1/truth/analyze` | Run AI-driven root cause detection on a customer return |
+| `GET` | `/docs` | Swagger UI |
+
+---
+
 ## 🛡️ Service #3: Fraud & Trust Engine
 **VPC:** VPC-1 — Intelligence Layer
 **Status:** ✅ Live (AWS ECS Fargate)
