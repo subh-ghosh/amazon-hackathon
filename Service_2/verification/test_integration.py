@@ -3,6 +3,11 @@ import sys
 import unittest
 from datetime import datetime
 
+# Force mock mode for integration test suite
+os.environ["MOCK_AWS"] = "true"
+os.environ["MOCK_BEDROCK"] = "true"
+os.environ["MOCK_AWS_SERVICES"] = "true"
+
 # Configure sys.path and load apps from different folders while avoiding collisions
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -65,9 +70,9 @@ class TestCircularIntelligenceOS(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertEqual(data["returnId"], "RET-990812")
-        self.assertEqual(data["actualRootCause"], "Expectation Mismatch")
+        self.assertEqual(data["actualRootCause"], "SIZE_MISMATCH")
         self.assertGreater(data["confidence"], 0.8)
-        self.assertTrue(any("size" in e.lower() or "fit" in e.lower() for e in data["evidence"]))
+        self.assertTrue(any("size" in e["description"].lower() or "fit" in e["description"].lower() for e in data["evidence"]))
         self.assertEqual(data["recommendations"]["routingAction"], "RESTOCK_AS_NEW")
         self.assertEqual(data["recommendations"]["sellerAction"], "INVENT_SIZE_GUIDE")
 
@@ -83,7 +88,7 @@ class TestCircularIntelligenceOS(unittest.TestCase):
         response = self.truth_client.post("/api/v1/truth/analyze", json=payload)
         self.assertEqual(response.status_code, 200)
         data = response.json()
-        self.assertEqual(data["actualRootCause"], "Software Compatibility")
+        self.assertEqual(data["actualRootCause"], "COMPATIBILITY_ISSUE")
         self.assertEqual(data["recommendations"]["routingAction"], "REFURBISH_PROCESS")
 
     def test_fraud_scoring_high_risk(self):

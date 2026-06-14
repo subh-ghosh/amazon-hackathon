@@ -28,10 +28,14 @@ class TruthAnalyzeRequest(BaseModel):
     returnId: str = Field(..., example="RET123")
     customerId: str = Field(..., example="C123")
     productId: str = Field(..., example="P123")
-    sellerId: str = Field(..., example="S123")
+    sellerId: Optional[str] = Field(default="UNKNOWN", example="S123")
     statedReason: str = Field(..., example="Defective")
     customerComment: str = Field(..., example="Screen shows black lines")
     images: List[str] = Field(default=[], example=["s3://bucket/image.jpg"])
+
+class RecommendationInfo(BaseModel):
+    routingAction: str = Field(..., example="RESTOCK_AS_NEW")
+    sellerAction: str = Field(..., example="INVENT_SIZE_GUIDE")
 
 class TruthAnalyzeResponse(BaseModel):
     returnId: str = Field(..., example="RET123")
@@ -39,6 +43,7 @@ class TruthAnalyzeResponse(BaseModel):
     confidence: float = Field(..., example=0.93)
     requiresManualReview: bool = Field(default=False)
     evidence: List[Evidence]
+    recommendations: Optional[RecommendationInfo] = None
 
     @validator("evidence")
     def validate_total_weights(cls, v):

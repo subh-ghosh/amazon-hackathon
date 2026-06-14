@@ -37,7 +37,8 @@ def health_check():
         "service": settings.APP_NAME,
         "region": settings.AWS_REGION,
         "mock_aws": settings.MOCK_AWS,
-        "mock_bedrock": settings.MOCK_BEDROCK
+        "mock_bedrock": settings.MOCK_BEDROCK,
+        "mock_mode": settings.MOCK_AWS
     }
 
 if __name__ == "__main__":

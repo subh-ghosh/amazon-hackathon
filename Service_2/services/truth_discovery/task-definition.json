@@ -26,7 +26,7 @@
         { "name": "AWS_DEFAULT_REGION", "value": "us-east-1" },
         { "name": "DYNAMODB_TABLE", "value": "CircularIntelOSStore" },
         { "name": "EVENT_BUS_NAME", "value": "default" },
-        { "name": "GRAPH_SERVICE_URL", "value": "http://service12.internal:8012" },
+        { "name": "GRAPH_SERVICE_URL", "value": "http://Circul-Graph-ye0M61dV1dYT-1449212263.us-east-1.elb.amazonaws.com" },
         { "name": "CONFIDENCE_THRESHOLD", "value": "0.60" }
       ],
       "logConfiguration": {

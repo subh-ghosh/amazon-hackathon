@@ -43,9 +43,20 @@ class EventPublisher:
         }
         actual_root_cause = ENUM_MAP.get(root_cause, root_cause)
 
-        # Fallback values if evidence and recommendations are not supplied (backward compatibility)
-        if not evidence:
-            evidence = [f"Automated analysis completed for return {return_id}."]
+        # Convert structured evidence objects to string list for EventBridge schema compliance
+        string_evidence = []
+        if evidence:
+            for item in evidence:
+                if isinstance(item, str):
+                    string_evidence.append(item)
+                elif hasattr(item, "description"):
+                    string_evidence.append(item.description)
+                elif isinstance(item, dict):
+                    string_evidence.append(item.get("description", str(item)))
+                else:
+                    string_evidence.append(str(item))
+        else:
+            string_evidence = [f"Automated analysis completed for return {return_id}."]
         
         if not recommendations:
             if root_cause in ["SIZE_MISMATCH", "Wrong Size"]:
@@ -71,7 +82,7 @@ class EventPublisher:
             "productId": product_id,
             "actualRootCause": actual_root_cause,
             "confidence": confidence,
-            "evidence": evidence,
+            "evidence": string_evidence,
             "recommendations": recommendations,
             "timestamp": datetime.utcnow().isoformat() + "Z"
         }

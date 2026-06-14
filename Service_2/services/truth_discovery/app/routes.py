@@ -72,12 +72,33 @@ async def analyze_return_truth(payload: TruthAnalyzeRequest):
             evidence=evidence
         )
 
+        # Determine recommendations based on root_cause
+        if root_cause in ["SIZE_MISMATCH", "Wrong Size", RootCauseEnum.SIZE_MISMATCH.value, RootCauseEnum.EXPECTATION_MISMATCH.value]:
+            routing = "RESTOCK_AS_NEW"
+            seller = "INVENT_SIZE_GUIDE"
+        elif root_cause in ["COMPATIBILITY_ISSUE", "Software Compatibility", RootCauseEnum.COMPATIBILITY_ISSUE.value]:
+            routing = "REFURBISH_PROCESS"
+            seller = "UPDATE_FIRMWARE"
+        elif root_cause in ["PACKAGING_DAMAGE", "Carrier Damage", RootCauseEnum.PACKAGING_DAMAGE.value]:
+            routing = "LIQUIDATE"
+            seller = "CONTACT_CARRIER"
+        else:
+            routing = "RESTOCK_AS_NEW"
+            seller = "UPDATE_LISTING_PHOTOS"
+            
+        recommendations = {
+            "routingAction": routing,
+            "sellerAction": seller
+        }
+
         # 6. Emit EventBridge RootCauseDiscovered event
         event_publisher.publish_root_cause_discovered(
             return_id=payload.returnId,
             product_id=payload.productId,
             root_cause=root_cause,
-            confidence=confidence
+            confidence=confidence,
+            evidence=evidence,
+            recommendations=recommendations
         )
 
         # 7. Verify Knowledge Graph writeback on Service #12 (with retries)
@@ -96,7 +117,8 @@ async def analyze_return_truth(payload: TruthAnalyzeRequest):
             actualRootCause=root_cause,
             confidence=confidence,
             requiresManualReview=requires_manual_review,
-            evidence=evidence
+            evidence=evidence,
+            recommendations=recommendations
         )
 
     except Exception as e:
