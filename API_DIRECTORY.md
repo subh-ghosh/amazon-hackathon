@@ -127,7 +127,7 @@ VPC-3 Product & Business Layer
 ## ♻️ Service #10: Packaging Intelligence
 **VPC:** VPC-1 — Intelligence Layer
 **Status:** ✅ Live (AWS ECS Fargate) — *Validation & Security Hardened* 🔒
-**Base URL:** `http://Circul-Packa-OuyTkY5MjPWJ-2071671797.us-east-1.elb.amazonaws.com`
+**Base URL:** `http://Circul-Packa-AN1B5mVKsku9-408281128.us-east-1.elb.amazonaws.com`
 
 | Method | Endpoint | Purpose |
 |:---|:---|:---|
