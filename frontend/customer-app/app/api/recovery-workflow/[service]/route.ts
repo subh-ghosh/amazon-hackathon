@@ -3,6 +3,15 @@ import { NextRequest, NextResponse } from "next/server";
 const REQUEST_TIMEOUT_MS = 30000;
 
 const SERVICES = {
+  s3: {
+    label: "S3",
+    name: "Service #3 Fraud & Trust Engine",
+    baseUrl:
+      process.env.SERVICE3_API_BASE ??
+      process.env.NEXT_PUBLIC_SERVICE3_API_BASE ??
+      "http://Circul-Fraud-Q25TuVtGjWhU-36938543.us-east-1.elb.amazonaws.com",
+    path: "/api/v1/fraud/score",
+  },
   s5: {
     label: "S5",
     name: "Service #5 Future Simulator",
@@ -30,6 +39,15 @@ const SERVICES = {
       "http://Circul-Logis-hgIeVqBbAk0h-362510022.us-east-1.elb.amazonaws.com",
     path: "/api/v1/logistics/optimize",
   },
+  s2: {
+    label: "S2",
+    name: "Service #2 Truth Discovery",
+    baseUrl:
+      process.env.SERVICE2_API_BASE ??
+      process.env.NEXT_PUBLIC_SERVICE2_API_BASE ??
+      "",
+    path: process.env.SERVICE2_TRUTH_DISCOVERY_PATH ?? "/api/v1/truth/discover",
+  },
 } as const;
 
 type ServiceKey = keyof typeof SERVICES;
@@ -47,6 +65,15 @@ export async function POST(
     return NextResponse.json(
       { message: `Unknown recovery workflow service: ${service}` },
       { status: 404 },
+    );
+  }
+
+  if (!config.baseUrl) {
+    return NextResponse.json(
+      {
+        message: `${config.name} is not configured. Set SERVICE2_API_BASE when the deployed endpoint is available.`,
+      },
+      { status: 503 },
     );
   }
 

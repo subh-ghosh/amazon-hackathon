@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import {
   ArrowUpDown,
@@ -54,13 +54,27 @@ const currencyFormatter = new Intl.NumberFormat("en-US", {
   currency: "USD",
 });
 
+const fallbackNumberFormatter = {
+  format(value: number) {
+    return String(value);
+  },
+};
+
 export function CustomerSearchView({ products }: CustomerSearchViewProps) {
+  const [mounted, setMounted] = useState(false);
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<ProductCategory | "All">("All");
   const [condition, setCondition] = useState<ProductCondition | "All">("All");
   const [maxRisk, setMaxRisk] = useState(50);
   const [relifeOnly, setRelifeOnly] = useState(false);
   const [sort, setSort] = useState<SortMode>("recommended");
+  const numberFormatter = mounted
+    ? new Intl.NumberFormat("en-US")
+    : fallbackNumberFormatter;
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const filteredProducts = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
@@ -270,7 +284,11 @@ export function CustomerSearchView({ products }: CustomerSearchViewProps) {
           {filteredProducts.length > 0 ? (
             <div className="grid gap-4 xl:grid-cols-2">
               {filteredProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  numberFormatter={numberFormatter}
+                />
               ))}
             </div>
           ) : (
@@ -295,7 +313,13 @@ export function CustomerSearchView({ products }: CustomerSearchViewProps) {
   );
 }
 
-function ProductCard({ product }: { product: CustomerSearchProduct }) {
+function ProductCard({
+  product,
+  numberFormatter,
+}: {
+  product: CustomerSearchProduct;
+  numberFormatter: { format(value: number): string };
+}) {
   const savings = product.listPrice - product.price;
 
   return (
@@ -379,7 +403,7 @@ function ProductCard({ product }: { product: CustomerSearchProduct }) {
               <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs font-medium text-slate-500">
                 <span className="flex items-center gap-1.5">
                   <Star className="size-3.5 fill-amber-400 text-amber-400" aria-hidden="true" />
-                  {product.rating} ({product.reviewCount.toLocaleString("en-US")})
+                  {product.rating} ({numberFormatter.format(product.reviewCount)})
                 </span>
                 <span className="flex items-center gap-1.5">
                   <Truck className="size-3.5 text-slate-400" aria-hidden="true" />

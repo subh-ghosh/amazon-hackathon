@@ -1,8 +1,10 @@
 const REQUEST_TIMEOUT_MS = 30000;
 
+const SERVICE3_PROXY_PATH = "/api/recovery-workflow/s3";
 const SERVICE5_PROXY_PATH = "/api/recovery-workflow/s5";
 const SERVICE6_PROXY_PATH = "/api/recovery-workflow/s6";
 const SERVICE7_PROXY_PATH = "/api/recovery-workflow/s7";
+const SERVICE2_PROXY_PATH = "/api/recovery-workflow/s2";
 
 export interface ProductDetailsPayload {
   productId: string;
@@ -23,6 +25,15 @@ interface SimulationRequest {
   estimatedValue: number;
   returnReason: string;
   sellerTrustScore: number;
+}
+
+interface FraudScoreRequest {
+  customer_id: string;
+  product_id: string;
+  return_id: string;
+  device_id: string;
+  payment_method_hash: string;
+  images?: string[];
 }
 
 interface OptimizeRequest {
@@ -77,13 +88,46 @@ export interface LogisticsPlan {
   eta: string;
 }
 
+export interface FraudTrustAssessment {
+  fraudScore: number;
+  trustScore: number;
+  severity: "Low" | "Medium" | "High" | "Critical";
+  signals: string[];
+}
+
+export interface TruthDiscoveryResult {
+  rootCause: string;
+  confidence: number;
+  signals: string[];
+}
+
+export interface DemoAwarePayload<T = unknown> {
+  data: T;
+  demoMode: boolean;
+  source: string;
+  message?: string;
+}
+
 async function postJson<T>(
   baseUrl: string,
   path: string,
   body: unknown,
   serviceName: string,
-  logLabel: "S5" | "S6" | "S7",
-): Promise<T> {
+  logLabel: "S2" | "S3" | "S5" | "S6" | "S7",
+  fallback: T,
+  options: { allowFallback?: boolean } = {},
+): Promise<DemoAwarePayload<T>> {
+  const allowFallback = options.allowFallback ?? true;
+
+  if (isDemoModeForced() && allowFallback) {
+    return {
+      data: fallback,
+      demoMode: true,
+      source: `${logLabel} fallback`,
+      message: `${serviceName} skipped because DEMO_MODE is enabled.`,
+    };
+  }
+
   const controller = new AbortController();
   const timeout = globalThis.setTimeout(
     () => controller.abort(),
@@ -128,10 +172,25 @@ async function postJson<T>(
       throw new Error(buildResponseErrorMessage(serviceName, response, responseBody));
     }
 
-    return responseBody as T;
+    return {
+      data: responseBody as T,
+      demoMode: false,
+      source: `${logLabel} live`,
+    };
   } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+
+    if (!allowFallback) {
+      throw error;
+    }
+
     if (error instanceof Error && error.name === "AbortError") {
-      throw new Error(`${serviceName} timed out.`);
+      return {
+        data: fallback,
+        demoMode: true,
+        source: `${logLabel} fallback`,
+        message: `${serviceName} timed out. Using demo fallback data.`,
+      };
     }
 
     if (error instanceof TypeError) {
@@ -144,17 +203,37 @@ async function postJson<T>(
         error: error.message,
       });
 
-      throw new Error(
-        `${serviceName} could not be reached from the browser. ` +
-          `No HTTP response was available, so this is likely a network or CORS/preflight failure. ` +
-          `Request: POST ${baseUrl}${path}. Browser error: ${error.message}`,
-      );
+      return {
+        data: fallback,
+        demoMode: true,
+        source: `${logLabel} fallback`,
+        message:
+          `${serviceName} could not be reached from the browser. ` +
+          `Using demo fallback data. Browser error: ${error.message}`,
+      };
     }
 
-    throw error;
+    return {
+      data: fallback,
+      demoMode: true,
+      source: `${logLabel} fallback`,
+      message: `${message} Using demo fallback data.`,
+    };
   } finally {
     globalThis.clearTimeout(timeout);
   }
+}
+
+export function runFraudTrust(product: ProductDetailsPayload) {
+  return postJson<unknown>(
+    "",
+    SERVICE3_PROXY_PATH,
+    toFraudScoreRequest(product),
+    "Service #3 Fraud & Trust Engine",
+    "S3",
+    fallbackFraudTrustPayload(product),
+    { allowFallback: false },
+  );
 }
 
 export function runFutureSimulator(product: ProductDetailsPayload) {
@@ -164,6 +243,7 @@ export function runFutureSimulator(product: ProductDetailsPayload) {
     toSimulationRequest(product),
     "Service #5 Future Simulator",
     "S5",
+    fallbackSimulationPayload(product),
   );
 }
 
@@ -177,6 +257,7 @@ export function runRecoveryOptimizer(
     toOptimizeRequest(product, scenarios),
     "Service #6 Recovery Optimizer",
     "S6",
+    fallbackOptimizerPayload(product, scenarios),
   );
 }
 
@@ -190,6 +271,18 @@ export function runReverseLogistics(
     toLogisticsRequest(product, decision),
     "Service #7 Reverse Logistics",
     "S7",
+    fallbackLogisticsPayload(product, decision),
+  );
+}
+
+export function discoverTruth(product: ProductDetailsPayload) {
+  return postJson<unknown>(
+    "",
+    SERVICE2_PROXY_PATH,
+    toTruthDiscoveryRequest(product),
+    "Service #2 Truth Discovery",
+    "S2",
+    fallbackTruthDiscoveryPayload(product),
   );
 }
 
@@ -227,6 +320,43 @@ export function adaptLogisticsPlan(payload: unknown): LogisticsPlan {
     route: stringFrom(record, ["route", "recommendedRoute", "route_summary", "path"], "Customer pickup -> sort center -> recovery facility"),
     cost: numberFrom(record, ["cost", "estimatedCost", "estimated_cost", "logisticsCost"], 14.75),
     eta: stringFrom(record, ["eta", "estimated_arrival", "delivery_eta"], `${numberFrom(record, ["estimatedDays"], 2)} days`),
+  };
+}
+
+export function adaptFraudTrust(payload: unknown): FraudTrustAssessment {
+  const record = asRecord(payload);
+  const nested = asRecord(record.data ?? record.result ?? record.score ?? record);
+  const fraudScore = normalizePercent(
+    numberFrom(nested, ["fraudScore", "fraud_score", "riskScore", "risk_score", "score"], 12),
+  );
+
+  return {
+    fraudScore,
+    trustScore: normalizePercent(
+      numberFrom(nested, ["trustScore", "trust_score", "sellerTrustScore", "seller_trust_score"], 92),
+    ),
+    severity: severityFromScore(fraudScore, stringFrom(nested, ["severity", "risk_level"], "")),
+    signals: stringArrayFrom(nested, ["signals", "reasons", "explanations", "risk_factors"], [
+      "Return history normal",
+      "Customer and product signals verified",
+    ]),
+  };
+}
+
+export function adaptTruthDiscovery(payload: unknown): TruthDiscoveryResult {
+  const record = asRecord(payload);
+  const nested = asRecord(record.data ?? record.result ?? record);
+
+  return {
+    rootCause: stringFrom(
+      nested,
+      ["rootCause", "root_cause", "cause", "category"],
+      "Changed mind return",
+    ),
+    confidence: normalizePercent(numberFrom(nested, ["confidence", "score"], 84)),
+    signals: stringArrayFrom(nested, ["signals", "evidence", "reasons"], [
+      "Inspection data ready for S2 integration",
+    ]),
   };
 }
 
@@ -304,6 +434,17 @@ function toSimulationRequest(product: ProductDetailsPayload): SimulationRequest 
     estimatedValue: estimatedValue(product),
     returnReason: normalizeReturnReason(product.returnReason),
     sellerTrustScore: 0.92,
+  };
+}
+
+function toFraudScoreRequest(product: ProductDetailsPayload): FraudScoreRequest {
+  return {
+    customer_id: "CUST-DEMO-PLACEHOLDER-1042",
+    product_id: product.productId,
+    return_id: returnIdFromProduct(product.productId),
+    device_id: "DEVICE-DEMO-PLACEHOLDER-BLR-01",
+    payment_method_hash: "PMT_DEMO_PLACEHOLDER_9F86D081884C",
+    images: [],
   };
 }
 
@@ -390,12 +531,114 @@ function normalizeReturnReason(reason: string) {
   return "OTHER";
 }
 
+function toTruthDiscoveryRequest(product: ProductDetailsPayload) {
+  return {
+    return_id: returnIdFromProduct(product.productId),
+    product_id: product.productId,
+    category: product.category,
+    return_reason: normalizeReturnReason(product.returnReason),
+    condition: product.condition,
+  };
+}
+
+function fallbackFraudTrustPayload(product: ProductDetailsPayload) {
+  const score = fraudScore(product.returnReason);
+
+  return {
+    fraudScore: score,
+    trustScore: 92,
+    severity: score >= 70 ? "High" : score >= 35 ? "Medium" : "Low",
+    signals: [
+      "Customer return cadence within normal range",
+      "Product serial and category history verified",
+      "No linked fraud case in demo graph",
+    ],
+  };
+}
+
+function fallbackSimulationPayload(product: ProductDetailsPayload) {
+  const value = estimatedValue(product);
+
+  return {
+    scenarios: [
+      {
+        id: "SIM-RESALE",
+        scenario: "Resell",
+        recoveryValue: Number((value * 0.91).toFixed(2)),
+        carbonImpact: 11.8,
+        processingTimeDays: 2,
+        confidence: 0.93,
+      },
+      {
+        id: "SIM-REFURBISH",
+        scenario: "Refurbish",
+        recoveryValue: Number((value * 0.78).toFixed(2)),
+        carbonImpact: 15.4,
+        processingTimeDays: 5,
+        confidence: 0.88,
+      },
+      {
+        id: "SIM-DONATE",
+        scenario: "Donate",
+        recoveryValue: Number((value * 0.34).toFixed(2)),
+        carbonImpact: 9.6,
+        processingTimeDays: 3,
+        confidence: 0.81,
+      },
+    ],
+  };
+}
+
+function fallbackOptimizerPayload(
+  product: ProductDetailsPayload,
+  scenarios: SimulationScenario[],
+) {
+  const best =
+    [...scenarios].sort((first, second) => second.recoveryValue - first.recoveryValue)[0] ??
+    adaptSimulationScenarios(fallbackSimulationPayload(product))[0];
+
+  return {
+    decision: best.name,
+    confidence: best.successProbability,
+    expectedValue: best.recoveryValue,
+    reason:
+      "Demo optimizer selected the path with the strongest recovered value, confidence, and circular impact.",
+  };
+}
+
+function fallbackLogisticsPayload(
+  _product: ProductDetailsPayload,
+  decision: OptimizedDecision,
+) {
+  return {
+    warehouse: "BLR Reverse Logistics Center 04",
+    route: `Customer pickup -> Bengaluru sort center -> ${decision.decision} lane`,
+    estimatedCost: 14.75,
+    eta: "2 days",
+  };
+}
+
+function fallbackTruthDiscoveryPayload(product: ProductDetailsPayload) {
+  return {
+    rootCause: normalizeReturnReason(product.returnReason).replace(/_/g, " "),
+    confidence: 0.84,
+    signals: [
+      "S2 endpoint not listed in API_DIRECTORY.md",
+      "Payload is ready for deployment-time wiring",
+    ],
+  };
+}
+
 function ratioFromPercent(value: number) {
   return value > 1 ? Number((value / 100).toFixed(4)) : value;
 }
 
 function normalizePercent(value: number) {
   return value <= 1 ? Number((value * 100).toFixed(1)) : value;
+}
+
+function isDemoModeForced() {
+  return process.env.NEXT_PUBLIC_DEMO_MODE === "true";
 }
 
 function arrayReason(value: unknown) {
@@ -460,6 +703,24 @@ function numberFrom(record: AnyRecord, keys: string[], fallback = 0) {
   return fallback;
 }
 
+function stringArrayFrom(record: AnyRecord, keys: string[], fallback: string[]) {
+  for (const key of keys) {
+    const value = record[key];
+
+    if (Array.isArray(value)) {
+      const strings = value.filter((item): item is string => {
+        return typeof item === "string" && item.trim().length > 0;
+      });
+
+      if (strings.length > 0) {
+        return strings;
+      }
+    }
+  }
+
+  return fallback;
+}
+
 function normalizeDecision(value: string): OptimizedDecision["decision"] {
   const normalized = value.toUpperCase();
 
@@ -468,4 +729,16 @@ function normalizeDecision(value: string): OptimizedDecision["decision"] {
   if (normalized.includes("RECYCLE")) return "Recycle";
   if (normalized.includes("RESELL")) return "Resell";
   return "Refurbish";
+}
+
+function severityFromScore(
+  score: number,
+  rawSeverity: string,
+): FraudTrustAssessment["severity"] {
+  const normalized = rawSeverity.toUpperCase();
+
+  if (normalized.includes("CRITICAL") || score >= 85) return "Critical";
+  if (normalized.includes("HIGH") || score >= 65) return "High";
+  if (normalized.includes("MEDIUM") || score >= 35) return "Medium";
+  return "Low";
 }

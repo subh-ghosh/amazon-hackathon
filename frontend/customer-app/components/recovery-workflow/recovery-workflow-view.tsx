@@ -6,6 +6,7 @@ import {
   CheckCircle2,
   Clock,
   GitBranch,
+  ShieldCheck,
   Loader2,
   MapPinned,
   PackageCheck,
@@ -25,10 +26,13 @@ import {
 import {
   adaptLogisticsPlan,
   adaptOptimizedDecision,
+  adaptFraudTrust,
   adaptSimulationScenarios,
+  runFraudTrust,
   runFutureSimulator,
   runRecoveryOptimizer,
   runReverseLogistics,
+  type FraudTrustAssessment,
   type LogisticsPlan,
   type OptimizedDecision,
   type ProductDetailsPayload,
@@ -57,7 +61,10 @@ export function RecoveryWorkflowView() {
   const [scenarios, setScenarios] = useState<SimulationScenario[]>([]);
   const [decision, setDecision] = useState<OptimizedDecision | null>(null);
   const [logistics, setLogistics] = useState<LogisticsPlan | null>(null);
+  const [fraudTrust, setFraudTrust] = useState<FraudTrustAssessment | null>(null);
   const [graphSummary, setGraphSummary] = useState<string | null>(null);
+  const [demoMessages, setDemoMessages] = useState<string[]>([]);
+  const demoMode = demoMessages.length > 0;
 
   const finalSummary = useMemo(() => {
     if (!decision || !logistics) return null;
@@ -78,11 +85,18 @@ export function RecoveryWorkflowView() {
     setScenarios([]);
     setDecision(null);
     setLogistics(null);
+    setFraudTrust(null);
     setGraphSummary(null);
+    setDemoMessages([]);
 
     try {
+      const fraudPayload = await runFraudTrust(product);
+      addDemoMessage(fraudPayload.message);
+      setFraudTrust(adaptFraudTrust(fraudPayload.data));
+
       const simulationPayload = await runFutureSimulator(product);
-      const liveScenarios = adaptSimulationScenarios(simulationPayload);
+      addDemoMessage(simulationPayload.message);
+      const liveScenarios = adaptSimulationScenarios(simulationPayload.data);
 
       if (liveScenarios.length === 0) {
         setStatus("complete");
@@ -94,13 +108,26 @@ export function RecoveryWorkflowView() {
       setScenarios(nextScenarios);
 
       const optimizerPayload = await runRecoveryOptimizer(product, nextScenarios);
-      const nextDecision = adaptOptimizedDecision(optimizerPayload);
+      addDemoMessage(optimizerPayload.message);
+      const nextDecision = adaptOptimizedDecision(optimizerPayload.data);
       setDecision(nextDecision);
 
       const logisticsPayload = await runReverseLogistics(product, nextDecision);
-      setLogistics(adaptLogisticsPlan(logisticsPayload));
-      const graphPayload = await getRecoveryEffectiveness();
-      setGraphSummary(adaptRecoveryGraphSummary(graphPayload, product.productId));
+      addDemoMessage(logisticsPayload.message);
+      setLogistics(adaptLogisticsPlan(logisticsPayload.data));
+
+      try {
+        const graphPayload = await getRecoveryEffectiveness();
+        setGraphSummary(adaptRecoveryGraphSummary(graphPayload, product.productId));
+      } catch (error) {
+        setGraphSummary("Demo graph handoff ready");
+        addDemoMessage(
+          error instanceof Error
+            ? `Service #12 unavailable. Using demo graph summary. ${error.message}`
+            : "Service #12 unavailable. Using demo graph summary.",
+        );
+      }
+
       setStatus("complete");
     } catch (error) {
       setStatus("error");
@@ -171,7 +198,14 @@ export function RecoveryWorkflowView() {
       </Card>
 
       <div className="space-y-6">
-        <WorkflowSteps status={status} />
+        {demoMode && <DemoModeNotice messages={demoMessages} />}
+        {status === "complete" && !demoMode && (
+          <Toast tone="success" message="Workflow completed with live service responses." />
+        )}
+        {status === "error" && (
+          <Toast tone="error" message={message ?? "Unable to run the workflow."} />
+        )}
+        <WorkflowSteps status={status} demoMode={demoMode} />
         {status === "error" && (
           <Card className="border-rose-200 bg-rose-50">
             <CardContent className="flex items-center justify-between gap-4 p-4">
@@ -185,6 +219,7 @@ export function RecoveryWorkflowView() {
           </Card>
         )}
         <ScenarioPanel scenarios={scenarios} loading={status === "loading"} />
+        <FraudTrustPanel fraudTrust={fraudTrust} loading={status === "loading"} />
         <section className="grid gap-6 lg:grid-cols-2">
           <DecisionPanel decision={decision} loading={status === "loading"} />
           <LogisticsPanel logistics={logistics} loading={status === "loading"} />
@@ -201,6 +236,16 @@ export function RecoveryWorkflowView() {
   async function submitCurrentProduct() {
     const form = document.querySelector("form");
     form?.requestSubmit();
+  }
+
+  function addDemoMessage(nextMessage?: string) {
+    if (!nextMessage) {
+      return;
+    }
+
+    setDemoMessages((current) =>
+      current.includes(nextMessage) ? current : [...current, nextMessage],
+    );
   }
 }
 
@@ -231,11 +276,14 @@ function Field({
 
 function WorkflowSteps({
   status,
+  demoMode,
 }: {
   status: WorkflowStatus;
+  demoMode: boolean;
 }) {
   const steps = [
     ["Product", PackageCheck],
+    ["Fraud & Trust S3", ShieldCheck],
     ["Future Simulator S5", GitBranch],
     ["Recovery Optimizer S6", Sparkles],
     ["Reverse Logistics S7", Route],
@@ -245,7 +293,7 @@ function WorkflowSteps({
   return (
     <Card>
       <CardContent className="p-4">
-        <div className="grid gap-3 md:grid-cols-5">
+        <div className="grid gap-3 md:grid-cols-3 xl:grid-cols-6">
           {steps.map(([label, Icon]) => (
             <div key={label} className="rounded-lg border bg-white p-3">
               <Icon className="size-4 text-emerald-700" aria-hidden="true" />
@@ -260,6 +308,101 @@ function WorkflowSteps({
           <Badge className="mt-4 border-rose-200 bg-rose-50 text-rose-700">
             Live workflow error
           </Badge>
+        )}
+        {demoMode && (
+          <Badge className="mt-4 border-amber-200 bg-amber-50 text-amber-700">
+            Demo Mode
+          </Badge>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
+function DemoModeNotice({ messages }: { messages: string[] }) {
+  return (
+    <Toast
+      tone="demo"
+      message={
+        messages[0] ??
+        "Demo Mode is active. The workflow is using realistic fallback data."
+      }
+    />
+  );
+}
+
+function Toast({
+  tone,
+  message,
+}: {
+  tone: "success" | "error" | "demo";
+  message: string;
+}) {
+  const classes =
+    tone === "success"
+      ? "border-emerald-200 bg-emerald-50 text-emerald-800"
+      : tone === "error"
+        ? "border-rose-200 bg-rose-50 text-rose-800"
+        : "border-amber-200 bg-amber-50 text-amber-800";
+
+  return (
+    <div className={`rounded-lg border p-3 text-sm font-medium ${classes}`}>
+      {tone === "demo" && (
+        <Badge className="mr-2 border-amber-300 bg-white text-amber-700">
+          Demo Mode
+        </Badge>
+      )}
+      {message}
+    </div>
+  );
+}
+
+function FraudTrustPanel({
+  fraudTrust,
+  loading,
+}: {
+  fraudTrust: FraudTrustAssessment | null;
+  loading: boolean;
+}) {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Fraud & trust</CardTitle>
+        <CardDescription>Service #3 risk score used by downstream recovery decisions.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        {loading ? (
+          <LoadingTile label="Scoring fraud and trust" />
+        ) : fraudTrust ? (
+          <div className="grid gap-4 md:grid-cols-[220px_1fr]">
+            <div className="rounded-lg border bg-white p-4">
+              <ShieldCheck className="size-4 text-emerald-700" aria-hidden="true" />
+              <p className="mt-4 text-xs font-medium uppercase text-slate-400">
+                Fraud risk
+              </p>
+              <p className="mt-1 text-3xl font-bold text-slate-950">
+                {fraudTrust.fraudScore}%
+              </p>
+              <Badge className="mt-3 border-emerald-200 bg-emerald-50 text-emerald-700">
+                {fraudTrust.severity}
+              </Badge>
+            </div>
+            <div className="rounded-lg border bg-slate-50 p-4">
+              <Metric label="Seller trust" value={`${fraudTrust.trustScore}%`} />
+              <div className="mt-4 flex flex-wrap gap-2">
+                {fraudTrust.signals.map((signal) => (
+                  <Badge
+                    key={signal}
+                    className="border-slate-200 bg-white text-slate-600"
+                  >
+                    {signal}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <EmptyTile label="Fraud score will appear after S3 completes." />
         )}
       </CardContent>
     </Card>

@@ -23,6 +23,11 @@ export default function RootLayout({
                 <Leaf className="size-5" aria-hidden="true" />
               </span>
               <span>Amazon <span className="text-emerald-700">ReLife</span></span>
+              {process.env.NEXT_PUBLIC_DEMO_MODE === "true" && (
+                <span className="rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-[11px] font-semibold text-amber-700">
+                  Demo Mode
+                </span>
+              )}
             </Link>
             <nav aria-label="Primary navigation" className="flex flex-wrap items-center justify-end gap-x-4 gap-y-1 text-sm font-medium text-slate-600 sm:gap-x-6">
               <Link href="/" className="hover:text-slate-950">

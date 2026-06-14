@@ -5,7 +5,6 @@ import { notFound } from "next/navigation";
 
 import { ProductTwinView } from "@/components/product-twin/product-twin-view";
 import {
-  getProductTwin,
   getProductTwinFromService12,
   productTwins,
 } from "@/data/product-twins";
@@ -34,7 +33,7 @@ export default async function ProductTwinPage({
   params,
 }: ProductTwinPageProps) {
   const { productId } = await params;
-  const twin = getProductTwin(productId);
+  const twin = await getProductTwinFromService12(productId);
 
   if (!twin) {
     notFound();
