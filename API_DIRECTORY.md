@@ -130,4 +130,22 @@ VPC-3 Product & Business Layer
 
 ---
 
+## 📦 Service #10: Packaging Intelligence
+**VPC:** VPC-1 — Intelligence Layer
+**Status:** ✅ Live (AWS ECS Fargate)
+**Base URL:** `http://Circul-Packa-b3m8VxW0Yk7t-294029482.us-east-1.elb.amazonaws.com`
+**Swagger URL:** `http://Circul-Packa-b3m8VxW0Yk7t-294029482.us-east-1.elb.amazonaws.com/docs`
+**Health URL:** `http://Circul-Packa-b3m8VxW0Yk7t-294029482.us-east-1.elb.amazonaws.com/health`
+**Owner:** AI Solutions Architect Team
+**VPC Assignment:** VPC-1 Intelligence Layer
+
+| Method | Endpoint | Purpose |
+|:---|:---|:---|
+| `GET` | `/health` | Health Check |
+| `POST` | `/api/v1/packaging/analyze` | Analyze packaging sustainability, efficiency, and carbon footprint |
+| `GET` | `/docs` | Swagger UI |
+| `GET` | `/openapi.json` | OpenAPI JSON Schema |
+
+---
+
 *All APIs support CORS. Success responses return HTTP 200/201. Validation errors return HTTP 422.*
