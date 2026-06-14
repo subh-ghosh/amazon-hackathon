@@ -245,6 +245,10 @@ class SellerAnalysisResponse(BaseModel):
     topIssues: List[str]
     recommendations: List[str]
     insights: List[str]
+    sellerHealthInsights: List[InsightOutput] = Field(
+        default_factory=list,
+        description="Integration-ready structured insights for Returnless Refund Engine (S8)."
+    )
     
     # Dashboard enhancements
     dashboardGeneratedAt: str

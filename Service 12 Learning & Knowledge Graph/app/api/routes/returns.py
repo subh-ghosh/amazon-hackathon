@@ -91,11 +91,11 @@ async def get_return_detail(
 
     return ReturnDetailResponse(
         return_id=return_id,
-        order_id=graph_data.get("r", {}).get("orderId", ""),
-        customer_id="",  # Resolved via graph traversal
-        product_id="",   # Resolved via graph traversal
-        reason=graph_data.get("r", {}).get("reason", ""),
-        timestamp=graph_data.get("r", {}).get("timestamp", ""),
+        order_id=graph_data.get("r", {}).get("orderId", "UNKNOWN"),
+        customer_id=graph_data.get("customer_id", "UNKNOWN"),
+        product_id=graph_data.get("product_id", "UNKNOWN"),
+        reason=graph_data.get("r", {}).get("reason", "UNKNOWN"),
+        timestamp=graph_data.get("r", {}).get("timestamp", "UNKNOWN"),
         root_causes=[
             {"cause_id": rc.get("id", ""), "category": rc.get("category", "")}
             for rc in graph_data.get("root_causes", [])

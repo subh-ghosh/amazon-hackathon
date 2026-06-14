@@ -49,7 +49,7 @@ class HackathonStack(Stack):
                 image=ecs.ContainerImage.from_asset("../"), # FastAPI
                 container_port=8000,  # <-- FIX: Tell the Load Balancer that FastAPI is on port 8000
                 environment={
-                    "NEPTUNE_ENDPOINT": "ws://localhost:8182/gremlin",
+                    "NEPTUNE_ENDPOINT": "localhost",
                     "EVENT_BUS_NAME": bus.event_bus_name
                 }
             ),

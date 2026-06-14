@@ -60,6 +60,11 @@ class PackagingRequest(BaseModel):
             raise ValueError("Value must be a finite number (cannot be NaN or Infinity)")
         return v
 
+class InsightOutput(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    insight: str
+    severity: str  # LOW, MEDIUM, HIGH
+
 class PackagingResponse(BaseModel):
     productId: str = Field(
         ..., 
@@ -102,4 +107,8 @@ class PackagingResponse(BaseModel):
     explanations: List[str] = Field(
         ..., 
         description="List of explanations summarizing the key drivers behind the scores."
+    )
+    packagingInsights: List[InsightOutput] = Field(
+        default_factory=list,
+        description="Integration-ready structured insights for Returnless Refund Engine (S8)."
     )

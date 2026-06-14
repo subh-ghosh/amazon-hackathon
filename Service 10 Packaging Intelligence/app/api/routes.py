@@ -51,6 +51,12 @@ async def analyze_packaging(request: PackagingRequest):
             f"confidence={scores['confidence']}"
         )
 
+        packaging_insights = []
+        for r in recommendations:
+            packaging_insights.append({"insight": r, "severity": "MEDIUM"})
+        for e in explanations:
+            packaging_insights.append({"insight": e, "severity": "LOW"})
+
         return PackagingResponse(
             productId=request.productId,
             sustainabilityScore=scores["sustainabilityScore"],
@@ -59,7 +65,8 @@ async def analyze_packaging(request: PackagingRequest):
             recyclabilityScore=scores["recyclabilityScore"],
             confidence=scores["confidence"],
             recommendations=recommendations,
-            explanations=explanations
+            explanations=explanations,
+            packagingInsights=packaging_insights
         )
     except Exception as e:
         logger.error(f"Error executing analysis: {str(e)}", exc_info=True)

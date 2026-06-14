@@ -55,6 +55,15 @@ class OptimizationRequest(BaseModel):
     weightKg: float = Field(..., ge=0.0)
     customerLatitude: float = Field(..., ge=-90.0, le=90.0)
     customerLongitude: float = Field(..., ge=-180.0, le=180.0)
+    
+    # S7 LogisticsResponse Output Fields (to allow unchanged pass-through)
+    recommendedWarehouse: str = Field(default="", description="From S7")
+    recommendedRoute: str = Field(default="", description="From S7")
+    estimatedCost: float = Field(default=0.0, allow_inf_nan=False)
+    estimatedDays: int = Field(default=0)
+    carbonScore: float = Field(default=0.0, allow_inf_nan=False)
+    reasoning: List[str] = Field(default_factory=list)
+    
     facilityOptions: List[FacilityOption]
 
     @field_validator('requestId', 'returnId', 'productId', 'category')

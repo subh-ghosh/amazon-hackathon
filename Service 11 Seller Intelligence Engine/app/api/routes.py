@@ -166,6 +166,7 @@ async def analyze_seller(request: SellerAnalysisRequest):
             "topIssues": rec_data["topIssues"],
             "recommendations": rec_data["recommendations"],
             "insights": rec_data["insights"],
+            "sellerHealthInsights": [{"insight": i, "severity": "MEDIUM"} for i in rec_data["insights"]],
             
             # Dashboard metadata & executive enhancements
             "dashboardGeneratedAt": timestamp,

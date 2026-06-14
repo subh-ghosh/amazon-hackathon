@@ -16,8 +16,14 @@ class LogisticsRequest(BaseModel):
     productId: str = Field(min_length=1, max_length=255, strip_whitespace=True)
     recommendedDecision: str = Field(min_length=1, max_length=255, strip_whitespace=True)
     customerLocation: str = Field(min_length=1, max_length=255, strip_whitespace=True)
-    conditionScore: float = Field(ge=0.0, le=100.0, allow_inf_nan=False)
-    estimatedValue: float = Field(ge=0.0, allow_inf_nan=False)
+    
+    # S6 Output Fields
+    expectedProfit: float = Field(allow_inf_nan=False)
+    carbonSavings: float = Field(allow_inf_nan=False)
+    processingDays: int
+    confidence: float = Field(allow_inf_nan=False)
+    reasoning: List[str]
+    
     warehouses: List[Warehouse]
 
     @field_validator("warehouses")
