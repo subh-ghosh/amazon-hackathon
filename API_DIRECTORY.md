@@ -44,6 +44,22 @@ VPC-3 Product & Business Layer
 
 ---
 
+## 📦 Service #4: Product Digital Twin
+**VPC:** VPC-3 — Product & Business Layer
+**Status:** ✅ Live (AWS ECS Fargate)
+**Base URL:** `http://Circul-Digit-XXDMcCWoqhd0-1019952249.us-east-1.elb.amazonaws.com`
+
+| Method | Endpoint | Purpose |
+|:---|:---|:---|
+| `GET`  | `/health` | Health Check |
+| `POST` | `/api/v1/products` | Create a new Digital Twin |
+| `GET`  | `/api/v1/products/{product_id}` | Fetch full Twin state |
+| `POST` | `/api/v1/products/{product_id}/events` | Process FRAUD or RECOVERY events |
+| `GET`  | `/api/v1/products/{product_id}/timeline` | Fetch chronological event timeline |
+| `GET`  | `/docs` | Swagger UI |
+
+---
+
 ## 🔮 Service #5: Future Simulator
 **VPC:** VPC-2 — Recovery Layer
 **Status:** ✅ Live (AWS ECS Fargate)
