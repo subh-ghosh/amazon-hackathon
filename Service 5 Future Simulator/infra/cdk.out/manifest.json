@@ -1,0 +1,293 @@
+{
+  "version": "35.0.0",
+  "artifacts": {
+    "CircularIntelligenceOS-SimulatorService.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "CircularIntelligenceOS-SimulatorService.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "CircularIntelligenceOS-SimulatorService": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://706335435423/us-east-1",
+      "properties": {
+        "templateFile": "CircularIntelligenceOS-SimulatorService.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::706335435423:role/cdk-hnb659fds-deploy-role-706335435423-us-east-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::706335435423:role/cdk-hnb659fds-cfn-exec-role-706335435423-us-east-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-706335435423-us-east-1/8614c8be7de2db0b88680f95be9d05e29acec005827361dd98849e67253248bb.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "CircularIntelligenceOS-SimulatorService.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::706335435423:role/cdk-hnb659fds-lookup-role-706335435423-us-east-1",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "CircularIntelligenceOS-SimulatorService.assets"
+      ],
+      "metadata": {
+        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SimulatorVpcD06CA084"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/PublicSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SimulatorVpcPublicSubnet1SubnetCD3E13C0"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/PublicSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SimulatorVpcPublicSubnet1RouteTable8500D7CD"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/PublicSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SimulatorVpcPublicSubnet1RouteTableAssociationFD24B26F"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/PublicSubnet1/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SimulatorVpcPublicSubnet1DefaultRoute877F6EC5"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/PublicSubnet1/EIP": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SimulatorVpcPublicSubnet1EIP35C9E925"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/PublicSubnet1/NATGateway": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SimulatorVpcPublicSubnet1NATGateway1CDDF83A"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/PublicSubnet2/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SimulatorVpcPublicSubnet2SubnetA91F98FF"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/PublicSubnet2/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SimulatorVpcPublicSubnet2RouteTableDD90DC23"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/PublicSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SimulatorVpcPublicSubnet2RouteTableAssociationBF105320"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/PublicSubnet2/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SimulatorVpcPublicSubnet2DefaultRoute84AA02BA"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/PrivateSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SimulatorVpcPrivateSubnet1Subnet388F17DA"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/PrivateSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SimulatorVpcPrivateSubnet1RouteTable7DEC6CDE"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/PrivateSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SimulatorVpcPrivateSubnet1RouteTableAssociationB676E2FD"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/PrivateSubnet1/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SimulatorVpcPrivateSubnet1DefaultRoute437BEA7B"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/PrivateSubnet2/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SimulatorVpcPrivateSubnet2Subnet95DF59C7"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/PrivateSubnet2/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SimulatorVpcPrivateSubnet2RouteTable91618887"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/PrivateSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SimulatorVpcPrivateSubnet2RouteTableAssociation8AE0D83C"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/PrivateSubnet2/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SimulatorVpcPrivateSubnet2DefaultRoute3FDC28D3"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/IGW": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SimulatorVpcIGW89E642E1"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/SimulatorVpc/VPCGW": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SimulatorVpcVPCGWCC605D90"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/SimulatorCluster/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SimulatorCluster941920A9"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/SimulatorService/LB/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SimulatorServiceLB458E15A4"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/SimulatorService/LB/SecurityGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SimulatorServiceLBSecurityGroup8ECB8505"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/SimulatorService/LB/SecurityGroup/to CircularIntelligenceOSSimulatorServiceSecurityGroup21DE61BD:8005": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SimulatorServiceLBSecurityGrouptoCircularIntelligenceOSSimulatorServiceSecurityGroup21DE61BD8005A73A73FB"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/SimulatorService/LB/PublicListener/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SimulatorServiceLBPublicListener5BB3EB9C"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/SimulatorService/LB/PublicListener/ECSGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SimulatorServiceLBPublicListenerECSGroupC3B9603C"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/SimulatorService/LoadBalancerDNS": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SimulatorServiceLoadBalancerDNSA4CBFDA0"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/SimulatorService/ServiceURL": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SimulatorServiceServiceURLD3383E96"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/SimulatorService/TaskDef/TaskRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SimulatorServiceTaskDefTaskRole72B90681"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/SimulatorService/TaskDef/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SimulatorServiceTaskDef9745247D"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/SimulatorService/TaskDef/web/LogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SimulatorServiceTaskDefwebLogGroup55501020"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/SimulatorService/TaskDef/ExecutionRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SimulatorServiceTaskDefExecutionRoleC45B9898"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/SimulatorService/TaskDef/ExecutionRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SimulatorServiceTaskDefExecutionRoleDefaultPolicy6803DB23"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/SimulatorService/Service/Service": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SimulatorServiceFDF22FD0"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/SimulatorService/Service/SecurityGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SimulatorServiceSecurityGroupB79C0C29"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/SimulatorService/Service/SecurityGroup/from CircularIntelligenceOSSimulatorServiceLBSecurityGroup8C3621C6:8005": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SimulatorServiceSecurityGroupfromCircularIntelligenceOSSimulatorServiceLBSecurityGroup8C3621C68005917F1FDA"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/SimulatorServiceURL": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SimulatorServiceURL"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/CircularIntelligenceOS-SimulatorService/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "CircularIntelligenceOS-SimulatorService"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

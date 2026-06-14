@@ -1,0 +1,34 @@
+{
+  "version": "35.0.0",
+  "files": {
+    "8614c8be7de2db0b88680f95be9d05e29acec005827361dd98849e67253248bb": {
+      "source": {
+        "path": "CircularIntelligenceOS-SimulatorService.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "706335435423-us-east-1": {
+          "bucketName": "cdk-hnb659fds-assets-706335435423-us-east-1",
+          "objectKey": "8614c8be7de2db0b88680f95be9d05e29acec005827361dd98849e67253248bb.json",
+          "region": "us-east-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::706335435423:role/cdk-hnb659fds-file-publishing-role-706335435423-us-east-1"
+        }
+      }
+    }
+  },
+  "dockerImages": {
+    "8c5730bc93c216294d94c34b82f3be67a2f05a0973dd02080d7405f1bae089ae": {
+      "source": {
+        "directory": "asset.8c5730bc93c216294d94c34b82f3be67a2f05a0973dd02080d7405f1bae089ae"
+      },
+      "destinations": {
+        "706335435423-us-east-1": {
+          "repositoryName": "cdk-hnb659fds-container-assets-706335435423-us-east-1",
+          "imageTag": "8c5730bc93c216294d94c34b82f3be67a2f05a0973dd02080d7405f1bae089ae",
+          "region": "us-east-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::706335435423:role/cdk-hnb659fds-image-publishing-role-706335435423-us-east-1"
+        }
+      }
+    }
+  }
+}

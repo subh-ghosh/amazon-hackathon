@@ -1,0 +1,869 @@
+{
+ "Resources": {
+  "SimulatorVpcD06CA084": {
+   "Type": "AWS::EC2::VPC",
+   "Properties": {
+    "CidrBlock": "10.0.0.0/16",
+    "EnableDnsHostnames": true,
+    "EnableDnsSupport": true,
+    "InstanceTenancy": "default",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "CircularIntelligenceOS-SimulatorService/SimulatorVpc"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-SimulatorService/SimulatorVpc/Resource"
+   }
+  },
+  "SimulatorVpcPublicSubnet1SubnetCD3E13C0": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "us-east-1a",
+    "CidrBlock": "10.0.0.0/18",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "CircularIntelligenceOS-SimulatorService/SimulatorVpc/PublicSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "SimulatorVpcD06CA084"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-SimulatorService/SimulatorVpc/PublicSubnet1/Subnet"
+   }
+  },
+  "SimulatorVpcPublicSubnet1RouteTable8500D7CD": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "CircularIntelligenceOS-SimulatorService/SimulatorVpc/PublicSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "SimulatorVpcD06CA084"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-SimulatorService/SimulatorVpc/PublicSubnet1/RouteTable"
+   }
+  },
+  "SimulatorVpcPublicSubnet1RouteTableAssociationFD24B26F": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "SimulatorVpcPublicSubnet1RouteTable8500D7CD"
+    },
+    "SubnetId": {
+     "Ref": "SimulatorVpcPublicSubnet1SubnetCD3E13C0"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-SimulatorService/SimulatorVpc/PublicSubnet1/RouteTableAssociation"
+   }
+  },
+  "SimulatorVpcPublicSubnet1DefaultRoute877F6EC5": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "SimulatorVpcIGW89E642E1"
+    },
+    "RouteTableId": {
+     "Ref": "SimulatorVpcPublicSubnet1RouteTable8500D7CD"
+    }
+   },
+   "DependsOn": [
+    "SimulatorVpcVPCGWCC605D90"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-SimulatorService/SimulatorVpc/PublicSubnet1/DefaultRoute"
+   }
+  },
+  "SimulatorVpcPublicSubnet1EIP35C9E925": {
+   "Type": "AWS::EC2::EIP",
+   "Properties": {
+    "Domain": "vpc",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "CircularIntelligenceOS-SimulatorService/SimulatorVpc/PublicSubnet1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-SimulatorService/SimulatorVpc/PublicSubnet1/EIP"
+   }
+  },
+  "SimulatorVpcPublicSubnet1NATGateway1CDDF83A": {
+   "Type": "AWS::EC2::NatGateway",
+   "Properties": {
+    "AllocationId": {
+     "Fn::GetAtt": [
+      "SimulatorVpcPublicSubnet1EIP35C9E925",
+      "AllocationId"
+     ]
+    },
+    "SubnetId": {
+     "Ref": "SimulatorVpcPublicSubnet1SubnetCD3E13C0"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "CircularIntelligenceOS-SimulatorService/SimulatorVpc/PublicSubnet1"
+     }
+    ]
+   },
+   "DependsOn": [
+    "SimulatorVpcPublicSubnet1DefaultRoute877F6EC5",
+    "SimulatorVpcPublicSubnet1RouteTableAssociationFD24B26F"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-SimulatorService/SimulatorVpc/PublicSubnet1/NATGateway"
+   }
+  },
+  "SimulatorVpcPublicSubnet2SubnetA91F98FF": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "us-east-1b",
+    "CidrBlock": "10.0.64.0/18",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "CircularIntelligenceOS-SimulatorService/SimulatorVpc/PublicSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "SimulatorVpcD06CA084"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-SimulatorService/SimulatorVpc/PublicSubnet2/Subnet"
+   }
+  },
+  "SimulatorVpcPublicSubnet2RouteTableDD90DC23": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "CircularIntelligenceOS-SimulatorService/SimulatorVpc/PublicSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "SimulatorVpcD06CA084"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-SimulatorService/SimulatorVpc/PublicSubnet2/RouteTable"
+   }
+  },
+  "SimulatorVpcPublicSubnet2RouteTableAssociationBF105320": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "SimulatorVpcPublicSubnet2RouteTableDD90DC23"
+    },
+    "SubnetId": {
+     "Ref": "SimulatorVpcPublicSubnet2SubnetA91F98FF"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-SimulatorService/SimulatorVpc/PublicSubnet2/RouteTableAssociation"
+   }
+  },
+  "SimulatorVpcPublicSubnet2DefaultRoute84AA02BA": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "SimulatorVpcIGW89E642E1"
+    },
+    "RouteTableId": {
+     "Ref": "SimulatorVpcPublicSubnet2RouteTableDD90DC23"
+    }
+   },
+   "DependsOn": [
+    "SimulatorVpcVPCGWCC605D90"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-SimulatorService/SimulatorVpc/PublicSubnet2/DefaultRoute"
+   }
+  },
+  "SimulatorVpcPrivateSubnet1Subnet388F17DA": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "us-east-1a",
+    "CidrBlock": "10.0.128.0/18",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Private"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Name",
+      "Value": "CircularIntelligenceOS-SimulatorService/SimulatorVpc/PrivateSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "SimulatorVpcD06CA084"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-SimulatorService/SimulatorVpc/PrivateSubnet1/Subnet"
+   }
+  },
+  "SimulatorVpcPrivateSubnet1RouteTable7DEC6CDE": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "CircularIntelligenceOS-SimulatorService/SimulatorVpc/PrivateSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "SimulatorVpcD06CA084"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-SimulatorService/SimulatorVpc/PrivateSubnet1/RouteTable"
+   }
+  },
+  "SimulatorVpcPrivateSubnet1RouteTableAssociationB676E2FD": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "SimulatorVpcPrivateSubnet1RouteTable7DEC6CDE"
+    },
+    "SubnetId": {
+     "Ref": "SimulatorVpcPrivateSubnet1Subnet388F17DA"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-SimulatorService/SimulatorVpc/PrivateSubnet1/RouteTableAssociation"
+   }
+  },
+  "SimulatorVpcPrivateSubnet1DefaultRoute437BEA7B": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "SimulatorVpcPublicSubnet1NATGateway1CDDF83A"
+    },
+    "RouteTableId": {
+     "Ref": "SimulatorVpcPrivateSubnet1RouteTable7DEC6CDE"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-SimulatorService/SimulatorVpc/PrivateSubnet1/DefaultRoute"
+   }
+  },
+  "SimulatorVpcPrivateSubnet2Subnet95DF59C7": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "us-east-1b",
+    "CidrBlock": "10.0.192.0/18",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Private"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Name",
+      "Value": "CircularIntelligenceOS-SimulatorService/SimulatorVpc/PrivateSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "SimulatorVpcD06CA084"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-SimulatorService/SimulatorVpc/PrivateSubnet2/Subnet"
+   }
+  },
+  "SimulatorVpcPrivateSubnet2RouteTable91618887": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "CircularIntelligenceOS-SimulatorService/SimulatorVpc/PrivateSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "SimulatorVpcD06CA084"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-SimulatorService/SimulatorVpc/PrivateSubnet2/RouteTable"
+   }
+  },
+  "SimulatorVpcPrivateSubnet2RouteTableAssociation8AE0D83C": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "SimulatorVpcPrivateSubnet2RouteTable91618887"
+    },
+    "SubnetId": {
+     "Ref": "SimulatorVpcPrivateSubnet2Subnet95DF59C7"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-SimulatorService/SimulatorVpc/PrivateSubnet2/RouteTableAssociation"
+   }
+  },
+  "SimulatorVpcPrivateSubnet2DefaultRoute3FDC28D3": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "SimulatorVpcPublicSubnet1NATGateway1CDDF83A"
+    },
+    "RouteTableId": {
+     "Ref": "SimulatorVpcPrivateSubnet2RouteTable91618887"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-SimulatorService/SimulatorVpc/PrivateSubnet2/DefaultRoute"
+   }
+  },
+  "SimulatorVpcIGW89E642E1": {
+   "Type": "AWS::EC2::InternetGateway",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "CircularIntelligenceOS-SimulatorService/SimulatorVpc"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-SimulatorService/SimulatorVpc/IGW"
+   }
+  },
+  "SimulatorVpcVPCGWCC605D90": {
+   "Type": "AWS::EC2::VPCGatewayAttachment",
+   "Properties": {
+    "InternetGatewayId": {
+     "Ref": "SimulatorVpcIGW89E642E1"
+    },
+    "VpcId": {
+     "Ref": "SimulatorVpcD06CA084"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-SimulatorService/SimulatorVpc/VPCGW"
+   }
+  },
+  "SimulatorCluster941920A9": {
+   "Type": "AWS::ECS::Cluster",
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-SimulatorService/SimulatorCluster/Resource"
+   }
+  },
+  "SimulatorServiceLB458E15A4": {
+   "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+   "Properties": {
+    "LoadBalancerAttributes": [
+     {
+      "Key": "deletion_protection.enabled",
+      "Value": "false"
+     }
+    ],
+    "Scheme": "internet-facing",
+    "SecurityGroups": [
+     {
+      "Fn::GetAtt": [
+       "SimulatorServiceLBSecurityGroup8ECB8505",
+       "GroupId"
+      ]
+     }
+    ],
+    "Subnets": [
+     {
+      "Ref": "SimulatorVpcPublicSubnet1SubnetCD3E13C0"
+     },
+     {
+      "Ref": "SimulatorVpcPublicSubnet2SubnetA91F98FF"
+     }
+    ],
+    "Type": "application"
+   },
+   "DependsOn": [
+    "SimulatorVpcPublicSubnet1DefaultRoute877F6EC5",
+    "SimulatorVpcPublicSubnet1RouteTableAssociationFD24B26F",
+    "SimulatorVpcPublicSubnet2DefaultRoute84AA02BA",
+    "SimulatorVpcPublicSubnet2RouteTableAssociationBF105320"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-SimulatorService/SimulatorService/LB/Resource"
+   }
+  },
+  "SimulatorServiceLBSecurityGroup8ECB8505": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Automatically created Security Group for ELB CircularIntelligenceOSSimulatorServiceLB7C919D8B",
+    "SecurityGroupIngress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow from anyone on port 80",
+      "FromPort": 80,
+      "IpProtocol": "tcp",
+      "ToPort": 80
+     }
+    ],
+    "VpcId": {
+     "Ref": "SimulatorVpcD06CA084"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-SimulatorService/SimulatorService/LB/SecurityGroup/Resource"
+   }
+  },
+  "SimulatorServiceLBSecurityGrouptoCircularIntelligenceOSSimulatorServiceSecurityGroup21DE61BD8005A73A73FB": {
+   "Type": "AWS::EC2::SecurityGroupEgress",
+   "Properties": {
+    "Description": "Load balancer to target",
+    "DestinationSecurityGroupId": {
+     "Fn::GetAtt": [
+      "SimulatorServiceSecurityGroupB79C0C29",
+      "GroupId"
+     ]
+    },
+    "FromPort": 8005,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "SimulatorServiceLBSecurityGroup8ECB8505",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "ToPort": 8005
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-SimulatorService/SimulatorService/LB/SecurityGroup/to CircularIntelligenceOSSimulatorServiceSecurityGroup21DE61BD:8005"
+   }
+  },
+  "SimulatorServiceLBPublicListener5BB3EB9C": {
+   "Type": "AWS::ElasticLoadBalancingV2::Listener",
+   "Properties": {
+    "DefaultActions": [
+     {
+      "TargetGroupArn": {
+       "Ref": "SimulatorServiceLBPublicListenerECSGroupC3B9603C"
+      },
+      "Type": "forward"
+     }
+    ],
+    "LoadBalancerArn": {
+     "Ref": "SimulatorServiceLB458E15A4"
+    },
+    "Port": 80,
+    "Protocol": "HTTP"
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-SimulatorService/SimulatorService/LB/PublicListener/Resource"
+   }
+  },
+  "SimulatorServiceLBPublicListenerECSGroupC3B9603C": {
+   "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+   "Properties": {
+    "HealthCheckPath": "/health",
+    "Matcher": {
+     "HttpCode": "200"
+    },
+    "Port": 80,
+    "Protocol": "HTTP",
+    "TargetGroupAttributes": [
+     {
+      "Key": "stickiness.enabled",
+      "Value": "false"
+     }
+    ],
+    "TargetType": "ip",
+    "VpcId": {
+     "Ref": "SimulatorVpcD06CA084"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-SimulatorService/SimulatorService/LB/PublicListener/ECSGroup/Resource"
+   }
+  },
+  "SimulatorServiceTaskDefTaskRole72B90681": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-SimulatorService/SimulatorService/TaskDef/TaskRole/Resource"
+   }
+  },
+  "SimulatorServiceTaskDef9745247D": {
+   "Type": "AWS::ECS::TaskDefinition",
+   "Properties": {
+    "ContainerDefinitions": [
+     {
+      "Environment": [
+       {
+        "Name": "ENVIRONMENT",
+        "Value": "production"
+       }
+      ],
+      "Essential": true,
+      "Image": {
+       "Fn::Sub": "706335435423.dkr.ecr.us-east-1.${AWS::URLSuffix}/cdk-hnb659fds-container-assets-706335435423-us-east-1:8c5730bc93c216294d94c34b82f3be67a2f05a0973dd02080d7405f1bae089ae"
+      },
+      "LogConfiguration": {
+       "LogDriver": "awslogs",
+       "Options": {
+        "awslogs-group": {
+         "Ref": "SimulatorServiceTaskDefwebLogGroup55501020"
+        },
+        "awslogs-stream-prefix": "SimulatorService",
+        "awslogs-region": "us-east-1"
+       }
+      },
+      "Name": "web",
+      "PortMappings": [
+       {
+        "ContainerPort": 8005,
+        "Protocol": "tcp"
+       }
+      ]
+     }
+    ],
+    "Cpu": "256",
+    "ExecutionRoleArn": {
+     "Fn::GetAtt": [
+      "SimulatorServiceTaskDefExecutionRoleC45B9898",
+      "Arn"
+     ]
+    },
+    "Family": "CircularIntelligenceOSSimulatorServiceTaskDef7812DF22",
+    "Memory": "512",
+    "NetworkMode": "awsvpc",
+    "RequiresCompatibilities": [
+     "FARGATE"
+    ],
+    "TaskRoleArn": {
+     "Fn::GetAtt": [
+      "SimulatorServiceTaskDefTaskRole72B90681",
+      "Arn"
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-SimulatorService/SimulatorService/TaskDef/Resource"
+   }
+  },
+  "SimulatorServiceTaskDefwebLogGroup55501020": {
+   "Type": "AWS::Logs::LogGroup",
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-SimulatorService/SimulatorService/TaskDef/web/LogGroup/Resource"
+   }
+  },
+  "SimulatorServiceTaskDefExecutionRoleC45B9898": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-SimulatorService/SimulatorService/TaskDef/ExecutionRole/Resource"
+   }
+  },
+  "SimulatorServiceTaskDefExecutionRoleDefaultPolicy6803DB23": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:BatchGetImage",
+        "ecr:GetDownloadUrlForLayer"
+       ],
+       "Effect": "Allow",
+       "Resource": "arn:aws:ecr:us-east-1:706335435423:repository/cdk-hnb659fds-container-assets-706335435423-us-east-1"
+      },
+      {
+       "Action": "ecr:GetAuthorizationToken",
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "SimulatorServiceTaskDefwebLogGroup55501020",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "SimulatorServiceTaskDefExecutionRoleDefaultPolicy6803DB23",
+    "Roles": [
+     {
+      "Ref": "SimulatorServiceTaskDefExecutionRoleC45B9898"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-SimulatorService/SimulatorService/TaskDef/ExecutionRole/DefaultPolicy/Resource"
+   }
+  },
+  "SimulatorServiceFDF22FD0": {
+   "Type": "AWS::ECS::Service",
+   "Properties": {
+    "Cluster": {
+     "Ref": "SimulatorCluster941920A9"
+    },
+    "DeploymentConfiguration": {
+     "Alarms": {
+      "AlarmNames": [],
+      "Enable": false,
+      "Rollback": false
+     },
+     "MaximumPercent": 200,
+     "MinimumHealthyPercent": 50
+    },
+    "DesiredCount": 2,
+    "EnableECSManagedTags": false,
+    "HealthCheckGracePeriodSeconds": 60,
+    "LaunchType": "FARGATE",
+    "LoadBalancers": [
+     {
+      "ContainerName": "web",
+      "ContainerPort": 8005,
+      "TargetGroupArn": {
+       "Ref": "SimulatorServiceLBPublicListenerECSGroupC3B9603C"
+      }
+     }
+    ],
+    "NetworkConfiguration": {
+     "AwsvpcConfiguration": {
+      "AssignPublicIp": "DISABLED",
+      "SecurityGroups": [
+       {
+        "Fn::GetAtt": [
+         "SimulatorServiceSecurityGroupB79C0C29",
+         "GroupId"
+        ]
+       }
+      ],
+      "Subnets": [
+       {
+        "Ref": "SimulatorVpcPrivateSubnet1Subnet388F17DA"
+       },
+       {
+        "Ref": "SimulatorVpcPrivateSubnet2Subnet95DF59C7"
+       }
+      ]
+     }
+    },
+    "TaskDefinition": {
+     "Ref": "SimulatorServiceTaskDef9745247D"
+    }
+   },
+   "DependsOn": [
+    "SimulatorServiceLBPublicListenerECSGroupC3B9603C",
+    "SimulatorServiceLBPublicListener5BB3EB9C",
+    "SimulatorServiceTaskDefTaskRole72B90681"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-SimulatorService/SimulatorService/Service/Service"
+   }
+  },
+  "SimulatorServiceSecurityGroupB79C0C29": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "CircularIntelligenceOS-SimulatorService/SimulatorService/Service/SecurityGroup",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "SimulatorVpcD06CA084"
+    }
+   },
+   "DependsOn": [
+    "SimulatorServiceTaskDefTaskRole72B90681"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-SimulatorService/SimulatorService/Service/SecurityGroup/Resource"
+   }
+  },
+  "SimulatorServiceSecurityGroupfromCircularIntelligenceOSSimulatorServiceLBSecurityGroup8C3621C68005917F1FDA": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "Load balancer to target",
+    "FromPort": 8005,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "SimulatorServiceSecurityGroupB79C0C29",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "SimulatorServiceLBSecurityGroup8ECB8505",
+      "GroupId"
+     ]
+    },
+    "ToPort": 8005
+   },
+   "DependsOn": [
+    "SimulatorServiceTaskDefTaskRole72B90681"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-SimulatorService/SimulatorService/Service/SecurityGroup/from CircularIntelligenceOSSimulatorServiceLBSecurityGroup8C3621C6:8005"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/31STW/bMAz9Lb0r6pIeek7TrghQbIZd9BrQCqtyUSRDpBIEhv97ITlfa4ed+Pj0SPFRmunp9Iee3sCeJ2a9mThqdd8ImI2CPa96NDPdv3VGLd79W7VQVWodmSa1HiVzF1SHJPgKrcMLf+HmzMEQCAV/FmfwtKxy+AXyDIJ7OKgq0g4EL42XXjB6PAvGSY7ZXATMxxa9qAZNiiSH5xhSV2b4L/FkIzJ/o5e+8INCw7pfuMSCMatO8CdEC9kVbx7xnTydPH1lghcgj/GKO9Y2GHdkxj2NsFy36kCyVdbzrnNkyrZeAqwfwIE3uP5Sjg5YyLgA67YoyNvdTPf/ri4m/sqvdcSC/qg54avzV4gW5bzIq3RQBFvd12F89xKr4MiUhxpRdhdXwIzC+jGYDcblFmz+FCj5TNfYBSYJ8fAAjMoFy7p/CfZ84wkPg6qRQ4rj+n4n6ZKo0qgRsORtmeIoGVR1kI/gb+/09E7f3/xhoklMXmiLuh7jJ/f4G/4CAwAA"
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-SimulatorService/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "SimulatorServiceLoadBalancerDNSA4CBFDA0": {
+   "Value": {
+    "Fn::GetAtt": [
+     "SimulatorServiceLB458E15A4",
+     "DNSName"
+    ]
+   }
+  },
+  "SimulatorServiceServiceURLD3383E96": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "http://",
+      {
+       "Fn::GetAtt": [
+        "SimulatorServiceLB458E15A4",
+        "DNSName"
+       ]
+      }
+     ]
+    ]
+   }
+  },
+  "SimulatorServiceURL": {
+   "Description": "URL for the Future Simulator Service",
+   "Value": {
+    "Fn::GetAtt": [
+     "SimulatorServiceLB458E15A4",
+     "DNSName"
+    ]
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}
