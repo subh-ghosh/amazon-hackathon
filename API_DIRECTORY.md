@@ -30,6 +30,18 @@ VPC-3 Product & Business Layer
 
 ---
 
+## 🛡️ Service #1: Return Prevention Engine
+**VPC:** VPC-1 — Intelligence Layer
+**Status:** ✅ Live (AWS ECS Fargate)
+**Base URL:** `http://Circul-Preve-Rs6gi1hesUgp-476733633.us-east-1.elb.amazonaws.com`
+
+| Method | Endpoint | Purpose |
+|:---|:---|:---|
+| `GET` | `/health` | Health Check |
+| `POST` | `/api/v1/prevention/analyze` | Assess return risk & generate confidence-backed prevention actions |
+| `GET` | `/docs` | Swagger UI |
+
+---
 ## 🔍 Service #2: Truth Discovery Engine
 **VPC:** VPC-1 — Intelligence Layer
 **Status:** ✅ Live (AWS ECS Fargate) — *Validation & Security Hardened* 🔒
