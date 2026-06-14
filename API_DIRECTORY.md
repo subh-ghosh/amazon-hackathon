@@ -124,6 +124,21 @@ VPC-3 Product & Business Layer
 
 ---
 
+## 🔄 Service #9: Circular Routing Engine
+**VPC:** VPC-4 — Central Knowledge Platform (Cross-Layer Circular Economy)
+**Status:** ✅ Live (AWS ECS Fargate) — *Validation & Security Hardened* 🔒
+**Base URL:** `http://Circul-Circu-sybvn5Ar6ipQ-119322148.us-east-1.elb.amazonaws.com`
+
+| Method | Endpoint | Purpose |
+|:---|:---|:---|
+| `GET` | `/health` | Health Check |
+| `POST` | `/api/v1/logistics/optimize` | Determines the optimal facility factoring Recovery, Cost, Carbon, and Capacity |
+| `POST` | `/api/v1/logistics/batch-optimize` | Bulk array optimization |
+| `GET` | `/api/v1/logistics/analytics` | Real-time Thread-safe Ops Metrics |
+| `GET` | `/docs` | Swagger UI |
+
+---
+
 ## ♻️ Service #10: Packaging Intelligence
 **VPC:** VPC-1 — Intelligence Layer
 **Status:** ✅ Live (AWS ECS Fargate) — *Validation & Security Hardened* 🔒
@@ -133,6 +148,20 @@ VPC-3 Product & Business Layer
 |:---|:---|:---|
 | `GET` | `/health` | Health Check |
 | `POST` | `/api/v1/packaging/analyze` | Analyzes sustainability, efficiency, recyclability, carbon footprint, and returns optimization recommendations. |
+| `GET` | `/docs` | Swagger UI |
+
+---
+
+## 📈 Service #11: Seller Intelligence Engine
+**VPC:** VPC-3 — Product & Business Layer
+**Status:** ✅ Live (AWS ECS Fargate) — *Validation & Security Hardened* 🔒
+**Base URL:** `http://Circul-Selle-Q7zRyEczbzCg-2088084796.us-east-1.elb.amazonaws.com`
+
+| Method | Endpoint | Purpose |
+|:---|:---|:---|
+| `GET` | `/health` | Health Check |
+| `POST` | `/api/v1/seller/analyze` | Generates seller health, fraud, return, and sustainability scores based on historical behavior |
+| `GET` | `/api/v1/seller/{sellerId}/dashboard` | Retrieves the aggregated Seller Intelligence Dashboard and insights |
 | `GET` | `/docs` | Swagger UI |
 
 ---
