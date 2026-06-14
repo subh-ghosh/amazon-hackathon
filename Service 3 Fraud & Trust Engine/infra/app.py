@@ -7,7 +7,7 @@ from infra.infra_stack import InfraStack
 
 
 app = cdk.App()
-InfraStack(app, "InfraStack",
+InfraStack(app, "CircularIntelligenceOS-FraudService",
     # If you don't specify 'env', this stack will be environment-agnostic.
     # Account/Region-dependent features and context lookups will not work,
     # but a single synthesized template can be deployed anywhere.
