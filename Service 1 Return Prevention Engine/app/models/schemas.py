@@ -1,8 +1,10 @@
 import math
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, ConfigDict
 from typing import List
 
 class PreventionRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    
     customerId: str = Field(
         ..., 
         max_length=100, 
