@@ -1,0 +1,869 @@
+{
+ "Resources": {
+  "OptimizerVpc4DBB3F75": {
+   "Type": "AWS::EC2::VPC",
+   "Properties": {
+    "CidrBlock": "10.0.0.0/16",
+    "EnableDnsHostnames": true,
+    "EnableDnsSupport": true,
+    "InstanceTenancy": "default",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "CircularIntelligenceOS-OptimizerService/OptimizerVpc"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-OptimizerService/OptimizerVpc/Resource"
+   }
+  },
+  "OptimizerVpcPublicSubnet1SubnetBF7953DF": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "us-east-1a",
+    "CidrBlock": "10.0.0.0/18",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "CircularIntelligenceOS-OptimizerService/OptimizerVpc/PublicSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "OptimizerVpc4DBB3F75"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-OptimizerService/OptimizerVpc/PublicSubnet1/Subnet"
+   }
+  },
+  "OptimizerVpcPublicSubnet1RouteTableCADC1A81": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "CircularIntelligenceOS-OptimizerService/OptimizerVpc/PublicSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "OptimizerVpc4DBB3F75"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-OptimizerService/OptimizerVpc/PublicSubnet1/RouteTable"
+   }
+  },
+  "OptimizerVpcPublicSubnet1RouteTableAssociation15BC447C": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "OptimizerVpcPublicSubnet1RouteTableCADC1A81"
+    },
+    "SubnetId": {
+     "Ref": "OptimizerVpcPublicSubnet1SubnetBF7953DF"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-OptimizerService/OptimizerVpc/PublicSubnet1/RouteTableAssociation"
+   }
+  },
+  "OptimizerVpcPublicSubnet1DefaultRouteD4AAE716": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "OptimizerVpcIGW95341AB9"
+    },
+    "RouteTableId": {
+     "Ref": "OptimizerVpcPublicSubnet1RouteTableCADC1A81"
+    }
+   },
+   "DependsOn": [
+    "OptimizerVpcVPCGW00CB85A2"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-OptimizerService/OptimizerVpc/PublicSubnet1/DefaultRoute"
+   }
+  },
+  "OptimizerVpcPublicSubnet1EIP01D14290": {
+   "Type": "AWS::EC2::EIP",
+   "Properties": {
+    "Domain": "vpc",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "CircularIntelligenceOS-OptimizerService/OptimizerVpc/PublicSubnet1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-OptimizerService/OptimizerVpc/PublicSubnet1/EIP"
+   }
+  },
+  "OptimizerVpcPublicSubnet1NATGateway6016682A": {
+   "Type": "AWS::EC2::NatGateway",
+   "Properties": {
+    "AllocationId": {
+     "Fn::GetAtt": [
+      "OptimizerVpcPublicSubnet1EIP01D14290",
+      "AllocationId"
+     ]
+    },
+    "SubnetId": {
+     "Ref": "OptimizerVpcPublicSubnet1SubnetBF7953DF"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "CircularIntelligenceOS-OptimizerService/OptimizerVpc/PublicSubnet1"
+     }
+    ]
+   },
+   "DependsOn": [
+    "OptimizerVpcPublicSubnet1DefaultRouteD4AAE716",
+    "OptimizerVpcPublicSubnet1RouteTableAssociation15BC447C"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-OptimizerService/OptimizerVpc/PublicSubnet1/NATGateway"
+   }
+  },
+  "OptimizerVpcPublicSubnet2SubnetAAC1B849": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "us-east-1b",
+    "CidrBlock": "10.0.64.0/18",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "CircularIntelligenceOS-OptimizerService/OptimizerVpc/PublicSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "OptimizerVpc4DBB3F75"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-OptimizerService/OptimizerVpc/PublicSubnet2/Subnet"
+   }
+  },
+  "OptimizerVpcPublicSubnet2RouteTable7C9F11A4": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "CircularIntelligenceOS-OptimizerService/OptimizerVpc/PublicSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "OptimizerVpc4DBB3F75"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-OptimizerService/OptimizerVpc/PublicSubnet2/RouteTable"
+   }
+  },
+  "OptimizerVpcPublicSubnet2RouteTableAssociation00DDD4E2": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "OptimizerVpcPublicSubnet2RouteTable7C9F11A4"
+    },
+    "SubnetId": {
+     "Ref": "OptimizerVpcPublicSubnet2SubnetAAC1B849"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-OptimizerService/OptimizerVpc/PublicSubnet2/RouteTableAssociation"
+   }
+  },
+  "OptimizerVpcPublicSubnet2DefaultRoute118FD4A9": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "OptimizerVpcIGW95341AB9"
+    },
+    "RouteTableId": {
+     "Ref": "OptimizerVpcPublicSubnet2RouteTable7C9F11A4"
+    }
+   },
+   "DependsOn": [
+    "OptimizerVpcVPCGW00CB85A2"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-OptimizerService/OptimizerVpc/PublicSubnet2/DefaultRoute"
+   }
+  },
+  "OptimizerVpcPrivateSubnet1Subnet3BC6A0C4": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "us-east-1a",
+    "CidrBlock": "10.0.128.0/18",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Private"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Name",
+      "Value": "CircularIntelligenceOS-OptimizerService/OptimizerVpc/PrivateSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "OptimizerVpc4DBB3F75"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-OptimizerService/OptimizerVpc/PrivateSubnet1/Subnet"
+   }
+  },
+  "OptimizerVpcPrivateSubnet1RouteTable28BC1AA5": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "CircularIntelligenceOS-OptimizerService/OptimizerVpc/PrivateSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "OptimizerVpc4DBB3F75"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-OptimizerService/OptimizerVpc/PrivateSubnet1/RouteTable"
+   }
+  },
+  "OptimizerVpcPrivateSubnet1RouteTableAssociation62248B43": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "OptimizerVpcPrivateSubnet1RouteTable28BC1AA5"
+    },
+    "SubnetId": {
+     "Ref": "OptimizerVpcPrivateSubnet1Subnet3BC6A0C4"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-OptimizerService/OptimizerVpc/PrivateSubnet1/RouteTableAssociation"
+   }
+  },
+  "OptimizerVpcPrivateSubnet1DefaultRouteDF252793": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "OptimizerVpcPublicSubnet1NATGateway6016682A"
+    },
+    "RouteTableId": {
+     "Ref": "OptimizerVpcPrivateSubnet1RouteTable28BC1AA5"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-OptimizerService/OptimizerVpc/PrivateSubnet1/DefaultRoute"
+   }
+  },
+  "OptimizerVpcPrivateSubnet2Subnet0658BF7B": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "us-east-1b",
+    "CidrBlock": "10.0.192.0/18",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Private"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Name",
+      "Value": "CircularIntelligenceOS-OptimizerService/OptimizerVpc/PrivateSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "OptimizerVpc4DBB3F75"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-OptimizerService/OptimizerVpc/PrivateSubnet2/Subnet"
+   }
+  },
+  "OptimizerVpcPrivateSubnet2RouteTableC4E10CAC": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "CircularIntelligenceOS-OptimizerService/OptimizerVpc/PrivateSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "OptimizerVpc4DBB3F75"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-OptimizerService/OptimizerVpc/PrivateSubnet2/RouteTable"
+   }
+  },
+  "OptimizerVpcPrivateSubnet2RouteTableAssociationD90A9279": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "OptimizerVpcPrivateSubnet2RouteTableC4E10CAC"
+    },
+    "SubnetId": {
+     "Ref": "OptimizerVpcPrivateSubnet2Subnet0658BF7B"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-OptimizerService/OptimizerVpc/PrivateSubnet2/RouteTableAssociation"
+   }
+  },
+  "OptimizerVpcPrivateSubnet2DefaultRouteD5CF0FD2": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "OptimizerVpcPublicSubnet1NATGateway6016682A"
+    },
+    "RouteTableId": {
+     "Ref": "OptimizerVpcPrivateSubnet2RouteTableC4E10CAC"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-OptimizerService/OptimizerVpc/PrivateSubnet2/DefaultRoute"
+   }
+  },
+  "OptimizerVpcIGW95341AB9": {
+   "Type": "AWS::EC2::InternetGateway",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "CircularIntelligenceOS-OptimizerService/OptimizerVpc"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-OptimizerService/OptimizerVpc/IGW"
+   }
+  },
+  "OptimizerVpcVPCGW00CB85A2": {
+   "Type": "AWS::EC2::VPCGatewayAttachment",
+   "Properties": {
+    "InternetGatewayId": {
+     "Ref": "OptimizerVpcIGW95341AB9"
+    },
+    "VpcId": {
+     "Ref": "OptimizerVpc4DBB3F75"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-OptimizerService/OptimizerVpc/VPCGW"
+   }
+  },
+  "OptimizerCluster5A47602A": {
+   "Type": "AWS::ECS::Cluster",
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-OptimizerService/OptimizerCluster/Resource"
+   }
+  },
+  "OptimizerServiceLBA0B3831D": {
+   "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+   "Properties": {
+    "LoadBalancerAttributes": [
+     {
+      "Key": "deletion_protection.enabled",
+      "Value": "false"
+     }
+    ],
+    "Scheme": "internet-facing",
+    "SecurityGroups": [
+     {
+      "Fn::GetAtt": [
+       "OptimizerServiceLBSecurityGroup97F5F900",
+       "GroupId"
+      ]
+     }
+    ],
+    "Subnets": [
+     {
+      "Ref": "OptimizerVpcPublicSubnet1SubnetBF7953DF"
+     },
+     {
+      "Ref": "OptimizerVpcPublicSubnet2SubnetAAC1B849"
+     }
+    ],
+    "Type": "application"
+   },
+   "DependsOn": [
+    "OptimizerVpcPublicSubnet1DefaultRouteD4AAE716",
+    "OptimizerVpcPublicSubnet1RouteTableAssociation15BC447C",
+    "OptimizerVpcPublicSubnet2DefaultRoute118FD4A9",
+    "OptimizerVpcPublicSubnet2RouteTableAssociation00DDD4E2"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-OptimizerService/OptimizerService/LB/Resource"
+   }
+  },
+  "OptimizerServiceLBSecurityGroup97F5F900": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Automatically created Security Group for ELB CircularIntelligenceOSOptimizerServiceLBC19A81B4",
+    "SecurityGroupIngress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow from anyone on port 80",
+      "FromPort": 80,
+      "IpProtocol": "tcp",
+      "ToPort": 80
+     }
+    ],
+    "VpcId": {
+     "Ref": "OptimizerVpc4DBB3F75"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-OptimizerService/OptimizerService/LB/SecurityGroup/Resource"
+   }
+  },
+  "OptimizerServiceLBSecurityGrouptoCircularIntelligenceOSOptimizerServiceSecurityGroup15DD34628006895C2C8C": {
+   "Type": "AWS::EC2::SecurityGroupEgress",
+   "Properties": {
+    "Description": "Load balancer to target",
+    "DestinationSecurityGroupId": {
+     "Fn::GetAtt": [
+      "OptimizerServiceSecurityGroup874EAD9F",
+      "GroupId"
+     ]
+    },
+    "FromPort": 8006,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "OptimizerServiceLBSecurityGroup97F5F900",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "ToPort": 8006
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-OptimizerService/OptimizerService/LB/SecurityGroup/to CircularIntelligenceOSOptimizerServiceSecurityGroup15DD3462:8006"
+   }
+  },
+  "OptimizerServiceLBPublicListener01F38CEC": {
+   "Type": "AWS::ElasticLoadBalancingV2::Listener",
+   "Properties": {
+    "DefaultActions": [
+     {
+      "TargetGroupArn": {
+       "Ref": "OptimizerServiceLBPublicListenerECSGroupFBE83896"
+      },
+      "Type": "forward"
+     }
+    ],
+    "LoadBalancerArn": {
+     "Ref": "OptimizerServiceLBA0B3831D"
+    },
+    "Port": 80,
+    "Protocol": "HTTP"
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-OptimizerService/OptimizerService/LB/PublicListener/Resource"
+   }
+  },
+  "OptimizerServiceLBPublicListenerECSGroupFBE83896": {
+   "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+   "Properties": {
+    "HealthCheckPath": "/health",
+    "Matcher": {
+     "HttpCode": "200"
+    },
+    "Port": 80,
+    "Protocol": "HTTP",
+    "TargetGroupAttributes": [
+     {
+      "Key": "stickiness.enabled",
+      "Value": "false"
+     }
+    ],
+    "TargetType": "ip",
+    "VpcId": {
+     "Ref": "OptimizerVpc4DBB3F75"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-OptimizerService/OptimizerService/LB/PublicListener/ECSGroup/Resource"
+   }
+  },
+  "OptimizerServiceTaskDefTaskRole0C366164": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-OptimizerService/OptimizerService/TaskDef/TaskRole/Resource"
+   }
+  },
+  "OptimizerServiceTaskDef98826C68": {
+   "Type": "AWS::ECS::TaskDefinition",
+   "Properties": {
+    "ContainerDefinitions": [
+     {
+      "Environment": [
+       {
+        "Name": "ENVIRONMENT",
+        "Value": "production"
+       }
+      ],
+      "Essential": true,
+      "Image": {
+       "Fn::Sub": "706335435423.dkr.ecr.us-east-1.${AWS::URLSuffix}/cdk-hnb659fds-container-assets-706335435423-us-east-1:598aa4419ecd4ef1a05f1be204c4b8697a06dd35e9aac57c5d0c36f8beb43c59"
+      },
+      "LogConfiguration": {
+       "LogDriver": "awslogs",
+       "Options": {
+        "awslogs-group": {
+         "Ref": "OptimizerServiceTaskDefwebLogGroup497B64A0"
+        },
+        "awslogs-stream-prefix": "OptimizerService",
+        "awslogs-region": "us-east-1"
+       }
+      },
+      "Name": "web",
+      "PortMappings": [
+       {
+        "ContainerPort": 8006,
+        "Protocol": "tcp"
+       }
+      ]
+     }
+    ],
+    "Cpu": "256",
+    "ExecutionRoleArn": {
+     "Fn::GetAtt": [
+      "OptimizerServiceTaskDefExecutionRoleE3CF0C85",
+      "Arn"
+     ]
+    },
+    "Family": "CircularIntelligenceOSOptimizerServiceTaskDefF1011F0D",
+    "Memory": "512",
+    "NetworkMode": "awsvpc",
+    "RequiresCompatibilities": [
+     "FARGATE"
+    ],
+    "TaskRoleArn": {
+     "Fn::GetAtt": [
+      "OptimizerServiceTaskDefTaskRole0C366164",
+      "Arn"
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-OptimizerService/OptimizerService/TaskDef/Resource"
+   }
+  },
+  "OptimizerServiceTaskDefwebLogGroup497B64A0": {
+   "Type": "AWS::Logs::LogGroup",
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-OptimizerService/OptimizerService/TaskDef/web/LogGroup/Resource"
+   }
+  },
+  "OptimizerServiceTaskDefExecutionRoleE3CF0C85": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-OptimizerService/OptimizerService/TaskDef/ExecutionRole/Resource"
+   }
+  },
+  "OptimizerServiceTaskDefExecutionRoleDefaultPolicy76D363C7": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:BatchGetImage",
+        "ecr:GetDownloadUrlForLayer"
+       ],
+       "Effect": "Allow",
+       "Resource": "arn:aws:ecr:us-east-1:706335435423:repository/cdk-hnb659fds-container-assets-706335435423-us-east-1"
+      },
+      {
+       "Action": "ecr:GetAuthorizationToken",
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "OptimizerServiceTaskDefwebLogGroup497B64A0",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "OptimizerServiceTaskDefExecutionRoleDefaultPolicy76D363C7",
+    "Roles": [
+     {
+      "Ref": "OptimizerServiceTaskDefExecutionRoleE3CF0C85"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-OptimizerService/OptimizerService/TaskDef/ExecutionRole/DefaultPolicy/Resource"
+   }
+  },
+  "OptimizerService979DBA9C": {
+   "Type": "AWS::ECS::Service",
+   "Properties": {
+    "Cluster": {
+     "Ref": "OptimizerCluster5A47602A"
+    },
+    "DeploymentConfiguration": {
+     "Alarms": {
+      "AlarmNames": [],
+      "Enable": false,
+      "Rollback": false
+     },
+     "MaximumPercent": 200,
+     "MinimumHealthyPercent": 50
+    },
+    "DesiredCount": 2,
+    "EnableECSManagedTags": false,
+    "HealthCheckGracePeriodSeconds": 60,
+    "LaunchType": "FARGATE",
+    "LoadBalancers": [
+     {
+      "ContainerName": "web",
+      "ContainerPort": 8006,
+      "TargetGroupArn": {
+       "Ref": "OptimizerServiceLBPublicListenerECSGroupFBE83896"
+      }
+     }
+    ],
+    "NetworkConfiguration": {
+     "AwsvpcConfiguration": {
+      "AssignPublicIp": "DISABLED",
+      "SecurityGroups": [
+       {
+        "Fn::GetAtt": [
+         "OptimizerServiceSecurityGroup874EAD9F",
+         "GroupId"
+        ]
+       }
+      ],
+      "Subnets": [
+       {
+        "Ref": "OptimizerVpcPrivateSubnet1Subnet3BC6A0C4"
+       },
+       {
+        "Ref": "OptimizerVpcPrivateSubnet2Subnet0658BF7B"
+       }
+      ]
+     }
+    },
+    "TaskDefinition": {
+     "Ref": "OptimizerServiceTaskDef98826C68"
+    }
+   },
+   "DependsOn": [
+    "OptimizerServiceLBPublicListenerECSGroupFBE83896",
+    "OptimizerServiceLBPublicListener01F38CEC",
+    "OptimizerServiceTaskDefTaskRole0C366164"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-OptimizerService/OptimizerService/Service/Service"
+   }
+  },
+  "OptimizerServiceSecurityGroup874EAD9F": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "CircularIntelligenceOS-OptimizerService/OptimizerService/Service/SecurityGroup",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "OptimizerVpc4DBB3F75"
+    }
+   },
+   "DependsOn": [
+    "OptimizerServiceTaskDefTaskRole0C366164"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-OptimizerService/OptimizerService/Service/SecurityGroup/Resource"
+   }
+  },
+  "OptimizerServiceSecurityGroupfromCircularIntelligenceOSOptimizerServiceLBSecurityGroup093098B68006ECDE24FD": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "Load balancer to target",
+    "FromPort": 8006,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "OptimizerServiceSecurityGroup874EAD9F",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "OptimizerServiceLBSecurityGroup97F5F900",
+      "GroupId"
+     ]
+    },
+    "ToPort": 8006
+   },
+   "DependsOn": [
+    "OptimizerServiceTaskDefTaskRole0C366164"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-OptimizerService/OptimizerService/Service/SecurityGroup/from CircularIntelligenceOSOptimizerServiceLBSecurityGroup093098B6:8006"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/31STW/bMAz9Lb0r6pIeek7TrghQbIZd9BrQCqtyUSRDpBIEhv97ITlfa4ed+Pj0SPFRmunp9Iee3sCeJ2a9mThqdd8ImI2CPa96NDPdv3VGLd79W7VQVWodmSa1HiVzF1SHJPgKrcMLf+HmzMEQCAV/FmfwtKxy+AXyDIJ7OKgq0g4EL42XXjB6PAvGSY7ZXATMxxa9qAZNiiSH5xhSV2b4L/FkIzJ/o5e+8INCw7pfuMSCMatO8CdEC9kVbx7xnTydPH1lghcgj/GKO9Y2GHdkxj2NsFy36kCyVdbzrnNkyrZeAqwfwIE3uP5Sjg5YyLgA67YoyNvdTPf/ri4m/sqvdcSC/qg54avzV4gW5bzIq3RQBFvd12F89xKr4MiUhxpRdhdXwIzC+jGYDcblFmz+FCj5TNfYBSYJ8fAAjMoFy7p/CfZ84wkPg6qRQ4rj+n4n6ZKo0qgRsORtmeIoGVR1kI/gb+/09E7f3/xhoklMXmiLuh7jJ/f4G/4CAwAA"
+   },
+   "Metadata": {
+    "aws:cdk:path": "CircularIntelligenceOS-OptimizerService/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "OptimizerServiceLoadBalancerDNS71C0BF79": {
+   "Value": {
+    "Fn::GetAtt": [
+     "OptimizerServiceLBA0B3831D",
+     "DNSName"
+    ]
+   }
+  },
+  "OptimizerServiceServiceURL5B0DFE0E": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "http://",
+      {
+       "Fn::GetAtt": [
+        "OptimizerServiceLBA0B3831D",
+        "DNSName"
+       ]
+      }
+     ]
+    ]
+   }
+  },
+  "OptimizerServiceURL": {
+   "Description": "URL for the Recovery Optimizer Service",
+   "Value": {
+    "Fn::GetAtt": [
+     "OptimizerServiceLBA0B3831D",
+     "DNSName"
+    ]
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

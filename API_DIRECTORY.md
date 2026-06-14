@@ -43,3 +43,12 @@ This document serves as the central registry for all deployed microservices with
 
 ---
 *Note: All APIs natively support Cross-Origin Resource Sharing (CORS) for the hackathon and return standard HTTP 200/201 on success or 422 for Validation Errors.*
+
+## ⚖️ Service #6: Recovery Optimizer
+**Status:** ✅ Deployed (AWS ECS Fargate)
+**Base URL:** `http://Circul-Optim-mcZ0NzPDZK07-890558390.us-east-1.elb.amazonaws.com`
+
+### Endpoints
+* **Interactive API Docs (Swagger):** `http://Circul-Optim-mcZ0NzPDZK07-890558390.us-east-1.elb.amazonaws.com/docs`
+* **Optimize Recovery (Core Logic):** `POST /api/v1/recovery/optimize`
+* **Health Check:** `GET /health`
