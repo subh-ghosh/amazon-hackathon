@@ -1,87 +1,104 @@
 # 🌐 Amazon Circular Intelligence OS — API Directory
 
-This document serves as the central registry for all deployed microservices within the Circular Intelligence OS ecosystem. Use these endpoints to connect frontends, trigger events, and validate cross-service integrations.
+This document is the **single source of truth** for all deployed microservices in the Circular Intelligence OS ecosystem. Use these endpoints to connect frontends, trigger events, and validate cross-service integrations.
 
 ---
 
-## 🏗️ VPC Architecture (Domain-Driven)
+## 🏗️ VPC Architecture (4-Domain Design)
 
-| VPC | Domain | Services |
-|:---|:---|:---|
-| **VPC-1** `IntelligenceVpc` | Intelligence & Decisioning | S3 (Fraud & Trust) |
-| **VPC-2** `RecoveryVpc` | Recovery Optimization | S5 (Future Simulator), S6 (Recovery Optimizer), S7 (Reverse Logistics) |
-| **VPC-3** `ProductSellerVpc` | Product & Seller Domain | S4, S11 *(planned)* |
-| **VPC-4** `SustainabilityVpc` | Action & Sustainability | S8, S9, S10 *(planned)* |
-| **VPC-5** `CentralPlatformVpc` | Central Platform | S12 (Knowledge Graph) |
+```
+VPC-1 Intelligence Layer
+        │
+        ▼
+VPC-4 Central Knowledge Platform
+        ▲
+        │
+VPC-2 Recovery Layer
+        │
+        ▼
+VPC-3 Product & Business Layer
+```
 
-Communication: **EventBridge** + **HTTP via ALB** (no VPC peering required)
+| VPC | Domain | Services | Purpose |
+|:---|:---|:---|:---|
+| **VPC-1** `IntelligenceLayer` | Intelligence | S1, S2, S3, S10 | AI/ML, Risk Analysis, Root Cause Detection |
+| **VPC-2** `RecoveryLayer` | Recovery | S5, S6, S7, S8, S9 | Recovery Decisions, Routing, Optimization, Sustainability |
+| **VPC-3** `ProductBusinessLayer` | Product & Business | S4, S11 | Product Lifecycle, Seller Analytics, Business Dashboards |
+| **VPC-4** `CentralPlatform` | Central Knowledge | S12 + EventBridge + DynamoDB + CloudWatch | System of Record, Knowledge Graph, Cross-Service Learning |
+
+> **Communication:** EventBridge + HTTP via ALB. No VPC peering required.
 
 ---
 
 ## 🛡️ Service #3: Fraud & Trust Engine
-**VPC:** VPC-1 — Intelligence & Decisioning
-**Status:** ✅ Deployed (AWS ECS Fargate)
+**VPC:** VPC-1 — Intelligence Layer
+**Status:** ✅ Live (AWS ECS Fargate)
 **Base URL:** `http://Circul-Fraud-Q25TuVtGjWhU-36938543.us-east-1.elb.amazonaws.com`
 
-### Endpoints
-* **Interactive API Docs (Swagger):** `http://Circul-Fraud-Q25TuVtGjWhU-36938543.us-east-1.elb.amazonaws.com/docs`
-* **Score Fraud (Core Logic):** `POST /api/v1/fraud/score`
-* **Health Check:** `GET /health`
-* **Metrics:** `GET /metrics`
+| Method | Endpoint | Purpose |
+|:---|:---|:---|
+| `GET` | `/health` | Health Check |
+| `POST` | `/api/v1/fraud/score` | Score a return for fraud risk |
+| `GET` | `/docs` | Swagger UI |
+| `GET` | `/metrics` | Service Metrics |
 
 ---
 
 ## 🔮 Service #5: Future Simulator
-**VPC:** VPC-2 — Recovery Optimization
-**Status:** ✅ Deployed (AWS ECS Fargate)
+**VPC:** VPC-2 — Recovery Layer
+**Status:** ✅ Live (AWS ECS Fargate)
 **Base URL:** `http://Circul-Simul-a4nmYbuxVUrr-319139381.us-east-1.elb.amazonaws.com`
 
-### Endpoints
-* **Interactive API Docs (Swagger):** `http://Circul-Simul-a4nmYbuxVUrr-319139381.us-east-1.elb.amazonaws.com/docs`
-* **Run Simulation (Core Logic):** `POST /api/v1/simulation/run`
-* **Health Check:** `GET /health`
+| Method | Endpoint | Purpose |
+|:---|:---|:---|
+| `GET` | `/health` | Health Check |
+| `POST` | `/api/v1/simulation/run` | Run multi-scenario recovery simulation |
+| `GET` | `/docs` | Swagger UI |
 
 ---
 
 ## ⚖️ Service #6: Recovery Optimizer
-**VPC:** VPC-2 — Recovery Optimization
-**Status:** ✅ Deployed (AWS ECS Fargate)
+**VPC:** VPC-2 — Recovery Layer
+**Status:** ✅ Live (AWS ECS Fargate)
 **Base URL:** `http://Circul-Optim-mcZ0NzPDZK07-890558390.us-east-1.elb.amazonaws.com`
 
-### Endpoints
-* **Interactive API Docs (Swagger):** `http://Circul-Optim-mcZ0NzPDZK07-890558390.us-east-1.elb.amazonaws.com/docs`
-* **Optimize Recovery (Core Logic):** `POST /api/v1/recovery/optimize`
-* **Health Check:** `GET /health`
+| Method | Endpoint | Purpose |
+|:---|:---|:---|
+| `GET` | `/health` | Health Check |
+| `POST` | `/api/v1/recovery/optimize` | Select optimal recovery decision |
+| `GET` | `/docs` | Swagger UI |
 
 ---
 
 ## 🚚 Service #7: Reverse Logistics Optimizer
-**VPC:** VPC-2 — Recovery Optimization
-**Status:** ✅ Deployed (AWS ECS Fargate)
+**VPC:** VPC-2 — Recovery Layer
+**Status:** ✅ Live (AWS ECS Fargate)
 **Base URL:** `http://Circul-Logis-hgIeVqBbAk0h-362510022.us-east-1.elb.amazonaws.com`
 
-### Endpoints
-* **Interactive API Docs (Swagger):** `http://Circul-Logis-hgIeVqBbAk0h-362510022.us-east-1.elb.amazonaws.com/docs`
-* **Optimize Logistics (Core Logic):** `POST /api/v1/logistics/optimize`
-* **Health Check:** `GET /health`
+| Method | Endpoint | Purpose |
+|:---|:---|:---|
+| `GET` | `/health` | Health Check |
+| `POST` | `/api/v1/logistics/optimize` | Determine optimal warehouse route & cost |
+| `GET` | `/docs` | Swagger UI |
 
 ---
 
 ## 🧠 Service #12: Learning & Knowledge Graph
-**VPC:** VPC-5 — Central Platform
-**Status:** ✅ Deployed (AWS ECS Fargate + Neptune Graph DB)
+**VPC:** VPC-4 — Central Knowledge Platform
+**Status:** ✅ Live (AWS ECS Fargate + Neptune Graph DB)
 **Base URL:** `http://Circul-Graph-ye0M61dV1dYT-1449212263.us-east-1.elb.amazonaws.com`
 
-### Endpoints
-* **Interactive API Docs (Swagger):** `http://Circul-Graph-ye0M61dV1dYT-1449212263.us-east-1.elb.amazonaws.com/docs`
-* **Create Fraud Case (Ingest from Service #3):** `POST /api/v1/fraud-cases/`
-* **Graph Intelligence UI:** `GET /api/v1/intelligence`
-* **Customers Graph:** `GET /api/v1/customers`
-* **Products Graph:** `GET /api/v1/products`
-* **Returns Graph:** `GET /api/v1/returns`
-* **Recovery Actions:** `GET /api/v1/recovery-actions`
-* **Health Check:** `GET /health`
+| Method | Endpoint | Purpose |
+|:---|:---|:---|
+| `GET` | `/health` | Health Check |
+| `POST` | `/api/v1/fraud-cases/` | Ingest fraud case from Service #3 |
+| `GET` | `/api/v1/intelligence` | Graph Intelligence UI |
+| `GET` | `/api/v1/customers` | Customer graph |
+| `GET` | `/api/v1/products` | Product graph |
+| `GET` | `/api/v1/returns` | Returns graph |
+| `GET` | `/api/v1/recovery-actions` | Recovery actions graph |
+| `GET` | `/docs` | Swagger UI |
 
 ---
 
-*Note: All APIs natively support Cross-Origin Resource Sharing (CORS) for the hackathon and return standard HTTP 200/201 on success or 422 for Validation Errors.*
+*All APIs support CORS. Success responses return HTTP 200/201. Validation errors return HTTP 422.*
