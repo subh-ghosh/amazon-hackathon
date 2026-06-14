@@ -1,0 +1,36 @@
+{
+  "version": "54.0.0",
+  "files": {
+    "f1f17f54391647af2b2c4af73894be8cdeedd9fe5033c1801ed202f591c502c6": {
+      "displayName": "CircularIntelligenceOS-TruthService Template",
+      "source": {
+        "path": "CircularIntelligenceOS-TruthService.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "706335435423-us-east-1-d779a25e": {
+          "bucketName": "cdk-hnb659fds-assets-706335435423-us-east-1",
+          "objectKey": "f1f17f54391647af2b2c4af73894be8cdeedd9fe5033c1801ed202f591c502c6.json",
+          "region": "us-east-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::706335435423:role/cdk-hnb659fds-file-publishing-role-706335435423-us-east-1"
+        }
+      }
+    }
+  },
+  "dockerImages": {
+    "cc9fbbafec1569500d88bae51c9e47ac00ef37bcc713eea33f8670187af6630a": {
+      "displayName": "TruthEngineService/TaskDef/web/AssetImage",
+      "source": {
+        "directory": "asset.cc9fbbafec1569500d88bae51c9e47ac00ef37bcc713eea33f8670187af6630a"
+      },
+      "destinations": {
+        "706335435423-us-east-1-9b1f74a0": {
+          "repositoryName": "cdk-hnb659fds-container-assets-706335435423-us-east-1",
+          "imageTag": "cc9fbbafec1569500d88bae51c9e47ac00ef37bcc713eea33f8670187af6630a",
+          "region": "us-east-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::706335435423:role/cdk-hnb659fds-image-publishing-role-706335435423-us-east-1"
+        }
+      }
+    }
+  }
+}
