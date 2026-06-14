@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from typing import List, Optional
 from datetime import datetime
 from enum import Enum
@@ -17,76 +17,86 @@ class ProductStatus(str, Enum):
 
 # History Event Base
 class HistoryEvent(BaseModel):
-    timestamp: str
+    model_config = ConfigDict(extra="forbid")
+    timestamp: str = Field(min_length=1, max_length=255, strip_whitespace=True)
 
 class ReturnEvent(HistoryEvent):
-    returnReason: str
-    conditionScore: float
+    returnReason: str = Field(min_length=1, max_length=255, strip_whitespace=True)
+    conditionScore: float = Field(allow_inf_nan=False)
 
 class FraudEvent(HistoryEvent):
-    fraudScore: float
-    fraudType: Optional[str] = None
+    fraudScore: float = Field(allow_inf_nan=False)
+    fraudType: Optional[str] = Field(default=None, min_length=1, max_length=255, strip_whitespace=True)
 
 class RepairEvent(HistoryEvent):
-    repairType: str
-    cost: float
+    repairType: str = Field(min_length=1, max_length=255, strip_whitespace=True)
+    cost: float = Field(allow_inf_nan=False)
 
 class RecoveryEvent(HistoryEvent):
-    decision: str
-    expectedProfit: float
+    decision: str = Field(min_length=1, max_length=255, strip_whitespace=True)
+    expectedProfit: float = Field(allow_inf_nan=False)
 
 class LogisticsEvent(HistoryEvent):
-    warehouseId: str
-    route: str
+    warehouseId: str = Field(min_length=1, max_length=255, strip_whitespace=True)
+    route: str = Field(min_length=1, max_length=255, strip_whitespace=True)
 
 # Inputs
 class ReturnEventInput(BaseModel):
-    returnReason: str
-    conditionScore: float
+    model_config = ConfigDict(extra="forbid")
+    returnReason: str = Field(min_length=1, max_length=255, strip_whitespace=True)
+    conditionScore: float = Field(allow_inf_nan=False)
 
 class FraudEventInput(BaseModel):
-    fraudScore: float
-    fraudType: str
+    model_config = ConfigDict(extra="forbid")
+    fraudScore: float = Field(allow_inf_nan=False)
+    fraudType: str = Field(min_length=1, max_length=255, strip_whitespace=True)
 
 class RepairEventInput(BaseModel):
-    repairType: str
-    cost: float
+    model_config = ConfigDict(extra="forbid")
+    repairType: str = Field(min_length=1, max_length=255, strip_whitespace=True)
+    cost: float = Field(allow_inf_nan=False)
 
 class RecoveryEventInput(BaseModel):
-    decision: str
-    expectedProfit: float
+    model_config = ConfigDict(extra="forbid")
+    decision: str = Field(min_length=1, max_length=255, strip_whitespace=True)
+    expectedProfit: float = Field(allow_inf_nan=False)
 
 class LogisticsEventInput(BaseModel):
-    warehouseId: str
-    route: str
+    model_config = ConfigDict(extra="forbid")
+    warehouseId: str = Field(min_length=1, max_length=255, strip_whitespace=True)
+    route: str = Field(min_length=1, max_length=255, strip_whitespace=True)
 
 class UnifiedEventInput(BaseModel):
-    eventType: str
+    model_config = ConfigDict(extra="forbid")
+    eventType: str = Field(min_length=1, max_length=255, strip_whitespace=True)
     fraudScore: Optional[float] = None
-    fraudType: Optional[str] = None
-    decision: Optional[str] = None
+    fraudType: Optional[str] = Field(default=None, min_length=1, max_length=255, strip_whitespace=True)
+    decision: Optional[str] = Field(default=None, min_length=1, max_length=255, strip_whitespace=True)
     expectedProfit: Optional[float] = None
 
 class CreateTwinInput(BaseModel):
-    productId: str
-    name: Optional[str] = None
-    sku: Optional[str] = None
-    category: str
+    model_config = ConfigDict(extra="forbid")
+    productId: str = Field(min_length=1, max_length=255, strip_whitespace=True)
+    name: Optional[str] = Field(default=None, min_length=1, max_length=255, strip_whitespace=True)
+    sku: Optional[str] = Field(default=None, min_length=1, max_length=255, strip_whitespace=True)
+    category: str = Field(min_length=1, max_length=255, strip_whitespace=True)
     conditionScore: float = Field(default=100.0)
     utilityScore: float = Field(default=100.0)
 
 class UpdateTwinInput(BaseModel):
+    model_config = ConfigDict(extra="forbid")
     conditionScore: Optional[float] = None
     utilityScore: Optional[float] = None
     currentStatus: Optional[ProductStatus] = None
 
 class ProductTwin(BaseModel):
-    productId: str
-    name: Optional[str] = None
-    sku: Optional[str] = None
-    category: str
-    conditionScore: float
-    utilityScore: float
+    model_config = ConfigDict(extra="forbid")
+    productId: str = Field(min_length=1, max_length=255, strip_whitespace=True)
+    name: Optional[str] = Field(default=None, min_length=1, max_length=255, strip_whitespace=True)
+    sku: Optional[str] = Field(default=None, min_length=1, max_length=255, strip_whitespace=True)
+    category: str = Field(min_length=1, max_length=255, strip_whitespace=True)
+    conditionScore: float = Field(allow_inf_nan=False)
+    utilityScore: float = Field(allow_inf_nan=False)
     returnCount: int = 0
     repairCount: int = 0
     fraudFlags: List[str] = []
@@ -97,5 +107,5 @@ class ProductTwin(BaseModel):
     recoveryHistory: List[RecoveryEvent] = []
     logisticsHistory: List[LogisticsEvent] = []
     currentStatus: ProductStatus = ProductStatus.ACTIVE
-    createdAt: str
-    updatedAt: str
+    createdAt: str = Field(min_length=1, max_length=255, strip_whitespace=True)
+    updatedAt: str = Field(min_length=1, max_length=255, strip_whitespace=True)

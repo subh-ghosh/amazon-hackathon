@@ -3,7 +3,7 @@ API request/response schemas — separated from domain models to allow
 independent evolution of the API contract.
 """
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from datetime import datetime
 from typing import Optional
 from app.models.domain import (
@@ -18,37 +18,41 @@ from app.models.domain import (
 # ═══════════════════════════════════════════════
 
 class CustomerCreateRequest(BaseModel):
-    customer_id: str
-    name: str
-    email: Optional[str] = None
+    model_config = ConfigDict(extra="forbid")
+    customer_id: str = Field(min_length=1, max_length=255, strip_whitespace=True)
+    name: str = Field(min_length=1, max_length=255, strip_whitespace=True)
+    email: Optional[str] = Field(default=None, min_length=1, max_length=255, strip_whitespace=True)
     account_age_days: int = 0
     lifetime_value: float = 0.0
 
 
 class ProductCreateRequest(BaseModel):
-    product_id: str
-    title: str
-    category: str
-    brand: str
-    price: float
+    model_config = ConfigDict(extra="forbid")
+    product_id: str = Field(min_length=1, max_length=255, strip_whitespace=True)
+    title: str = Field(min_length=1, max_length=255, strip_whitespace=True)
+    category: str = Field(min_length=1, max_length=255, strip_whitespace=True)
+    brand: str = Field(min_length=1, max_length=255, strip_whitespace=True)
+    price: float = Field(allow_inf_nan=False)
     seller_id: str  # Creates SOLD_BY edge
     warehouse_id: Optional[str] = None  # Creates STORED_AT edge
 
 
 class ReturnCreateRequest(BaseModel):
-    return_id: str
-    order_id: str
-    customer_id: str
-    product_id: str
+    model_config = ConfigDict(extra="forbid")
+    return_id: str = Field(min_length=1, max_length=255, strip_whitespace=True)
+    order_id: str = Field(min_length=1, max_length=255, strip_whitespace=True)
+    customer_id: str = Field(min_length=1, max_length=255, strip_whitespace=True)
+    product_id: str = Field(min_length=1, max_length=255, strip_whitespace=True)
     reason: ReturnReason
-    condition_received: Optional[str] = None
+    condition_received: Optional[str] = Field(default=None, min_length=1, max_length=255, strip_whitespace=True)
     timestamp: datetime = Field(default_factory=datetime.utcnow)
     root_cause_id: Optional[str] = None  # Optional — can be discovered later
 
 
 class FraudCaseCreateRequest(BaseModel):
-    case_id: str
-    entity_id: str
+    model_config = ConfigDict(extra="forbid")
+    case_id: str = Field(min_length=1, max_length=255, strip_whitespace=True)
+    entity_id: str = Field(min_length=1, max_length=255, strip_whitespace=True)
     entity_type: str = Field(..., pattern="^(Customer|Seller|Product)$")
     severity: FraudSeverity
     risk_score: int = Field(ge=0, le=100)
@@ -56,26 +60,29 @@ class FraudCaseCreateRequest(BaseModel):
 
 
 class RecoveryActionCreateRequest(BaseModel):
-    action_id: str
-    return_id: str
+    model_config = ConfigDict(extra="forbid")
+    action_id: str = Field(min_length=1, max_length=255, strip_whitespace=True)
+    return_id: str = Field(min_length=1, max_length=255, strip_whitespace=True)
     action_type: RecoveryActionType
     estimated_value_recovered: float = 0.0
     cost_incurred: float = 0.0
-    confidence: float = Field(1.0, ge=0.0, le=1.0)
+    confidence: float = Field(1.0, ge=0.0, le=1.0, allow_inf_nan=False)
 
 
 class RootCauseCreateRequest(BaseModel):
-    cause_id: str
-    return_id: str
-    category: str
-    description: Optional[str] = None
-    confidence: float = Field(1.0, ge=0.0, le=1.0)
+    model_config = ConfigDict(extra="forbid")
+    cause_id: str = Field(min_length=1, max_length=255, strip_whitespace=True)
+    return_id: str = Field(min_length=1, max_length=255, strip_whitespace=True)
+    category: str = Field(min_length=1, max_length=255, strip_whitespace=True)
+    description: Optional[str] = Field(default=None, min_length=1, max_length=255, strip_whitespace=True)
+    confidence: float = Field(1.0, ge=0.0, le=1.0, allow_inf_nan=False)
 
 
 class ProductTwinCreateRequest(BaseModel):
-    twin_id: str
-    product_id: str
-    lifecycle_state: str
+    model_config = ConfigDict(extra="forbid")
+    twin_id: str = Field(min_length=1, max_length=255, strip_whitespace=True)
+    product_id: str = Field(min_length=1, max_length=255, strip_whitespace=True)
+    lifecycle_state: str = Field(min_length=1, max_length=255, strip_whitespace=True)
 
 
 # ═══════════════════════════════════════════════
@@ -83,33 +90,36 @@ class ProductTwinCreateRequest(BaseModel):
 # ═══════════════════════════════════════════════
 
 class BaseResponse(BaseModel):
+    model_config = ConfigDict(extra="forbid")
     status: str = "success"
     message: str = ""
 
 
 class EntityCreatedResponse(BaseResponse):
-    entity_id: str
-    entity_type: str
+    entity_id: str = Field(min_length=1, max_length=255, strip_whitespace=True)
+    entity_type: str = Field(min_length=1, max_length=255, strip_whitespace=True)
 
 
 class ProductIntelligenceResponse(BaseModel):
+    model_config = ConfigDict(extra="forbid")
     """Aggregated intelligence for a single product."""
-    product_id: str
+    product_id: str = Field(min_length=1, max_length=255, strip_whitespace=True)
     total_orders: int = 0
     total_returns: int = 0
     return_rate_percentage: float = 0.0
     top_root_causes: list[dict] = Field(default_factory=list)
     associated_fraud_cases: int = 0
     fraud_risk_level: str = "LOW"
-    optimal_recovery_action: Optional[str] = None
-    seller_id: Optional[str] = None
-    seller_name: Optional[str] = None
+    optimal_recovery_action: Optional[str] = Field(default=None, min_length=1, max_length=255, strip_whitespace=True)
+    seller_id: Optional[str] = Field(default=None, min_length=1, max_length=255, strip_whitespace=True)
+    seller_name: Optional[str] = Field(default=None, min_length=1, max_length=255, strip_whitespace=True)
     warehouse_locations: list[str] = Field(default_factory=list)
 
 
 class SellerIntelligenceResponse(BaseModel):
+    model_config = ConfigDict(extra="forbid")
     """Aggregated intelligence for a single seller."""
-    seller_id: str
+    seller_id: str = Field(min_length=1, max_length=255, strip_whitespace=True)
     seller_name: str = ""
     total_products: int = 0
     total_returns: int = 0
@@ -122,14 +132,15 @@ class SellerIntelligenceResponse(BaseModel):
 
 
 class ReturnDetailResponse(BaseModel):
+    model_config = ConfigDict(extra="forbid")
     """Full detail for a single return — graph + DynamoDB combined."""
-    return_id: str
-    order_id: str
-    customer_id: str
-    product_id: str
-    reason: str
-    condition_received: Optional[str] = None
-    timestamp: str
+    return_id: str = Field(min_length=1, max_length=255, strip_whitespace=True)
+    order_id: str = Field(min_length=1, max_length=255, strip_whitespace=True)
+    customer_id: str = Field(min_length=1, max_length=255, strip_whitespace=True)
+    product_id: str = Field(min_length=1, max_length=255, strip_whitespace=True)
+    reason: str = Field(min_length=1, max_length=255, strip_whitespace=True)
+    condition_received: Optional[str] = Field(default=None, min_length=1, max_length=255, strip_whitespace=True)
+    timestamp: str = Field(min_length=1, max_length=255, strip_whitespace=True)
     root_causes: list[dict] = Field(default_factory=list)
     fraud_cases: list[dict] = Field(default_factory=list)
     recovery_actions: list[dict] = Field(default_factory=list)
@@ -137,13 +148,15 @@ class ReturnDetailResponse(BaseModel):
 
 
 class ReturnJourneyResponse(BaseModel):
+    model_config = ConfigDict(extra="forbid")
     """Journey of a return showing event timeline and current state."""
-    return_id: str
+    return_id: str = Field(min_length=1, max_length=255, strip_whitespace=True)
     timeline: list[str] = Field(default_factory=list)
-    current_state: str
+    current_state: str = Field(min_length=1, max_length=255, strip_whitespace=True)
 
 
 class GraphStatsResponse(BaseModel):
+    model_config = ConfigDict(extra="forbid")
     """High-level graph statistics for the dashboard."""
     total_customers: int = 0
     total_products: int = 0

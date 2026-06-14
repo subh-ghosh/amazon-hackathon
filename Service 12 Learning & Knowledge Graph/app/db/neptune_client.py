@@ -154,7 +154,7 @@ class NeptuneClient:
         query = (
             f"g.V().has('{from_label}', 'id', from_id)"
             f".addE('{edge_label}')"
-            f".to(g.V().has('{to_label}', 'id', to_id))"
+            f".to(__.V().has('{to_label}', 'id', to_id))"
             f"{prop_chain}"
         )
         self.execute_gremlin(query, bindings)

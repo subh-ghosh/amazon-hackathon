@@ -1,0 +1,11 @@
+{
+    "customerId": "CUST-LOW-001",
+    "productId": "PROD-LOW-001",
+    "category": "Electronics",
+    "productRating": 4.8,
+    "customerReturnRate": 0.02,
+    "customerPurchaseCount": 50,
+    "productReturnRate": 0.01,
+    "sellerRating": 4.9,
+    "price": 100.0
+}

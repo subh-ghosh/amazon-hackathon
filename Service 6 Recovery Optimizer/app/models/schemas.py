@@ -1,18 +1,20 @@
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, ConfigDict
 from typing import List
 
 class SimulationInput(BaseModel):
-    scenario: str
-    recoveryValue: float = Field(ge=0.0)
-    carbonImpact: float
+    model_config = ConfigDict(extra="forbid")
+    scenario: str = Field(min_length=1, max_length=255, strip_whitespace=True)
+    recoveryValue: float = Field(ge=0.0, allow_inf_nan=False)
+    carbonImpact: float = Field(allow_inf_nan=False)
     processingTimeDays: int
-    confidence: float = Field(ge=0.0, le=1.0)
+    confidence: float = Field(ge=0.0, le=1.0, allow_inf_nan=False)
 
 class OptimizeRequest(BaseModel):
-    returnId: str
-    productId: str
+    model_config = ConfigDict(extra="forbid")
+    returnId: str = Field(min_length=1, max_length=255, strip_whitespace=True)
+    productId: str = Field(min_length=1, max_length=255, strip_whitespace=True)
     fraudScore: int = Field(ge=0, le=100)
-    sellerTrustScore: float = Field(ge=0.0, le=1.0)
+    sellerTrustScore: float = Field(ge=0.0, le=1.0, allow_inf_nan=False)
     simulations: List[SimulationInput]
 
     @field_validator("simulations")
@@ -22,9 +24,10 @@ class OptimizeRequest(BaseModel):
         return v
 
 class OptimizeResponse(BaseModel):
-    recommendedDecision: str
-    expectedProfit: float
-    carbonSavings: float
+    model_config = ConfigDict(extra="forbid")
+    recommendedDecision: str = Field(min_length=1, max_length=255, strip_whitespace=True)
+    expectedProfit: float = Field(allow_inf_nan=False)
+    carbonSavings: float = Field(allow_inf_nan=False)
     processingDays: int
-    confidence: float
+    confidence: float = Field(allow_inf_nan=False)
     reasoning: List[str]
