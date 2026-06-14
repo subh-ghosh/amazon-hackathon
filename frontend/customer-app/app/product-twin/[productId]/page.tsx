@@ -4,7 +4,11 @@ import { ChevronLeft } from "lucide-react";
 import { notFound } from "next/navigation";
 
 import { ProductTwinView } from "@/components/product-twin/product-twin-view";
-import { getProductTwin, productTwins } from "@/data/product-twins";
+import {
+  getProductTwin,
+  getProductTwinFromService12,
+  productTwins,
+} from "@/data/product-twins";
 
 interface ProductTwinPageProps {
   params: Promise<{ productId: string }>;
@@ -18,7 +22,7 @@ export async function generateMetadata({
   params,
 }: ProductTwinPageProps): Promise<Metadata> {
   const { productId } = await params;
-  const twin = getProductTwin(productId);
+  const twin = await getProductTwinFromService12(productId);
   return {
     title: twin
       ? `${twin.product.name} | Amazon ReLife`

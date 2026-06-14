@@ -141,6 +141,26 @@ function asArray(payload: unknown, keys: string[] = []): AnyRecord[] {
   return [];
 }
 
+function firstArray(payload: unknown, keys: string[] = []): AnyRecord[] {
+  const direct = asArray(payload, keys);
+
+  if (direct.length > 0) {
+    return direct;
+  }
+
+  const record = asRecord(payload);
+
+  for (const value of Object.values(record)) {
+    const nested = asArray(value, keys);
+
+    if (nested.length > 0) {
+      return nested;
+    }
+  }
+
+  return [];
+}
+
 function numberFrom(record: AnyRecord, keys: string[], fallback = 0): number {
   for (const key of keys) {
     const value = record[key];
@@ -185,17 +205,51 @@ function titleCase(value: string) {
 }
 
 export function adaptTopReturnCauses(payload: unknown): TopReturnCauseView[] {
-  const rows = asArray(payload, ["causes", "top_return_causes", "topRootCauses"]);
-  const total = rows.reduce(
+  const record = asRecord(payload);
+  const rows = firstArray(record.payload ?? payload, [
+    "causes",
+    "top_return_causes",
+    "topRootCauses",
+    "returns",
+  ]);
+  const limit = numberFrom(record, ["limit"], rows.length || 10);
+  const grouped = new Map<string, number>();
+
+  for (const row of rows) {
+    const cause = stringFrom(
+      row,
+      ["cause", "category", "reason", "root_cause", "return_reason", "name", "label"],
+      "Unknown cause",
+    );
+    const count = numberFrom(row, [
+      "returns",
+      "return_count",
+      "returnCount",
+      "frequency",
+      "count",
+      "total_returns",
+      "value",
+    ], 1);
+
+    grouped.set(cause, (grouped.get(cause) ?? 0) + count);
+  }
+
+  const normalizedRows = Array.from(grouped.entries())
+    .map(([cause, returns]) => ({ cause, returns }))
+    .sort((a, b) => b.returns - a.returns)
+    .slice(0, limit);
+
+  const total = normalizedRows.reduce(
     (sum, row) => sum + numberFrom(row, ["returns", "return_count", "count", "total_returns", "value"]),
     0,
   );
 
-  return rows.map((row) => {
+  return normalizedRows.map((row) => {
     const returns = numberFrom(row, [
       "returns",
       "return_count",
       "returnCount",
+      "frequency",
       "count",
       "total_returns",
       "value",
@@ -212,21 +266,39 @@ export function adaptTopReturnCauses(payload: unknown): TopReturnCauseView[] {
 
 export function adaptGraphStats(payload: unknown): GraphStatsView {
   const record = asRecord(payload);
+  const customers = firstArray(record.customers, ["customers"]);
+  const products = firstArray(record.products, ["products"]);
+  const returns = firstArray(record.returns, ["returns"]);
+  const recoveryActions = firstArray(record.recoveryActions, [
+    "recovery_actions",
+    "recoveryActions",
+    "actions",
+  ]);
 
   return {
-    totalCustomers: numberFrom(record, ["total_customers", "totalCustomers"]),
-    totalProducts: numberFrom(record, ["total_products", "totalProducts"]),
+    totalCustomers: numberFrom(record, ["total_customers", "totalCustomers"], customers.length),
+    totalProducts: numberFrom(record, ["total_products", "totalProducts"], products.length),
     totalSellers: numberFrom(record, ["total_sellers", "totalSellers"]),
     totalOrders: numberFrom(record, ["total_orders", "totalOrders"]),
-    totalReturns: numberFrom(record, ["total_returns", "totalReturns"]),
-    totalFraudCases: numberFrom(record, ["total_fraud_cases", "totalFraudCases"]),
+    totalReturns: numberFrom(record, ["total_returns", "totalReturns"], returns.length),
+    totalFraudCases: numberFrom(record, ["total_fraud_cases", "totalFraudCases"], countFraudCases(products)),
     totalRootCauses: numberFrom(record, ["total_root_causes", "totalRootCauses"]),
-    totalRecoveryActions: numberFrom(record, ["total_recovery_actions", "totalRecoveryActions"]),
+    totalRecoveryActions: numberFrom(
+      record,
+      ["total_recovery_actions", "totalRecoveryActions"],
+      recoveryActions.length,
+    ),
   };
 }
 
 export function adaptRecoveryEffectiveness(payload: unknown): RecoveryChannelView[] {
-  const rows = asArray(payload, ["recovery_effectiveness", "effectiveness", "actions"]);
+  const rows = firstArray(payload, [
+    "recovery_effectiveness",
+    "effectiveness",
+    "actions",
+    "recovery_actions",
+    "recoveryActions",
+  ]);
   const sourceRows =
     rows.length > 0
       ? rows
@@ -238,13 +310,13 @@ export function adaptRecoveryEffectiveness(payload: unknown): RecoveryChannelVie
   const normalized = sourceRows.map((row) => {
     const rawLabel = stringFrom(row, ["label", "action_type", "recovery_action", "action", "type"], "Resold");
     const label = normalizeRecoveryLabel(rawLabel);
-    const units = numberFrom(row, ["units", "count", "successful_actions", "returns", "total"]);
+    const units = numberFrom(row, ["units", "count", "occurrences", "successful_actions", "returns", "total"], 1);
 
     return {
       label,
       units,
       percentage: numberFrom(row, ["percentage", "success_rate", "effectiveness", "rate"]),
-      recoveredValue: numberFrom(row, ["recovered_value", "estimated_value_recovered", "value", "revenue"]),
+      recoveredValue: numberFrom(row, ["recovered_value", "avg_value_recovered", "estimated_value_recovered", "value", "revenue"]),
       color: recoveryColors[label],
     };
   });
@@ -274,16 +346,33 @@ export function adaptSellerDashboard(
   sellerAnalysisPayload: unknown,
   sellerIntelligencePayload: unknown,
 ): SellerDashboardViewModel {
+  const products = firstArray(sellerAnalysisPayload, ["products"]);
+  const returns = firstArray(asRecord(sellerAnalysisPayload).returns, ["returns"]);
   const sellers = asArray(sellerAnalysisPayload, ["sellers", "seller_return_analysis"]);
-  const seller = sellers[0] ?? {};
+  const seller = sellers[0] ?? products[0] ?? {};
   const intelligence = asRecord(sellerIntelligencePayload);
-  const totalReturns = numberFrom(intelligence, ["total_returns"], numberFrom(seller, ["total_returns", "defective_returns", "returns"]));
-  const totalOrders = numberFrom(intelligence, ["total_orders", "total_products"], numberFrom(seller, ["total_orders", "orders", "total_products"]));
+  const totalReturns = numberFrom(
+    intelligence,
+    ["total_returns"],
+    numberFrom(seller, ["total_returns", "defective_returns", "returns", "frequency"], returns.length),
+  );
+  const totalOrders = numberFrom(
+    intelligence,
+    ["total_orders", "total_products"],
+    numberFrom(seller, ["total_orders", "orders", "total_products"], products.length),
+  );
   const returnRate = numberFrom(intelligence, ["return_rate_percentage"], totalOrders > 0 ? percentage(totalReturns, totalOrders) : 0);
-  const fraudCases = numberFrom(intelligence, ["associated_fraud_cases"], numberFrom(seller, ["associated_fraud_cases", "fraud_cases"]));
-  const riskScore = riskScoreFromLevel(stringFrom(intelligence, ["fraud_risk_level"], "LOW"), fraudCases);
+  const fraudCases = numberFrom(
+    intelligence,
+    ["associated_fraud_cases"],
+    numberFrom(seller, ["associated_fraud_cases", "fraud_cases", "fraud_incidents"], countFraudCases(products)),
+  );
+  const riskScore = riskScoreFromLevel(
+    stringFrom(intelligence, ["fraud_risk_level"], stringFrom(seller, ["fraud_risk_level", "risk_level"], "LOW")),
+    fraudCases,
+  );
   const returnCauses = adaptTopReturnCauses(
-    intelligence.top_root_causes ?? seller.top_root_causes ?? seller.root_causes ?? seller.causes ?? [],
+    intelligence.top_root_causes ?? seller.top_root_causes ?? seller.root_causes ?? seller.causes ?? returns,
   );
   const exposureAmount = Math.round(fraudCases * 275);
   const returnedUnits = totalReturns || returnCauses.reduce((sum, cause) => sum + cause.returns, 0);
@@ -335,11 +424,25 @@ export function adaptSellerDashboard(
       riskScore,
     },
     estimatedLosses: buildLosses(estimatedLossTotal),
+    topReturnedProducts: products.slice(0, 5).map((item, index) => ({
+      productId: stringFrom(item, ["product_id", "productId", "id", "asin"], `P-${index + 1}`),
+      productName: stringFrom(item, ["product_name", "productName", "title", "name"], `Product ${index + 1}`),
+      returns: numberFrom(item, ["returns", "return_count", "total_returns"], 0),
+      returnRate: numberFrom(item, ["return_rate", "returnRate", "return_rate_percentage"], 0),
+    })),
+    productRiskRankings: products.slice(0, 5).map((item, index) => ({
+      productId: stringFrom(item, ["product_id", "productId", "id", "asin"], `P-${index + 1}`),
+      productName: stringFrom(item, ["product_name", "productName", "title", "name"], `Product ${index + 1}`),
+      riskScore: numberFrom(item, ["risk_score", "fraud_score", "score"], 0),
+      driver: stringFrom(item, ["risk_driver", "driver", "reason", "fraud_pattern"], "Service #12 product graph"),
+    })),
   };
 }
 
 export function getPrimarySellerId(payload: unknown): string | null {
-  const first = asArray(payload, ["sellers", "seller_return_analysis"])[0];
+  const first =
+    asArray(payload, ["sellers", "seller_return_analysis"])[0] ??
+    firstArray(payload, ["products"])[0];
 
   if (!first) {
     return null;
@@ -349,10 +452,24 @@ export function getPrimarySellerId(payload: unknown): string | null {
 }
 
 export function adaptFraudulentProducts(payload: unknown): FraudAlertView[] {
-  return asArray(payload, ["products", "fraudulent_products"]).map((row, index) => {
+  const record = asRecord(payload);
+  const limit = numberFrom(record, ["limit"], 10);
+
+  return firstArray(record.payload ?? payload, ["products", "fraudulent_products"])
+    .filter((row) => {
+      const flags = [
+        stringFrom(row, ["fraud_risk_level", "risk_level", "severity"], ""),
+        stringFrom(row, ["fraud_flag", "fraudFlag", "is_fraudulent"], ""),
+      ].join(" ");
+      const score = numberFrom(row, ["risk_score", "fraud_score", "score", "fraud_incidents"]);
+
+      return score > 0 || /fraud|high|critical|true/i.test(flags);
+    })
+    .slice(0, limit)
+    .map((row, index) => {
     const severity = normalizeSeverity(stringFrom(row, ["severity", "fraud_risk_level", "risk_level"], ""));
     const productId = stringFrom(row, ["product_id", "productId", "id", "asin"], `Product-${index + 1}`);
-    const riskScore = numberFrom(row, ["risk_score", "fraud_score", "score"], severity === "Critical" ? 90 : 70);
+    const riskScore = numberFrom(row, ["risk_score", "fraud_score", "score", "fraud_incidents"], severity === "Critical" ? 90 : 70);
 
     return {
       id: stringFrom(row, ["case_id", "alert_id", "id"], `FA-${productId}`),
@@ -367,7 +484,7 @@ export function adaptFraudulentProducts(payload: unknown): FraudAlertView[] {
       severity,
       detectedAt: "Live",
     };
-  });
+    });
 }
 
 export function adaptOperationsRecovery(payload: unknown): OperationsRecoveryViewModel {
@@ -413,6 +530,18 @@ function normalizeSeverity(value: string): FraudAlertView["severity"] {
   if (normalized.includes("CRITICAL")) return "Critical";
   if (normalized.includes("MEDIUM") || normalized.includes("LOW")) return "Medium";
   return "High";
+}
+
+function countFraudCases(products: AnyRecord[]) {
+  return products.filter((product) => {
+    const flags = [
+      stringFrom(product, ["fraud_risk_level", "risk_level", "severity"], ""),
+      stringFrom(product, ["fraud_flag", "fraudFlag", "is_fraudulent"], ""),
+    ].join(" ");
+    const score = numberFrom(product, ["risk_score", "fraud_score", "score", "fraud_incidents"]);
+
+    return score > 0 || /fraud|high|critical|true/i.test(flags);
+  }).length;
 }
 
 function riskScoreFromLevel(level: string, fraudCases: number) {

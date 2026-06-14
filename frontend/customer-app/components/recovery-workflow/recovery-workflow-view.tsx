@@ -26,9 +26,6 @@ import {
   adaptLogisticsPlan,
   adaptOptimizedDecision,
   adaptSimulationScenarios,
-  mockDecision,
-  mockLogistics,
-  mockScenarios,
   runFutureSimulator,
   runRecoveryOptimizer,
   runReverseLogistics,
@@ -37,6 +34,7 @@ import {
   type ProductDetailsPayload,
   type SimulationScenario,
 } from "../../../shared/api/recovery-workflow";
+import { getRecoveryEffectiveness } from "../../../shared/api/service12";
 
 type WorkflowStatus = "idle" | "loading" | "complete" | "error";
 
@@ -59,7 +57,7 @@ export function RecoveryWorkflowView() {
   const [scenarios, setScenarios] = useState<SimulationScenario[]>([]);
   const [decision, setDecision] = useState<OptimizedDecision | null>(null);
   const [logistics, setLogistics] = useState<LogisticsPlan | null>(null);
-  const [usedFallback, setUsedFallback] = useState(false);
+  const [graphSummary, setGraphSummary] = useState<string | null>(null);
 
   const finalSummary = useMemo(() => {
     if (!decision || !logistics) return null;
@@ -80,12 +78,19 @@ export function RecoveryWorkflowView() {
     setScenarios([]);
     setDecision(null);
     setLogistics(null);
-    setUsedFallback(false);
+    setGraphSummary(null);
 
     try {
       const simulationPayload = await runFutureSimulator(product);
       const liveScenarios = adaptSimulationScenarios(simulationPayload);
-      const nextScenarios = liveScenarios.length > 0 ? liveScenarios : mockScenarios(product);
+
+      if (liveScenarios.length === 0) {
+        setStatus("complete");
+        setMessage("Service #5 returned no recovery scenarios for this product.");
+        return;
+      }
+
+      const nextScenarios = liveScenarios;
       setScenarios(nextScenarios);
 
       const optimizerPayload = await runRecoveryOptimizer(product, nextScenarios);
@@ -94,17 +99,12 @@ export function RecoveryWorkflowView() {
 
       const logisticsPayload = await runReverseLogistics(product, nextDecision);
       setLogistics(adaptLogisticsPlan(logisticsPayload));
+      const graphPayload = await getRecoveryEffectiveness();
+      setGraphSummary(adaptRecoveryGraphSummary(graphPayload, product.productId));
       setStatus("complete");
     } catch (error) {
-      const nextScenarios = mockScenarios(product);
-      const nextDecision = mockDecision(nextScenarios);
-
-      setScenarios(nextScenarios);
-      setDecision(nextDecision);
-      setLogistics(mockLogistics());
-      setUsedFallback(true);
-      setStatus("complete");
-      setMessage(error instanceof Error ? error.message : "Backend workflow unavailable. Mock result shown.");
+      setStatus("error");
+      setMessage(error instanceof Error ? error.message : "Backend workflow unavailable.");
     }
   }
 
@@ -171,16 +171,37 @@ export function RecoveryWorkflowView() {
       </Card>
 
       <div className="space-y-6">
-        <WorkflowSteps status={status} usedFallback={usedFallback} />
+        <WorkflowSteps status={status} />
+        {status === "error" && (
+          <Card className="border-rose-200 bg-rose-50">
+            <CardContent className="flex items-center justify-between gap-4 p-4">
+              <p className="text-sm font-medium text-rose-800">
+                {message ?? "Unable to run the live workflow."}
+              </p>
+              <Button type="button" variant="outline" onClick={() => void submitCurrentProduct()}>
+                Retry
+              </Button>
+            </CardContent>
+          </Card>
+        )}
         <ScenarioPanel scenarios={scenarios} loading={status === "loading"} />
         <section className="grid gap-6 lg:grid-cols-2">
           <DecisionPanel decision={decision} loading={status === "loading"} />
           <LogisticsPanel logistics={logistics} loading={status === "loading"} />
         </section>
-        <SummaryPanel summary={finalSummary} loading={status === "loading"} />
+        <SummaryPanel
+          summary={finalSummary}
+          graphSummary={graphSummary}
+          loading={status === "loading"}
+        />
       </div>
     </div>
   );
+
+  async function submitCurrentProduct() {
+    const form = document.querySelector("form");
+    form?.requestSubmit();
+  }
 }
 
 function Field({
@@ -210,10 +231,8 @@ function Field({
 
 function WorkflowSteps({
   status,
-  usedFallback,
 }: {
   status: WorkflowStatus;
-  usedFallback: boolean;
 }) {
   const steps = [
     ["Product", PackageCheck],
@@ -237,9 +256,9 @@ function WorkflowSteps({
             </div>
           ))}
         </div>
-        {usedFallback && (
-          <Badge className="mt-4 border-amber-200 bg-amber-50 text-amber-700">
-            Mock fallback active
+        {status === "error" && (
+          <Badge className="mt-4 border-rose-200 bg-rose-50 text-rose-700">
+            Live workflow error
           </Badge>
         )}
       </CardContent>
@@ -354,9 +373,11 @@ function LogisticsPanel({
 
 function SummaryPanel({
   summary,
+  graphSummary,
   loading,
 }: {
   summary: { value: string; carbon: string; path: string } | null;
+  graphSummary: string | null;
   loading: boolean;
 }) {
   return (
@@ -373,6 +394,7 @@ function SummaryPanel({
             <SummaryMetric label="Decision path" value={summary.path} />
             <SummaryMetric label="Recovered value" value={summary.value} />
             <SummaryMetric label="Carbon saved" value={`${summary.carbon} kg`} />
+            <SummaryMetric label="Graph state" value={graphSummary ?? "Service #12 checked"} />
           </div>
         ) : (
           <EmptyTile label="Submit product details to create a summary." />
@@ -380,6 +402,69 @@ function SummaryPanel({
       </CardContent>
     </Card>
   );
+}
+
+type AnyRecord = Record<string, unknown>;
+
+function adaptRecoveryGraphSummary(payload: unknown, productId: string) {
+  const actions = asArray(payload, [
+    "data",
+    "recovery_effectiveness",
+    "recovery_actions",
+    "recoveryActions",
+    "actions",
+  ]);
+  const matching = actions.filter((action) => {
+    return stringFrom(action, ["product_id", "productId", "id", "asin"], "") === productId;
+  });
+
+  if (matching.length === 0) {
+    return `${actions.length} S12 recovery patterns`;
+  }
+
+  return `${matching.length} S12 action${matching.length === 1 ? "" : "s"}`;
+}
+
+function asRecord(value: unknown): AnyRecord {
+  return typeof value === "object" && value !== null ? (value as AnyRecord) : {};
+}
+
+function asArray(payload: unknown, keys: string[] = []): AnyRecord[] {
+  if (Array.isArray(payload)) {
+    return payload.filter((item): item is AnyRecord => typeof item === "object" && item !== null);
+  }
+
+  const record = asRecord(payload);
+
+  for (const key of ["data", "results", "items", ...keys]) {
+    const value = record[key];
+
+    if (Array.isArray(value)) {
+      return value.filter((item): item is AnyRecord => typeof item === "object" && item !== null);
+    }
+  }
+
+  for (const value of Object.values(record)) {
+    const nested = asArray(value, keys);
+
+    if (nested.length > 0) {
+      return nested;
+    }
+  }
+
+  return [];
+}
+
+function stringFrom(record: AnyRecord, keys: string[], fallback: string) {
+  for (const key of keys) {
+    const value = record[key];
+
+    if (typeof value === "string" && value.trim()) {
+      return value;
+    }
+  }
+
+  return fallback;
 }
 
 function Metric({ label, value }: { label: string; value: string }) {

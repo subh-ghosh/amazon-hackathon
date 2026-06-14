@@ -2,12 +2,15 @@ export const SERVICE12_BASE_URL =
   process.env.NEXT_PUBLIC_SERVICE12_API_BASE ??
   "http://Circul-Graph-ye0M61dV1dYT-1449212263.us-east-1.elb.amazonaws.com";
 
-const INTELLIGENCE_BASE = "/api/v1/intelligence";
 const REQUEST_TIMEOUT_MS = 30000;
+const INTELLIGENCE_ANALYTICS_BASE = "/api/v1/intelligence/analytics";
 
 export type Service12Json = unknown;
 
-async function request<T = Service12Json>(path: string): Promise<T> {
+async function request<T = Service12Json>(
+  path: string,
+  init?: RequestInit,
+): Promise<T> {
   const controller = new AbortController();
   const timeout = globalThis.setTimeout(
     () => controller.abort(),
@@ -15,18 +18,42 @@ async function request<T = Service12Json>(path: string): Promise<T> {
   );
 
   try {
-    const response = await fetch(`${SERVICE12_BASE_URL}${path}`, {
+    const url = `${SERVICE12_BASE_URL}${path}`;
+    const method = init?.method ?? "GET";
+
+    console.log("REQUEST", {
+      service: "Service #12",
+      url,
+      method,
+      body: init?.body ? safeParseBody(init.body) : undefined,
+    });
+
+    const response = await fetch(url, {
+      ...init,
       headers: {
         Accept: "application/json",
+        ...(init?.body ? { "Content-Type": "application/json" } : {}),
+        ...init?.headers,
       },
       signal: controller.signal,
     });
+    const responseBody = await parseResponseBody(response);
+
+    console.log("RESPONSE", {
+      service: "Service #12",
+      url,
+      method,
+      status: response.status,
+      body: responseBody,
+    });
 
     if (!response.ok) {
-      throw new Error(`Service #12 request failed: ${response.status}`);
+      throw new Error(
+        `Service #12 request failed: ${response.status} ${summarizeBody(responseBody)}`,
+      );
     }
 
-    return (await response.json()) as T;
+    return responseBody as T;
   } catch (error) {
     if (error instanceof Error && error.name === "AbortError") {
       throw new Error(
@@ -40,32 +67,95 @@ async function request<T = Service12Json>(path: string): Promise<T> {
   }
 }
 
+function safeParseBody(body: BodyInit) {
+  return typeof body === "string" ? tryJson(body) : "[non-string body]";
+}
+
+function tryJson(value: string) {
+  try {
+    return JSON.parse(value);
+  } catch {
+    return value;
+  }
+}
+
+async function parseResponseBody(response: Response) {
+  const text = await response.text();
+
+  if (!text) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(text) as unknown;
+  } catch {
+    return text;
+  }
+}
+
+function summarizeBody(body: unknown) {
+  if (!body) {
+    return "";
+  }
+
+  if (typeof body === "string") {
+    return body.slice(0, 160);
+  }
+
+  return JSON.stringify(body).slice(0, 160);
+}
+
+export function getIntelligence() {
+  return request("/api/v1/intelligence");
+}
+
+export function getCustomers() {
+  return request("/api/v1/customers");
+}
+
+export function getProducts() {
+  return request("/api/v1/products");
+}
+
+export function getReturns() {
+  return request("/api/v1/returns");
+}
+
+export function getRecoveryActions() {
+  return request("/api/v1/recovery-actions");
+}
+
+export function ingestFraudCase(fraudCase: unknown) {
+  return request("/api/v1/fraud-cases/", {
+    method: "POST",
+    body: JSON.stringify(fraudCase),
+  });
+}
+
 export function getTopReturnCauses(limit = 10) {
-  return request(
-    `${INTELLIGENCE_BASE}/analytics/top-return-causes?limit=${limit}`,
-  );
+  return request(`${INTELLIGENCE_ANALYTICS_BASE}/top-return-causes?limit=${limit}`);
 }
 
 export function getFraudulentProducts(limit = 10) {
-  return request(
-    `${INTELLIGENCE_BASE}/analytics/fraudulent-products?limit=${limit}`,
-  );
+  return request(`${INTELLIGENCE_ANALYTICS_BASE}/fraudulent-products?limit=${limit}`);
 }
 
 export function getSellerReturnAnalysis(limit = 10) {
-  return request(
-    `${INTELLIGENCE_BASE}/analytics/seller-return-analysis?limit=${limit}`,
-  );
+  return request(`${INTELLIGENCE_ANALYTICS_BASE}/seller-return-analysis?limit=${limit}`);
 }
 
 export function getRecoveryEffectiveness() {
-  return request(`${INTELLIGENCE_BASE}/analytics/recovery-effectiveness`);
+  return request(`${INTELLIGENCE_ANALYTICS_BASE}/recovery-effectiveness`);
 }
 
 export function getGraphStats() {
-  return request(`${INTELLIGENCE_BASE}/analytics/graph-stats`);
+  return request(`${INTELLIGENCE_ANALYTICS_BASE}/graph-stats`);
 }
 
 export function getSellerIntelligence(sellerId: string) {
-  return request(`${INTELLIGENCE_BASE}/sellers/${encodeURIComponent(sellerId)}`);
+  return request(`/api/v1/intelligence/sellers/${encodeURIComponent(sellerId)}`);
+}
+
+export function getProductIntelligence(productId: string) {
+  return request(`/api/v1/intelligence/products/${encodeURIComponent(productId)}`);
 }
