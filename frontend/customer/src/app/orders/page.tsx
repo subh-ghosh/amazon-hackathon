@@ -188,5 +188,71 @@ function getDemoOrders() {
             delivery_date: new Date(Date.now() + 1 * 86400000).toISOString(),
             address: { name: "John Doe", street: "123 Main St", city: "New York", state: "NY", zip: "10001", country: "US" },
         },
+        // Very high value electronics $1299 → RETURN_REQUIRED
+        {
+            order_id: "113-3347281-9283746",
+            customer_id: "CUST-DEMO-001",
+            items: [{ product: PRODUCTS[3], quantity: 1 }], // Samsung Galaxy S24 $1299
+            total: PRODUCTS[3].price,
+            status: "delivered" as const,
+            created_at: new Date(Date.now() - 9 * 86400000).toISOString(),
+            delivery_date: new Date(Date.now() - 6 * 86400000).toISOString(),
+            address: { name: "John Doe", street: "123 Main St", city: "New York", state: "NY", zip: "10001", country: "US" },
+        },
+        // High value home $749 → RETURN_REQUIRED
+        {
+            order_id: "113-7712938-4829103",
+            customer_id: "CUST-DEMO-001",
+            items: [{ product: PRODUCTS[6], quantity: 1 }], // Dyson Vacuum $749
+            total: PRODUCTS[6].price,
+            status: "delivered" as const,
+            created_at: new Date(Date.now() - 12 * 86400000).toISOString(),
+            delivery_date: new Date(Date.now() - 9 * 86400000).toISOString(),
+            address: { name: "John Doe", street: "123 Main St", city: "New York", state: "NY", zip: "10001", country: "US" },
+        },
+        // Mid electronics $249 → RETURN_REQUIRED
+        {
+            order_id: "113-1192847-5738201",
+            customer_id: "CUST-DEMO-001",
+            items: [{ product: PRODUCTS[8], quantity: 1 }], // AirPods Pro $249
+            total: PRODUCTS[8].price,
+            status: "delivered" as const,
+            created_at: new Date(Date.now() - 11 * 86400000).toISOString(),
+            delivery_date: new Date(Date.now() - 8 * 86400000).toISOString(),
+            address: { name: "John Doe", street: "123 Main St", city: "New York", state: "NY", zip: "10001", country: "US" },
+        },
+        // Furniture $1395 → RETURN_REQUIRED (very high value)
+        {
+            order_id: "113-9928374-1029384",
+            customer_id: "CUST-DEMO-001",
+            items: [{ product: PRODUCTS[9], quantity: 1 }], // Herman Miller Chair $1395
+            total: PRODUCTS[9].price,
+            status: "delivered" as const,
+            created_at: new Date(Date.now() - 14 * 86400000).toISOString(),
+            delivery_date: new Date(Date.now() - 7 * 86400000).toISOString(),
+            address: { name: "John Doe", street: "123 Main St", city: "New York", state: "NY", zip: "10001", country: "US" },
+        },
+        // Clothing $139 → RETURN_REQUIRED
+        {
+            order_id: "113-4482019-8372910",
+            customer_id: "CUST-DEMO-001",
+            items: [{ product: PRODUCTS[10], quantity: 1 }], // Patagonia Sweater $139
+            total: PRODUCTS[10].price,
+            status: "delivered" as const,
+            created_at: new Date(Date.now() - 13 * 86400000).toISOString(),
+            delivery_date: new Date(Date.now() - 10 * 86400000).toISOString(),
+            address: { name: "John Doe", street: "123 Main St", city: "New York", state: "NY", zip: "10001", country: "US" },
+        },
+        // Electronics $329 → RETURN_REQUIRED
+        {
+            order_id: "113-5519283-7461029",
+            customer_id: "CUST-DEMO-001",
+            items: [{ product: PRODUCTS[11], quantity: 1 }], // Bose Speaker $329
+            total: PRODUCTS[11].price,
+            status: "delivered" as const,
+            created_at: new Date(Date.now() - 15 * 86400000).toISOString(),
+            delivery_date: new Date(Date.now() - 12 * 86400000).toISOString(),
+            address: { name: "John Doe", street: "123 Main St", city: "New York", state: "NY", zip: "10001", country: "US" },
+        },
     ];
 }
