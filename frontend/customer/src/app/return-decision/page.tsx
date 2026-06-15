@@ -2,7 +2,7 @@
 
 import { Suspense, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { CheckCircle, ArrowRight, MapPin, Clock, Tag, Home, Leaf } from "lucide-react";
+import { CheckCircle, ArrowRight, MapPin, Clock, Tag, Home } from "lucide-react";
 import { getProductById } from "@/data/products";
 import { useState } from "react";
 import { useStore } from "@/hooks/useStore";
@@ -106,34 +106,6 @@ function ReturnDecisionContent() {
                             <p className="text-xs text-orange-800 mt-0.5">Drop this off within <strong>24 hours</strong> to receive your refund instantly. Otherwise, refunds are processed after inspection.</p>
                         </div>
                     </div>
-
-                    {/* Buyer Match — only shows for renewable product categories, excludes hygiene items */}
-                    {product && isRenewableProduct(product.category) && !(product.category === "Clothing" && product.price < 30) && (
-                        <div className="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
-                            <div className="flex items-start gap-3">
-                                <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <MapPin size={14} className="text-blue-600" />
-                                </div>
-                                <div className="flex-1">
-                                    <p className="text-sm font-medium text-blue-900">A customer near you wants this item</p>
-                                    <p className="text-xs text-blue-700 mt-1">
-                                        {getBuyerMatchText(product.price, product.category, product.product_id)}
-                                    </p>
-                                    <div className="mt-2 flex items-center gap-4 text-xs text-blue-800">
-                                        <span className="flex items-center gap-1">
-                                            <Leaf size={11} className="text-emerald-500" />
-                                            Saves {(product.weight_kg * 1.5 + 2).toFixed(1)}kg CO₂
-                                        </span>
-                                        <span>•</span>
-                                        <span>Delivered to buyer in 1-2 days</span>
-                                    </div>
-                                    <p className="text-[10px] text-blue-600 mt-2">
-                                        Your full refund is not affected. By dropping off quickly, your item reaches its next owner faster.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    )}
                 </div>
             )}
 
@@ -211,26 +183,9 @@ function getNextSteps(decision: string): string[] {
         case "keep_refund": return ["Refund will appear on your statement in 3-5 business days", "No further action needed", "You may keep or donate the item"];
         case "replacement": return ["Replacement ships within 24 hours", "You'll receive a tracking number by email", "No need to return the original item"];
         case "tech_support": return ["A specialist will call or email you", "Have your order number ready", "Support hours: 8am–10pm"];
-        case "return": return ["A prepaid label has been sent to your email", "Pack the item securely and drop off at any carrier location", "Refund processes after inspection (typically 2-3 days)", "Your item will be certified and matched to a buyer near you"];
+        case "return": return ["A prepaid label has been sent to your email", "Pack the item securely and drop off at any carrier location", "Refund processes after inspection (typically 2-3 days)"];
         default: return ["We'll send a confirmation email shortly"];
     }
-}
-
-function getBuyerMatchText(price: number, category: string, productId: string): string {
-    // Deterministic values seeded from product ID
-    const seed = productId.split("").reduce((acc, c) => acc + c.charCodeAt(0), 0);
-    const buyerDistance = 4 + (seed % 10);
-    const buyersCount = Math.round(8 + price / 25);
-    const renewedPrice = Math.round(price * 0.70);
-    return `${buyersCount} customers within ${buyerDistance}km are searching for ${category} items like this. Once inspected, your item will be certified and listed at $${renewedPrice} — giving it a second life without going to a warehouse.`;
-}
-
-function isRenewableProduct(category: string): boolean {
-    // Products that CAN be renewed/resold — excludes health, safety, perishable, hygiene
-    const renewableCategories = ["Electronics", "Furniture", "Home", "Kitchen", "Footwear", "Clothing"];
-    return renewableCategories.includes(category);
-    // Note: Individual hygiene items (socks, underwear) are filtered by price threshold
-    // in the calling code — items under $20 in Clothing don't show buyer match
 }
 
 export default function ReturnDecisionPage() {
