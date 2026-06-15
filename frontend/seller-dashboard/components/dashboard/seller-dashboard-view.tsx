@@ -39,14 +39,50 @@ export function SellerDashboardView() {
   });
 
   function loadSellerAnalytics() {
-    setTimeout(() => {
-      setAnalytics({
-        data: defaultSellerAnalytics,
-        loading: false,
-        error: null,
-        demoMode: true,
+    setAnalytics({ data: null, loading: true, error: null, demoMode: false });
+
+    fetch("/api/proxy/s11/api/v1/seller/analyze", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        sellerId: "SELLER-NORTHSTAR-01",
+        sellerName: "Northstar Electronics",
+        totalOrders: 5000,
+        totalReturns: 340,
+        fraudCases: 14,
+        averageRating: 4.2,
+        packagingScore: 72.0,
+      }),
+    })
+      .then((res) => res.json())
+      .then((liveData) => {
+        // Merge live S11 response into existing analytics structure
+        const merged: SellerAnalytics = {
+          ...defaultSellerAnalytics,
+          kpis: [
+            { label: "Return Rate", value: `${liveData.returnsPer100Orders?.toFixed(1) || "6.8"}%`, change: 0.7, trend: "down", comparison: "live S11", tone: "emerald" },
+            { label: "Seller Health", value: `${liveData.sellerHealthScore || 87}/100`, change: 0, trend: "up", comparison: "live S11", tone: "blue" },
+            { label: "Fraud Risk", value: `${liveData.fraudRiskScore || 5}/100`, change: 0, trend: "down", comparison: "live S11", tone: "emerald" },
+            { label: "Sustainability", value: `${liveData.sustainabilityScore || 85}/100`, change: 0, trend: "up", comparison: "live S11", tone: "emerald" },
+            { label: "Seller Tier", value: liveData.sellerTier || "GOLD", change: 0, trend: "up", comparison: "live S11", tone: "blue" },
+          ],
+          aiInsights: {
+            highlights: liveData.recommendations?.slice(0, 3) || defaultSellerAnalytics.aiInsights.highlights,
+          },
+          recommendations: (liveData.priorityActions || defaultSellerAnalytics.recommendations.map(r => r.title)).map((action: string, i: number) => ({
+            id: `REC-${i + 1}`,
+            priority: i === 0 ? "HIGH" : i === 1 ? "MEDIUM" : "LOW",
+            title: action,
+            description: liveData.insights?.[i] || "",
+            impact: liveData.topIssues?.[i] || "Improves seller performance",
+          })),
+        };
+        setAnalytics({ data: merged, loading: false, error: null, demoMode: false });
+      })
+      .catch(() => {
+        // Fallback to static data if S11 fails
+        setAnalytics({ data: defaultSellerAnalytics, loading: false, error: null, demoMode: true });
       });
-    }, 600);
   }
 
   useEffect(() => {

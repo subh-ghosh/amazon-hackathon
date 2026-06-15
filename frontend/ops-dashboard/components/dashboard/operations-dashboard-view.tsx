@@ -13,10 +13,55 @@ export function OperationsDashboardView() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setTimeout(() => {
-      setData(defaultData);
+    Promise.all([
+      fetch("/api/proxy/s9/api/v1/logistics/analytics").then(r => r.json()).catch(() => null),
+      fetch("/api/proxy/s5/api/v1/simulation/run", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          returnId: "RET-OPS-LIVE",
+          productId: "P-88421",
+          category: "Smart Home",
+          conditionScore: 92,
+          utilityScore: 88,
+          fraudScore: 12,
+          estimatedValue: 249.99,
+          returnReason: "DAMAGED_IN_TRANSIT",
+          sellerTrustScore: 0.92,
+        }),
+      }).then(r => r.json()).catch(() => null),
+    ]).then(([analyticsData, simData]) => {
+      const merged = { ...defaultData };
+
+      // Enrich pipeline with live S9 data
+      if (analyticsData && analyticsData.totalOptimizations) {
+        merged.returns = {
+          ...merged.returns,
+          processedToday: analyticsData.totalOptimizations + merged.returns.processedToday,
+          recoveryValueGenerated: Math.round(analyticsData.averageCostSavings * analyticsData.totalOptimizations) + merged.returns.recoveryValueGenerated,
+        };
+      }
+
+      // Enrich triage recovery options with live S5 scenarios
+      if (simData && simData.simulations && merged.triageDetails["RET-9921-A"]) {
+        merged.triageDetails["RET-9921-A"].recoveryOptions = simData.simulations.map((sim: { scenario: string; recoveryValue: number; confidence: number; processingTimeDays: number; carbonImpact: number }, i: number) => ({
+          type: sim.scenario.toUpperCase().replace(/\s+/g, "_"),
+          label: sim.scenario,
+          expectedValue: sim.recoveryValue,
+          confidence: Math.round(sim.confidence * 100),
+          timeRequiredHours: sim.processingTimeDays * 24,
+          isRecommended: i === 0,
+          details: {
+            processingCost: Math.round(sim.recoveryValue * 0.05 * 100) / 100,
+            carbonImpact: `${sim.carbonImpact} kg CO₂`,
+            facilityName: "BLR Center 04",
+          },
+        }));
+      }
+
+      setData(merged);
       setLoading(false);
-    }, 500);
+    });
   }, []);
 
   if (loading || !data) {

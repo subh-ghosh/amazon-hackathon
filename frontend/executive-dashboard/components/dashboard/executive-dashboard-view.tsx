@@ -21,10 +21,51 @@ export function ExecutiveDashboardView() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setTimeout(() => {
-      setData(defaultData);
+    Promise.all([
+      fetch("/api/proxy/s9/api/v1/logistics/analytics").then(r => r.json()).catch(() => null),
+      fetch("/api/proxy/s12/api/v1/intelligence/analytics/top-return-causes").then(r => r.json()).catch(() => null),
+      fetch("/api/proxy/s12/api/v1/intelligence/analytics/recovery-effectiveness").then(r => r.json()).catch(() => null),
+    ]).then(([s9Analytics, s12Causes, s12Recovery]) => {
+      const merged = { ...defaultData };
+
+      // Enrich with live S9 analytics
+      if (s9Analytics && s9Analytics.totalOptimizations) {
+        merged.kpis = merged.kpis.map((kpi) => {
+          if (kpi.label === "CO₂ Saved (Tons)") {
+            return { ...kpi, value: `${(s9Analytics.averageCO2Saved * s9Analytics.totalOptimizations).toLocaleString()}` };
+          }
+          return kpi;
+        });
+        merged.sustainability = {
+          ...merged.sustainability,
+          circularRecoveryRate: Math.min(100, s9Analytics.circularityImpact || merged.sustainability.circularRecoveryRate),
+        };
+      }
+
+      // Enrich with live S12 top causes
+      if (s12Causes && s12Causes.data) {
+        const causes = s12Causes.data.slice(0, 3);
+        merged.intelligence = {
+          ...merged.intelligence,
+          topReasons: causes.map((c: { category?: string; cause_id?: string; frequency?: number }) => ({
+            name: c.category || c.cause_id || "Unknown",
+            value: `${(c.frequency || 0).toLocaleString()}`,
+            percentage: Math.round(((c.frequency || 0) / Math.max(1, causes.reduce((s: number, x: { frequency?: number }) => s + (x.frequency || 0), 0))) * 100),
+          })),
+        };
+      }
+
+      // Enrich with live S12 recovery effectiveness
+      if (s12Recovery && s12Recovery.data) {
+        merged.aiSummary = {
+          ...merged.aiSummary,
+          biggestOpportunity: `Recovery data shows ${s12Recovery.data.length} active paths. Top: ${s12Recovery.data[0]?.action_type || "Refurbish"} with avg $${(s12Recovery.data[0]?.avg_value_recovered || 120).toFixed(0)} recovered.`,
+        };
+      }
+
+      setData(merged);
       setLoading(false);
-    }, 600);
+    });
   }, []);
 
   if (loading || !data) {
