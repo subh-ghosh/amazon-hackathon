@@ -4,7 +4,7 @@ import { use, useState, useEffect } from "react";
 import {
   ArrowLeft, CheckCircle2, ShieldAlert, Clock, Info, Leaf,
   PackageSearch, Activity, HeartHandshake, Box, MapPin, Search,
-  TrendingUp, Loader2, Zap, BarChart3
+  TrendingUp, Loader2, Zap, BarChart3, Users
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -424,6 +424,70 @@ export default function TriageDetailPage({ params }: { params: Promise<{ id: str
                     <p className="text-xs text-green-700 mt-0.5">
                       This routing saves <strong>{intel?.co2Saved?.toFixed(1)}kg CO₂</strong>, diverts <strong>{intel?.wasteDiverted?.toFixed(1)}kg waste</strong> from landfill, and matches this item with <strong>{demandSignals[0]?.searchVolume || 0} active buyers</strong> in the target region.
                     </p>
+                  </div>
+                </div>
+
+                {/* Direct Buyer Match — Peer-to-Peer Economics */}
+                <div className="mt-4 border-2 border-indigo-200 rounded-xl p-5 bg-indigo-50/30">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Users className="text-indigo-600" size={20} />
+                    <div>
+                      <p className="text-sm font-bold text-indigo-900">Direct Buyer Match Available</p>
+                      <p className="text-[10px] text-indigo-600">Skip warehouse — fulfill directly to matched buyer</p>
+                    </div>
+                  </div>
+
+                  {/* Matched buyers */}
+                  <div className="bg-white rounded-lg border border-indigo-100 p-4 mb-3">
+                    <div className="flex items-center justify-between mb-2">
+                      <p className="text-xs font-semibold text-slate-500 uppercase">Matched Buyers (by proximity)</p>
+                      <Badge className="bg-indigo-100 text-indigo-700 border-indigo-200 text-[10px]">{demandSignals[0]?.searchVolume || 47} potential</Badge>
+                    </div>
+                    <div className="space-y-2">
+                      {[
+                        { id: "B-8821", distance: 4.2, city: "Indiranagar", willPay: 0.72 },
+                        { id: "B-9103", distance: 8.7, city: "Koramangala", willPay: 0.68 },
+                        { id: "B-7294", distance: 15.3, city: "Whitefield", willPay: 0.65 },
+                      ].map((buyer, i) => {
+                        const itemPrice = 249.99;
+                        const buyerPays = Math.round(itemPrice * buyer.willPay * 100) / 100;
+                        const deliveryCost = Math.round((buyer.distance * 0.8 + 3) * 100) / 100;
+                        const inspectionFee = 8.00;
+                        const amazonMargin = Math.round((buyerPays - deliveryCost - inspectionFee) * 100) / 100;
+                        return (
+                          <div key={buyer.id} className={`flex items-center gap-3 p-2.5 rounded-lg border ${i === 0 ? "border-indigo-200 bg-indigo-50" : "border-slate-100"}`}>
+                            <div className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-[10px] font-bold text-slate-600">{buyer.id.slice(-2)}</div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-xs font-medium text-slate-900">{buyer.city} • {buyer.distance}km away</p>
+                              <p className="text-[10px] text-slate-500">Searched for this product {Math.floor(Math.random() * 3 + 1)} times this week</p>
+                            </div>
+                            <div className="text-right">
+                              <p className="text-sm font-bold text-indigo-700">${buyerPays.toFixed(2)}</p>
+                              <p className="text-[10px] text-slate-500">buyer pays</p>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Economics breakdown */}
+                  <div className="bg-white rounded-lg border border-indigo-100 p-4">
+                    <p className="text-xs font-semibold text-slate-500 uppercase mb-2">Direct Fulfillment Economics (Best Match)</p>
+                    <div className="space-y-1.5 text-xs">
+                      <div className="flex justify-between"><span className="text-slate-600">Buyer pays (Renewed price)</span><span className="font-medium text-slate-900">$179.99</span></div>
+                      <div className="flex justify-between"><span className="text-slate-600">Local delivery (4.2km)</span><span className="text-red-600">-$6.36</span></div>
+                      <div className="flex justify-between"><span className="text-slate-600">Inspection & certification</span><span className="text-red-600">-$8.00</span></div>
+                      <div className="flex justify-between"><span className="text-slate-600">Platform fee</span><span className="text-red-600">-$5.00</span></div>
+                      <div className="flex justify-between pt-1.5 border-t border-slate-100"><span className="font-semibold text-slate-900">Amazon net recovery</span><span className="font-bold text-emerald-700">$160.63</span></div>
+                    </div>
+                    <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between">
+                      <div>
+                        <p className="text-[10px] text-slate-500">vs. Traditional warehouse routing</p>
+                        <p className="text-xs text-emerald-700 font-medium">Saves $22.40 in logistics + 3 days faster</p>
+                      </div>
+                      <Badge className="bg-emerald-100 text-emerald-800 border-emerald-200 text-xs font-bold">+14% margin</Badge>
+                    </div>
                   </div>
                 </div>
               </CardContent>
