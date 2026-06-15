@@ -15,10 +15,6 @@ function ReturnDecisionContent() {
     const decision = searchParams.get("decision") || "keep_refund";
     const product = getProductById(productId);
     const [dropoffMethod, setDropoffMethod] = useState<"ups" | "wholefoods">("wholefoods");
-    
-    const [hasPhoto, setHasPhoto] = useState(false);
-    const [hasPackaging, setHasPackaging] = useState<boolean | null>(null);
-    const verified = hasPhoto && hasPackaging !== null;
 
     const isReturn = decision === "return";
     const refundAmount = product?.price || 150;
@@ -42,73 +38,8 @@ function ReturnDecisionContent() {
                 </div>
             </div>
 
-            {/* Condition Verification (Only if Return is required) */}
-            {isReturn && !verified && (
-                <div className="mb-8 animate-fade-in space-y-6 bg-white p-5 rounded-lg border-2 border-orange-200 shadow-sm relative overflow-hidden">
-                    <div className="absolute top-0 left-0 w-full h-1 bg-orange-400" />
-                    <div>
-                        <h2 className="text-lg font-bold text-gray-900">Action Required: Condition Check</h2>
-                        <p className="text-sm text-gray-500 mt-1">Please provide this info so we can process your return efficiently.</p>
-                    </div>
-                    
-                    {/* Photo Upload */}
-                    <div>
-                        <p className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-                            <Camera size={16} /> Upload a photo of the item <span className="text-red-500">*</span>
-                        </p>
-                        <p className="text-xs text-gray-500 mb-3">Helps us route the item correctly using AI.</p>
-                        {!hasPhoto ? (
-                            <button 
-                                onClick={() => setHasPhoto(true)}
-                                className="w-full h-24 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center text-gray-500 hover:bg-gray-50 transition-colors"
-                            >
-                                <Camera size={24} className="mb-2" />
-                                <span className="text-sm">Click to mock upload photo</span>
-                            </button>
-                        ) : (
-                            <div className="w-full p-4 bg-emerald-50 border border-emerald-200 rounded-lg flex items-center gap-3">
-                                <div className="w-10 h-10 bg-emerald-100 rounded flex items-center justify-center">
-                                    <Check size={20} className="text-emerald-600" />
-                                </div>
-                                <div>
-                                    <p className="text-sm font-medium text-emerald-800">Photo uploaded</p>
-                                    <p className="text-xs text-emerald-600">Verification successful</p>
-                                </div>
-                                <button onClick={() => setHasPhoto(false)} className="ml-auto text-xs text-gray-500 underline">Change</button>
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Packaging Check */}
-                    <div className="pt-4 border-t border-gray-100">
-                        <p className="text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
-                            <Box size={16} /> Original Packaging <span className="text-red-500">*</span>
-                        </p>
-                        <p className="text-xs text-gray-500 mb-3">Do you have the original manufacturer box in good condition?</p>
-                        <div className="flex gap-3">
-                            <button
-                                onClick={() => setHasPackaging(true)}
-                                className={`flex-1 py-2.5 rounded-lg border text-sm font-medium transition-all ${
-                                    hasPackaging === true ? "bg-[#007185] text-white border-[#007185]" : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
-                                }`}
-                            >
-                                Yes, I have it
-                            </button>
-                            <button
-                                onClick={() => setHasPackaging(false)}
-                                className={`flex-1 py-2.5 rounded-lg border text-sm font-medium transition-all ${
-                                    hasPackaging === false ? "bg-gray-800 text-white border-gray-800" : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
-                                }`}
-                            >
-                                No, I don&apos;t
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
-
             {/* Dynamic Drop-off Incentives (S7/S9 Gamification) */}
-            {isReturn && verified && (
+            {isReturn && (
                 <div className="mb-8 animate-fade-in">
                     <p className="text-sm font-medium text-gray-900 mb-3">Choose Drop-off Method</p>
                     <div className="space-y-3">
@@ -191,12 +122,8 @@ function ReturnDecisionContent() {
             {/* Actions */}
             <div className="flex flex-col gap-2">
                 {isReturn && (
-                    <button 
-                        onClick={() => router.push(`/return-journey?returnId=${returnId}&productId=${productId}`)} 
-                        disabled={!verified}
-                        className="btn-amazon w-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-                    >
-                        {verified ? "Confirm & Track Return" : "Please Complete Verification"} {verified && <ArrowRight size={16} />}
+                    <button onClick={() => router.push(`/return-journey?returnId=${returnId}&productId=${productId}`)} className="btn-amazon w-full flex items-center justify-center gap-2">
+                        Track Return <ArrowRight size={16} />
                     </button>
                 )}
                 <button onClick={() => router.push("/orders")} className="btn-secondary w-full">

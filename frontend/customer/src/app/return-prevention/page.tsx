@@ -2,7 +2,7 @@
 
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { CheckCircle, Loader2, RefreshCw, Banknote, Headphones, Truck, Gift, DollarSign, Leaf } from "lucide-react";
+import { CheckCircle, Loader2, RefreshCw, Banknote, Headphones, Truck, Gift, DollarSign, Leaf, Camera, Check, Box } from "lucide-react";
 import { getProductById } from "@/data/products";
 import { truthService, fraudService, returnlessService, packagingService, sellerService } from "@/api/services";
 import type { TruthAnalyzeResponse, FraudScoreResponse, ReturnlessEvaluateResponse } from "@/api/types";
@@ -25,6 +25,12 @@ function ReturnPreventionContent() {
     const [fraudData, setFraudData] = useState<FraudScoreResponse | null>(null);
     const [returnlessData, setReturnlessData] = useState<ReturnlessEvaluateResponse | null>(null);
     const [selectedResolution, setSelectedResolution] = useState<string | null>(null);
+
+    // S2 Gatekeeper State
+    const [showVerification, setShowVerification] = useState(false);
+    const [hasPhoto, setHasPhoto] = useState(false);
+    const [hasPackaging, setHasPackaging] = useState<boolean | null>(null);
+    const isVerified = hasPhoto && hasPackaging !== null;
 
     const [steps, setSteps] = useState([
         { label: "Checking order details", done: false },
@@ -143,6 +149,15 @@ function ReturnPreventionContent() {
 
     const handleConfirm = () => {
         if (!selectedResolution) return;
+        
+        // Exclude tech support from needing verification
+        if (selectedResolution !== "tech_support" && !isVerified) {
+            setShowVerification(true);
+            // Scroll to bottom smoothly to show the verification block
+            setTimeout(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }), 50);
+            return;
+        }
+
         const decision = selectedResolution === "proceed_return" ? "return" : selectedResolution;
         router.push(`/return-decision?returnId=${returnId}&productId=${productId}&decision=${decision}`);
     };
@@ -259,7 +274,7 @@ function ReturnPreventionContent() {
 
                     {/* Context from analysis — customer-friendly */}
                     {truthData && (
-                        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6">
                             <p className="text-xs text-gray-500 mb-1">Why we&apos;re offering these options</p>
                             <p className="text-sm text-gray-700">
                                 We identified that this issue is related to <span className="font-medium">{formatRootCause(truthData.actualRootCause)}</span>.
@@ -269,18 +284,86 @@ function ReturnPreventionContent() {
                         </div>
                     )}
 
+                    {/* Condition Verification Gatekeeper */}
+                    {showVerification && (
+                        <div className="mb-8 animate-slide-up space-y-6 bg-white p-5 rounded-lg border-2 border-[#007185] shadow-sm relative overflow-hidden">
+                            <div className="absolute top-0 left-0 w-full h-1 bg-[#007185]" />
+                            <div>
+                                <h2 className="text-lg font-bold text-gray-900">Final Step: Condition Check</h2>
+                                <p className="text-sm text-gray-500 mt-1">
+                                    {selectedResolution === "proceed_return" 
+                                        ? "Please provide this info so we can process your return efficiently."
+                                        : "To instantly approve this resolution, we just need a quick photo of the item."}
+                                </p>
+                            </div>
+                            
+                            {/* Photo Upload */}
+                            <div>
+                                <p className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                                    <Camera size={16} /> Upload a photo of the item <span className="text-red-500">*</span>
+                                </p>
+                                {!hasPhoto ? (
+                                    <button 
+                                        onClick={() => setHasPhoto(true)}
+                                        className="w-full h-24 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center text-gray-500 hover:bg-gray-50 transition-colors"
+                                    >
+                                        <Camera size={24} className="mb-2" />
+                                        <span className="text-sm">Click to mock upload photo</span>
+                                    </button>
+                                ) : (
+                                    <div className="w-full p-4 bg-emerald-50 border border-emerald-200 rounded-lg flex items-center gap-3">
+                                        <div className="w-10 h-10 bg-emerald-100 rounded flex items-center justify-center">
+                                            <Check size={20} className="text-emerald-600" />
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-medium text-emerald-800">Photo uploaded</p>
+                                            <p className="text-xs text-emerald-600">Verification successful</p>
+                                        </div>
+                                        <button onClick={() => setHasPhoto(false)} className="ml-auto text-xs text-gray-500 underline">Change</button>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Packaging Check */}
+                            <div className="pt-4 border-t border-gray-100">
+                                <p className="text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
+                                    <Box size={16} /> Original Packaging <span className="text-red-500">*</span>
+                                </p>
+                                <p className="text-xs text-gray-500 mb-3">Do you have the original manufacturer box in good condition?</p>
+                                <div className="flex gap-3">
+                                    <button
+                                        onClick={() => setHasPackaging(true)}
+                                        className={`flex-1 py-2.5 rounded-lg border text-sm font-medium transition-all ${
+                                            hasPackaging === true ? "bg-[#007185] text-white border-[#007185]" : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+                                        }`}
+                                    >
+                                        Yes, I have it
+                                    </button>
+                                    <button
+                                        onClick={() => setHasPackaging(false)}
+                                        className={`flex-1 py-2.5 rounded-lg border text-sm font-medium transition-all ${
+                                            hasPackaging === false ? "bg-gray-800 text-white border-gray-800" : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+                                        }`}
+                                    >
+                                        No, I don&apos;t
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
                     {/* Confirm Button */}
                     <div className="mt-8 pt-6 border-t border-gray-200 flex justify-end">
                         <button 
                             onClick={handleConfirm}
-                            disabled={!selectedResolution}
+                            disabled={!selectedResolution || (showVerification && !isVerified)}
                             className={`px-8 py-3 rounded-md font-bold text-sm shadow-sm transition-colors ${
-                                selectedResolution 
+                                selectedResolution && (!showVerification || isVerified)
                                     ? "bg-[#FF9900] hover:bg-[#FFB84D] text-[#131A22]" 
                                     : "bg-gray-200 text-gray-500 cursor-not-allowed"
                             }`}
                         >
-                            Confirm selection
+                            {showVerification && isVerified ? "Finalize Resolution" : "Confirm selection"}
                         </button>
                     </div>
                 </div>
