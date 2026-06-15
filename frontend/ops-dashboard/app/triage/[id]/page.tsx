@@ -169,28 +169,13 @@ export default function TriageDetailPage({ params }: { params: Promise<{ id: str
       result.circularityScore = circular.sustainabilityMetrics?.circularityScore || 0;
     } catch { result.circularFacility = "FAC-REFURB-BLR"; result.circularType = "REFURBISHMENT"; result.optimizationScore = 95; }
 
-    // Generate demand signals based on recovery decision
-    setDemandSignals(generateDemandSignals(result.recoveryDecision || "RESELL", "Smart Home"));
+    // Use static triage data for options (correctly varied per item)
+    // Live API enriches metrics only, does not replace decisions
+    const recommendedOpt = data.recoveryOptions.find(o => o.isRecommended);
+    setDemandSignals(generateDemandSignals(recommendedOpt?.type || "RESELL", itemConfig.category));
     setIntel(result as LiveIntelligence);
     setLoading(false);
-
-    // Update recovery options with live data
-    if (result.simulations && result.simulations.length > 0) {
-      const liveOptions: TriageRecoveryOption[] = result.simulations.map((sim, i) => ({
-        type: sim.scenario.toUpperCase().replace(/\s+/g, "_") as any,
-        label: sim.scenario,
-        expectedValue: sim.recoveryValue,
-        confidence: Math.round(sim.confidence * 100),
-        timeRequiredHours: sim.processingTimeDays * 24,
-        isRecommended: sim.scenario.toUpperCase() === (result.recoveryDecision || "").toUpperCase(),
-        details: {
-          processingCost: Math.round(sim.recoveryValue * 0.05 * 100) / 100,
-          carbonImpact: `${sim.carbonImpact} kg CO₂`,
-          facilityName: result.circularFacility || "FAC-REFURB-BLR",
-        },
-      }));
-      setSelectedOption(liveOptions.find(o => o.isRecommended) || liveOptions[0]);
-    }
+    setSelectedOption(recommendedOpt || data.recoveryOptions[0]);
   }
 
   const handleConfirmRouting = () => {
