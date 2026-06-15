@@ -107,8 +107,8 @@ function ReturnDecisionContent() {
                         </div>
                     </div>
 
-                    {/* Buyer Match — only shows for renewable product categories */}
-                    {product && isRenewableProduct(product.category) && (
+                    {/* Buyer Match — only shows for renewable product categories, excludes hygiene items */}
+                    {product && isRenewableProduct(product.category) && !(product.category === "Clothing" && product.price < 30) && (
                         <div className="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
                             <div className="flex items-start gap-3">
                                 <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -226,10 +226,11 @@ function getBuyerMatchText(price: number, category: string, productId: string): 
 }
 
 function isRenewableProduct(category: string): boolean {
-    // Products that CAN be renewed/resold — excludes health, safety, perishable
+    // Products that CAN be renewed/resold — excludes health, safety, perishable, hygiene
     const renewableCategories = ["Electronics", "Furniture", "Home", "Kitchen", "Footwear", "Clothing"];
     return renewableCategories.includes(category);
-    // NOT renewable: Food, Health & Personal Care, Baby Products, Hazardous Materials
+    // Note: Individual hygiene items (socks, underwear) are filtered by price threshold
+    // in the calling code — items under $20 in Clothing don't show buyer match
 }
 
 export default function ReturnDecisionPage() {
