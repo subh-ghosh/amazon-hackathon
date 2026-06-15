@@ -16,19 +16,18 @@ export default function HomePage() {
                 <div className="bg-gradient-to-b from-[#232F3E] to-[#EAEDED] h-[300px] md:h-[400px]">
                     <div className="max-w-[1500px] mx-auto px-4 pt-8 md:pt-12">
                         <div className="bg-white rounded-lg shadow-sm p-6 md:p-10 max-w-2xl">
-                            <p className="text-xs font-medium text-emerald-700 uppercase tracking-wider mb-2">Second Life Commerce</p>
                             <h1 className="text-2xl md:text-3xl font-normal text-gray-900 mb-2">
-                                Every product deserves a meaningful life
+                                Great deals on top brands
                             </h1>
                             <p className="text-gray-600 text-sm md:text-base mb-5">
-                                Shop with confidence. Our AI helps you find the right product — and gives every return a second chance through resale, refurbishment, or donation.
+                                Free delivery, easy returns, and purchase guidance to help you find exactly what you need.
                             </p>
                             <div className="flex flex-wrap gap-3">
                                 <Link href="/products" className="btn-amazon-primary inline-block">
-                                    Shop New
+                                    Shop All Deals
                                 </Link>
-                                <Link href="/products" className="inline-block px-6 py-3 text-sm font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full hover:bg-emerald-100 transition-colors">
-                                    ♻️ Shop Renewed
+                                <Link href="/renewed" className="inline-block px-6 py-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-full hover:bg-gray-50 transition-colors">
+                                    Shop Certified Renewed
                                 </Link>
                             </div>
                         </div>

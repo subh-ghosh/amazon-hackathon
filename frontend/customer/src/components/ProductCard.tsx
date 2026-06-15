@@ -107,11 +107,10 @@ export function ProductCard({ product }: ProductCardProps) {
                 {/* Customer insight line */}
                 <div className="h-4 mb-3">
                     {insight && (
-                        <p className={`text-xs line-clamp-1 ${
-                            insight.type === "caution" ? "text-amber-700 font-medium" : 
-                            insight.type === "info" ? "text-blue-700 font-medium" :
-                            "text-emerald-700"
-                        }`}>
+                        <p className={`text-xs line-clamp-1 ${insight.type === "caution" ? "text-amber-700 font-medium" :
+                                insight.type === "info" ? "text-blue-700 font-medium" :
+                                    "text-emerald-700"
+                            }`}>
                             {insight.message}
                         </p>
                     )}
@@ -126,41 +125,25 @@ export function ProductCard({ product }: ProductCardProps) {
 }
 
 function getStaticProductInsight(product: Product): { type: "positive" | "caution" | "info"; badge: string; message: string } {
-    // High-risk categories: Footwear, Clothing — these are the return prevention story
     if (product.category === "Footwear") {
-        return {
-            type: "caution",
-            badge: "Check fit",
-            message: "Frequently returned — check size guide before buying",
-        };
+        return { type: "caution", badge: "Check fit", message: "Sizing varies — check size guide before ordering" };
     }
     if (product.category === "Clothing") {
-        return {
-            type: "caution",
-            badge: "Size varies",
-            message: "Fit varies by brand — review size chart",
-        };
+        return { type: "caution", badge: "Size varies", message: "Fit varies by brand — review size chart" };
     }
     if (product.category === "Furniture" && product.price > 1000) {
-        return {
-            type: "caution",
-            badge: "Measure first",
-            message: "High-value item — confirm dimensions before ordering",
-        };
+        return { type: "caution", badge: "Measure first", message: "Confirm dimensions match your space" };
     }
-
-    // Safe categories
     if (product.rating >= 4.7) {
-        return { type: "positive", badge: "Popular Choice", message: "Highly rated — rarely returned" };
+        return { type: "positive", badge: "Best Seller", message: "Customers frequently keep this item" };
     }
     if (product.category === "Electronics" && product.rating >= 4.5) {
-        return { type: "positive", badge: "Frequently Kept", message: "Customers who buy this keep it" };
+        return { type: "positive", badge: "Top Rated", message: "Very low return rate" };
     }
     if (product.category === "Kitchen") {
-        return { type: "positive", badge: "Frequently Kept", message: "Very low return rate" };
+        return { type: "positive", badge: "Popular", message: "Customers love this product" };
     }
-
-    return { type: "positive", badge: "Good match", message: "Well-reviewed by similar shoppers" };
+    return { type: "positive", badge: "Well Reviewed", message: "Highly rated by buyers" };
 }
 
 function getDeliveryDate(days: number): string {

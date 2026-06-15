@@ -161,8 +161,8 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
                                 <div>
                                     <p className="text-sm font-bold text-gray-900 mb-1">Seller Performance Notice</p>
                                     <p className="text-sm text-gray-700 mb-2">
-                                        {seller.topIssues && seller.topIssues.length > 0 
-                                            ? seller.topIssues[0] 
+                                        {seller.topIssues && seller.topIssues.length > 0
+                                            ? seller.topIssues[0]
                                             : "This seller has a lower than average health score."}
                                     </p>
                                     {seller.recommendations && seller.recommendations.length > 0 && (
