@@ -1,23 +1,39 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { CheckCircle, ArrowRight, MapPin, Clock, Tag, Home } from "lucide-react";
+import { CheckCircle, ArrowRight, MapPin, Clock, Tag, Home, Leaf } from "lucide-react";
 import { getProductById } from "@/data/products";
 import { useState } from "react";
+import { useStore } from "@/hooks/useStore";
 
 function ReturnDecisionContent() {
     const searchParams = useSearchParams();
     const router = useRouter();
+    const { earnCredits } = useStore();
 
     const returnId = searchParams.get("returnId") || "RET-DEMO";
     const productId = searchParams.get("productId") || "PROD-002";
     const decision = searchParams.get("decision") || "keep_refund";
     const product = getProductById(productId);
     const [dropoffMethod, setDropoffMethod] = useState<"dropoff" | "pickup">("dropoff");
+    const [credited, setCredited] = useState(false);
 
     const isReturn = decision === "return";
     const refundAmount = product?.price || 150;
+
+    // Award credits based on decision
+    useEffect(() => {
+        if (credited) return;
+        setCredited(true);
+        if (decision === "keep_refund" || decision === "recycle_refund") {
+            earnCredits("Chose keep-item resolution", 30);
+        } else if (decision === "return") {
+            earnCredits("Return enables direct buyer match", 15);
+        } else if (decision === "replacement") {
+            earnCredits("Item returned for renewal", 10);
+        }
+    }, [decision, credited, earnCredits]);
     const pickupDate = new Date();
     pickupDate.setDate(pickupDate.getDate() + 2);
 
@@ -46,9 +62,8 @@ function ReturnDecisionContent() {
                         {/* Option 1: Drop-off (Optimal routing) */}
                         <button
                             onClick={() => setDropoffMethod("dropoff")}
-                            className={`w-full flex items-start gap-3 p-4 rounded-lg border-2 text-left transition-all relative overflow-hidden ${
-                                dropoffMethod === "dropoff" ? "border-[#007185] bg-[#F0FAFA]" : "border-gray-200 hover:border-gray-300 bg-white"
-                            }`}
+                            className={`w-full flex items-start gap-3 p-4 rounded-lg border-2 text-left transition-all relative overflow-hidden ${dropoffMethod === "dropoff" ? "border-[#007185] bg-[#F0FAFA]" : "border-gray-200 hover:border-gray-300 bg-white"
+                                }`}
                         >
                             <div className="absolute top-0 right-0 bg-emerald-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-bl-lg">
                                 RECOMMENDED
@@ -69,9 +84,8 @@ function ReturnDecisionContent() {
                         {/* Option 2: Home Collection (Expensive/Slower) */}
                         <button
                             onClick={() => setDropoffMethod("pickup")}
-                            className={`w-full flex items-start gap-3 p-4 rounded-lg border-2 text-left transition-all ${
-                                dropoffMethod === "pickup" ? "border-[#007185] bg-[#F0FAFA]" : "border-gray-200 hover:border-gray-300 bg-white"
-                            }`}
+                            className={`w-full flex items-start gap-3 p-4 rounded-lg border-2 text-left transition-all ${dropoffMethod === "pickup" ? "border-[#007185] bg-[#F0FAFA]" : "border-gray-200 hover:border-gray-300 bg-white"
+                                }`}
                         >
                             <Home className={`mt-0.5 ${dropoffMethod === "pickup" ? "text-[#007185]" : "text-gray-400"}`} size={20} />
                             <div>
