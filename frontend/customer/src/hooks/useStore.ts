@@ -5,6 +5,11 @@ import type { CartItem, Order, Product, Address } from "@/api/types";
 
 export type PersonaType = "TRUSTED" | "SUSPICIOUS";
 
+export const PERSONA_LABELS: Record<PersonaType, string> = {
+    TRUSTED: "Regular Customer",
+    SUSPICIOUS: "Frequent Returner",
+};
+
 export interface GreenCreditEntry {
     action: string;
     credits: number;

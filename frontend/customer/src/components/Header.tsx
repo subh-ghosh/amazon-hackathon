@@ -3,14 +3,15 @@
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useState } from "react";
-import { Search, ShoppingCart, MapPin, Leaf } from "lucide-react";
+import { Search, ShoppingCart, MapPin, Leaf, Users } from "lucide-react";
 import { useStore } from "@/hooks/useStore";
+import { PERSONA_LABELS, type PersonaType } from "@/hooks/useStore";
 
 export function Header() {
     const [searchQuery, setSearchQuery] = useState("");
     const router = useRouter();
     const pathname = usePathname();
-    const { getCartCount, greenCredits } = useStore();
+    const { getCartCount, greenCredits, persona, setPersona } = useStore();
     const cartCount = getCartCount();
 
     const handleSearch = (e: React.FormEvent) => {
@@ -49,7 +50,7 @@ export function Header() {
                         </div>
                     </form>
 
-                    {/* Rewards balance */}
+                    {/* Rewards */}
                     <Link href="/green-credits" className="hidden md:flex items-center gap-1.5 px-2 py-1 hover:outline hover:outline-1 hover:outline-white rounded">
                         <Leaf size={14} className="text-emerald-400" />
                         <div>
@@ -86,6 +87,27 @@ export function Header() {
                     <Link href="/products?category=Clothing" className="px-2.5 py-1 hover:outline hover:outline-1 hover:outline-white rounded whitespace-nowrap">Fashion</Link>
                     <Link href="/products?category=Kitchen" className="px-2.5 py-1 hover:outline hover:outline-1 hover:outline-white rounded whitespace-nowrap">Home & Kitchen</Link>
                     <Link href="/products?category=Footwear" className="px-2.5 py-1 hover:outline hover:outline-1 hover:outline-white rounded whitespace-nowrap">Footwear</Link>
+                </div>
+            </div>
+
+            {/* Demo persona toggle — floating bottom-right */}
+            <div className="fixed bottom-4 right-4 z-50">
+                <div className="bg-white border border-gray-300 shadow-lg rounded-lg p-3 flex items-center gap-3">
+                    <Users size={14} className="text-gray-500 flex-shrink-0" />
+                    <div className="flex bg-gray-100 rounded-full p-0.5">
+                        <button
+                            onClick={() => setPersona("TRUSTED")}
+                            className={`text-xs px-3 py-1.5 rounded-full font-medium transition-all ${persona === "TRUSTED" ? "bg-white shadow text-gray-900" : "text-gray-500"}`}
+                        >
+                            {PERSONA_LABELS.TRUSTED}
+                        </button>
+                        <button
+                            onClick={() => setPersona("SUSPICIOUS")}
+                            className={`text-xs px-3 py-1.5 rounded-full font-medium transition-all ${persona === "SUSPICIOUS" ? "bg-white shadow text-gray-900" : "text-gray-500"}`}
+                        >
+                            {PERSONA_LABELS.SUSPICIOUS}
+                        </button>
+                    </div>
                 </div>
             </div>
         </header>
