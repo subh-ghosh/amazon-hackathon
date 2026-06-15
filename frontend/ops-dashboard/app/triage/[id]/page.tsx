@@ -173,6 +173,7 @@ export default function TriageDetailPage({ params }: { params: Promise<{ id: str
     // Live API enriches metrics only, does not replace decisions
     const recommendedOpt = data.recoveryOptions.find(o => o.isRecommended);
     setDemandSignals(generateDemandSignals(recommendedOpt?.type || "RESELL", itemConfig.category));
+    result.recoveryDecision = (data.recoveryOptions.find(o => o.isRecommended) || data.recoveryOptions[0]).label.toUpperCase();
     setIntel(result as LiveIntelligence);
     setLoading(false);
     setSelectedOption(recommendedOpt || data.recoveryOptions[0]);
@@ -489,7 +490,7 @@ export default function TriageDetailPage({ params }: { params: Promise<{ id: str
         <div className="fixed bottom-0 left-0 right-0 border-t border-slate-200 bg-white/80 backdrop-blur-xl p-4 z-40 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
             <span className="flex items-center gap-2 text-sm text-indigo-700 bg-indigo-50 px-3 py-1.5 rounded-md border border-indigo-100">
-              <CheckCircle2 size={16} /> Decision: {intel?.recoveryDecision} → {intel?.circularFacility}
+              <CheckCircle2 size={16} /> Decision: {selectedOption?.label || intel?.recoveryDecision} → {intel?.circularFacility}
             </span>
             <button onClick={handleConfirmRouting} disabled={isRouting} className="px-8 py-2.5 text-sm font-bold text-white bg-slate-900 rounded-lg hover:bg-slate-800 shadow-md flex items-center gap-2">
               {isRouting ? <><Loader2 size={16} className="animate-spin" />Routing...</> : <>Execute Route</>}
