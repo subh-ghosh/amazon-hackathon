@@ -54,49 +54,6 @@ export default function HomePage() {
             {/* Featured */}
             <Section title="Recommended for you" products={featured} />
 
-            {/* Second Life Marketplace */}
-            <div className="max-w-[1500px] mx-auto px-4 mb-6">
-                <div className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-lg border border-emerald-200 p-5">
-                    <div className="flex items-center justify-between mb-4">
-                        <div>
-                            <div className="flex items-center gap-2 mb-1">
-                                <span className="text-lg">♻️</span>
-                                <h2 className="text-xl font-bold text-gray-900">Amazon Renewed</h2>
-                                <span className="text-[10px] font-medium bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full border border-emerald-200">Second Life</span>
-                            </div>
-                            <p className="text-sm text-gray-600">Certified refurbished products — tested, graded, and guaranteed by Amazon AI</p>
-                        </div>
-                        <Link href="/products" className="text-sm text-[#007185] hover:text-[#C7511F] hover:underline">
-                            Shop all Renewed
-                        </Link>
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                        {PRODUCTS.slice(0, 4).map((product) => (
-                            <div key={`renewed-${product.product_id}`} className="bg-white rounded-lg border border-gray-200 p-4 relative">
-                                <div className="absolute top-2 right-2 bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-full">
-                                    Save {Math.round(20 + Math.random() * 15)}%
-                                </div>
-                                <Link href={`/product/${product.product_id}`}>
-                                    <img src={product.image} alt={product.title} className="w-full aspect-square object-cover rounded mb-2" />
-                                    <p className="text-xs text-gray-900 line-clamp-2 mb-1">{product.title}</p>
-                                    <div className="flex items-baseline gap-2">
-                                        <span className="text-sm font-bold text-gray-900">${(product.price * 0.72).toFixed(2)}</span>
-                                        <span className="text-xs text-gray-400 line-through">${product.price.toFixed(2)}</span>
-                                    </div>
-                                    <p className="text-[10px] text-emerald-600 mt-1 flex items-center gap-1">
-                                        <span>✓</span> AI Quality Grade: Excellent
-                                    </p>
-                                </Link>
-                            </div>
-                        ))}
-                    </div>
-                    <div className="mt-4 pt-3 border-t border-emerald-200 flex items-center justify-between">
-                        <p className="text-xs text-emerald-700">Every Renewed purchase gives a product a second life and earns you Green Credits</p>
-                        <span className="text-xs bg-emerald-600 text-white px-2.5 py-1 rounded-full font-medium">🌱 +50 Green Credits per item</span>
-                    </div>
-                </div>
-            </div>
-
             {/* Trending */}
             <Section title="Trending now" products={trending} />
 

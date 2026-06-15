@@ -1,15 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useState } from "react";
-import { Search, ShoppingCart, MapPin } from "lucide-react";
+import { Search, ShoppingCart, MapPin, Leaf } from "lucide-react";
 import { useStore } from "@/hooks/useStore";
 
 export function Header() {
     const [searchQuery, setSearchQuery] = useState("");
     const router = useRouter();
-    const { getCartCount, persona, setPersona } = useStore();
+    const pathname = usePathname();
+    const { getCartCount, greenCredits } = useStore();
     const cartCount = getCartCount();
 
     const handleSearch = (e: React.FormEvent) => {
@@ -44,12 +45,8 @@ export function Header() {
                                 <option>All</option>
                             </select>
                             <input
-                                type="text"
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                placeholder="Search Amazon"
-                                className="flex-1 px-4 py-2.5 text-gray-900 text-sm focus:outline-none"
-                                aria-label="Search"
+                                type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
+                                placeholder="Search Amazon" className="flex-1 px-4 py-2.5 text-gray-900 text-sm focus:outline-none" aria-label="Search"
                             />
                             <button type="submit" className="bg-[#FEBD69] hover:bg-[#F3A847] px-4" aria-label="Search">
                                 <Search size={20} className="text-gray-800" />
@@ -57,21 +54,20 @@ export function Header() {
                         </div>
                     </form>
 
-                    {/* Persona Toggle */}
-                    <div className="hidden md:flex flex-col justify-center px-3 py-1 bg-[#131921] border border-gray-600 rounded">
-                        <p className="text-[10px] text-gray-300 leading-none mb-1 text-center">Demo Mode</p>
-                        <div className="flex items-center gap-2">
-                            <span className={`text-[10px] ${persona === "TRUSTED" ? "text-emerald-400 font-bold" : "text-gray-400"}`}>TRUSTED</span>
-                            <button
-                                onClick={() => setPersona(persona === "TRUSTED" ? "SUSPICIOUS" : "TRUSTED")}
-                                className={`w-8 h-4 rounded-full relative transition-colors duration-200 ${persona === "SUSPICIOUS" ? "bg-red-500" : "bg-emerald-500"}`}
-                                aria-label="Toggle Persona"
-                            >
-                                <div className={`absolute top-0.5 w-3 h-3 rounded-full bg-white transition-transform duration-200 ${persona === "SUSPICIOUS" ? "translate-x-4.5 left-[1px]" : "translate-x-0.5 left-[1px]"}`} style={{ transform: persona === "SUSPICIOUS" ? "translateX(16px)" : "translateX(2px)" }} />
-                            </button>
-                            <span className={`text-[10px] ${persona === "SUSPICIOUS" ? "text-red-400 font-bold" : "text-gray-400"}`}>SUSPICIOUS</span>
+                    {/* Green Credits */}
+                    <Link href="/green-credits" className="hidden md:flex items-center gap-1.5 px-2 py-1 hover:outline hover:outline-1 hover:outline-white rounded">
+                        <Leaf size={16} className="text-emerald-400" />
+                        <div>
+                            <p className="text-[10px] text-emerald-300 leading-none">Green Credits</p>
+                            <p className="text-sm font-bold leading-tight text-emerald-400">{greenCredits} 🌱</p>
                         </div>
-                    </div>
+                    </Link>
+
+                    {/* Account */}
+                    <Link href="/orders" className="hidden md:block px-2 py-1 hover:outline hover:outline-1 hover:outline-white rounded">
+                        <p className="text-[10px] text-gray-300 leading-none">Hello, Customer</p>
+                        <p className="text-sm font-bold leading-tight">Account & Lists</p>
+                    </Link>
 
                     {/* Returns & Orders */}
                     <Link href="/orders" className="hidden md:block px-2 py-1 hover:outline hover:outline-1 hover:outline-white rounded">
@@ -83,23 +79,29 @@ export function Header() {
                     <Link href="/cart" className="flex items-end gap-0.5 px-2 py-1 hover:outline hover:outline-1 hover:outline-white rounded">
                         <div className="relative">
                             <ShoppingCart size={28} />
-                            <span className="absolute -top-1 left-3 text-[#F08804] text-[16px] font-bold">
-                                {cartCount > 0 ? cartCount : ""}
-                            </span>
+                            <span className="absolute -top-1 left-3 text-[#F08804] text-[16px] font-bold">{cartCount > 0 ? cartCount : ""}</span>
                         </div>
                         <span className="text-sm font-bold pb-0.5">Cart</span>
                     </Link>
                 </div>
             </div>
 
-            {/* Sub-nav */}
+            {/* Sub-nav with New / Renewed tabs */}
             <div className="bg-[#232F3E] text-white text-sm">
                 <div className="max-w-[1500px] mx-auto px-4 flex items-center h-[39px] gap-1 overflow-x-auto">
-                    <Link href="/products" className="px-2.5 py-1 hover:outline hover:outline-1 hover:outline-white rounded whitespace-nowrap">Today&apos;s Deals</Link>
+                    <Link href="/" className={`px-3 py-1.5 rounded whitespace-nowrap transition-colors ${pathname === "/" ? "bg-[#3a4a5c] font-bold" : "hover:outline hover:outline-1 hover:outline-white"}`}>
+                        New Products
+                    </Link>
+                    <Link href="/renewed" className={`px-3 py-1.5 rounded whitespace-nowrap transition-colors flex items-center gap-1.5 ${pathname === "/renewed" ? "bg-emerald-700 font-bold" : "hover:outline hover:outline-1 hover:outline-white"}`}>
+                        <span>♻️</span> Renewed
+                    </Link>
+                    <div className="w-px h-5 bg-gray-500 mx-1" />
                     <Link href="/products?category=Electronics" className="px-2.5 py-1 hover:outline hover:outline-1 hover:outline-white rounded whitespace-nowrap">Electronics</Link>
                     <Link href="/products?category=Clothing" className="px-2.5 py-1 hover:outline hover:outline-1 hover:outline-white rounded whitespace-nowrap">Fashion</Link>
                     <Link href="/products?category=Kitchen" className="px-2.5 py-1 hover:outline hover:outline-1 hover:outline-white rounded whitespace-nowrap">Home & Kitchen</Link>
-                    <Link href="/products?category=Furniture" className="px-2.5 py-1 hover:outline hover:outline-1 hover:outline-white rounded whitespace-nowrap">Furniture</Link>
+                    <Link href="/green-credits" className="px-2.5 py-1 hover:outline hover:outline-1 hover:outline-white rounded whitespace-nowrap flex items-center gap-1 text-emerald-300">
+                        <Leaf size={12} /> Green Credits
+                    </Link>
                 </div>
             </div>
         </header>

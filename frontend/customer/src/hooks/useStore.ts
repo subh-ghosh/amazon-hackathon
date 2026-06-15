@@ -5,11 +5,19 @@ import type { CartItem, Order, Product, Address } from "@/api/types";
 
 export type PersonaType = "TRUSTED" | "SUSPICIOUS";
 
+export interface GreenCreditEntry {
+    action: string;
+    credits: number;
+    timestamp: string;
+}
+
 export interface AppState {
     cart: CartItem[];
     orders: Order[];
     customer_id: string;
     persona: PersonaType;
+    greenCredits: number;
+    greenHistory: GreenCreditEntry[];
 }
 
 export interface AppActions {
@@ -21,6 +29,7 @@ export interface AppActions {
     getCartTotal: () => number;
     getCartCount: () => number;
     setPersona: (persona: PersonaType) => void;
+    earnCredits: (action: string, credits: number) => void;
 }
 
 export type AppStore = AppState & AppActions;
