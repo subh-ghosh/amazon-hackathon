@@ -1,4 +1,5 @@
 import {
+  CheckCircle2,
   ClipboardCheck,
   PackageOpen,
   RotateCcw,
@@ -22,8 +23,10 @@ interface RecoveryPipelineProps {
 const stageIcons: Record<string, LucideIcon> = {
   Returned: PackageOpen,
   Inspection: ClipboardCheck,
+  Inspected: ClipboardCheck,
   Decision: Route,
   Recovery: RotateCcw,
+  Completed: CheckCircle2,
 };
 
 
@@ -41,9 +44,9 @@ export function RecoveryPipeline({
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-3 xl:flex-row xl:items-center">
-          <div className="grid flex-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid flex-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
             {stages.map((stage) => {
-              const Icon = stageIcons[stage.label];
+              const Icon = stageIcons[stage.label] ?? PackageOpen;
               return (
                 <div key={stage.label} className="relative">
                   <div className="h-full rounded-xl border bg-slate-50 p-4">
