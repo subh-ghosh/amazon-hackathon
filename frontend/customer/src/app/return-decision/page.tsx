@@ -2,8 +2,9 @@
 
 import { Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { CheckCircle, ArrowRight } from "lucide-react";
+import { CheckCircle, ArrowRight, MapPin, Clock, Tag } from "lucide-react";
 import { getProductById } from "@/data/products";
+import { useState } from "react";
 
 function ReturnDecisionContent() {
     const searchParams = useSearchParams();
@@ -13,6 +14,7 @@ function ReturnDecisionContent() {
     const productId = searchParams.get("productId") || "PROD-002";
     const decision = searchParams.get("decision") || "keep_refund";
     const product = getProductById(productId);
+    const [dropoffMethod, setDropoffMethod] = useState<"ups" | "wholefoods">("wholefoods");
 
     const isReturn = decision === "return";
     const refundAmount = product?.price || 150;
@@ -32,10 +34,66 @@ function ReturnDecisionContent() {
                 <div className="space-y-3">
                     <DetailRow label="Return ID" value={returnId} />
                     <DetailRow label="Refund amount" value={`$${decision === "partial_refund" ? (refundAmount * 0.5).toFixed(2) : refundAmount.toFixed(2)}`} highlight />
-                    {isReturn && <DetailRow label="Pickup" value={pickupDate.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })} />}
                     <DetailRow label="Timeline" value={isReturn ? "5-7 business days after delivery" : "3-5 business days"} />
                 </div>
             </div>
+
+            {/* Dynamic Drop-off Incentives (S7/S9 Gamification) */}
+            {isReturn && (
+                <div className="mb-8 animate-fade-in">
+                    <p className="text-sm font-medium text-gray-900 mb-3">Choose Drop-off Method</p>
+                    <div className="space-y-3">
+                        {/* Option 1: Whole Foods (Optimal routing) */}
+                        <button
+                            onClick={() => setDropoffMethod("wholefoods")}
+                            className={`w-full flex items-start gap-3 p-4 rounded-lg border-2 text-left transition-all relative overflow-hidden ${
+                                dropoffMethod === "wholefoods" ? "border-[#007185] bg-[#F0FAFA]" : "border-gray-200 hover:border-gray-300 bg-white"
+                            }`}
+                        >
+                            <div className="absolute top-0 right-0 bg-emerald-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-bl-lg">
+                                RECOMMENDED
+                            </div>
+                            <MapPin className={`mt-0.5 ${dropoffMethod === "wholefoods" ? "text-[#007185]" : "text-gray-400"}`} size={20} />
+                            <div>
+                                <p className="text-sm font-medium text-gray-900">Whole Foods Market</p>
+                                <p className="text-xs text-gray-500 mt-0.5">Box-free, label-free return.</p>
+                                <div className="mt-2 flex items-center gap-1.5 text-xs font-medium text-emerald-700 bg-emerald-50 px-2 py-1 rounded inline-flex">
+                                    <Tag size={12} /> Earn $2 Amazon Promo Credit
+                                </div>
+                            </div>
+                            <div className={`ml-auto mt-0.5 w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${dropoffMethod === "wholefoods" ? "border-[#007185]" : "border-gray-300"}`}>
+                                {dropoffMethod === "wholefoods" && <div className="w-2.5 h-2.5 rounded-full bg-[#007185]" />}
+                            </div>
+                        </button>
+
+                        {/* Option 2: UPS (Standard) */}
+                        <button
+                            onClick={() => setDropoffMethod("ups")}
+                            className={`w-full flex items-start gap-3 p-4 rounded-lg border-2 text-left transition-all ${
+                                dropoffMethod === "ups" ? "border-[#007185] bg-[#F0FAFA]" : "border-gray-200 hover:border-gray-300 bg-white"
+                            }`}
+                        >
+                            <MapPin className={`mt-0.5 ${dropoffMethod === "ups" ? "text-[#007185]" : "text-gray-400"}`} size={20} />
+                            <div>
+                                <p className="text-sm font-medium text-gray-900">UPS Store Drop-off</p>
+                                <p className="text-xs text-gray-500 mt-0.5">Requires box. We print the label.</p>
+                            </div>
+                            <div className={`ml-auto mt-0.5 w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${dropoffMethod === "ups" ? "border-[#007185]" : "border-gray-300"}`}>
+                                {dropoffMethod === "ups" && <div className="w-2.5 h-2.5 rounded-full bg-[#007185]" />}
+                            </div>
+                        </button>
+                    </div>
+
+                    {/* Speed Bounty Banner */}
+                    <div className="mt-4 bg-orange-50 border border-orange-200 rounded-lg p-3 flex items-start gap-3">
+                        <Clock className="text-orange-600 mt-0.5 flex-shrink-0" size={18} />
+                        <div>
+                            <p className="text-sm font-medium text-orange-900">Speed Bonus: Fast Drop-off</p>
+                            <p className="text-xs text-orange-800 mt-0.5">Drop this off within <strong>24 hours</strong> to receive your refund instantly. Otherwise, refunds are processed after inspection.</p>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* Product */}
             {product && (
