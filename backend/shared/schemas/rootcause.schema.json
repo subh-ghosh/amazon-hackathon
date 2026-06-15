@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RootCauseCreateRequest",
+  "type": "object",
+  "required": [
+    "cause_id",
+    "return_id",
+    "category"
+  ],
+  "properties": {
+    "cause_id": { "type": "string" },
+    "return_id": { "type": "string" },
+    "category": { "type": "string" },
+    "description": { "type": ["string", "null"] },
+    "confidence": { "type": "number", "default": 1.0 }
+  }
+}

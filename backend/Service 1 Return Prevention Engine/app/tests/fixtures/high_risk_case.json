@@ -1,0 +1,11 @@
+{
+    "customerId": "CUST-HIGH-001",
+    "productId": "PROD-HIGH-001",
+    "category": "Apparel",
+    "productRating": 1.2,
+    "customerReturnRate": 0.85,
+    "customerPurchaseCount": 3,
+    "productReturnRate": 0.45,
+    "sellerRating": 2.1,
+    "price": 250.0
+}

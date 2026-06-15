@@ -1,0 +1,27 @@
+# ─────────────────────────────────────────────
+# Amazon Circular Intelligence OS
+# Service 12: Learning & Knowledge Graph Service
+# ─────────────────────────────────────────────
+
+# --- Web Framework ---
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+python-multipart>=0.0.9
+
+# --- Data Validation ---
+pydantic>=2.10.0
+pydantic-settings>=2.6.0
+
+# --- AWS SDK ---
+boto3>=1.34.0
+
+# --- Amazon Neptune (Gremlin) ---
+gremlinpython>=3.7.0
+nest-asyncio>=1.6.0
+
+# --- Amazon Neptune (openCypher via HTTPS) ---
+requests>=2.31.0
+
+# --- Testing ---
+pytest>=8.0.0
+httpx>=0.27.0

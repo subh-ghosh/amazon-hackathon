@@ -1,0 +1,37 @@
+[
+  {
+    "Scenario Name": "Normal Return",
+    "Entities Created": 5,
+    "API Calls Made": 5,
+    "Execution Time (s)": 4.672,
+    "Pass / Fail": "PASS"
+  },
+  {
+    "Scenario Name": "Size Mismatch",
+    "Entities Created": 5,
+    "API Calls Made": 5,
+    "Execution Time (s)": 2.625,
+    "Pass / Fail": "PASS"
+  },
+  {
+    "Scenario Name": "Counterfeit Seller",
+    "Entities Created": 5,
+    "API Calls Made": 5,
+    "Execution Time (s)": 2.534,
+    "Pass / Fail": "PASS"
+  },
+  {
+    "Scenario Name": "Wardrobing Fraud",
+    "Entities Created": 5,
+    "API Calls Made": 5,
+    "Execution Time (s)": 4.492,
+    "Pass / Fail": "PASS"
+  },
+  {
+    "Scenario Name": "Packaging Damage",
+    "Entities Created": 5,
+    "API Calls Made": 5,
+    "Execution Time (s)": 2.481,
+    "Pass / Fail": "PASS"
+  }
+]

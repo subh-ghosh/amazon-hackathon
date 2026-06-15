@@ -1,0 +1,11 @@
+{
+    "customerId": "CUST-FRAUD-001",
+    "productId": "PROD-FRAUD-001",
+    "category": "High-Value Electronics",
+    "productRating": 4.5,
+    "customerReturnRate": 0.99,
+    "customerPurchaseCount": 2,
+    "productReturnRate": 0.05,
+    "sellerRating": 4.5,
+    "price": 2500.0
+}

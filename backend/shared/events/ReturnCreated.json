@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ReturnCreated",
+  "type": "object",
+  "required": [
+    "event_type",
+    "return_id",
+    "order_id",
+    "customer_id",
+    "product_id",
+    "reason",
+    "timestamp"
+  ],
+  "properties": {
+    "event_type": { "type": "string" },
+    "return_id": { "type": "string" },
+    "order_id": { "type": "string" },
+    "customer_id": { "type": "string" },
+    "product_id": { "type": "string" },
+    "reason": { "type": "string" },
+    "condition_received": { "type": ["string", "null"] },
+    "timestamp": { "type": "string", "format": "date-time" }
+  }
+}
