@@ -1,17 +1,68 @@
 "use client";
 
 import Link from "next/link";
-import { Star, Check, AlertTriangle } from "lucide-react";
+import { Star, Check, AlertTriangle, Info } from "lucide-react";
 import type { Product } from "@/api/types";
 import { useStore } from "@/hooks/useStore";
+
+import { useState, useEffect } from "react";
+import { preventionService } from "@/api/services";
 
 interface ProductCardProps {
     product: Product;
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-    const { addToCart } = useStore();
-    const insight = getProductInsight(product);
+    const { addToCart, persona } = useStore();
+    const [insight, setInsight] = useState<{ type: "positive" | "caution" | "info"; badge: string; message: string } | null>(null);
+
+    useEffect(() => {
+        let isMounted = true;
+        preventionService.analyze({
+            customerId: persona === "TRUSTED" ? "CUST-GOOD-001" : "CUST-FRAUD-999",
+            productId: product.product_id,
+            category: product.category,
+            productRating: product.rating,
+            customerReturnRate: persona === "TRUSTED" ? 0.08 : 0.40,
+            customerPurchaseCount: persona === "TRUSTED" ? 50 : 5,
+            productReturnRate: product.category === "Footwear" || product.category === "Clothing" ? 0.25 : 0.08,
+            sellerRating: 4.8,
+            price: product.price,
+        }).then(res => {
+            if (!isMounted) return;
+            let finalRiskLevel = res.riskLevel;
+            // If the product is generally safe, do not punish the suspicious user
+            if (res.riskLevel === "MEDIUM" && product.category !== "Footwear" && product.category !== "Clothing") {
+                finalRiskLevel = "LOW";
+            }
+
+            const friendlyExplanations = res.explanation.filter(e => !e.includes("return history") && !e.includes("purchase history"));
+            const safeMessage = friendlyExplanations.length > 0 ? friendlyExplanations[0] : "Review product details carefully";
+
+            if (finalRiskLevel === "HIGH") {
+                setInsight({
+                    type: "caution",
+                    badge: "High Risk",
+                    message: safeMessage,
+                });
+            } else if (finalRiskLevel === "MEDIUM") {
+                setInsight({
+                    type: "info",
+                    badge: "Fit Tip",
+                    message: safeMessage,
+                });
+            } else {
+                setInsight({
+                    type: "positive",
+                    badge: product.rating >= 4.7 ? "Popular Choice" : "Frequently Kept",
+                    message: product.rating >= 4.7 ? "Highly rated — rarely returned" : "Customers who buy this keep it",
+                });
+            }
+        }).catch(() => {
+            if (isMounted) setInsight(getStaticProductInsight(product));
+        });
+        return () => { isMounted = false; };
+    }, [product, persona]);
 
     return (
         <div className="card group flex flex-col h-full">
@@ -22,19 +73,7 @@ export function ProductCard({ product }: ProductCardProps) {
                         alt={product.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
-                    {/* Risk overlay badge for risky items */}
-                    {insight.type === "caution" && (
-                        <div className="absolute top-2 left-2 bg-amber-100 border border-amber-300 rounded-full px-2.5 py-1 flex items-center gap-1">
-                            <AlertTriangle size={10} className="text-amber-600" />
-                            <span className="text-[10px] font-medium text-amber-700">{insight.badge}</span>
-                        </div>
-                    )}
-                    {insight.type === "positive" && (
-                        <div className="absolute top-2 left-2 bg-emerald-50 border border-emerald-200 rounded-full px-2.5 py-1 flex items-center gap-1">
-                            <Check size={10} className="text-emerald-600" />
-                            <span className="text-[10px] font-medium text-emerald-700">{insight.badge}</span>
-                        </div>
-                    )}
+                    {/* Removed overlay badges to keep UI clean and friendly */}
                 </div>
             </Link>
 
@@ -66,9 +105,17 @@ export function ProductCard({ product }: ProductCardProps) {
                 </p>
 
                 {/* Customer insight line */}
-                <p className={`text-xs mb-3 ${insight.type === "caution" ? "text-amber-700" : "text-emerald-700"}`}>
-                    {insight.message}
-                </p>
+                <div className="h-4 mb-3">
+                    {insight && (
+                        <p className={`text-xs line-clamp-1 ${
+                            insight.type === "caution" ? "text-amber-700 font-medium" : 
+                            insight.type === "info" ? "text-blue-700 font-medium" :
+                            "text-emerald-700"
+                        }`}>
+                            {insight.message}
+                        </p>
+                    )}
+                </div>
 
                 <button onClick={() => addToCart(product)} className="btn-amazon w-full mt-auto text-sm">
                     Add to Cart
@@ -78,7 +125,7 @@ export function ProductCard({ product }: ProductCardProps) {
     );
 }
 
-function getProductInsight(product: Product): { type: "positive" | "caution"; badge: string; message: string } {
+function getStaticProductInsight(product: Product): { type: "positive" | "caution" | "info"; badge: string; message: string } {
     // High-risk categories: Footwear, Clothing — these are the return prevention story
     if (product.category === "Footwear") {
         return {

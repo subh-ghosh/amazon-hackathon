@@ -12,8 +12,17 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     const [state, setState] = useState<AppState>({
         cart: [],
         orders: [],
-        customer_id: "CUST-DEMO-001",
+        customer_id: "CUST-GOOD-001",
+        persona: "TRUSTED",
     });
+
+    const setPersona = useCallback((persona: import("./useStore").PersonaType) => {
+        setState((prev) => ({
+            ...prev,
+            persona,
+            customer_id: persona === "TRUSTED" ? "CUST-GOOD-001" : "CUST-FRAUD-999"
+        }));
+    }, []);
 
     const addToCart = useCallback((product: Product, quantity = 1) => {
         setState((prev) => {
@@ -104,6 +113,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
             placeOrder,
             getCartTotal,
             getCartCount,
+            setPersona,
         }),
         [
             state,
@@ -114,6 +124,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
             placeOrder,
             getCartTotal,
             getCartCount,
+            setPersona,
         ]
     );
 

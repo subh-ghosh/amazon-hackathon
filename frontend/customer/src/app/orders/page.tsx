@@ -1,21 +1,158 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Package } from "lucide-react";
+import { Package, Settings2, Sparkles, CheckCircle2 } from "lucide-react";
 import { useStore } from "@/hooks/useStore";
 import { PRODUCTS } from "@/data/products";
 
 export default function OrdersPage() {
     const router = useRouter();
-    const { orders } = useStore();
+    const { orders, persona, setPersona } = useStore();
 
-    // Merge real orders with demo orders for complete demo coverage
     const demoOrders = getDemoOrders();
     const displayOrders = [...orders, ...demoOrders];
+
+    const [scenario, setScenario] = useState<string>("LOW_VALUE");
+
+    const scenarios = [
+        { id: "LOW_VALUE", label: "Low-Value Item (e.g. $15 Phone Case)" },
+        { id: "HIGH_VALUE", label: "High-Value Item (e.g. $348 Headphones)" },
+        { id: "HEAVY_BULKY", label: "Heavy / Bulky Item (e.g. $120 Furniture)" },
+        { id: "HAZARDOUS", label: "Hazardous / Broken (e.g. Shattered Glass)" },
+        { id: "MODERATE", label: "Moderate Value (e.g. $45 Apparel)" },
+    ];
+
+    const getSimulationDetails = () => {
+        const isTrusted = persona === "TRUSTED";
+        switch (scenario) {
+            case "LOW_VALUE": return { 
+                text: "Hanes Socks ($12.99)", orderId: "113-4428173-7291038", productId: "PROD-014", reason: "wrong_size",
+                expectedDecision: isTrusted ? "RETURNLESS_REFUND" : "MANUAL_REVIEW",
+                expectedOptions: isTrusted 
+                    ? ["Instant full refund (keep it)", "Get a replacement", "Talk to product support", "Ship it back instead"]
+                    : ["Return for full refund", "Get product support"]
+            };
+            case "HIGH_VALUE": return { 
+                text: "Sony Headphones ($348.00)", orderId: "113-4958271-8473625", productId: "PROD-001", reason: "changed_mind",
+                expectedDecision: isTrusted ? "RETURN_REQUIRED" : "MANUAL_REVIEW",
+                expectedOptions: isTrusted
+                    ? ["Replace this item", "Partial refund — keep the item", "Get product support", "Full refund — return item"]
+                    : ["Return for full refund", "Get product support"]
+            };
+            case "HEAVY_BULKY": return { 
+                text: "Iron Dumbbells (Heavy)", orderId: "113-1111111-1111111", productId: "PROD-016", reason: "wrong_size",
+                expectedDecision: isTrusted ? "REFUND_AND_DONATE" : "MANUAL_REVIEW",
+                expectedOptions: isTrusted
+                    ? ["Instant full refund — please donate or keep", "Get a replacement instead", "Talk to product support", "Ship it back instead"]
+                    : ["Return for full refund", "Get product support"]
+            };
+            case "HAZARDOUS": return { 
+                text: "Shattered Glass Vase", orderId: "113-2222222-2222222", productId: "PROD-017", reason: "hazardous",
+                expectedDecision: isTrusted ? "REFUND_AND_RECYCLE" : "MANUAL_REVIEW_HAZARDOUS",
+                expectedOptions: isTrusted
+                    ? ["Instant full refund — please safely recycle", "Get a replacement instead"]
+                    : ["Contact product support (Required)"]
+            };
+            case "MODERATE": return { 
+                text: "Basic Jeans ($45.00)", orderId: "113-3333333-3333333", productId: "PROD-018", reason: "wrong_size",
+                expectedDecision: isTrusted ? "PARTIAL_REFUND" : "MANUAL_REVIEW",
+                expectedOptions: isTrusted
+                    ? ["Partial refund — keep the item", "Replace this item", "Return for full refund"]
+                    : ["Return for full refund", "Get product support"]
+            };
+            default: return { 
+                text: "Hanes Socks ($12.99)", orderId: "113-4428173-7291038", productId: "PROD-014", reason: "wrong_size",
+                expectedDecision: "RETURNLESS_REFUND", expectedOptions: []
+            };
+        }
+    };
+
+    const simDetails = getSimulationDetails();
 
     return (
         <div className="max-w-[1000px] mx-auto px-4 py-6">
             <h1 className="text-xl font-bold text-gray-900 mb-6">Your Orders</h1>
+
+            {/* Quick Demo Override Selector */}
+            <div className="mb-8 bg-white border border-gray-200 rounded-lg p-4 shadow-sm animate-fade-in">
+                <div className="flex items-center gap-2 mb-4 pb-3 border-b border-gray-100">
+                    <Settings2 size={18} className="text-[#007185]" />
+                    <h3 className="font-bold text-gray-900 text-base">Demo Simulation Guide</h3>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Persona Toggle */}
+                    <div>
+                        <p className="text-xs font-bold text-gray-700 mb-2 uppercase tracking-wider">1. Select Persona</p>
+                        <div className="flex bg-gray-100 p-1 rounded-lg w-full max-w-xs">
+                            <button 
+                                onClick={() => setPersona("TRUSTED")}
+                                className={`flex-1 py-1.5 text-xs font-bold rounded-md transition-all ${persona === "TRUSTED" ? "bg-white shadow text-emerald-700" : "text-gray-500 hover:text-gray-700"}`}
+                            >
+                                🟢 TRUSTED
+                            </button>
+                            <button 
+                                onClick={() => setPersona("SUSPICIOUS")}
+                                className={`flex-1 py-1.5 text-xs font-bold rounded-md transition-all ${persona === "SUSPICIOUS" ? "bg-white shadow text-red-700" : "text-gray-500 hover:text-gray-700"}`}
+                            >
+                                🔴 SUSPICIOUS
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Scenario Radio List */}
+                    <div>
+                        <p className="text-xs font-bold text-gray-700 mb-2 uppercase tracking-wider">2. Select Scenario</p>
+                        <div className="flex flex-col gap-2">
+                            {scenarios.map((s) => (
+                                <label key={s.id} className="flex items-center gap-2 cursor-pointer text-sm">
+                                    <input 
+                                        type="radio" 
+                                        name="scenario" 
+                                        value={s.id} 
+                                        checked={scenario === s.id}
+                                        onChange={() => setScenario(s.id)}
+                                        className="accent-[#007185] cursor-pointer w-4 h-4"
+                                    />
+                                    <span className={scenario === s.id ? "font-bold text-gray-900" : "text-gray-600"}>{s.label}</span>
+                                </label>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                <div className="mt-6 pt-4 border-t border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <p className="text-sm text-gray-600 mb-3">
+                            To simulate this exact scenario, return the <strong>{simDetails.text}</strong> as a <strong className={persona === 'TRUSTED' ? 'text-emerald-600' : 'text-red-600'}>{persona.toLowerCase()}</strong> user.
+                        </p>
+                        
+                        <div className="bg-[#f0f8ff] border border-[#d6eaf8] rounded-md p-3 text-sm animate-fade-in max-w-2xl">
+                            <div className="font-bold text-[#007185] mb-2 flex items-center gap-2">
+                                <Settings2 size={16} /> Expected System Outcome: 
+                                <span className="bg-white px-2 py-0.5 rounded border border-[#d6eaf8] font-mono text-xs shadow-sm">
+                                    {simDetails.expectedDecision}
+                                </span>
+                            </div>
+                            <div>
+                                <div className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1">Expected Options:</div>
+                                <ul className="list-none space-y-1">
+                                    {simDetails.expectedOptions.map((opt, i) => (
+                                        <li key={i} className="flex items-center gap-1.5 text-gray-700">
+                                            <CheckCircle2 size={12} className="text-emerald-500" /> {opt}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button onClick={() => router.push(`/return-prevention?returnId=RET-${Date.now()}&orderId=${simDetails.orderId}&productId=${simDetails.productId}&reason=${simDetails.reason}&comment=`)} className="bg-[#FF9900] hover:bg-[#FFB84D] text-[#131A22] px-8 py-2.5 rounded-md font-bold shadow-sm transition-colors whitespace-nowrap self-start md:self-end">
+                        Simulate
+                    </button>
+                </div>
+            </div>
 
             {displayOrders.length === 0 ? (
                 <div className="text-center py-12 bg-white border border-gray-200 rounded-lg">
@@ -119,48 +256,7 @@ export default function OrdersPage() {
                 </div>
             )}
 
-            {/* Demo guide for presenters */}
-            <div className="mt-8 bg-[#F0F2F2] border border-gray-300 rounded-lg p-5">
-                <p className="text-sm font-bold text-gray-900 mb-3">🎯 Demo Scenarios Guide</p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-gray-700">
-                    <div className="bg-white rounded p-3 border border-gray-200">
-                        <p className="font-bold text-amber-700 mb-1">Scenario A: High-Value Return</p>
-                        <p>Return the <span className="font-medium">Nike shoes ($150)</span></p>
-                        <p className="text-gray-500">S8 → RETURN_REQUIRED (too expensive to give away)</p>
-                        <p className="text-gray-500">Options: Replace, Partial refund ($45), Full return</p>
-                    </div>
-                    <div className="bg-white rounded p-3 border border-gray-200">
-                        <p className="font-bold text-emerald-700 mb-1">Scenario B: Low-Value Return (RETURNLESS)</p>
-                        <p>Return the <span className="font-medium">Amazon Essentials T-Shirt ($24.99)</span></p>
-                        <p className="text-gray-500">S8 → RETURNLESS_REFUND (below $40 category threshold)</p>
-                        <p className="text-gray-500">Options: Keep item + instant $24.99 refund</p>
-                    </div>
-                    <div className="bg-white rounded p-3 border border-gray-200">
-                        <p className="font-bold text-blue-700 mb-1">Scenario C: Electronics (Safe Buy)</p>
-                        <p>View <span className="font-medium">Sony headphones ($348)</span> PDP</p>
-                        <p className="text-gray-500">S1 → LOW risk, green checkmarks</p>
-                        <p className="text-gray-500">Shows: &quot;Customers who bought this rarely return it&quot;</p>
-                    </div>
-                    <div className="bg-white rounded p-3 border border-gray-200">
-                        <p className="font-bold text-purple-700 mb-1">Scenario D: Clothing (Risky Buy)</p>
-                        <p>View <span className="font-medium">North Face jacket ($230)</span> PDP</p>
-                        <p className="text-gray-500">S1 → MEDIUM/HIGH risk, yellow warning</p>
-                        <p className="text-gray-500">Shows: &quot;Before you buy&quot; prevention messaging</p>
-                    </div>
-                    <div className="bg-white rounded p-3 border border-gray-200">
-                        <p className="font-bold text-gray-700 mb-1">Scenario E: Return Journey</p>
-                        <p>After returning any item, click <span className="font-medium">&quot;Track Return&quot;</span></p>
-                        <p className="text-gray-500">Live S3→S5→S6→S7→S9 chain execution</p>
-                        <p className="text-gray-500">Shows intelligent routing with real API data</p>
-                    </div>
-                    <div className="bg-white rounded p-3 border border-gray-200">
-                        <p className="font-bold text-gray-700 mb-1">Scenario F: Browse Prevention</p>
-                        <p>Go to <span className="font-medium">Product Listing</span></p>
-                        <p className="text-gray-500">Footwear/Clothing → ⚠️ &quot;Check fit&quot; / &quot;Size varies&quot;</p>
-                        <p className="text-gray-500">Electronics/Kitchen → ✓ &quot;Frequently Kept&quot;</p>
-                    </div>
-                </div>
-            </div>
+
         </div>
     );
 }
@@ -240,6 +336,36 @@ function getDemoOrders() {
             status: "delivered" as const,
             created_at: new Date(Date.now() - 10 * 86400000).toISOString(),
             delivery_date: new Date(Date.now() - 7 * 86400000).toISOString(),
+            address: { name: "John Doe", street: "123 Main St", city: "New York", state: "NY", zip: "10001", country: "US" },
+        },
+        {
+            order_id: "113-1111111-1111111",
+            customer_id: "CUST-DEMO-001",
+            items: [{ product: PRODUCTS[15], quantity: 1 }], // PROD-016 Dumbbells
+            total: PRODUCTS[15].price,
+            status: "delivered" as const,
+            created_at: new Date(Date.now() - 15 * 86400000).toISOString(),
+            delivery_date: new Date(Date.now() - 8 * 86400000).toISOString(),
+            address: { name: "John Doe", street: "123 Main St", city: "New York", state: "NY", zip: "10001", country: "US" },
+        },
+        {
+            order_id: "113-2222222-2222222",
+            customer_id: "CUST-DEMO-001",
+            items: [{ product: PRODUCTS[16], quantity: 1 }], // PROD-017 Vase
+            total: PRODUCTS[16].price,
+            status: "delivered" as const,
+            created_at: new Date(Date.now() - 20 * 86400000).toISOString(),
+            delivery_date: new Date(Date.now() - 18 * 86400000).toISOString(),
+            address: { name: "John Doe", street: "123 Main St", city: "New York", state: "NY", zip: "10001", country: "US" },
+        },
+        {
+            order_id: "113-3333333-3333333",
+            customer_id: "CUST-DEMO-001",
+            items: [{ product: PRODUCTS[17], quantity: 1 }], // PROD-018 Basic Jeans
+            total: PRODUCTS[17].price,
+            status: "delivered" as const,
+            created_at: new Date(Date.now() - 10 * 86400000).toISOString(),
+            delivery_date: new Date(Date.now() - 5 * 86400000).toISOString(),
             address: { name: "John Doe", street: "123 Main St", city: "New York", state: "NY", zip: "10001", country: "US" },
         },
     ];

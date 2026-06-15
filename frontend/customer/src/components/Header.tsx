@@ -9,7 +9,7 @@ import { useStore } from "@/hooks/useStore";
 export function Header() {
     const [searchQuery, setSearchQuery] = useState("");
     const router = useRouter();
-    const { getCartCount } = useStore();
+    const { getCartCount, persona, setPersona } = useStore();
     const cartCount = getCartCount();
 
     const handleSearch = (e: React.FormEvent) => {
@@ -57,11 +57,21 @@ export function Header() {
                         </div>
                     </form>
 
-                    {/* Account */}
-                    <Link href="/orders" className="hidden md:block px-2 py-1 hover:outline hover:outline-1 hover:outline-white rounded">
-                        <p className="text-[10px] text-gray-300 leading-none">Hello, Customer</p>
-                        <p className="text-sm font-bold leading-tight">Account & Lists</p>
-                    </Link>
+                    {/* Persona Toggle */}
+                    <div className="hidden md:flex flex-col justify-center px-3 py-1 bg-[#131921] border border-gray-600 rounded">
+                        <p className="text-[10px] text-gray-300 leading-none mb-1 text-center">Demo Mode</p>
+                        <div className="flex items-center gap-2">
+                            <span className={`text-[10px] ${persona === "TRUSTED" ? "text-emerald-400 font-bold" : "text-gray-400"}`}>TRUSTED</span>
+                            <button
+                                onClick={() => setPersona(persona === "TRUSTED" ? "SUSPICIOUS" : "TRUSTED")}
+                                className={`w-8 h-4 rounded-full relative transition-colors duration-200 ${persona === "SUSPICIOUS" ? "bg-red-500" : "bg-emerald-500"}`}
+                                aria-label="Toggle Persona"
+                            >
+                                <div className={`absolute top-0.5 w-3 h-3 rounded-full bg-white transition-transform duration-200 ${persona === "SUSPICIOUS" ? "translate-x-4.5 left-[1px]" : "translate-x-0.5 left-[1px]"}`} style={{ transform: persona === "SUSPICIOUS" ? "translateX(16px)" : "translateX(2px)" }} />
+                            </button>
+                            <span className={`text-[10px] ${persona === "SUSPICIOUS" ? "text-red-400 font-bold" : "text-gray-400"}`}>SUSPICIOUS</span>
+                        </div>
+                    </div>
 
                     {/* Returns & Orders */}
                     <Link href="/orders" className="hidden md:block px-2 py-1 hover:outline hover:outline-1 hover:outline-white rounded">

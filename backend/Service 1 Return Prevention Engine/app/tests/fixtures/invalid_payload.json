@@ -1,0 +1,11 @@
+{
+    "customerId": "",
+    "productId": "PROD-INV-001",
+    "category": "Electronics",
+    "productRating": 5.5,
+    "customerReturnRate": 1.5,
+    "customerPurchaseCount": -1,
+    "productReturnRate": -0.5,
+    "sellerRating": 6.0,
+    "price": -100.0
+}

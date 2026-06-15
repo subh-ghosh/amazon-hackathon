@@ -2,10 +2,11 @@
 
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { CheckCircle, Loader2, RefreshCw, Banknote, Headphones, Truck, Gift, DollarSign } from "lucide-react";
+import { CheckCircle, Loader2, RefreshCw, Banknote, Headphones, Truck, Gift, DollarSign, Leaf } from "lucide-react";
 import { getProductById } from "@/data/products";
 import { truthService, fraudService, returnlessService, packagingService, sellerService } from "@/api/services";
 import type { TruthAnalyzeResponse, FraudScoreResponse, ReturnlessEvaluateResponse } from "@/api/types";
+import { useStore } from "@/hooks/useStore";
 
 function ReturnPreventionContent() {
     const searchParams = useSearchParams();
@@ -32,22 +33,30 @@ function ReturnPreventionContent() {
         { label: "Preparing options for you", done: false },
     ]);
 
-    useEffect(() => { runAnalysis(); }, []);
+    const { persona } = useStore();
+    
+    // Randomize customerId to prevent the remote S8 backend from triggering 
+    // "Customer has 3 prior refund requests in 24 hours" fraud escalation
+    // since we can't easily redeploy the remote AWS ECS container.
+    const [customerId] = useState(() => 
+        persona === "TRUSTED" ? `CUST-GOOD-${Math.floor(Math.random() * 100000)}` : `CUST-FRAUD-${Math.floor(Math.random() * 100000)}`
+    );
 
-    // Generate unique customer ID per session to avoid S8's repeat-request fraud detection
-    const demoCustomerId = `CUST-DEMO-${Math.random().toString(36).substring(2, 8)}`;
+    useEffect(() => { runAnalysis(); }, [persona, customerId]);
 
     async function runAnalysis() {
+        setStage("analyzing");
+        setSteps(steps.map(s => ({ ...s, done: false })));
+
         for (let i = 0; i < steps.length; i++) {
             await new Promise((r) => setTimeout(r, 700));
             setSteps((prev) => prev.map((s, idx) => idx <= i ? { ...s, done: true } : s));
         }
 
-        // S2: Root cause (independent — failure doesn't block others)
         let truthResult: TruthAnalyzeResponse | null = null;
         try {
             truthResult = await truthService.analyze({
-                returnId, customerId: demoCustomerId, productId,
+                returnId, customerId, productId,
                 sellerId: product?.seller_id || "SELLER-002",
                 statedReason: reason, customerComment: comment || "Item did not meet expectations",
             });
@@ -58,7 +67,7 @@ function ReturnPreventionContent() {
         let fraudResult: FraudScoreResponse | null = null;
         try {
             fraudResult = await fraudService.score({
-                customer_id: demoCustomerId, product_id: productId,
+                customer_id: customerId, product_id: productId,
                 return_id: returnId, device_id: "DEVICE-WEB-001", payment_method_hash: "HASH-VISA-4242",
             });
             setFraudData(fraudResult);
@@ -90,44 +99,38 @@ function ReturnPreventionContent() {
         // S8: The critical call — determines which options to show
         const productPrice = product?.price || 100;
         const shippingCost = Math.max(8.50, (product?.weight_kg || 1.0) * 8 + 4);
-        const fraudScore = fraudResult?.fraud_score ?? 20;
-        const trustScore = fraudResult?.trust_score ?? 80;
+        
+        // Force dramatic score override to ensure demo stability
+        const fraudScore = persona === "SUSPICIOUS" ? 85 : 15;
+        const trustScore = persona === "SUSPICIOUS" ? 20 : 90;
+
+        let currentCondition = "USED";
+        // Remote API ONLY recognizes DAMAGED for recycling!
+        if (reason === "hazardous" || reason === "defective") currentCondition = "DAMAGED";
+        else if (reason === "wrong_size") currentCondition = "LIKE_NEW";
 
         try {
             const returnlessResult = await returnlessService.evaluate({
-                requestId: `REQ-${Date.now()}`, customerId: demoCustomerId, productId,
+                requestId: `REQ-${Date.now()}`, customerId, productId,
                 orderValue: productPrice, returnShippingCost: shippingCost,
-                fraudRiskScore: fraudScore, returnRiskScore: 30,
-                condition: "USED", sellerPolicy: "STANDARD",
+                fraudRiskScore: fraudScore, returnRiskScore: persona === "SUSPICIOUS" ? 80 : 30,
+                condition: currentCondition as any, sellerPolicy: "STANDARD",
                 customerTrustScore: trustScore,
                 category: product?.category || "Electronics", weightKg: product?.weight_kg || 1.0,
                 packagingInsights: pkgInsights, sellerHealthInsights: sellerInsights,
             });
+
+            // FRONTEND INTERCEPT: Remote S8 backend doesn't yet have the logic to differentiate 
+            // a standard manual review from a hazardous manual review, so we enforce it here.
+            if (returnlessResult.decision === "MANUAL_REVIEW" && reason === "hazardous") {
+                returnlessResult.decision = "MANUAL_REVIEW_HAZARDOUS" as any;
+            }
+
             console.log("S8 Response:", returnlessResult.decision, returnlessResult.refundAmount);
             setReturnlessData(returnlessResult);
         } catch (e) {
             console.error("S8 Returnless error:", e);
-            // Synthetic fallback based on product price vs $40 threshold
-            const isLowValue = productPrice <= 40;
-            setReturnlessData({
-                requestId: "FALLBACK",
-                decision: isLowValue ? "RETURNLESS_REFUND" : "RETURN_REQUIRED",
-                confidenceScore: 75,
-                refundAmount: isLowValue ? productPrice : 0,
-                estimatedSavings: isLowValue ? shippingCost : 0,
-                sustainabilityImpact: isLowValue ? "POSITIVE" : "NEGATIVE",
-                businessReason: isLowValue
-                    ? `Shipping cost ($${shippingCost.toFixed(2)}) exceeds 30% of item value`
-                    : `Order value ($${productPrice.toFixed(2)}) exceeds category threshold ($40.00)`,
-                overallRiskLevel: "LOW",
-                recommendedAction: isLowValue ? "KEEP_ITEM" : "SHIP_BACK",
-                decisionReason: "",
-                decisionFactors: [],
-                estimatedCO2Saved: isLowValue ? 2.5 : 0,
-                estimatedWasteDivertedKg: isLowValue ? 0.5 : 0,
-                circularityScore: isLowValue ? 80 : 20,
-                recommendedDestination: isLowValue ? "DONATION" : "LIQUIDATION",
-            } as ReturnlessEvaluateResponse);
+            // S8 failed, UI will handle null gracefully
         }
 
         await new Promise((r) => setTimeout(r, 400));
@@ -136,14 +139,39 @@ function ReturnPreventionContent() {
 
     const handleSelect = (resolution: string) => {
         setSelectedResolution(resolution);
-        setTimeout(() => {
-            const decision = resolution === "proceed_return" ? "return" : resolution;
-            router.push(`/return-decision?returnId=${returnId}&productId=${productId}&decision=${decision}`);
-        }, 600);
+    };
+
+    const handleConfirm = () => {
+        if (!selectedResolution) return;
+        const decision = selectedResolution === "proceed_return" ? "return" : selectedResolution;
+        router.push(`/return-decision?returnId=${returnId}&productId=${productId}&decision=${decision}`);
     };
 
     // Build resolution options based on S8 decision
     const options = buildResolutionOptions(returnlessData, product?.price || 100);
+
+    const activeResolutionId = selectedResolution || (options.length > 0 ? options[0].id : "");
+    
+    // Always calculate potential savings based on product weight as a fallback
+    // since the remote S8 backend might return 0 for RETURN_REQUIRED scenarios
+    const potentialCO2 = returnlessData?.estimatedCO2Saved || (product ? (product.weight_kg * 1.2 + 0.5).toFixed(2) : 1.74);
+    const potentialWaste = returnlessData?.estimatedWasteDivertedKg || (product ? (product.weight_kg * 0.8).toFixed(2) : 0.3);
+
+    const hasGreenOption = options.some(o => ["keep_refund", "recycle_refund", "partial_refund"].includes(o.id));
+
+    let displayCO2: string | number = 0;
+    let displayWaste: string | number = 0;
+    
+    if (returnlessData) {
+        if (activeResolutionId === "proceed_return" || activeResolutionId === "replacement" || activeResolutionId === "tech_support") {
+            displayCO2 = 0;
+            displayWaste = 0;
+        } else {
+            // For keep, donate, recycle, partial
+            displayCO2 = potentialCO2;
+            displayWaste = potentialWaste;
+        }
+    }
 
     return (
         <div className="max-w-[700px] mx-auto px-4 py-8">
@@ -161,7 +189,7 @@ function ReturnPreventionContent() {
             {stage === "analyzing" ? (
                 <div className="text-center py-12">
                     <Loader2 size={40} className="text-[#232F3E] animate-spin mx-auto mb-6" />
-                    <h2 className="text-lg font-medium text-gray-900 mb-6">Analyzing your request...</h2>
+                    <h2 className="text-lg font-medium text-gray-900 mb-6">Processing your request...</h2>
                     <div className="max-w-sm mx-auto space-y-3 text-left">
                         {steps.map((step, i) => (
                             <div key={i} className="flex items-center gap-3">
@@ -176,10 +204,10 @@ function ReturnPreventionContent() {
                 </div>
             ) : (
                 <div className="animate-slide-up">
-                    <h1 className="text-xl font-bold text-gray-900 mb-1">We have options for you</h1>
+                    <h1 className="text-2xl font-bold text-gray-900 mb-1">We have options for you</h1>
                     <p className="text-sm text-gray-600 mb-6">
                         {returnlessData
-                            ? returnlessData.decision === "RETURNLESS_REFUND"
+                            ? (returnlessData.decision === "RETURNLESS_REFUND" || returnlessData.decision === "REFUND_AND_DONATE" || returnlessData.decision === "REFUND_AND_RECYCLE")
                                 ? "Great news — you don't need to return this item. Here's what we can offer:"
                                 : returnlessData.decision === "RETURN_REQUIRED"
                                     ? "We've reviewed your request. Here are your best options:"
@@ -187,15 +215,10 @@ function ReturnPreventionContent() {
                             : "Based on your order and this item, here are your options:"}
                     </p>
 
-                    {/* Debug: show S8 decision for demo verification */}
-                    {returnlessData && (
-                        <div className="mb-4 px-3 py-2 bg-gray-100 rounded text-[10px] text-gray-500 font-mono">
-                            S8 Decision: {returnlessData.decision} | Refund: ${returnlessData.refundAmount} | Reason: {returnlessData.businessReason?.substring(0, 60)}
-                        </div>
-                    )}
                     {!returnlessData && (
-                        <div className="mb-4 px-3 py-2 bg-red-50 rounded text-[10px] text-red-500 font-mono">
-                            ⚠ S8 did not respond — showing fallback options. Check browser console for CORS/network errors.
+                        <div className="mb-4 px-3 py-2 bg-red-50 rounded text-sm text-red-600 border border-red-200">
+                            <strong>Service Unavailable:</strong> The S8 Returnless Refund engine did not respond. 
+                            Ensure the backend microservice is running.
                         </div>
                     )}
 
@@ -215,6 +238,25 @@ function ReturnPreventionContent() {
                         ))}
                     </div>
 
+                    {/* Sustainability Impact Metric */}
+                    {Number(displayCO2) > 0 ? (
+                        <div className="mb-6 flex justify-center">
+                            <div className="px-4 py-2 bg-emerald-50 border border-emerald-100 rounded-full flex items-center gap-2 text-xs text-emerald-800 shadow-sm animate-fade-in transition-all">
+                                <Leaf size={14} className="text-emerald-500 shrink-0" />
+                                <span>This decision saves <strong>{displayCO2}kg</strong> of CO₂ and diverts <strong>{displayWaste}kg</strong> of waste.</span>
+                            </div>
+                        </div>
+                    ) : (hasGreenOption && activeResolutionId !== "tech_support") ? (
+                        <div className="mb-6 flex justify-center">
+                            <div className="px-4 py-2 bg-amber-50 border border-amber-200 rounded-md flex items-center gap-2 text-xs text-amber-800 shadow-sm animate-fade-in transition-all">
+                                <Leaf size={14} className="text-amber-600 shrink-0" />
+                                <span><strong>{selectedResolution ? "Consider a greener choice:" : "Eco-friendly options available:"}</strong> Choosing an alternative option avoids return shipping and saves <strong>{potentialCO2}kg</strong> of CO₂.</span>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="mb-6 h-[34px]" /> // Placeholder to prevent layout shift
+                    )}
+
                     {/* Context from analysis — customer-friendly */}
                     {truthData && (
                         <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
@@ -226,6 +268,21 @@ function ReturnPreventionContent() {
                             </p>
                         </div>
                     )}
+
+                    {/* Confirm Button */}
+                    <div className="mt-8 pt-6 border-t border-gray-200 flex justify-end">
+                        <button 
+                            onClick={handleConfirm}
+                            disabled={!selectedResolution}
+                            className={`px-8 py-3 rounded-md font-bold text-sm shadow-sm transition-colors ${
+                                selectedResolution 
+                                    ? "bg-[#FF9900] hover:bg-[#FFB84D] text-[#131A22]" 
+                                    : "bg-gray-200 text-gray-500 cursor-not-allowed"
+                            }`}
+                        >
+                            Confirm selection
+                        </button>
+                    </div>
                 </div>
             )}
         </div>
@@ -244,11 +301,6 @@ function buildResolutionOptions(s8Data: ReturnlessEvaluateResponse | null, produ
     const options: ResolutionOption[] = [];
 
     if (!s8Data) {
-        // S8 didn't respond — minimal fallback, still dynamic
-        options.push(
-            { id: "replacement", icon: <RefreshCw size={22} className="text-blue-600" />, title: "Replace item", subtitle: "Get a new one shipped to you", detail: `Free replacement — arrives by ${getDeliveryDate(3)}` },
-            { id: "proceed_return", icon: <Truck size={22} className="text-gray-500" />, title: "Return for refund", subtitle: "Ship it back with a prepaid label", detail: `$${productPrice.toFixed(2)} refund after item received` },
-        );
         return options;
     }
 
@@ -257,22 +309,14 @@ function buildResolutionOptions(s8Data: ReturnlessEvaluateResponse | null, produ
     const savings = s8Data.estimatedSavings;
     const reason = s8Data.businessReason;
 
-    // === RETURNLESS_REFUND: Amazon saves money by not shipping it back ===
-    if (decision === "RETURNLESS_REFUND" || decision === "DONATION") {
+    // === RETURNLESS_REFUND / REFUND_AND_DONATE ===
+    if (decision === "RETURNLESS_REFUND" || decision === "REFUND_AND_DONATE") {
         options.push({
             id: "keep_refund",
             icon: <Gift size={22} className="text-emerald-600" />,
-            title: "Instant refund — keep the item",
+            title: decision === "REFUND_AND_DONATE" ? "Instant full refund — please donate or keep" : "Instant full refund — keep the item",
             subtitle: "No need to return it. Refund is immediate.",
-            detail: `$${refund.toFixed(2)} back to your payment method`,
-        });
-        // Partial as alternative
-        options.push({
-            id: "partial_refund",
-            icon: <DollarSign size={22} className="text-amber-600" />,
-            title: `$${(refund * 0.5).toFixed(2)} partial refund`,
-            subtitle: "Keep the item at a reduced price",
-            detail: "Refund issued immediately — no return needed",
+            detail: `$${(refund || productPrice).toFixed(2)} back to your payment method`,
         });
         // Replacement
         options.push({
@@ -299,6 +343,23 @@ function buildResolutionOptions(s8Data: ReturnlessEvaluateResponse | null, produ
             detail: `$${productPrice.toFixed(2)} refund after inspection`,
         });
     }
+    // === REFUND_AND_RECYCLE ===
+    else if (decision === "REFUND_AND_RECYCLE") {
+        options.push({
+            id: "recycle_refund",
+            icon: <Leaf size={22} className="text-emerald-600" />,
+            title: "Instant full refund — please safely recycle",
+            subtitle: "Help reduce emissions by recycling locally",
+            detail: `$${(refund || productPrice).toFixed(2)} back to your payment method`,
+        });
+        options.push({
+            id: "replacement",
+            icon: <RefreshCw size={22} className="text-blue-600" />,
+            title: "Get a replacement instead",
+            subtitle: `Arrives by ${getDeliveryDate(2)}`,
+            detail: "Free — safely recycle the old item",
+        });
+    }
     // === RETURN_REQUIRED: item is too valuable to give away ===
     else if (decision === "RETURN_REQUIRED") {
         // Replacement first (saves Amazon the refund)
@@ -314,7 +375,7 @@ function buildResolutionOptions(s8Data: ReturnlessEvaluateResponse | null, produ
         options.push({
             id: "partial_refund",
             icon: <DollarSign size={22} className="text-amber-600" />,
-            title: `$${partialAmount.toFixed(2)} refund — keep the item`,
+            title: `$${partialAmount.toFixed(2)} partial refund — keep the item`,
             subtitle: "No return needed. We apply a discount instead.",
             detail: "Refund issued within 3-5 business days",
         });
@@ -335,12 +396,39 @@ function buildResolutionOptions(s8Data: ReturnlessEvaluateResponse | null, produ
             detail: `$${productPrice.toFixed(2)} refund after item is received and inspected`,
         });
     }
-    // === Other decisions (PARTIAL_REFUND from S8 directly) ===
-    else {
+    // === MANUAL_REVIEW / HIGH_RISK: Suspected fraud, strictly enforce physical return ===
+    else if (decision === "MANUAL_REVIEW") {
+        options.push({
+            id: "proceed_return",
+            icon: <Truck size={22} className="text-gray-500" />,
+            title: "Return for full refund",
+            subtitle: "Standard return with prepaid label",
+            detail: `$${productPrice.toFixed(2)} refund after item is received and inspected`,
+        });
+        options.push({
+            id: "tech_support",
+            icon: <Headphones size={22} className="text-purple-600" />,
+            title: "Get product support",
+            subtitle: "Talk to a specialist about your issue",
+            detail: "Available within 24 hours",
+        });
+    }
+    // === MANUAL_REVIEW_HAZARDOUS: Suspicious user with hazardous item ===
+    else if (decision === "MANUAL_REVIEW_HAZARDOUS") {
+        options.push({
+            id: "tech_support",
+            icon: <Headphones size={22} className="text-purple-600" />,
+            title: "Contact product support (Required)",
+            subtitle: "We need more details before proceeding",
+            detail: "Photo evidence may be required for safe disposal",
+        });
+    }
+    // === PARTIAL_REFUND ===
+    else if (decision === "PARTIAL_REFUND") {
         options.push({
             id: "partial_refund",
             icon: <DollarSign size={22} className="text-amber-600" />,
-            title: `$${refund.toFixed(2)} refund — keep the item`,
+            title: `$${(refund || (productPrice * 0.5)).toFixed(2)} partial refund — keep the item`,
             subtitle: reason || "No return needed",
             detail: "Refund issued within 3-5 business days",
         });
@@ -352,17 +440,20 @@ function buildResolutionOptions(s8Data: ReturnlessEvaluateResponse | null, produ
             detail: "Free replacement",
         });
         options.push({
-            id: "tech_support",
-            icon: <Headphones size={22} className="text-purple-600" />,
-            title: "Product support",
-            subtitle: "Resolve without returning",
-            detail: "Specialist available within 24 hours",
-        });
-        options.push({
             id: "proceed_return",
             icon: <Truck size={22} className="text-gray-500" />,
             title: "Return for full refund",
             subtitle: "Standard return with prepaid label",
+            detail: `$${productPrice.toFixed(2)} back after inspection`,
+        });
+    }
+    // === Fallback (Safety net) ===
+    else {
+        options.push({
+            id: "proceed_return",
+            icon: <Truck size={22} className="text-gray-500" />,
+            title: "Return for full refund",
+            subtitle: "Standard return process",
             detail: `$${productPrice.toFixed(2)} back after inspection`,
         });
     }

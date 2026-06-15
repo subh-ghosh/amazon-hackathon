@@ -14,11 +14,10 @@ const REASONS: { value: ReturnReason; label: string; icon: React.ReactNode }[] =
     { value: "other", label: "Other reason", icon: <HelpCircle size={24} /> },
 ];
 
-export default function ReturnRequestPage() {
-    const params = useParams();
+export default function ReturnRequestPage({ params }: { params: { orderId: string, productId: string } }) {
     const router = useRouter();
-    const orderId = params.orderId as string;
-    const productId = params.productId as string;
+    const orderId = params.orderId;
+    const productId = params.productId;
     const product = getProductById(productId);
 
     const [selected, setSelected] = useState<ReturnReason | null>(null);

@@ -3,10 +3,13 @@
 import { createContext, useContext } from "react";
 import type { CartItem, Order, Product, Address } from "@/api/types";
 
+export type PersonaType = "TRUSTED" | "SUSPICIOUS";
+
 export interface AppState {
     cart: CartItem[];
     orders: Order[];
     customer_id: string;
+    persona: PersonaType;
 }
 
 export interface AppActions {
@@ -17,6 +20,7 @@ export interface AppActions {
     placeOrder: (address: Address) => Order;
     getCartTotal: () => number;
     getCartCount: () => number;
+    setPersona: (persona: PersonaType) => void;
 }
 
 export type AppStore = AppState & AppActions;
