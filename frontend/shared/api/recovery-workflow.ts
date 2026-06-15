@@ -2,11 +2,11 @@ import { circularDemoProduct } from "../demo/circular-demo-data";
 
 const REQUEST_TIMEOUT_MS = 30000;
 
-const SERVICE3_PROXY_PATH = "/api/recovery-workflow/s3";
-const SERVICE5_PROXY_PATH = "/api/recovery-workflow/s5";
-const SERVICE6_PROXY_PATH = "/api/recovery-workflow/s6";
-const SERVICE7_PROXY_PATH = "/api/recovery-workflow/s7";
-const SERVICE2_PROXY_PATH = "/api/recovery-workflow/s2";
+const SERVICE3_PROXY_PATH = "/api/proxy/s3/api/v1/fraud/score";
+const SERVICE5_PROXY_PATH = "/api/proxy/s5/api/v1/simulation/run";
+const SERVICE6_PROXY_PATH = "/api/proxy/s6/api/v1/recovery/optimize";
+const SERVICE7_PROXY_PATH = "/api/proxy/s7/api/v1/logistics/optimize";
+const SERVICE2_PROXY_PATH = "/api/proxy/s2/api/v1/truth/analyze";
 
 export interface ProductDetailsPayload {
   productId: string;

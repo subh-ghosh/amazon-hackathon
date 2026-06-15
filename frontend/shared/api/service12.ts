@@ -1,6 +1,6 @@
 export const SERVICE12_BASE_URL =
   process.env.NEXT_PUBLIC_SERVICE12_API_BASE ??
-  "http://Circul-Graph-ye0M61dV1dYT-1449212263.us-east-1.elb.amazonaws.com";
+  "/api/proxy/s12";
 
 const REQUEST_TIMEOUT_MS = 30000;
 const INTELLIGENCE_ANALYTICS_BASE = "/api/v1/intelligence/analytics";
