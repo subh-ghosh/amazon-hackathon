@@ -1,0 +1,93 @@
+# Amazon Second Life Commerce
+
+> **HackOn with Amazon 2026** — Team KKR (Kolkata Kode Riders)
+
+An intelligent ecosystem where returned or unused products automatically find their next best owner — through resale, refurbishment, donation, or recycling.
+
+## Live Demo
+
+| Application | URL | Audience |
+|-------------|-----|----------|
+| Customer Experience | [amazon-hackathon-phi.vercel.app](https://amazon-hackathon-phi.vercel.app/) | Shoppers |
+| Executive Dashboard | [amazon-hackathon-pjt3.vercel.app](https://amazon-hackathon-pjt3.vercel.app/) | Leadership |
+| Operations Dashboard | [amazon-hackathon-udpw.vercel.app](https://amazon-hackathon-udpw.vercel.app/) | Warehouse Ops |
+| Seller Dashboard | [amazon-hackathon-lct1.vercel.app](https://amazon-hackathon-lct1.vercel.app/) | Third-party Sellers |
+
+## Architecture
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  FRONTEND (Next.js 14 + TypeScript + Tailwind, Vercel)  │
+│  Customer · Seller Central · Operations · Executive     │
+└───────────────────────────┬─────────────────────────────┘
+                            │ Server-side proxy
+┌───────────────────────────▼─────────────────────────────┐
+│            12 MICROSERVICES (AWS ECS Fargate)            │
+├─────────────────┬─────────────────┬─────────────────────┤
+│ INTELLIGENCE    │ RECOVERY        │ PLATFORM            │
+│ S1  Prevention  │ S5  Simulator   │ S4  Digital Twin    │
+│ S2  Root Cause  │ S6  Optimizer   │ S11 Seller Intel    │
+│ S3  Fraud       │ S7  Logistics   │ S12 Knowledge Graph │
+│ S10 Packaging   │ S8  Returnless  │     (Neptune DB)    │
+│                 │ S9  Circular    │                     │
+└─────────────────┴─────────────────┴─────────────────────┘
+                            │
+┌───────────────────────────▼─────────────────────────────┐
+│  AWS: ECS Fargate · ALB · DynamoDB · Neptune · CDK      │
+└─────────────────────────────────────────────────────────┘
+```
+
+## Key Features
+
+**For Customers:**
+- Predictive purchase guidance (warns before bad buys)
+- Certified Renewed marketplace (30% cheaper, quality-graded)
+- Sustainability rewards program
+- Intelligent return resolution (instant refund for low-value items)
+
+**For Amazon Operations:**
+- Recovery decision engine (resell / refurbish / donate / recycle)
+- Demand-aware routing (match items to nearest buyers)
+- Direct buyer fulfillment (skip warehouse, save $22+ per item)
+- Real-time facility triage with interactive recovery scenarios
+
+**For Sellers:**
+- Return cause analytics
+- Packaging intelligence
+- Product quality insights
+- Actionable recommendations
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Frontend | Next.js 14, TypeScript, Tailwind CSS |
+| Backend | Python 3.10, FastAPI, Pydantic v2 |
+| Data | Amazon Neptune (Graph), DynamoDB |
+| Infra | AWS CDK, ECS Fargate, ALB, EventBridge |
+
+## Repository Structure
+
+```
+├── frontend/
+│   ├── customer/           # Shopper-facing app
+│   ├── executive-dashboard/ # Leadership metrics
+│   ├── ops-dashboard/      # Warehouse operations
+│   ├── seller-dashboard/   # Seller analytics
+│   └── shared/             # Shared API adapters
+├── backend/
+│   ├── Service 1-12/       # 12 microservices
+│   └── shared/             # Event schemas
+├── shared/                 # Cross-service schemas
+└── API_DIRECTORY.md        # Endpoint registry
+```
+
+## Team
+
+| Name | Role |
+|------|------|
+| Subarta Ghosh | Cloud & Backend |
+| Arhit Basu | Backend |
+| Tiyas Das | Frontend |
+
+Vellore Institute of Technology, Vellore
