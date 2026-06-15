@@ -77,14 +77,11 @@ export function ExecutiveDashboardView() {
       {/* PAGE HEADER */}
       <div className="mb-8 flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
         <div>
-          <p className="text-sm font-semibold text-cyan-800 uppercase tracking-wider">
-            Amazon
-          </p>
-          <h1 className="mt-2 text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">
-            Executive Network Insights
+          <h1 className="text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">
+            Returns & Recovery
           </h1>
           <p className="mt-3 max-w-2xl text-slate-600">
-            A consolidated view of recovery value, operational performance, sustainability, and trust risk across the Amazon returns network.
+            Network-wide recovery performance, sustainability impact, and financial outcomes.
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -94,7 +91,7 @@ export function ExecutiveDashboardView() {
           </div>
           <button
             type="button"
-            className="flex h-10 items-center gap-2 rounded-md border bg-cyan-950 px-3 text-sm font-medium text-white shadow-sm transition-colors hover:bg-cyan-900"
+            className="flex h-10 items-center gap-2 rounded-md border bg-[#232F3E] px-3 text-sm font-medium text-white shadow-sm transition-colors hover:bg-[#37475A]"
           >
             <Download className="size-4" aria-hidden="true" />
             Export Report

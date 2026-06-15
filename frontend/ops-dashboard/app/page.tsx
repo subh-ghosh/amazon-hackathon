@@ -8,14 +8,11 @@ export default function OperationsDashboard() {
     <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
       <div className="mb-8 flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
         <div>
-          <p className="text-sm font-semibold text-emerald-700 uppercase tracking-wider">
-            CIRCULAR OS
-          </p>
-          <h1 className="mt-2 text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">
-            Operations Command Center
+          <h1 className="text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">
+            Facility Dashboard
           </h1>
           <p className="mt-3 max-w-2xl text-slate-600">
-            Coordinate intake, inspection, routing, and recovery execution across the returns network.
+            Intake, inspection, routing, and recovery execution for returned inventory.
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">

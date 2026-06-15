@@ -208,7 +208,7 @@ export default function TriageDetailPage({ params }: { params: Promise<{ id: str
           <div>
             <div className="flex items-center gap-2">
               <p className="text-sm font-semibold text-indigo-700 uppercase tracking-wider">Intelligent Triage</p>
-              <Badge className="bg-emerald-100 text-emerald-800 border-emerald-200">Live AI</Badge>
+              <Badge className="bg-emerald-100 text-emerald-800 border-emerald-200">Live</Badge>
             </div>
             <h1 className="text-2xl font-bold text-slate-950 mt-1">{data.productName}</h1>
             <p className="text-sm text-slate-500 font-mono mt-0.5">Return ID: {data.returnId}</p>
@@ -219,8 +219,8 @@ export default function TriageDetailPage({ params }: { params: Promise<{ id: str
       {loading ? (
         <div className="flex flex-col items-center justify-center py-20">
           <Loader2 size={40} className="text-indigo-600 animate-spin mb-4" />
-          <p className="text-sm text-slate-600 mb-2">Running AI intelligence pipeline...</p>
-          <p className="text-xs text-slate-400">S3 → S5 → S6 → S7 → S9</p>
+          <p className="text-sm text-slate-600 mb-2">Analyzing return...</p>
+          <p className="text-xs text-slate-400">Fraud → Simulation → Recovery → Logistics → Routing</p>
         </div>
       ) : (
         <div className="grid gap-6 lg:grid-cols-12">
@@ -249,7 +249,7 @@ export default function TriageDetailPage({ params }: { params: Promise<{ id: str
             {/* Fraud from live S3 */}
             <Card>
               <CardHeader className="pb-3 border-b border-slate-100">
-                <CardTitle className="text-lg flex items-center gap-2"><ShieldAlert size={18} className="text-slate-400" />Fraud & Trust (Live S3)</CardTitle>
+                <CardTitle className="text-lg flex items-center gap-2"><ShieldAlert size={18} className="text-slate-400" />Trust Verification</CardTitle>
               </CardHeader>
               <CardContent className="pt-4 space-y-3">
                 <div className="grid grid-cols-3 gap-3">
@@ -297,7 +297,7 @@ export default function TriageDetailPage({ params }: { params: Promise<{ id: str
               <CardHeader className="bg-indigo-50/50 pb-4 border-b border-indigo-100">
                 <CardTitle className="text-xl text-indigo-950 flex items-center gap-2">
                   <Zap className="text-indigo-600" size={22} />
-                  AI Recovery Decision (Live S5→S6)
+                  Recovery Decision
                 </CardTitle>
               </CardHeader>
               <CardContent className="pt-5">
@@ -323,7 +323,7 @@ export default function TriageDetailPage({ params }: { params: Promise<{ id: str
                 {/* Reasoning */}
                 {intel?.reasoning && intel.reasoning.length > 0 && (
                   <div className="bg-slate-50 rounded-lg p-3 mb-4">
-                    <p className="text-xs font-semibold text-slate-500 mb-1">AI Reasoning:</p>
+                    <p className="text-xs font-semibold text-slate-500 mb-1">Decision factors:</p>
                     <ul className="space-y-0.5">
                       {intel.reasoning.map((r, i) => (
                         <li key={i} className="text-xs text-slate-700 flex items-start gap-1.5">
@@ -337,7 +337,7 @@ export default function TriageDetailPage({ params }: { params: Promise<{ id: str
                 {/* Simulation scenarios from S5 */}
                 {intel?.simulations && intel.simulations.length > 0 && (
                   <div>
-                    <p className="text-xs font-semibold text-slate-500 uppercase mb-2">All Simulated Paths (S5)</p>
+                    <p className="text-xs font-semibold text-slate-500 uppercase mb-2">Recovery Scenarios</p>
                     <div className="space-y-2">
                       {intel.simulations.map((sim, i) => (
                         <div key={i} className={`flex items-center justify-between p-3 rounded-lg border ${sim.scenario.toUpperCase() === intel.recoveryDecision ? "border-indigo-300 bg-indigo-50" : "border-slate-100 bg-white"}`}>
@@ -364,7 +364,7 @@ export default function TriageDetailPage({ params }: { params: Promise<{ id: str
               <CardHeader className="bg-emerald-50/50 pb-4 border-b border-emerald-100">
                 <CardTitle className="text-xl text-emerald-950 flex items-center gap-2">
                   <TrendingUp className="text-emerald-600" size={22} />
-                  Demand-Aware Routing (Live S7→S9)
+                  Optimal Routing
                 </CardTitle>
                 <CardDescription className="text-emerald-700/80 mt-1">
                   Routing to warehouse with highest customer demand for this product category
@@ -437,7 +437,7 @@ export default function TriageDetailPage({ params }: { params: Promise<{ id: str
         <div className="fixed bottom-0 left-0 right-0 border-t border-slate-200 bg-white/80 backdrop-blur-xl p-4 z-40 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
             <span className="flex items-center gap-2 text-sm text-indigo-700 bg-indigo-50 px-3 py-1.5 rounded-md border border-indigo-100">
-              <CheckCircle2 size={16} /> AI Decision: {intel?.recoveryDecision} → {intel?.circularFacility}
+              <CheckCircle2 size={16} /> Decision: {intel?.recoveryDecision} → {intel?.circularFacility}
             </span>
             <button onClick={handleConfirmRouting} disabled={isRouting} className="px-8 py-2.5 text-sm font-bold text-white bg-slate-900 rounded-lg hover:bg-slate-800 shadow-md flex items-center gap-2">
               {isRouting ? <><Loader2 size={16} className="animate-spin" />Routing...</> : <>Execute Route</>}

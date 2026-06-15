@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Building2, Leaf } from "lucide-react";
+import { BarChart3 } from "lucide-react";
 
 import "./styles.css";
 
 export const metadata: Metadata = {
-  title: "Executive Briefing | Circular OS",
-  description:
-    "Network-wide intelligence for recovery performance, sustainability, and financial impact.",
+  title: "Returns & Recovery | Amazon Executive",
+  description: "Network-wide returns performance, recovery economics, and sustainability impact.",
 };
 
 export default function Layout({ children }: { children: ReactNode }) {
@@ -16,21 +15,18 @@ export default function Layout({ children }: { children: ReactNode }) {
       <body>
         <header className="sticky top-0 z-20 border-b bg-white/90 backdrop-blur">
           <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center gap-2 font-bold tracking-tight">
-              <span className="flex size-9 items-center justify-center rounded-lg bg-emerald-700 text-white">
-                <Leaf className="size-5" aria-hidden="true" />
-              </span>
-              <span>
-                Circular <span className="text-emerald-700">OS</span>
-              </span>
+            <div className="flex items-center gap-3 font-bold tracking-tight">
+              <span className="text-[22px] font-bold text-[#131921]">amazon</span>
+              <span className="text-sm font-normal text-slate-400">|</span>
+              <span className="text-sm font-medium text-slate-600">Executive Insights</span>
             </div>
             <div className="flex items-center gap-3">
               <span className="hidden items-center gap-2 text-sm text-slate-500 sm:flex">
-                <Building2 className="size-4" aria-hidden="true" />
-                Executive Briefing
+                <BarChart3 className="size-4" aria-hidden="true" />
+                Returns & Sustainability
               </span>
-              <div className="flex size-9 items-center justify-center rounded-full bg-slate-900 text-xs font-bold text-white">
-                EX
+              <div className="flex size-9 items-center justify-center rounded-full bg-[#232F3E] text-xs font-bold text-white">
+                VP
               </div>
             </div>
           </div>
