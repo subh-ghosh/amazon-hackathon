@@ -17,30 +17,32 @@ const SERVICE_URLS: Record<string, string> = {
 
 export async function GET(
     request: NextRequest,
-    { params }: { params: { service: string; path: string[] } }
+    { params }: { params: Promise<{ service: string; path?: string[] }> }
 ) {
-    return proxyRequest(request, params.service, params.path, "GET");
+    const { service, path } = await params;
+    return proxyRequest(request, service, path, "GET");
 }
 
 export async function POST(
     request: NextRequest,
-    { params }: { params: { service: string; path: string[] } }
+    { params }: { params: Promise<{ service: string; path?: string[] }> }
 ) {
-    return proxyRequest(request, params.service, params.path, "POST");
+    const { service, path } = await params;
+    return proxyRequest(request, service, path, "POST");
 }
 
 async function proxyRequest(
     request: NextRequest,
     service: string,
-    path: string[],
+    path: string[] | undefined,
     method: string
 ) {
     const baseUrl = SERVICE_URLS[service.toLowerCase()];
     if (!baseUrl) {
-        return NextResponse.json({ error: "Unknown service" }, { status: 404 });
+        return NextResponse.json({ error: `Unknown service: ${service}` }, { status: 404 });
     }
 
-    const targetPath = "/" + path.join("/");
+    const targetPath = path ? "/" + path.join("/") : "";
     const targetUrl = baseUrl + targetPath;
 
     const headers: Record<string, string> = {
@@ -63,10 +65,13 @@ async function proxyRequest(
             body,
         });
 
-        const data = await response.json();
-        return NextResponse.json(data, { status: response.status });
+        const data = await response.json().catch(() => null);
+        return NextResponse.json(data || {}, { status: response.status });
     } catch (err) {
-        console.error(`Proxy error for ${targetUrl}:`, err);
-        return NextResponse.json({ error: "Service unavailable" }, { status: 503 });
+        console.error(`[Proxy] ${method} ${targetUrl} failed:`, err);
+        return NextResponse.json(
+            { error: "Service unavailable", target: targetUrl },
+            { status: 503 }
+        );
     }
 }

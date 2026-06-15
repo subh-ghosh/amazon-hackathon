@@ -1,5 +1,6 @@
 /**
- * Centralized API client with error handling, loading states, and typed responses.
+ * API client — all requests go through /api/proxy/[service] which
+ * forwards to the actual AWS ALB. No CORS issues.
  */
 
 export class ApiError extends Error {
@@ -13,55 +14,31 @@ export class ApiError extends Error {
     }
 }
 
-interface RequestOptions {
-    timeout?: number;
-    headers?: Record<string, string>;
-}
-
-async function request<T>(
-    url: string,
-    options: RequestInit & RequestOptions = {}
-): Promise<T> {
-    const { timeout = 10000, headers: extraHeaders, ...fetchOptions } = options;
-
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), timeout);
-
+async function request<T>(url: string, options: RequestInit = {}): Promise<T> {
     try {
         const response = await fetch(url, {
-            ...fetchOptions,
-            signal: controller.signal,
+            ...options,
             headers: {
                 "Content-Type": "application/json",
-                ...extraHeaders,
+                ...options.headers,
             },
         });
 
+        const data = await response.json().catch(() => null);
+
         if (!response.ok) {
-            const body = await response.json().catch(() => null);
-            throw new ApiError(response.status, response.statusText, body);
+            throw new ApiError(response.status, response.statusText, data);
         }
 
-        return await response.json();
+        return data as T;
     } catch (error) {
         if (error instanceof ApiError) throw error;
-        if ((error as Error).name === "AbortError") {
-            throw new ApiError(408, "Request Timeout");
-        }
         throw new ApiError(0, (error as Error).message || "Network Error");
-    } finally {
-        clearTimeout(timeoutId);
     }
 }
 
 export const apiClient = {
-    get: <T>(url: string, options?: RequestOptions) =>
-        request<T>(url, { method: "GET", ...options }),
-
-    post: <T>(url: string, body: unknown, options?: RequestOptions) =>
-        request<T>(url, {
-            method: "POST",
-            body: JSON.stringify(body),
-            ...options,
-        }),
+    get: <T>(url: string) => request<T>(url, { method: "GET" }),
+    post: <T>(url: string, body: unknown) =>
+        request<T>(url, { method: "POST", body: JSON.stringify(body) }),
 };
