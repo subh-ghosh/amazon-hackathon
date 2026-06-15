@@ -100,60 +100,88 @@ function formatDate(date: string): string {
 
 function getDemoOrders() {
     return [
+        // Electronics - LOW risk, high seller trust (safe buy demo)
         {
             order_id: "113-4958271-8473625",
             customer_id: "CUST-DEMO-001",
-            items: [{ product: PRODUCTS[0], quantity: 1 }],
+            items: [{ product: PRODUCTS[0], quantity: 1 }], // Sony headphones $348
             total: PRODUCTS[0].price,
             status: "delivered" as const,
             created_at: new Date(Date.now() - 5 * 86400000).toISOString(),
             delivery_date: new Date(Date.now() - 2 * 86400000).toISOString(),
             address: { name: "John Doe", street: "123 Main St", city: "New York", state: "NY", zip: "10001", country: "US" },
         },
+        // Footwear - HIGH risk, $150 → RETURN_REQUIRED
         {
             order_id: "113-7823491-3847561",
             customer_id: "CUST-DEMO-001",
-            items: [{ product: PRODUCTS[1], quantity: 1 }],
+            items: [{ product: PRODUCTS[1], quantity: 1 }], // Nike shoes $150
             total: PRODUCTS[1].price,
             status: "delivered" as const,
             created_at: new Date(Date.now() - 3 * 86400000).toISOString(),
             delivery_date: new Date(Date.now() - 1 * 86400000).toISOString(),
             address: { name: "John Doe", street: "123 Main St", city: "New York", state: "NY", zip: "10001", country: "US" },
         },
+        // Clothing - $69.50, above $40 threshold → RETURN_REQUIRED
         {
             order_id: "113-9912847-1928374",
             customer_id: "CUST-DEMO-001",
-            items: [{ product: PRODUCTS[4], quantity: 1 }],
+            items: [{ product: PRODUCTS[4], quantity: 1 }], // Levi's jeans $69.50
             total: PRODUCTS[4].price,
             status: "delivered" as const,
             created_at: new Date(Date.now() - 4 * 86400000).toISOString(),
             delivery_date: new Date(Date.now() - 1 * 86400000).toISOString(),
             address: { name: "John Doe", street: "123 Main St", city: "New York", state: "NY", zip: "10001", country: "US" },
         },
+        // Clothing - $230, HIGH risk → RETURN_REQUIRED
         {
             order_id: "113-5567382-4738291",
             customer_id: "CUST-DEMO-001",
-            items: [{ product: PRODUCTS[7], quantity: 1 }],
+            items: [{ product: PRODUCTS[7], quantity: 1 }], // North Face jacket $230
             total: PRODUCTS[7].price,
             status: "delivered" as const,
             created_at: new Date(Date.now() - 6 * 86400000).toISOString(),
             delivery_date: new Date(Date.now() - 3 * 86400000).toISOString(),
             address: { name: "John Doe", street: "123 Main St", city: "New York", state: "NY", zip: "10001", country: "US" },
         },
+        // LOW VALUE - $24.99, below $40 → RETURNLESS_REFUND (keep item)
         {
             order_id: "113-2291038-9182746",
             customer_id: "CUST-DEMO-001",
-            items: [{ product: PRODUCTS[12], quantity: 1 }],
+            items: [{ product: PRODUCTS[12], quantity: 1 }], // Amazon Essentials T-Shirt $24.99
             total: PRODUCTS[12].price,
             status: "delivered" as const,
             created_at: new Date(Date.now() - 7 * 86400000).toISOString(),
             delivery_date: new Date(Date.now() - 4 * 86400000).toISOString(),
             address: { name: "John Doe", street: "123 Main St", city: "New York", state: "NY", zip: "10001", country: "US" },
         },
+        // VERY LOW VALUE - $12.99 → RETURNLESS_REFUND (definite keep)
+        {
+            order_id: "113-4428173-7291038",
+            customer_id: "CUST-DEMO-001",
+            items: [{ product: PRODUCTS[13], quantity: 1 }], // Hanes Socks $12.99
+            total: PRODUCTS[13].price,
+            status: "delivered" as const,
+            created_at: new Date(Date.now() - 10 * 86400000).toISOString(),
+            delivery_date: new Date(Date.now() - 7 * 86400000).toISOString(),
+            address: { name: "John Doe", street: "123 Main St", city: "New York", state: "NY", zip: "10001", country: "US" },
+        },
+        // Kitchen - LOW risk (safe buy, for comparison)
+        {
+            order_id: "113-6618294-3847291",
+            customer_id: "CUST-DEMO-001",
+            items: [{ product: PRODUCTS[2], quantity: 1 }], // Instant Pot $89.95
+            total: PRODUCTS[2].price,
+            status: "delivered" as const,
+            created_at: new Date(Date.now() - 8 * 86400000).toISOString(),
+            delivery_date: new Date(Date.now() - 5 * 86400000).toISOString(),
+            address: { name: "John Doe", street: "123 Main St", city: "New York", state: "NY", zip: "10001", country: "US" },
+        },
+        // In transit (shows delivery progress bar)
         {
             order_id: "113-8834729-5829104",
             customer_id: "CUST-DEMO-001",
-            items: [{ product: PRODUCTS[5], quantity: 1 }],
+            items: [{ product: PRODUCTS[5], quantity: 1 }], // Kindle $139.99
             total: PRODUCTS[5].price,
             status: "shipped" as const,
             created_at: new Date(Date.now() - 1 * 86400000).toISOString(),
