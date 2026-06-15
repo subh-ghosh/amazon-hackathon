@@ -40,6 +40,11 @@ const toneStyles: Record<
     trend: "text-rose-700",
     iconComponent: AlertTriangle,
   },
+  slate: {
+    icon: "bg-slate-50 text-slate-700",
+    trend: "text-slate-700",
+    iconComponent: PackageX,
+  },
 };
 
 export function KpiCard({ kpi }: KpiCardProps) {

@@ -5,7 +5,7 @@ import { Leaf } from "lucide-react";
 import "./styles.css";
 
 export const metadata: Metadata = {
-  title: "Seller Dashboard | Amazon ReLife",
+  title: "Merchant Portal | Circular OS",
   description: "Return intelligence and loss prevention for Amazon sellers.",
 };
 
@@ -20,7 +20,7 @@ export default function Layout({ children }: { children: ReactNode }) {
                 <Leaf className="size-5" aria-hidden="true" />
               </span>
               <span>
-                Amazon <span className="text-emerald-700">ReLife</span>
+                Circular <span className="text-emerald-700">OS</span>
               </span>
             </div>
             <div className="flex items-center gap-3">

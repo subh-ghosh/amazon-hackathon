@@ -7,7 +7,7 @@ export interface SellerKpi {
   change: number;
   trend: TrendDirection;
   comparison: string;
-  tone: "emerald" | "blue" | "amber" | "rose";
+  tone: "emerald" | "blue" | "amber" | "rose" | "slate";
 }
 
 export interface ReturnCause {
@@ -15,6 +15,16 @@ export interface ReturnCause {
   returns: number;
   percentage: number;
   change: number;
+}
+
+export interface ProductInsight {
+  sku: string;
+  name: string;
+  orders: number;
+  returns: number;
+  returnRate: number;
+  healthScore: number;
+  topComplaints: string[];
 }
 
 export interface SellerIssue {
@@ -25,35 +35,44 @@ export interface SellerIssue {
   severity: IssueSeverity;
 }
 
-export interface FraudExposure {
-  exposureAmount: number;
-  flaggedOrders: number;
-  blockedClaims: number;
-  recoveredAmount: number;
-  riskScore: number;
+export interface ActionRecommendation {
+  id: string;
+  priority: "HIGH" | "MEDIUM" | "LOW";
+  title: string;
+  description: string;
+  impact: string;
 }
 
-export interface LossCategory {
-  label: string;
-  amount: number;
-  percentage: number;
-  color: string;
+export interface RecoveryIntelligence {
+  restocked: { value: number; count: number; percentage: number };
+  refurbished: { value: number; count: number; percentage: number };
+  resold: { value: number; count: number; percentage: number };
+  donated: { value: number; count: number; percentage: number };
+  recycled: { value: number; count: number; percentage: number };
+  totalRecoveredValue: number;
+  totalRecoveryRate: number;
+  potentialRevenue: number;
 }
 
-export interface EstimatedLosses {
-  total: number;
-  preventable: number;
-  projectedAnnual: number;
-  categories: LossCategory[];
+export interface MonthlyTrend {
+  month: string;
+  returns: number;
+}
+
+export interface AiInsights {
+  highlights: string[];
 }
 
 export interface SellerAnalytics {
   sellerName: string;
   reportingPeriod: string;
+  aiInsights: AiInsights;
   kpis: SellerKpi[];
   returnCauses: ReturnCause[];
+  productInsights: ProductInsight[];
   packagingProblems: SellerIssue[];
   listingProblems: SellerIssue[];
-  fraudExposure: FraudExposure;
-  estimatedLosses: EstimatedLosses;
+  recoveryIntelligence: RecoveryIntelligence;
+  recommendations: ActionRecommendation[];
+  monthlyTrend: MonthlyTrend[];
 }
