@@ -3,19 +3,24 @@
  * NEVER hardcode endpoints elsewhere. Always import from here.
  */
 
+// All calls go through the Next.js proxy route (/api/proxy/[service]/...)
+// This allows the https Vercel frontend to reach http AWS ALB backends server-side,
+// bypassing the browser's mixed-content block.
+const PROXY_BASE = "/api/proxy";
+
 export const SERVICE_URLS = {
-    S1_PREVENTION: "http://Circul-Preve-Rs6gi1hesUgp-476733633.us-east-1.elb.amazonaws.com",
-    S2_TRUTH: "http://Circul-Truth-HR7ES9usthBv-33182633.us-east-1.elb.amazonaws.com",
-    S3_FRAUD: "http://Circul-Fraud-Q25TuVtGjWhU-36938543.us-east-1.elb.amazonaws.com",
-    S4_DIGITAL_TWIN: "http://Circul-Digit-XXDMcCWoqhd0-1019952249.us-east-1.elb.amazonaws.com",
-    S5_SIMULATOR: "http://Circul-Simul-a4nmYbuxVUrr-319139381.us-east-1.elb.amazonaws.com",
-    S6_RECOVERY: "http://Circul-Optim-mcZ0NzPDZK07-890558390.us-east-1.elb.amazonaws.com",
-    S7_LOGISTICS: "http://Circul-Logis-hgIeVqBbAk0h-362510022.us-east-1.elb.amazonaws.com",
-    S8_RETURNLESS: "http://Circul-Retur-AkanfcKdPytd-593568738.us-east-1.elb.amazonaws.com",
-    S9_CIRCULAR: "http://Circul-Circu-sybvn5Ar6ipQ-119322148.us-east-1.elb.amazonaws.com",
-    S10_PACKAGING: "http://Circul-Packa-AN1B5mVKsku9-408281128.us-east-1.elb.amazonaws.com",
-    S11_SELLER: "http://Circul-Selle-Q7zRyEczbzCg-2088084796.us-east-1.elb.amazonaws.com",
-    S12_KNOWLEDGE: "http://Circul-Graph-ye0M61dV1dYT-1449212263.us-east-1.elb.amazonaws.com",
+    S1_PREVENTION: `${PROXY_BASE}/s1`,
+    S2_TRUTH: `${PROXY_BASE}/s2`,
+    S3_FRAUD: `${PROXY_BASE}/s3`,
+    S4_DIGITAL_TWIN: `${PROXY_BASE}/s4`,
+    S5_SIMULATOR: `${PROXY_BASE}/s5`,
+    S6_RECOVERY: `${PROXY_BASE}/s6`,
+    S7_LOGISTICS: `${PROXY_BASE}/s7`,
+    S8_RETURNLESS: `${PROXY_BASE}/s8`,
+    S9_CIRCULAR: `${PROXY_BASE}/s9`,
+    S10_PACKAGING: `${PROXY_BASE}/s10`,
+    S11_SELLER: `${PROXY_BASE}/s11`,
+    S12_KNOWLEDGE: `${PROXY_BASE}/s12`,
 } as const;
 
 export const ENDPOINTS = {
