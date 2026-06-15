@@ -23,7 +23,7 @@ export function RecoveryIntelligence({ data }: { data: RecoveryIntelligenceType 
         <div className="flex items-start justify-between">
           <div>
             <CardTitle>Recovery Intelligence</CardTitle>
-            <CardDescription>How the Circular OS is recovering value from your returns.</CardDescription>
+            <CardDescription>How Amazon is recovering value from returned inventory across resale and recovery channels.</CardDescription>
           </div>
           <div className="text-right">
             <p className="text-sm font-medium text-slate-500">Total Recovered</p>

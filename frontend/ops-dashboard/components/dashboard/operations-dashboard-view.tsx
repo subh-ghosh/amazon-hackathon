@@ -13,8 +13,6 @@ export function OperationsDashboardView() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // In a live environment, this would fetch from /api/proxy/s12
-    // For the hackathon demo, we use the fallback to ensure reliability.
     setTimeout(() => {
       setData(defaultData);
       setLoading(false);

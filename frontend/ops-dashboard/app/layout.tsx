@@ -5,8 +5,8 @@ import { Leaf, Warehouse } from "lucide-react";
 import "./styles.css";
 
 export const metadata: Metadata = {
-  title: "Operations Dashboard | Amazon ReLife",
-  description: "Reverse logistics and product recovery operations.",
+  title: "Returns Operations Console | Amazon",
+  description: "Reverse logistics, inspection throughput, and recovery operations management.",
 };
 
 export default function Layout({ children }: { children: ReactNode }) {
@@ -20,13 +20,13 @@ export default function Layout({ children }: { children: ReactNode }) {
                 <Leaf className="size-5" aria-hidden="true" />
               </span>
               <span>
-                Amazon <span className="text-emerald-700">ReLife</span>
+                Amazon <span className="text-emerald-700">Operations</span>
               </span>
             </div>
             <div className="flex items-center gap-3">
               <span className="hidden items-center gap-2 text-sm text-slate-500 sm:flex">
                 <Warehouse className="size-4" aria-hidden="true" />
-                BLR Center 04
+                Returns Operations Console
               </span>
               <div className="flex size-9 items-center justify-center rounded-full bg-slate-900 text-xs font-bold text-white">
                 RK

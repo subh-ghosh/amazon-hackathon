@@ -5,8 +5,8 @@ import { Leaf } from "lucide-react";
 import "./styles.css";
 
 export const metadata: Metadata = {
-  title: "Merchant Portal | Circular OS",
-  description: "Return intelligence and loss prevention for Amazon sellers.",
+  title: "Seller Central Returns | Amazon",
+  description: "Return intelligence, product quality signals, and recovery performance for Amazon sellers.",
 };
 
 export default function Layout({ children }: { children: ReactNode }) {
@@ -20,12 +20,12 @@ export default function Layout({ children }: { children: ReactNode }) {
                 <Leaf className="size-5" aria-hidden="true" />
               </span>
               <span>
-                Circular <span className="text-emerald-700">OS</span>
+                Amazon <span className="text-blue-700">Seller Central</span>
               </span>
             </div>
             <div className="flex items-center gap-3">
               <span className="hidden text-sm text-slate-500 sm:block">
-                Northstar Electronics
+                Returns Performance
               </span>
               <div className="flex size-9 items-center justify-center rounded-full bg-slate-900 text-xs font-bold text-white">
                 NE

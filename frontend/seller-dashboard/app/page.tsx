@@ -8,14 +8,14 @@ export default function SellerDashboard() {
     <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
       <div className="mb-8 flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
         <div>
-          <p className="text-sm font-semibold text-emerald-700">
-            SELLER INTELLIGENCE
+          <p className="text-sm font-semibold text-blue-700">
+            AMAZON SELLER CENTRAL
           </p>
           <h1 className="mt-2 text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">
-            Merchant Intelligence Portal
+            Returns Performance
           </h1>
           <p className="mt-3 max-w-2xl text-slate-600">
-            Protect your brand from fraud, recover lost revenue, and track the lifecycle of your returned inventory.
+            Monitor return drivers, protect margin, and improve listing and product quality with connected seller intelligence.
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">

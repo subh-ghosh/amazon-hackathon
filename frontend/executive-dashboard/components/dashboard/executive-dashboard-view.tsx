@@ -21,9 +21,6 @@ export function ExecutiveDashboardView() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // In a live environment, this would fetch from the proxy /api/proxy/s12
-    // For demo safety and judge presentation, we use the rich fallback data
-    // to guarantee 100% reliability during the pitch.
     setTimeout(() => {
       setData(defaultData);
       setLoading(false);
@@ -39,14 +36,14 @@ export function ExecutiveDashboardView() {
       {/* PAGE HEADER */}
       <div className="mb-8 flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
         <div>
-          <p className="text-sm font-semibold text-emerald-700 uppercase tracking-wider">
-            Circular OS
+          <p className="text-sm font-semibold text-cyan-800 uppercase tracking-wider">
+            Amazon
           </p>
           <h1 className="mt-2 text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">
-            Executive Briefing
+            Executive Network Insights
           </h1>
           <p className="mt-3 max-w-2xl text-slate-600">
-            High-level insights into global carbon offset, network-wide fraud prevention, and total value recovered.
+            A consolidated view of recovery value, operational performance, sustainability, and trust risk across the Amazon returns network.
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -56,7 +53,7 @@ export function ExecutiveDashboardView() {
           </div>
           <button
             type="button"
-            className="flex h-10 items-center gap-2 rounded-md border bg-slate-900 px-3 text-sm font-medium text-white shadow-sm transition-colors hover:bg-slate-800"
+            className="flex h-10 items-center gap-2 rounded-md border bg-cyan-950 px-3 text-sm font-medium text-white shadow-sm transition-colors hover:bg-cyan-900"
           >
             <Download className="size-4" aria-hidden="true" />
             Export Report
@@ -65,7 +62,6 @@ export function ExecutiveDashboardView() {
       </div>
 
       <div className="space-y-8 pb-12">
-        {/* SECTION 8: JUDGE WOW FACTOR (Placed at top for max impact) */}
         <section>
           <CircularScorecard data={data.scorecard} />
         </section>

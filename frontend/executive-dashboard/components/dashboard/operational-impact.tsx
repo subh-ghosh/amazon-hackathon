@@ -8,7 +8,7 @@ export function OperationalImpact({ data }: { data: OperationalMetrics }) {
     <Card className="h-full">
       <CardHeader>
         <CardTitle>Operational Impact</CardTitle>
-        <CardDescription>Performance of the Circular OS network facilities.</CardDescription>
+        <CardDescription>Service levels, processing throughput, and facility health across the returns network.</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
@@ -45,8 +45,8 @@ export function OperationalImpact({ data }: { data: OperationalMetrics }) {
             ))}
           </ul>
 
-          <Link href="https://amazon-hackathon-udpw.vercel.app/" target="_blank" className="flex items-center justify-center w-full gap-2 rounded-lg bg-slate-900 text-white px-4 py-2.5 text-sm font-semibold hover:bg-slate-800 transition-colors">
-            View Operations Command Center
+          <Link href="https://amazon-hackathon-udpw.vercel.app/" target="_blank" className="flex items-center justify-center w-full gap-2 rounded-lg bg-cyan-950 text-white px-4 py-2.5 text-sm font-semibold hover:bg-cyan-900 transition-colors">
+            Open Returns Operations
             <ArrowRight className="size-4" />
           </Link>
         </div>

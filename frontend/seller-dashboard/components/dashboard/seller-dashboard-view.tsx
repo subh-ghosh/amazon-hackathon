@@ -39,8 +39,6 @@ export function SellerDashboardView() {
   });
 
   function loadSellerAnalytics() {
-    // In a real implementation, this would fetch from the Next.js proxy route /api/proxy/s12/...
-    // For the hackathon "WOW factor", we use the highly structured fallback data we designed.
     setTimeout(() => {
       setAnalytics({
         data: defaultSellerAnalytics,
@@ -73,7 +71,7 @@ export function SellerDashboardView() {
 
   return (
     <div className="space-y-8 pb-12">
-      {/* HEADER / WOW FACTOR */}
+      {/* Intelligence Header */}
       <section>
         <AiInsightsBanner insights={data.aiInsights} />
       </section>

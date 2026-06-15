@@ -9,7 +9,7 @@ export function ActionCenter({ recommendations }: { recommendations: ActionRecom
       <CardHeader className="bg-slate-50 border-b">
         <div className="flex items-center gap-2">
           <CheckCircle2 className="size-5 text-blue-600" />
-          <CardTitle>Seller Action Center</CardTitle>
+          <CardTitle>Recommended Actions</CardTitle>
         </div>
         <CardDescription>Prioritized tasks to reduce your return rate and increase profitability.</CardDescription>
       </CardHeader>

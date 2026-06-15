@@ -17,9 +17,9 @@ export function CircularScorecard({ data }: { data: ScorecardMetrics }) {
       </div>
       <CardContent className="p-8 relative z-10">
         <div className="mb-8">
-          <p className="text-emerald-400 font-bold tracking-widest text-sm uppercase mb-2">JUDGE WOW FACTOR</p>
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">Circular Intelligence Scorecard</h2>
-          <p className="mt-2 text-slate-400 max-w-2xl">The comprehensive business and environmental impact of the Circular OS across the entire Amazon network.</p>
+          <p className="text-cyan-300 font-bold tracking-widest text-sm uppercase mb-2">Network Summary</p>
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">Returns Performance Scorecard</h2>
+          <p className="mt-2 text-slate-400 max-w-2xl">A consolidated view of financial recovery, inventory recirculation, and sustainability performance across the Amazon returns network.</p>
         </div>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

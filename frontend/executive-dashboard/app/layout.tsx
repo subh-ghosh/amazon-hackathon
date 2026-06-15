@@ -5,9 +5,9 @@ import { Building2, Leaf } from "lucide-react";
 import "./styles.css";
 
 export const metadata: Metadata = {
-  title: "Executive Dashboard | Amazon ReLife",
+  title: "Executive Network Insights | Amazon",
   description:
-    "Real-time recovered revenue, sustainability, and social impact intelligence.",
+    "Network-wide intelligence for recovery performance, sustainability, and financial impact.",
 };
 
 export default function Layout({ children }: { children: ReactNode }) {
@@ -21,13 +21,13 @@ export default function Layout({ children }: { children: ReactNode }) {
                 <Leaf className="size-5" aria-hidden="true" />
               </span>
               <span>
-                Amazon <span className="text-emerald-700">ReLife</span>
+                Amazon <span className="text-emerald-700">Returns Intelligence</span>
               </span>
             </div>
             <div className="flex items-center gap-3">
               <span className="hidden items-center gap-2 text-sm text-slate-500 sm:flex">
                 <Building2 className="size-4" aria-hidden="true" />
-                Global Recovery
+                Executive Network Insights
               </span>
               <div className="flex size-9 items-center justify-center rounded-full bg-slate-900 text-xs font-bold text-white">
                 EX

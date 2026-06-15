@@ -22,7 +22,7 @@ export function FinancialImpact({ data }: { data: FinancialBreakdown }) {
     <Card className="h-full">
       <CardHeader>
         <CardTitle>Financial Impact</CardTitle>
-        <CardDescription>Breakdown of revenue recovered and costs avoided.</CardDescription>
+        <CardDescription>Breakdown of recovered value and avoided returns costs.</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="mb-8">

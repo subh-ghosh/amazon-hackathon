@@ -34,9 +34,9 @@ export function RecoveryPipeline({
   return (
     <Card className="overflow-hidden">
       <CardHeader>
-        <CardTitle>Recovery pipeline</CardTitle>
+        <CardTitle>Processing pipeline</CardTitle>
         <CardDescription>
-          Today&apos;s product flow from return intake to final circular outcome.
+          Today&apos;s item flow from return intake to final recovery outcome.
         </CardDescription>
       </CardHeader>
       <CardContent>
