@@ -61,6 +61,9 @@ export default function TriageDetailPage({ params }: { params: Promise<{ id: str
 
   useEffect(() => { runLiveIntelligence(); }, []);
 
+  // Item-specific parameters for varied recovery decisions
+  const itemConfig = getItemConfig(data.returnId);
+
   async function runLiveIntelligence() {
     setLoading(true);
     const result: Partial<LiveIntelligence> = {};
@@ -70,40 +73,40 @@ export default function TriageDetailPage({ params }: { params: Promise<{ id: str
       const fraud = await fetch("/api/proxy/s3/api/v1/fraud/score", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          customer_id: "CUST-OPS-TRIAGE", product_id: "P-88421",
+          customer_id: `CUST-OPS-${data.returnId}`, product_id: itemConfig.productId,
           return_id: data.returnId, device_id: "DEVICE-OPS-01", payment_method_hash: "HASH-OPS-001",
         }),
       }).then(r => r.json());
       result.fraudScore = fraud.fraud_score;
       result.trustScore = fraud.trust_score;
       result.riskLevel = fraud.risk_level;
-    } catch { result.fraudScore = 12; result.trustScore = 88; result.riskLevel = "LOW"; }
+    } catch { result.fraudScore = itemConfig.fraudScore; result.trustScore = 100 - itemConfig.fraudScore; result.riskLevel = itemConfig.fraudScore > 50 ? "HIGH" : "LOW"; }
 
-    // S5: Future Simulation
+    // S5: Future Simulation — uses item-specific condition and value
     try {
       const sim = await fetch("/api/proxy/s5/api/v1/simulation/run", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          returnId: data.returnId, productId: "P-88421",
-          category: "Smart Home", conditionScore: 92,
-          utilityScore: 88, fraudScore: result.fraudScore || 12,
-          estimatedValue: 249.99, returnReason: "DAMAGED_IN_TRANSIT", sellerTrustScore: 0.92,
+          returnId: data.returnId, productId: itemConfig.productId,
+          category: itemConfig.category, conditionScore: itemConfig.conditionScore,
+          utilityScore: itemConfig.utilityScore, fraudScore: result.fraudScore || itemConfig.fraudScore,
+          estimatedValue: itemConfig.estimatedValue, returnReason: itemConfig.returnReason, sellerTrustScore: itemConfig.sellerTrust,
         }),
       }).then(r => r.json());
       result.simulations = sim.simulations;
       result.bestScenario = sim.bestScenario;
-    } catch { result.simulations = []; result.bestScenario = "Refurbish"; }
+    } catch { result.simulations = []; result.bestScenario = itemConfig.expectedDecision; }
 
     // S6: Recovery Optimizer (uses S5 output)
     try {
       const recovery = await fetch("/api/proxy/s6/api/v1/recovery/optimize", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          returnId: data.returnId, productId: "P-88421",
-          fraudScore: result.fraudScore || 12, sellerTrustScore: 0.92,
+          returnId: data.returnId, productId: itemConfig.productId,
+          fraudScore: result.fraudScore || itemConfig.fraudScore, sellerTrustScore: itemConfig.sellerTrust,
           simulations: result.simulations || [
-            { scenario: "Refurbish", recoveryValue: 180, carbonImpact: 15.4, processingTimeDays: 5, confidence: 0.91 },
-            { scenario: "Resell", recoveryValue: 220, carbonImpact: 5, processingTimeDays: 2, confidence: 0.84 },
+            { scenario: "Refurbish", recoveryValue: itemConfig.estimatedValue * 0.7, carbonImpact: 15.4, processingTimeDays: 5, confidence: 0.91 },
+            { scenario: "Resell", recoveryValue: itemConfig.estimatedValue * 0.85, carbonImpact: 5, processingTimeDays: 2, confidence: 0.84 },
           ],
         }),
       }).then(r => r.json());
@@ -112,17 +115,17 @@ export default function TriageDetailPage({ params }: { params: Promise<{ id: str
       result.carbonSavings = recovery.carbonSavings;
       result.processingDays = recovery.processingDays;
       result.reasoning = recovery.reasoning;
-    } catch { result.recoveryDecision = "RESELL"; result.expectedProfit = 219; result.reasoning = ["Highest value"]; }
+    } catch { result.recoveryDecision = itemConfig.expectedDecision; result.expectedProfit = itemConfig.estimatedValue * 0.7; result.reasoning = ["Optimal path selected"]; }
 
     // S7: Logistics Routing (uses S6 output)
     try {
       const logistics = await fetch("/api/proxy/s7/api/v1/logistics/optimize", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          returnId: data.returnId, productId: "P-88421",
-          recommendedDecision: result.recoveryDecision || "RESELL",
-          customerLocation: "Bangalore", expectedProfit: result.expectedProfit || 219,
-          carbonSavings: result.carbonSavings || 5, processingDays: result.processingDays || 2,
+          returnId: data.returnId, productId: itemConfig.productId,
+          recommendedDecision: result.recoveryDecision || itemConfig.expectedDecision,
+          customerLocation: "Bangalore", expectedProfit: result.expectedProfit || itemConfig.estimatedValue * 0.7,
+          carbonSavings: result.carbonSavings || 5, processingDays: result.processingDays || 3,
           confidence: 0.9, reasoning: result.reasoning || ["Optimal"],
           warehouses: [
             { warehouseId: "WH-BLR-04", city: "Bangalore", capacity: 82, distanceKm: 18 },
@@ -143,9 +146,9 @@ export default function TriageDetailPage({ params }: { params: Promise<{ id: str
       const circular = await fetch("/api/proxy/s9/api/v1/logistics/optimize", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          requestId: `CIR-${Date.now()}`, returnId: data.returnId, productId: "P-88421",
-          category: "Smart Home", condition: "USED",
-          estimatedValue: 249.99, weightKg: 2.5,
+          requestId: `CIR-${Date.now()}`, returnId: data.returnId, productId: itemConfig.productId,
+          category: itemConfig.category, condition: itemConfig.conditionEnum,
+          estimatedValue: itemConfig.estimatedValue, weightKg: itemConfig.weightKg,
           customerLatitude: 12.9716, customerLongitude: 77.5946,
           recommendedWarehouse: result.recommendedWarehouse || "WH-BLR-04",
           estimatedCost: result.logisticsCost || 50, estimatedDays: result.logisticsDays || 1,
@@ -550,4 +553,62 @@ function generateDemandSignals(decision: string, category: string): DemandSignal
       matchReason: `Standard demand levels — backup routing option`,
     },
   ];
+}
+
+interface ItemConfig {
+  productId: string;
+  category: string;
+  conditionScore: number;
+  utilityScore: number;
+  fraudScore: number;
+  estimatedValue: number;
+  returnReason: string;
+  sellerTrust: number;
+  weightKg: number;
+  conditionEnum: string;
+  expectedDecision: string;
+}
+
+function getItemConfig(returnId: string): ItemConfig {
+  // Each item has different parameters to produce varied recovery decisions
+  const configs: Record<string, ItemConfig> = {
+    // Echo Show - high condition, high value → RESELL (outlet sale)
+    "RET-9921-A": {
+      productId: "P-88421", category: "Smart Home", conditionScore: 92, utilityScore: 88,
+      fraudScore: 12, estimatedValue: 249.99, returnReason: "DAMAGED_IN_TRANSIT",
+      sellerTrust: 0.92, weightKg: 2.5, conditionEnum: "LIKE_NEW", expectedDecision: "RESELL",
+    },
+    // Fire TV Stick - medium condition → REFURBISH
+    "RET-9922-B": {
+      productId: "P-88417", category: "Streaming", conditionScore: 74, utilityScore: 65,
+      fraudScore: 8, estimatedValue: 54.99, returnReason: "DEFECTIVE",
+      sellerTrust: 0.88, weightKg: 0.3, conditionEnum: "USED", expectedDecision: "REFURBISH",
+    },
+    // Kindle - good condition, medium value → RESELL
+    "RET-9923-C": {
+      productId: "P-88409", category: "E-readers", conditionScore: 88, utilityScore: 82,
+      fraudScore: 5, estimatedValue: 139.99, returnReason: "CHANGED_MIND",
+      sellerTrust: 0.95, weightKg: 0.2, conditionEnum: "LIKE_NEW", expectedDecision: "RESELL",
+    },
+    // Nike shoes - poor condition, worn → RECYCLE
+    "RET-9924-D": {
+      productId: "P-91204", category: "Footwear", conditionScore: 45, utilityScore: 30,
+      fraudScore: 25, estimatedValue: 150.00, returnReason: "WRONG_ITEM",
+      sellerTrust: 0.70, weightKg: 0.8, conditionEnum: "DAMAGED", expectedDecision: "RECYCLE",
+    },
+    // Samsung phone - very poor condition, high fraud → RECYCLE (possible fraud)
+    "RET-9925-E": {
+      productId: "P-73892", category: "Electronics", conditionScore: 30, utilityScore: 20,
+      fraudScore: 75, estimatedValue: 1299.99, returnReason: "DEFECTIVE",
+      sellerTrust: 0.40, weightKg: 0.23, conditionEnum: "BROKEN", expectedDecision: "RECYCLE",
+    },
+    // Dyson vacuum - fair condition → REFURBISH
+    "RET-9926-F": {
+      productId: "P-55210", category: "Home Appliance", conditionScore: 62, utilityScore: 55,
+      fraudScore: 10, estimatedValue: 749.99, returnReason: "NOT_AS_DESCRIBED",
+      sellerTrust: 0.85, weightKg: 3.1, conditionEnum: "REFURBISHABLE", expectedDecision: "REFURBISH",
+    },
+  };
+
+  return configs[returnId] || configs["RET-9921-A"];
 }
