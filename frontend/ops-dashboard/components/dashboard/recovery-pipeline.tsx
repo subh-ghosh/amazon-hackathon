@@ -1,12 +1,8 @@
 import {
-  ArrowRight,
   ClipboardCheck,
-  Gift,
   PackageOpen,
-  Recycle,
   RotateCcw,
   Route,
-  ShoppingBag,
   type LucideIcon,
 } from "lucide-react";
 
@@ -17,11 +13,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import type { PipelineStage, RecoveryOutcome } from "@/types/operations";
+import type { PipelineStage } from "@/types/operations";
 
 interface RecoveryPipelineProps {
   stages: PipelineStage[];
-  outcomes: RecoveryOutcome[];
 }
 
 const stageIcons: Record<string, LucideIcon> = {
@@ -31,15 +26,10 @@ const stageIcons: Record<string, LucideIcon> = {
   Recovery: RotateCcw,
 };
 
-const outcomeIcons: Record<RecoveryOutcome["label"], LucideIcon> = {
-  Resold: ShoppingBag,
-  Donated: Gift,
-  Recycled: Recycle,
-};
+
 
 export function RecoveryPipeline({
   stages,
-  outcomes,
 }: RecoveryPipelineProps) {
   return (
     <Card className="overflow-hidden">
@@ -74,27 +64,6 @@ export function RecoveryPipeline({
                       />
                     </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
-          <ArrowRight
-            className="mx-auto hidden size-5 shrink-0 text-emerald-500 xl:block"
-            aria-hidden="true"
-          />
-          <div className="grid gap-2 sm:grid-cols-3 xl:w-48 xl:grid-cols-1">
-            {outcomes.map((outcome) => {
-              const Icon = outcomeIcons[outcome.label];
-              return (
-                <div
-                  key={outcome.label}
-                  className="flex items-center justify-between rounded-lg border border-emerald-100 bg-emerald-50/60 px-3 py-2.5"
-                >
-                  <div className="flex items-center gap-2 text-sm font-medium text-emerald-900">
-                    <Icon className="size-4 text-emerald-700" aria-hidden="true" />
-                    {outcome.label}
-                  </div>
-                  <span className="font-bold text-emerald-800">{outcome.count}</span>
                 </div>
               );
             })}

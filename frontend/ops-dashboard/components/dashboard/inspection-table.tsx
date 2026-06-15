@@ -1,30 +1,10 @@
 import { Badge } from "@/components/ui/badge";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
-import type {
-  InspectionProduct,
-  InspectorStatus,
-  Priority,
-} from "@/types/operations";
+import type { InspectionProduct, InspectorStatus, Priority } from "@/types/operations";
 import { useRouter } from "next/navigation";
-
-interface InspectionTableProps {
-  products: InspectionProduct[];
-}
+import { ExternalLink } from "lucide-react";
 
 const statusStyles: Record<InspectorStatus, string> = {
   "In progress": "border-blue-200 bg-blue-50 text-blue-700",
@@ -44,16 +24,16 @@ function scoreColor(score: number) {
   return "bg-rose-500";
 }
 
-export function InspectionTable({ products }: InspectionTableProps) {
+export function InspectionTable({ products }: { products: InspectionProduct[] }) {
   const router = useRouter();
 
   return (
     <Card>
       <CardHeader className="flex-row items-start justify-between space-y-0">
         <div>
-          <CardTitle>Products under inspection</CardTitle>
+          <CardTitle>Inspection Queue</CardTitle>
           <CardDescription className="mt-1.5">
-            Live condition assessment and inspector assignments.
+            Pending returned items awaiting visual inspection and intelligent triage.
           </CardDescription>
         </div>
         <Badge className="border-blue-200 bg-blue-50 text-blue-700">
@@ -64,28 +44,29 @@ export function InspectionTable({ products }: InspectionTableProps) {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Product ID</TableHead>
-              <TableHead>Product</TableHead>
-              <TableHead>Category</TableHead>
-              <TableHead>Condition score</TableHead>
-              <TableHead>Inspector status</TableHead>
+              <TableHead>Product / Category</TableHead>
+              <TableHead>Return ID</TableHead>
+              <TableHead>Condition Score</TableHead>
               <TableHead>Priority</TableHead>
+              <TableHead>Arrival Time</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead className="text-right">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {products.map((product) => (
               <TableRow 
-                key={product.productId} 
-                className="cursor-pointer hover:bg-slate-50 transition-colors"
-                onClick={() => router.push(`/triage/${product.productId}`)}
+                key={product.returnId} 
+                className="cursor-pointer hover:bg-slate-50 transition-colors group"
+                onClick={() => router.push(`/triage/${product.returnId}`)}
               >
+                <TableCell>
+                  <p className="font-medium text-slate-900">{product.productName}</p>
+                  <p className="text-xs text-slate-500">{product.category}</p>
+                </TableCell>
                 <TableCell className="font-mono text-xs font-medium text-slate-500">
-                  {product.productId}
+                  {product.returnId}
                 </TableCell>
-                <TableCell className="font-medium text-slate-900">
-                  {product.productName}
-                </TableCell>
-                <TableCell className="text-slate-600">{product.category}</TableCell>
                 <TableCell>
                   <div className="flex min-w-28 items-center gap-3">
                     <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-slate-100">
@@ -94,23 +75,28 @@ export function InspectionTable({ products }: InspectionTableProps) {
                         style={{ width: `${product.conditionScore}%` }}
                       />
                     </div>
-                    <span className="w-6 font-semibold text-slate-800">
+                    <span className="w-6 text-xs font-semibold text-slate-800">
                       {product.conditionScore}
                     </span>
                   </div>
                 </TableCell>
                 <TableCell>
-                  <Badge className={statusStyles[product.inspectorStatus]}>
-                    {product.inspectorStatus}
-                  </Badge>
-                  {product.inspector && (
-                    <p className="mt-1 text-xs text-slate-400">{product.inspector}</p>
-                  )}
-                </TableCell>
-                <TableCell>
                   <Badge className={priorityStyles[product.priority]}>
                     {product.priority}
                   </Badge>
+                </TableCell>
+                <TableCell className="text-sm text-slate-600">
+                  {product.arrivalTime}
+                </TableCell>
+                <TableCell>
+                  <Badge className={statusStyles[product.inspectorStatus]}>
+                    {product.inspectorStatus}
+                  </Badge>
+                </TableCell>
+                <TableCell className="text-right">
+                  <button className="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-600 hover:text-indigo-800 opacity-0 group-hover:opacity-100 transition-opacity">
+                    Open Triage <ExternalLink className="size-3" />
+                  </button>
                 </TableCell>
               </TableRow>
             ))}
