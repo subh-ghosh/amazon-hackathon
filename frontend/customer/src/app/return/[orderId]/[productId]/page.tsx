@@ -28,7 +28,7 @@ export default function ReturnRequestPage({ params }: { params: { orderId: strin
     }
 
     const handleContinue = () => {
-        if (!selected || !hasPhoto || hasPackaging === null) return;
+        if (!selected) return;
         const returnId = `RET-${Date.now()}`;
         router.push(`/return-prevention?returnId=${returnId}&orderId=${orderId}&productId=${productId}&reason=${selected}&comment=${encodeURIComponent(comment)}`);
     };
