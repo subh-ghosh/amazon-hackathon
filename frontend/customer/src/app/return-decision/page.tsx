@@ -2,7 +2,7 @@
 
 import { Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { CheckCircle, ArrowRight, MapPin, Clock, Tag, Camera, Check, Box } from "lucide-react";
+import { CheckCircle, ArrowRight, MapPin, Clock, Tag, Home } from "lucide-react";
 import { getProductById } from "@/data/products";
 import { useState } from "react";
 
@@ -14,7 +14,7 @@ function ReturnDecisionContent() {
     const productId = searchParams.get("productId") || "PROD-002";
     const decision = searchParams.get("decision") || "keep_refund";
     const product = getProductById(productId);
-    const [dropoffMethod, setDropoffMethod] = useState<"ups" | "wholefoods">("wholefoods");
+    const [dropoffMethod, setDropoffMethod] = useState<"dropoff" | "pickup">("dropoff");
 
     const isReturn = decision === "return";
     const refundAmount = product?.price || 150;
@@ -43,43 +43,43 @@ function ReturnDecisionContent() {
                 <div className="mb-8 animate-fade-in">
                     <p className="text-sm font-medium text-gray-900 mb-3">Choose Drop-off Method</p>
                     <div className="space-y-3">
-                        {/* Option 1: Whole Foods (Optimal routing) */}
+                        {/* Option 1: Drop-off (Optimal routing) */}
                         <button
-                            onClick={() => setDropoffMethod("wholefoods")}
+                            onClick={() => setDropoffMethod("dropoff")}
                             className={`w-full flex items-start gap-3 p-4 rounded-lg border-2 text-left transition-all relative overflow-hidden ${
-                                dropoffMethod === "wholefoods" ? "border-[#007185] bg-[#F0FAFA]" : "border-gray-200 hover:border-gray-300 bg-white"
+                                dropoffMethod === "dropoff" ? "border-[#007185] bg-[#F0FAFA]" : "border-gray-200 hover:border-gray-300 bg-white"
                             }`}
                         >
                             <div className="absolute top-0 right-0 bg-emerald-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-bl-lg">
                                 RECOMMENDED
                             </div>
-                            <MapPin className={`mt-0.5 ${dropoffMethod === "wholefoods" ? "text-[#007185]" : "text-gray-400"}`} size={20} />
+                            <MapPin className={`mt-0.5 ${dropoffMethod === "dropoff" ? "text-[#007185]" : "text-gray-400"}`} size={20} />
                             <div>
-                                <p className="text-sm font-medium text-gray-900">Whole Foods Market</p>
-                                <p className="text-xs text-gray-500 mt-0.5">Box-free, label-free return.</p>
+                                <p className="text-sm font-medium text-gray-900">Drop-off at Whole Foods / Amazon Hub</p>
+                                <p className="text-xs text-gray-500 mt-0.5">Faster processing. Box-free, label-free return.</p>
                                 <div className="mt-2 flex items-center gap-1.5 text-xs font-medium text-emerald-700 bg-emerald-50 px-2 py-1 rounded inline-flex">
                                     <Tag size={12} /> Earn $2 Amazon Promo Credit
                                 </div>
                             </div>
-                            <div className={`ml-auto mt-0.5 w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${dropoffMethod === "wholefoods" ? "border-[#007185]" : "border-gray-300"}`}>
-                                {dropoffMethod === "wholefoods" && <div className="w-2.5 h-2.5 rounded-full bg-[#007185]" />}
+                            <div className={`ml-auto mt-0.5 w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${dropoffMethod === "dropoff" ? "border-[#007185]" : "border-gray-300"}`}>
+                                {dropoffMethod === "dropoff" && <div className="w-2.5 h-2.5 rounded-full bg-[#007185]" />}
                             </div>
                         </button>
 
-                        {/* Option 2: UPS (Standard) */}
+                        {/* Option 2: Home Collection (Expensive/Slower) */}
                         <button
-                            onClick={() => setDropoffMethod("ups")}
+                            onClick={() => setDropoffMethod("pickup")}
                             className={`w-full flex items-start gap-3 p-4 rounded-lg border-2 text-left transition-all ${
-                                dropoffMethod === "ups" ? "border-[#007185] bg-[#F0FAFA]" : "border-gray-200 hover:border-gray-300 bg-white"
+                                dropoffMethod === "pickup" ? "border-[#007185] bg-[#F0FAFA]" : "border-gray-200 hover:border-gray-300 bg-white"
                             }`}
                         >
-                            <MapPin className={`mt-0.5 ${dropoffMethod === "ups" ? "text-[#007185]" : "text-gray-400"}`} size={20} />
+                            <Home className={`mt-0.5 ${dropoffMethod === "pickup" ? "text-[#007185]" : "text-gray-400"}`} size={20} />
                             <div>
-                                <p className="text-sm font-medium text-gray-900">UPS Store Drop-off</p>
-                                <p className="text-xs text-gray-500 mt-0.5">Requires box. We print the label.</p>
+                                <p className="text-sm font-medium text-gray-900">Home Collection (UPS Pickup)</p>
+                                <p className="text-xs text-gray-500 mt-0.5">Slower processing. Requires box and label.</p>
                             </div>
-                            <div className={`ml-auto mt-0.5 w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${dropoffMethod === "ups" ? "border-[#007185]" : "border-gray-300"}`}>
-                                {dropoffMethod === "ups" && <div className="w-2.5 h-2.5 rounded-full bg-[#007185]" />}
+                            <div className={`ml-auto mt-0.5 w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${dropoffMethod === "pickup" ? "border-[#007185]" : "border-gray-300"}`}>
+                                {dropoffMethod === "pickup" && <div className="w-2.5 h-2.5 rounded-full bg-[#007185]" />}
                             </div>
                         </button>
                     </div>
