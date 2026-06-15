@@ -1,9 +1,0 @@
-[project]
-name = "knowledge-graph-service"
-version = "1.0.0"
-description = "Amazon Circular Intelligence OS — Service 12: Learning & Knowledge Graph"
-requires-python = ">=3.11"
-
-[tool.pytest.ini_options]
-asyncio_mode = "auto"
-testpaths = ["tests"]

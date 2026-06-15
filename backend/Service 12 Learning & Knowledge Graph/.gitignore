@@ -1,7 +1,0 @@
-venv/
-infra/cdk-venv/
-infra/cdk.out/
-__pycache__/
-*.pyc
-.pytest_cache/
-.env
