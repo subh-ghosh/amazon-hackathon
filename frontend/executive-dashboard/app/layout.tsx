@@ -5,7 +5,7 @@ import { Building2, Leaf } from "lucide-react";
 import "./styles.css";
 
 export const metadata: Metadata = {
-  title: "Executive Network Insights | Amazon",
+  title: "Executive Briefing | Circular OS",
   description:
     "Network-wide intelligence for recovery performance, sustainability, and financial impact.",
 };
@@ -21,13 +21,13 @@ export default function Layout({ children }: { children: ReactNode }) {
                 <Leaf className="size-5" aria-hidden="true" />
               </span>
               <span>
-                Amazon <span className="text-emerald-700">Returns Intelligence</span>
+                Circular <span className="text-emerald-700">OS</span>
               </span>
             </div>
             <div className="flex items-center gap-3">
               <span className="hidden items-center gap-2 text-sm text-slate-500 sm:flex">
                 <Building2 className="size-4" aria-hidden="true" />
-                Executive Network Insights
+                Executive Briefing
               </span>
               <div className="flex size-9 items-center justify-center rounded-full bg-slate-900 text-xs font-bold text-white">
                 EX

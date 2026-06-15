@@ -5,7 +5,7 @@ import { Leaf, Warehouse } from "lucide-react";
 import "./styles.css";
 
 export const metadata: Metadata = {
-  title: "Returns Operations Console | Amazon",
+  title: "Operations Command Center | Circular OS",
   description: "Reverse logistics, inspection throughput, and recovery operations management.",
 };
 
@@ -20,13 +20,13 @@ export default function Layout({ children }: { children: ReactNode }) {
                 <Leaf className="size-5" aria-hidden="true" />
               </span>
               <span>
-                Amazon <span className="text-emerald-700">Operations</span>
+                Circular <span className="text-emerald-700">OS</span>
               </span>
             </div>
             <div className="flex items-center gap-3">
               <span className="hidden items-center gap-2 text-sm text-slate-500 sm:flex">
                 <Warehouse className="size-4" aria-hidden="true" />
-                Returns Operations Console
+                Operations Command Center
               </span>
               <div className="flex size-9 items-center justify-center rounded-full bg-slate-900 text-xs font-bold text-white">
                 RK
