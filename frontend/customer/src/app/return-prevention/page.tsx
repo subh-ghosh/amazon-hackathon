@@ -30,7 +30,7 @@ function ReturnPreventionContent() {
     const [showVerification, setShowVerification] = useState(false);
     const [hasPhoto, setHasPhoto] = useState(false);
     const [hasPackaging, setHasPackaging] = useState<boolean | null>(null);
-    
+
     // If they are physically returning it, we need packaging info for routing. Otherwise, just a photo for refund approval.
     const requiresPackaging = selectedResolution === "proceed_return" || selectedResolution === "replacement";
     const isVerified = requiresPackaging ? (hasPhoto && hasPackaging !== null) : hasPhoto;
@@ -43,11 +43,11 @@ function ReturnPreventionContent() {
     ]);
 
     const { persona } = useStore();
-    
+
     // Randomize customerId to prevent the remote S8 backend from triggering 
     // "Customer has 3 prior refund requests in 24 hours" fraud escalation
     // since we can't easily redeploy the remote AWS ECS container.
-    const [customerId] = useState(() => 
+    const [customerId] = useState(() =>
         persona === "TRUSTED" ? `CUST-GOOD-${Math.floor(Math.random() * 100000)}` : `CUST-FRAUD-${Math.floor(Math.random() * 100000)}`
     );
 
@@ -108,7 +108,7 @@ function ReturnPreventionContent() {
         // S8: The critical call — determines which options to show
         const productPrice = product?.price || 100;
         const shippingCost = Math.max(8.50, (product?.weight_kg || 1.0) * 8 + 4);
-        
+
         // Force dramatic score override to ensure demo stability
         const fraudScore = persona === "SUSPICIOUS" ? 85 : 15;
         const trustScore = persona === "SUSPICIOUS" ? 20 : 90;
@@ -152,7 +152,7 @@ function ReturnPreventionContent() {
 
     const handleConfirm = () => {
         if (!selectedResolution) return;
-        
+
         // Exclude tech support from needing verification
         if (selectedResolution !== "tech_support" && !isVerified) {
             setShowVerification(true);
@@ -169,7 +169,7 @@ function ReturnPreventionContent() {
     const options = buildResolutionOptions(returnlessData, product?.price || 100);
 
     const activeResolutionId = selectedResolution || (options.length > 0 ? options[0].id : "");
-    
+
     // Always calculate potential savings based on product weight as a fallback
     // since the remote S8 backend might return 0 for RETURN_REQUIRED scenarios
     const potentialCO2 = returnlessData?.estimatedCO2Saved || (product ? (product.weight_kg * 1.2 + 0.5).toFixed(2) : 1.74);
@@ -179,7 +179,7 @@ function ReturnPreventionContent() {
 
     let displayCO2: string | number = 0;
     let displayWaste: string | number = 0;
-    
+
     if (returnlessData) {
         if (activeResolutionId === "proceed_return" || activeResolutionId === "replacement" || activeResolutionId === "tech_support") {
             displayCO2 = 0;
@@ -235,7 +235,7 @@ function ReturnPreventionContent() {
 
                     {!returnlessData && (
                         <div className="mb-4 px-3 py-2 bg-red-50 rounded text-sm text-red-600 border border-red-200">
-                            <strong>Service Unavailable:</strong> The S8 Returnless Refund engine did not respond. 
+                            <strong>Service Unavailable:</strong> The S8 Returnless Refund engine did not respond.
                             Ensure the backend microservice is running.
                         </div>
                     )}
@@ -294,19 +294,19 @@ function ReturnPreventionContent() {
                             <div>
                                 <h2 className="text-lg font-bold text-gray-900">Final Step: Condition Check</h2>
                                 <p className="text-sm text-gray-500 mt-1">
-                                    {selectedResolution === "proceed_return" 
+                                    {selectedResolution === "proceed_return"
                                         ? "Please provide this info so we can process your return efficiently."
                                         : "To instantly approve this resolution, we just need a quick photo of the item."}
                                 </p>
                             </div>
-                            
+
                             {/* Photo Upload */}
                             <div>
                                 <p className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
                                     <Camera size={16} /> Upload a photo of the item <span className="text-red-500">*</span>
                                 </p>
                                 {!hasPhoto ? (
-                                    <button 
+                                    <button
                                         onClick={() => setHasPhoto(true)}
                                         className="w-full h-24 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center text-gray-500 hover:bg-gray-50 transition-colors"
                                     >
@@ -337,17 +337,15 @@ function ReturnPreventionContent() {
                                     <div className="flex gap-3">
                                         <button
                                             onClick={() => setHasPackaging(true)}
-                                            className={`flex-1 py-2.5 rounded-lg border text-sm font-medium transition-all ${
-                                                hasPackaging === true ? "bg-[#007185] text-white border-[#007185]" : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
-                                            }`}
+                                            className={`flex-1 py-2.5 rounded-lg border text-sm font-medium transition-all ${hasPackaging === true ? "bg-[#007185] text-white border-[#007185]" : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+                                                }`}
                                         >
                                             Yes, I have it
                                         </button>
                                         <button
                                             onClick={() => setHasPackaging(false)}
-                                            className={`flex-1 py-2.5 rounded-lg border text-sm font-medium transition-all ${
-                                                hasPackaging === false ? "bg-gray-800 text-white border-gray-800" : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
-                                            }`}
+                                            className={`flex-1 py-2.5 rounded-lg border text-sm font-medium transition-all ${hasPackaging === false ? "bg-gray-800 text-white border-gray-800" : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+                                                }`}
                                         >
                                             No, I don&apos;t
                                         </button>
@@ -359,14 +357,13 @@ function ReturnPreventionContent() {
 
                     {/* Confirm Button */}
                     <div className="mt-8 pt-6 border-t border-gray-200 flex justify-end">
-                        <button 
+                        <button
                             onClick={handleConfirm}
                             disabled={!selectedResolution || (showVerification && !isVerified)}
-                            className={`px-8 py-3 rounded-md font-bold text-sm shadow-sm transition-colors ${
-                                selectedResolution && (!showVerification || isVerified)
-                                    ? "bg-[#FF9900] hover:bg-[#FFB84D] text-[#131A22]" 
+                            className={`px-8 py-3 rounded-md font-bold text-sm shadow-sm transition-colors ${selectedResolution && (!showVerification || isVerified)
+                                    ? "bg-[#FF9900] hover:bg-[#FFB84D] text-[#131A22]"
                                     : "bg-gray-200 text-gray-500 cursor-not-allowed"
-                            }`}
+                                }`}
                         >
                             {showVerification && isVerified ? "Finalize Resolution" : "Confirm selection"}
                         </button>
