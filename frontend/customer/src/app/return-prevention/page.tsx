@@ -30,7 +30,10 @@ function ReturnPreventionContent() {
     const [showVerification, setShowVerification] = useState(false);
     const [hasPhoto, setHasPhoto] = useState(false);
     const [hasPackaging, setHasPackaging] = useState<boolean | null>(null);
-    const isVerified = hasPhoto && hasPackaging !== null;
+    
+    // If they are physically returning it, we need packaging info for routing. Otherwise, just a photo for refund approval.
+    const requiresPackaging = selectedResolution === "proceed_return" || selectedResolution === "replacement";
+    const isVerified = requiresPackaging ? (hasPhoto && hasPackaging !== null) : hasPhoto;
 
     const [steps, setSteps] = useState([
         { label: "Checking order details", done: false },
@@ -324,31 +327,33 @@ function ReturnPreventionContent() {
                                 )}
                             </div>
 
-                            {/* Packaging Check */}
-                            <div className="pt-4 border-t border-gray-100">
-                                <p className="text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
-                                    <Box size={16} /> Original Packaging <span className="text-red-500">*</span>
-                                </p>
-                                <p className="text-xs text-gray-500 mb-3">Do you have the original manufacturer box in good condition?</p>
-                                <div className="flex gap-3">
-                                    <button
-                                        onClick={() => setHasPackaging(true)}
-                                        className={`flex-1 py-2.5 rounded-lg border text-sm font-medium transition-all ${
-                                            hasPackaging === true ? "bg-[#007185] text-white border-[#007185]" : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
-                                        }`}
-                                    >
-                                        Yes, I have it
-                                    </button>
-                                    <button
-                                        onClick={() => setHasPackaging(false)}
-                                        className={`flex-1 py-2.5 rounded-lg border text-sm font-medium transition-all ${
-                                            hasPackaging === false ? "bg-gray-800 text-white border-gray-800" : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
-                                        }`}
-                                    >
-                                        No, I don&apos;t
-                                    </button>
+                            {/* Packaging Check - Only needed if physically returning */}
+                            {requiresPackaging && (
+                                <div className="pt-4 border-t border-gray-100">
+                                    <p className="text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
+                                        <Box size={16} /> Original Packaging <span className="text-red-500">*</span>
+                                    </p>
+                                    <p className="text-xs text-gray-500 mb-3">Do you have the original manufacturer box in good condition?</p>
+                                    <div className="flex gap-3">
+                                        <button
+                                            onClick={() => setHasPackaging(true)}
+                                            className={`flex-1 py-2.5 rounded-lg border text-sm font-medium transition-all ${
+                                                hasPackaging === true ? "bg-[#007185] text-white border-[#007185]" : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+                                            }`}
+                                        >
+                                            Yes, I have it
+                                        </button>
+                                        <button
+                                            onClick={() => setHasPackaging(false)}
+                                            className={`flex-1 py-2.5 rounded-lg border text-sm font-medium transition-all ${
+                                                hasPackaging === false ? "bg-gray-800 text-white border-gray-800" : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+                                            }`}
+                                        >
+                                            No, I don&apos;t
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
+                            )}
                         </div>
                     )}
 
