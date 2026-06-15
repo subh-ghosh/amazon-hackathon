@@ -271,23 +271,25 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
                         </div>
                     </div>
 
-                    {/* Also available Renewed */}
-                    <div className="mt-3 border border-gray-200 rounded-lg p-4 bg-gray-50">
-                        <p className="text-xs text-gray-500 mb-2">Also available</p>
-                        <Link href="/renewed" className="flex items-center justify-between group">
-                            <div>
-                                <p className="text-sm font-medium text-[#007185] group-hover:text-[#C7511F] group-hover:underline">
-                                    Certified Renewed — ${(product.price * 0.70).toFixed(2)}
-                                </p>
-                                <p className="text-xs text-gray-500 mt-0.5">
-                                    Like new. Inspected and guaranteed. Save ${(product.price * 0.30).toFixed(0)}.
-                                </p>
-                            </div>
-                            <span className="text-xs font-medium text-white bg-[#CC0C39] px-2 py-0.5 rounded">
-                                -{Math.round(30)}%
-                            </span>
-                        </Link>
-                    </div>
+                    {/* Also available Renewed — only for categories that can be renewed */}
+                    {["Electronics", "Furniture", "Home", "Kitchen"].includes(product.category) && (
+                        <div className="mt-3 border border-gray-200 rounded-lg p-4 bg-gray-50">
+                            <p className="text-xs text-gray-500 mb-2">Also available</p>
+                            <Link href="/renewed" className="flex items-center justify-between group">
+                                <div>
+                                    <p className="text-sm font-medium text-[#007185] group-hover:text-[#C7511F] group-hover:underline">
+                                        Certified Renewed — ${(product.price * 0.70).toFixed(2)}
+                                    </p>
+                                    <p className="text-xs text-gray-500 mt-0.5">
+                                        Like new. Inspected and guaranteed. Save ${(product.price * 0.30).toFixed(0)}.
+                                    </p>
+                                </div>
+                                <span className="text-xs font-medium text-white bg-[#CC0C39] px-2 py-0.5 rounded">
+                                    -30%
+                                </span>
+                            </Link>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

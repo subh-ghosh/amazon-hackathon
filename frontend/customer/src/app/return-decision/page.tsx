@@ -107,8 +107,8 @@ function ReturnDecisionContent() {
                         </div>
                     </div>
 
-                    {/* Buyer Match — shows for all products on full return */}
-                    {product && (
+                    {/* Buyer Match — only shows for renewable product categories */}
+                    {product && isRenewableProduct(product.category) && (
                         <div className="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
                             <div className="flex items-start gap-3">
                                 <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -117,7 +117,7 @@ function ReturnDecisionContent() {
                                 <div className="flex-1">
                                     <p className="text-sm font-medium text-blue-900">A customer near you wants this item</p>
                                     <p className="text-xs text-blue-700 mt-1">
-                                        {getBuyerMatchText(product.price, product.category)}
+                                        {getBuyerMatchText(product.price, product.category, product.product_id)}
                                     </p>
                                     <div className="mt-2 flex items-center gap-4 text-xs text-blue-800">
                                         <span className="flex items-center gap-1">
@@ -216,11 +216,20 @@ function getNextSteps(decision: string): string[] {
     }
 }
 
-function getBuyerMatchText(price: number, category: string): string {
-    const buyerDistance = Math.round(3 + Math.random() * 12);
-    const buyersCount = Math.round(5 + price / 20);
+function getBuyerMatchText(price: number, category: string, productId: string): string {
+    // Deterministic values seeded from product ID
+    const seed = productId.split("").reduce((acc, c) => acc + c.charCodeAt(0), 0);
+    const buyerDistance = 4 + (seed % 10);
+    const buyersCount = Math.round(8 + price / 25);
     const renewedPrice = Math.round(price * 0.70);
     return `${buyersCount} customers within ${buyerDistance}km are searching for ${category} items like this. Once inspected, your item will be certified and listed at $${renewedPrice} — giving it a second life without going to a warehouse.`;
+}
+
+function isRenewableProduct(category: string): boolean {
+    // Products that CAN be renewed/resold — excludes health, safety, perishable
+    const renewableCategories = ["Electronics", "Furniture", "Home", "Kitchen", "Footwear", "Clothing"];
+    return renewableCategories.includes(category);
+    // NOT renewable: Food, Health & Personal Care, Baby Products, Hazardous Materials
 }
 
 export default function ReturnDecisionPage() {
