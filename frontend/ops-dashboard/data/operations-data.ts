@@ -255,14 +255,14 @@ export const operationsData: OperationsData = {
         { date: "Nov 05, 2025", title: "Manufactured", description: "Dyson Malaysia Plant", type: "purchase" as const },
         { date: "Apr 12, 2026", title: "Purchased", description: "Customer C-88291", type: "purchase" as const },
         { date: "Jun 09, 2026", title: "Return Initiated", description: "Reason: Not as described", type: "return" as const },
-        { date: "Jun 11, 2026", title: "Inspection", description: "Filter cleaned, suction restored", type: "inspection" as const },
+        { date: "Jun 11, 2026", title: "Inspection", description: "Motor defect confirmed, cosmetic damage", type: "inspection" as const },
       ],
       fraudSignals: [
         { name: "Usage Duration", status: "Safe" as const, detail: "2 months of use — within return window." },
-        { name: "Condition", status: "Safe" as const, detail: "Functional after maintenance." },
+        { name: "Defect Pattern", status: "Safe" as const, detail: "Motor issue consistent with known batch defect." },
       ],
       recoveryOptions: [
-        { type: "REFURBISH" as const, label: "Clean, Replace Filter & Resell", expectedValue: 524.99, confidence: 91, timeRequiredHours: 8, isRecommended: true, details: { facilityName: "BLR Center 04", processingCost: 25.00, carbonImpact: "-32 kg CO₂ (vs manufacturing new)" } },
+        { type: "REFURBISH" as const, label: "Clean, Replace Filter & Resell", expectedValue: 524.99, confidence: 91, timeRequiredHours: 8, isRecommended: false, details: { facilityName: "BLR Center 04", processingCost: 25.00, carbonImpact: "-32 kg CO₂ (vs manufacturing new)" } },
         { type: "RESELL" as const, label: "Sell As Renewed (With Disclosure)", expectedValue: 449.99, confidence: 85, timeRequiredHours: 2, isRecommended: false, details: { resaleDemand: "High" as const, resaleChannel: "Amazon Renewed" } },
         { type: "DONATE" as const, label: "Donate to Community Center", expectedValue: 0, confidence: 99, timeRequiredHours: 24, isRecommended: false, details: { ngoName: "Clean Spaces India", socialImpact: "Hygiene for public spaces", carbonBenefit: "28 kg CO₂" } },
       ],
