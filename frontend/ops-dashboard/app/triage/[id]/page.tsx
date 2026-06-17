@@ -382,12 +382,18 @@ export default function TriageDetailPage({ params }: { params: Promise<{ id: str
 
 function getItemConfig(returnId: string) {
   const configs: Record<string, any> = {
-    "RET-9921-A": { productId: "P-88421", category: "Smart Home", conditionScore: 92, utilityScore: 88, fraudScore: 12, estimatedValue: 249.99, returnReason: "DAMAGED_IN_TRANSIT", sellerTrust: 0.92, weightKg: 2.5, conditionEnum: "LIKE_NEW" },
+    // Echo Show: box destroyed but device perfect → RESTOCK AS NEW
+    "RET-9921-A": { productId: "P-88421", category: "Smart Home", conditionScore: 96, utilityScore: 95, fraudScore: 10, estimatedValue: 249.99, returnReason: "DAMAGED_IN_TRANSIT", sellerTrust: 0.92, weightKg: 2.5, conditionEnum: "LIKE_NEW" },
+    // Fire TV Stick: remote defective, device works → REFURBISH
     "RET-9922-B": { productId: "P-88417", category: "Streaming", conditionScore: 74, utilityScore: 65, fraudScore: 8, estimatedValue: 54.99, returnReason: "DEFECTIVE", sellerTrust: 0.88, weightKg: 0.3, conditionEnum: "USED" },
-    "RET-9923-C": { productId: "P-88409", category: "E-readers", conditionScore: 88, utilityScore: 82, fraudScore: 5, estimatedValue: 139.99, returnReason: "CHANGED_MIND", sellerTrust: 0.95, weightKg: 0.2, conditionEnum: "LIKE_NEW" },
-    "RET-9924-D": { productId: "P-91204", category: "Footwear", conditionScore: 45, utilityScore: 30, fraudScore: 25, estimatedValue: 150.00, returnReason: "WRONG_ITEM", sellerTrust: 0.70, weightKg: 0.8, conditionEnum: "DAMAGED" },
-    "RET-9925-E": { productId: "P-73892", category: "Electronics", conditionScore: 30, utilityScore: 20, fraudScore: 75, estimatedValue: 1299.99, returnReason: "DEFECTIVE", sellerTrust: 0.40, weightKg: 0.23, conditionEnum: "BROKEN" },
-    "RET-9926-F": { productId: "P-55210", category: "Home Appliance", conditionScore: 62, utilityScore: 55, fraudScore: 10, estimatedValue: 749.99, returnReason: "NOT_AS_DESCRIBED", sellerTrust: 0.85, weightKg: 3.1, conditionEnum: "REFURBISHABLE" },
+    // Kindle: completely unopened → RESTOCK AS NEW
+    "RET-9923-C": { productId: "P-88409", category: "E-readers", conditionScore: 99, utilityScore: 99, fraudScore: 5, estimatedValue: 139.99, returnReason: "CHANGED_MIND", sellerTrust: 0.95, weightKg: 0.2, conditionEnum: "LIKE_NEW" },
+    // Nike shoes: tried on, good condition → OUTLET SALE
+    "RET-9924-D": { productId: "P-91204", category: "Footwear", conditionScore: 78, utilityScore: 70, fraudScore: 15, estimatedValue: 150.00, returnReason: "WRONG_ITEM", sellerTrust: 0.70, weightKg: 0.8, conditionEnum: "USED" },
+    // Samsung phone: completely broken screen, very high fraud → RECYCLE (nothing salvageable at low confidence)
+    "RET-9925-E": { productId: "P-73892", category: "Electronics", conditionScore: 15, utilityScore: 10, fraudScore: 85, estimatedValue: 1299.99, returnReason: "DEFECTIVE", sellerTrust: 0.25, weightKg: 0.23, conditionEnum: "BROKEN" },
+    // Dyson vacuum: cosmetic damage, motor noise → RETURN TO VENDOR (condition too low to refurbish, but seller accepts returns)
+    "RET-9926-F": { productId: "P-55210", category: "Home Appliance", conditionScore: 28, utilityScore: 25, fraudScore: 5, estimatedValue: 749.99, returnReason: "NOT_AS_DESCRIBED", sellerTrust: 0.98, weightKg: 3.1, conditionEnum: "USED" },
   };
   return configs[returnId] || configs["RET-9921-A"];
 }
