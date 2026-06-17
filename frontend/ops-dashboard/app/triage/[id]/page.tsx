@@ -3,7 +3,8 @@
 import { use, useState, useEffect } from "react";
 import {
   ArrowLeft, CheckCircle2, ShieldAlert, Clock, Leaf,
-  Activity, Box, MapPin, Loader2, Zap, BarChart3, Users, TrendingUp
+  Activity, Box, MapPin, Loader2, Zap, BarChart3, Users, TrendingUp,
+  Recycle, Heart, Truck, Package, Trash2
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -45,6 +46,54 @@ interface CircularResult {
   sustainabilityMetrics: { estimatedCO2Saved: number; estimatedWasteDivertedKg: number; circularityScore: number };
 }
 
+// Categorize recovery scenarios into routing types
+type RoutingType = "warehouse" | "recycling" | "donation" | "vendor" | "disposal";
+
+function getRoutingType(scenario: string): RoutingType {
+  const s = scenario.toUpperCase();
+  if (s.includes("RESTOCK") || s.includes("RESELL") || s.includes("REFURBISH") || s.includes("OUTLET") || s.includes("LIQUIDAT")) return "warehouse";
+  if (s.includes("RECYCLE") || s.includes("SALVAGE")) return "recycling";
+  if (s.includes("DONAT")) return "donation";
+  if (s.includes("VENDOR") || s.includes("RETURN TO") || s.includes("RTV")) return "vendor";
+  if (s.includes("DESTROY") || s.includes("DISPOS") || s.includes("WRITE")) return "disposal";
+  // Default to warehouse for unknown
+  return "warehouse";
+}
+
+interface DestinationOption {
+  id: string;
+  name: string;
+  type: RoutingType;
+  distanceKm: number;
+  capacity: number;
+  detail: string;
+}
+
+// Realistic destination options by type
+const destinationsByType: Record<RoutingType, DestinationOption[]> = {
+  warehouse: [
+    { id: "WH-BLR-04", name: "Amazon BLR4 Fulfillment Center", type: "warehouse", distanceKm: 18, capacity: 82, detail: "Devanahalli, Bangalore • 3.2x local demand" },
+    { id: "WH-MAA-01", name: "Amazon MAA1 Fulfillment Center", type: "warehouse", distanceKm: 346, capacity: 71, detail: "Sriperumbudur, Chennai • 1.1x local demand" },
+    { id: "WH-HYD-02", name: "Amazon HYD2 Fulfillment Center", type: "warehouse", distanceKm: 575, capacity: 64, detail: "Shamshabad, Hyderabad • 1.8x local demand" },
+  ],
+  recycling: [
+    { id: "REC-BLR-01", name: "E-Parisaraa Pvt Ltd", type: "recycling", distanceKm: 24, capacity: 88, detail: "Dobaspet, Bangalore • CPCB Authorized • e-Waste specialist" },
+    { id: "REC-HYD-01", name: "Ramky Enviro Engineers", type: "recycling", distanceKm: 560, capacity: 76, detail: "Dundigal, Hyderabad • ISO 14001 • Multi-stream recycling" },
+    { id: "REC-CHN-01", name: "Trishyiraya Recycling India", type: "recycling", distanceKm: 340, capacity: 69, detail: "Gummidipoondi, Chennai • SPCB Licensed • Metals & plastics" },
+  ],
+  donation: [
+    { id: "DON-BLR-01", name: "Goonj Foundation — Bangalore Hub", type: "donation", distanceKm: 12, capacity: 90, detail: "Koramangala, Bangalore • Verified NGO • Accepts electronics & apparel" },
+    { id: "DON-BLR-02", name: "Hasiru Dala Innovations", type: "donation", distanceKm: 15, capacity: 85, detail: "Jayanagar, Bangalore • Community redistribution • Home goods" },
+    { id: "DON-MAA-01", name: "The Banyan — Chennai Center", type: "donation", distanceKm: 352, capacity: 72, detail: "Mogappair, Chennai • Mental health org • All categories" },
+  ],
+  vendor: [
+    { id: "VND-SELLER", name: "Return to Seller", type: "vendor", distanceKm: 0, capacity: 100, detail: "Seller-managed reverse pickup • No warehouse needed" },
+  ],
+  disposal: [
+    { id: "DSP-BLR-01", name: "BBMP Authorized Waste Facility", type: "disposal", distanceKm: 32, capacity: 95, detail: "Mandur, Bangalore • Municipal solid waste • Last resort" },
+  ],
+};
+
 export default function TriageDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const router = useRouter();
@@ -56,7 +105,35 @@ export default function TriageDetailPage({ params }: { params: Promise<{ id: str
   const [logistics, setLogistics] = useState<LogisticsResult | null>(null);
   const [circular, setCircular] = useState<CircularResult | null>(null);
   const [selectedScenario, setSelectedScenario] = useState<Scenario | null>(null);
+  const [selectedRoute, setSelectedRoute] = useState<number>(0);
   const [isRouting, setIsRouting] = useState(false);
+
+  // Get destinations based on the selected recovery scenario
+  const routingType = selectedScenario ? getRoutingType(selectedScenario.scenario) : "warehouse";
+  const destinationsUnsorted = destinationsByType[routingType] || destinationsByType.warehouse;
+
+  // Sort by composite score: proximity×0.40 + capacity×0.30 (demand not applicable for non-warehouse)
+  // For warehouses, we parse demand from detail string
+  const maxDistance = Math.max(...destinationsUnsorted.map(d => d.distanceKm), 1);
+  const maxCapacity = Math.max(...destinationsUnsorted.map(d => d.capacity), 1);
+
+  const destinations = [...destinationsUnsorted].sort((a, b) => {
+    const scoreA = (1 - a.distanceKm / (maxDistance + 1)) * 50 + (a.capacity / maxCapacity) * 50;
+    const scoreB = (1 - b.distanceKm / (maxDistance + 1)) * 50 + (b.capacity / maxCapacity) * 50;
+    return scoreB - scoreA;
+  });
+
+  // Reset selected route when scenario changes
+  useEffect(() => { setSelectedRoute(0); }, [selectedScenario?.scenario]);
+
+  function getRouteConsequences(destIndex: number) {
+    const dest = destinations[destIndex];
+    const costPerKm = routingType === "vendor" ? 0 : 3.5;
+    const cost = Math.round(dest.distanceKm * costPerKm) / 100;
+    const days = dest.distanceKm === 0 ? 0 : Math.max(1, Math.ceil(dest.distanceKm / 500));
+    const carbon = Math.round(dest.distanceKm * 0.05 * 10) / 10;
+    return { cost, days, carbon, capacity: dest.capacity };
+  }
 
   const config = getItemConfig(id);
 
@@ -132,7 +209,7 @@ export default function TriageDetailPage({ params }: { params: Promise<{ id: str
       setLogistics(res);
     } catch { /* fallback */ }
 
-    // S9: Circular
+    // S9: Circular — send facility options matching the selected/recommended path
     try {
       const res = await fetch("/api/proxy/s9/api/v1/logistics/optimize", {
         method: "POST", headers: { "Content-Type": "application/json" },
@@ -143,9 +220,10 @@ export default function TriageDetailPage({ params }: { params: Promise<{ id: str
           customerLatitude: 12.9716, customerLongitude: 77.5946,
           facilityOptions: [
             { facilityId: "FAC-REFURB-BLR", facilityType: "REFURBISHMENT", distanceKm: 18, capacityAvailable: true },
-            { facilityId: "FAC-RESELL-BLR", facilityType: "LIQUIDATION", distanceKm: 22, capacityAvailable: true },
-            { facilityId: "FAC-DONATE-BLR", facilityType: "DONATION", distanceKm: 8, capacityAvailable: true },
-            { facilityId: "FAC-RECYCLE-HYD", facilityType: "RECYCLING", distanceKm: 575, capacityAvailable: true },
+            { facilityId: "FAC-LIQUIDATION-BLR", facilityType: "LIQUIDATION", distanceKm: 22, capacityAvailable: true },
+            { facilityId: "FAC-DONATE-BLR", facilityType: "DONATION", distanceKm: 12, capacityAvailable: true },
+            { facilityId: "FAC-RECYCLE-BLR", facilityType: "RECYCLING", distanceKm: 24, capacityAvailable: true },
+            { facilityId: "FAC-DISPOSAL-BLR", facilityType: "DISPOSAL", distanceKm: 32, capacityAvailable: true },
           ],
         }),
       }).then(r => r.json());
@@ -298,46 +376,73 @@ export default function TriageDetailPage({ params }: { params: Promise<{ id: str
               </CardContent>
             </Card>
 
-            {/* Routing */}
-            {logistics && (
-              <Card className="border-emerald-200">
-                <CardHeader className="bg-emerald-50/50 border-b border-emerald-100 pb-4">
-                  <CardTitle className="text-lg flex items-center gap-2"><MapPin size={18} className="text-emerald-600" />Routing</CardTitle>
-                </CardHeader>
-                <CardContent className="pt-5 space-y-3">
-                  <div className="p-3 bg-white border border-emerald-200 rounded-lg">
-                    <p className="text-sm font-medium text-slate-900">{logistics.recommendedRoute}</p>
-                    <p className="text-xs text-slate-500 mt-1">
-                      Warehouse: {logistics.recommendedWarehouse} • Cost: ${logistics.estimatedCost.toFixed(2)} • {logistics.estimatedDays} day(s) • Carbon: {logistics.carbonScore.toFixed(0)}/100
+            {/* Routing — Contextual based on selected scenario */}
+            <Card className="border-emerald-200">
+              <CardHeader className="bg-emerald-50/50 border-b border-emerald-100 pb-4">
+                <CardTitle className="text-lg flex items-center gap-2">
+                  {routingType === "warehouse" && <><MapPin size={18} className="text-emerald-600" />Fulfillment Routing</>}
+                  {routingType === "recycling" && <><Recycle size={18} className="text-emerald-600" />Recycling Facility</>}
+                  {routingType === "donation" && <><Heart size={18} className="text-emerald-600" />Donation Partner</>}
+                  {routingType === "vendor" && <><Truck size={18} className="text-emerald-600" />Vendor Return</>}
+                  {routingType === "disposal" && <><Trash2 size={18} className="text-emerald-600" />Disposal Facility</>}
+                </CardTitle>
+                <CardDescription>
+                  {routingType === "warehouse" && "Select destination fulfillment center. Ranked by demand, proximity, and capacity."}
+                  {routingType === "recycling" && "Select authorized recycling partner. Ranked by proximity and certifications."}
+                  {routingType === "donation" && "Select donation partner. Ranked by proximity and acceptance capacity."}
+                  {routingType === "vendor" && "Item will be returned to the original seller/manufacturer."}
+                  {routingType === "disposal" && "Select authorized disposal facility. Used only when no recovery path is viable."}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="pt-5 space-y-2">
+                {destinations.map((dest, i) => {
+                  const cons = getRouteConsequences(i);
+                  const isSelected = selectedRoute === i;
+                  const isFirst = i === 0;
+                  return (
+                    <button key={dest.id} onClick={() => setSelectedRoute(i)}
+                      className={`w-full text-left p-4 rounded-lg border-2 transition-all ${isSelected ? "border-emerald-500 bg-emerald-50" : "border-slate-200 hover:border-slate-300"}`}>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${isSelected ? "border-emerald-500" : "border-slate-300"}`}>
+                            {isSelected && <div className="w-2 h-2 rounded-full bg-emerald-500" />}
+                          </div>
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <span className="font-medium text-slate-900">{dest.name}</span>
+                              {isFirst && <Badge className="bg-emerald-100 text-emerald-700 border-emerald-200 text-[10px]">Recommended</Badge>}
+                            </div>
+                            <span className="text-xs text-slate-500">{dest.detail}</span>
+                          </div>
+                        </div>
+                      </div>
+                      {isSelected && routingType !== "vendor" && (
+                        <div className="mt-3 pt-3 border-t border-slate-100 grid grid-cols-3 gap-2 text-center">
+                          <div><p className="text-sm font-bold text-slate-900">${cons.cost.toFixed(0)}</p><p className="text-[9px] text-slate-500">Shipping Cost</p></div>
+                          <div><p className="text-sm font-bold text-slate-900">{cons.days}d</p><p className="text-[9px] text-slate-500">Transit Time</p></div>
+                          <div><p className="text-sm font-bold text-emerald-700">{cons.carbon}kg</p><p className="text-[9px] text-slate-500">CO₂ Emission</p></div>
+                        </div>
+                      )}
+                      {isSelected && routingType === "vendor" && (
+                        <div className="mt-3 pt-3 border-t border-slate-100">
+                          <p className="text-xs text-slate-600">Seller arranges reverse pickup. No warehouse routing required. Estimated 3-5 business days for seller acknowledgment.</p>
+                        </div>
+                      )}
+                    </button>
+                  );
+                })}
+                {circular && (
+                  <div className="mt-3 p-3 bg-emerald-50 border border-emerald-200 rounded-lg flex items-center gap-3">
+                    <Leaf size={16} className="text-emerald-600 flex-shrink-0" />
+                    <p className="text-xs text-emerald-800">
+                      S9 Circular Engine: {circular.selectedFacilityId} ({circular.selectedFacilityType}) •
+                      Score: {circular.optimizationScore.toFixed(0)}% •
+                      CO₂ saved: {circular.sustainabilityMetrics.estimatedCO2Saved.toFixed(1)}kg
                     </p>
                   </div>
-                  {circular && (
-                    <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-lg flex items-center gap-3">
-                      <Leaf size={16} className="text-emerald-600 flex-shrink-0" />
-                      <p className="text-xs text-emerald-800">
-                        Facility: {circular.selectedFacilityId} ({circular.selectedFacilityType}) •
-                        Optimization: {circular.optimizationScore.toFixed(0)}% •
-                        CO₂ saved: {circular.sustainabilityMetrics.estimatedCO2Saved.toFixed(1)}kg •
-                        Circularity: {circular.sustainabilityMetrics.circularityScore}/100
-                      </p>
-                    </div>
-                  )}
-                  {/* Reasoning from S6 */}
-                  {recommended?.reasoning && recommended.reasoning.length > 0 && (
-                    <div className="p-3 bg-slate-50 rounded-lg">
-                      <p className="text-xs font-medium text-slate-500 mb-1">Decision factors:</p>
-                      <ul className="space-y-0.5">
-                        {recommended.reasoning.map((r, i) => (
-                          <li key={i} className="text-xs text-slate-700 flex items-start gap-1.5">
-                            <CheckCircle2 size={10} className="text-indigo-500 mt-0.5" />{r}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            )}
+                )}
+              </CardContent>
+            </Card>
           </div>
         </div>
       )}
@@ -371,7 +476,7 @@ export default function TriageDetailPage({ params }: { params: Promise<{ id: str
             <CheckCircle2 size={48} className="text-emerald-500 mb-4" />
             <h2 className="text-xl font-bold text-slate-900 mb-2">Routed</h2>
             <p className="text-sm text-slate-500 text-center">
-              {data.returnId} → {selectedScenario?.scenario} via {logistics?.recommendedWarehouse || "nearest facility"}
+              {data.returnId} → {selectedScenario?.scenario} via {destinations[selectedRoute]?.name || "nearest facility"}
             </p>
           </div>
         </div>
