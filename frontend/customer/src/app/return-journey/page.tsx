@@ -66,7 +66,7 @@ function ReturnJourneyContent() {
         updateStep(3, "in_progress");
         try {
             const logistics = await logisticsService.optimize({
-                returnId, productId, recommendedDecision: "RESELL", customerLocation: "New York",
+                returnId, productId, recommendedDecision: "RESELL", customerLocation: "Bangalore",
                 expectedProfit: 100, carbonSavings: 1.5, processingDays: 3, confidence: 0.85,
                 reasoning: ["Optimal route"], warehouses: [
                     { warehouseId: "WH-EAST-01", city: "Newark", capacity: 60, distanceKm: 25 },

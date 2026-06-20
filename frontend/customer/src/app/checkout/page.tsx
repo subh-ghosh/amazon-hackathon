@@ -12,12 +12,12 @@ export default function CheckoutPage() {
     const total = getCartTotal();
 
     const [address, setAddress] = useState<Address>({
-        name: "John Doe",
-        street: "123 Main Street, Apt 4B",
-        city: "New York",
-        state: "NY",
-        zip: "10001",
-        country: "United States",
+        name: "Rahul Sharma",
+        street: "42 MG Road, Indiranagar",
+        city: "Bangalore",
+        state: "KA",
+        zip: "560038",
+        country: "India",
     });
 
     const [processing, setProcessing] = useState(false);
@@ -116,7 +116,7 @@ export default function CheckoutPage() {
                             <input type="radio" checked readOnly name="payment" id="card" className="accent-amazon-yellow" />
                             <label htmlFor="card" className="flex-1">
                                 <p className="font-medium text-sm">Visa ending in 4242</p>
-                                <p className="text-xs text-gray-500">John Doe</p>
+                                <p className="text-xs text-gray-500">Rahul Sharma</p>
                             </label>
                             <Lock size={16} className="text-gray-400" />
                         </div>

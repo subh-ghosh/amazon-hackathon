@@ -631,7 +631,7 @@ export default function TriageDetailPage({ params }: { params: Promise<{ id: str
               <Card className="border-blue-200">
                 <CardHeader className="bg-blue-50/50 border-b border-blue-100 pb-4">
                   <CardTitle className="text-lg flex items-center gap-2"><Users size={18} className="text-blue-600" />Direct Buyer Match</CardTitle>
-                  <CardDescription>Active orders near {destinations[selectedRoute]?.name?.split(" ").slice(1, 3).join(" ") || "this facility"}. Fulfill directly — skip warehouse storage and save $22+/item.</CardDescription>
+                  <CardDescription>Active orders near {destinations[selectedRoute]?.name?.split(" ").slice(1, 3).join(" ") || "this facility"}. Fulfill directly — skip warehouse storage and save ₹1,800+/item.</CardDescription>
                 </CardHeader>
                 <CardContent className="pt-5 space-y-2">
                   {buyers.map((buyer, i) => {
@@ -747,7 +747,7 @@ export default function TriageDetailPage({ params }: { params: Promise<{ id: str
                     <span key={i} className="flex items-center gap-0.5">
                       {i > 0 && <span className="text-slate-300 mx-1">→</span>}
                       <span className={item.isPositive ? "text-emerald-700 font-medium" : "text-amber-700 font-medium"}>
-                        {item.value >= 0 ? "+" : ""}{item.value < 0 ? "-" : ""}${Math.abs(item.value).toFixed(1)}
+                        {item.value >= 0 ? "+" : ""}{item.value < 0 ? "-" : ""}₹{Math.round(Math.abs(item.value) * 83).toLocaleString("en-IN")}
                       </span>
                       <span className="text-slate-400">{item.label}</span>
                     </span>

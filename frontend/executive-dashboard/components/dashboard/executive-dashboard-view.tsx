@@ -59,7 +59,7 @@ export function ExecutiveDashboardView() {
       if (s12Recovery && s12Recovery.data) {
         merged.aiSummary = {
           ...merged.aiSummary,
-          biggestOpportunity: `Recovery data shows ${s12Recovery.data.length} active paths. Top: ${s12Recovery.data[0]?.action_type || "Refurbish"} with avg $${(s12Recovery.data[0]?.avg_value_recovered || 120).toFixed(0)} recovered.`,
+          biggestOpportunity: `Recovery data shows ${s12Recovery.data.length} active paths. Top: ${s12Recovery.data[0]?.action_type || "Refurbish"} with avg ₹${Math.round((s12Recovery.data[0]?.avg_value_recovered || 120) * 83).toLocaleString("en-IN")} recovered.`,
         };
       }
 

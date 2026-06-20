@@ -109,7 +109,7 @@ function getDemoOrders() {
             status: "delivered" as const,
             created_at: new Date(Date.now() - 5 * 86400000).toISOString(),
             delivery_date: new Date(Date.now() - 2 * 86400000).toISOString(),
-            address: { name: "John Doe", street: "123 Main St", city: "New York", state: "NY", zip: "10001", country: "US" },
+            address: { name: "Rahul Sharma", street: "42 MG Road, Indiranagar", city: "Bangalore", state: "KA", zip: "560038", country: "IN" },
         },
         // Footwear - HIGH risk, $150 → RETURN_REQUIRED
         {
@@ -120,7 +120,7 @@ function getDemoOrders() {
             status: "delivered" as const,
             created_at: new Date(Date.now() - 3 * 86400000).toISOString(),
             delivery_date: new Date(Date.now() - 1 * 86400000).toISOString(),
-            address: { name: "John Doe", street: "123 Main St", city: "New York", state: "NY", zip: "10001", country: "US" },
+            address: { name: "Rahul Sharma", street: "42 MG Road, Indiranagar", city: "Bangalore", state: "KA", zip: "560038", country: "IN" },
         },
         // Clothing - $69.50, above $40 threshold → RETURN_REQUIRED
         {
@@ -131,7 +131,7 @@ function getDemoOrders() {
             status: "delivered" as const,
             created_at: new Date(Date.now() - 4 * 86400000).toISOString(),
             delivery_date: new Date(Date.now() - 1 * 86400000).toISOString(),
-            address: { name: "John Doe", street: "123 Main St", city: "New York", state: "NY", zip: "10001", country: "US" },
+            address: { name: "Rahul Sharma", street: "42 MG Road, Indiranagar", city: "Bangalore", state: "KA", zip: "560038", country: "IN" },
         },
         // Clothing - $230, HIGH risk → RETURN_REQUIRED
         {
@@ -142,7 +142,7 @@ function getDemoOrders() {
             status: "delivered" as const,
             created_at: new Date(Date.now() - 6 * 86400000).toISOString(),
             delivery_date: new Date(Date.now() - 3 * 86400000).toISOString(),
-            address: { name: "John Doe", street: "123 Main St", city: "New York", state: "NY", zip: "10001", country: "US" },
+            address: { name: "Rahul Sharma", street: "42 MG Road, Indiranagar", city: "Bangalore", state: "KA", zip: "560038", country: "IN" },
         },
         // LOW VALUE - $24.99, below $40 → RETURNLESS_REFUND (keep item)
         {
@@ -153,7 +153,7 @@ function getDemoOrders() {
             status: "delivered" as const,
             created_at: new Date(Date.now() - 7 * 86400000).toISOString(),
             delivery_date: new Date(Date.now() - 4 * 86400000).toISOString(),
-            address: { name: "John Doe", street: "123 Main St", city: "New York", state: "NY", zip: "10001", country: "US" },
+            address: { name: "Rahul Sharma", street: "42 MG Road, Indiranagar", city: "Bangalore", state: "KA", zip: "560038", country: "IN" },
         },
         // VERY LOW VALUE - $12.99 → RETURNLESS_REFUND (definite keep)
         {
@@ -164,7 +164,7 @@ function getDemoOrders() {
             status: "delivered" as const,
             created_at: new Date(Date.now() - 10 * 86400000).toISOString(),
             delivery_date: new Date(Date.now() - 7 * 86400000).toISOString(),
-            address: { name: "John Doe", street: "123 Main St", city: "New York", state: "NY", zip: "10001", country: "US" },
+            address: { name: "Rahul Sharma", street: "42 MG Road, Indiranagar", city: "Bangalore", state: "KA", zip: "560038", country: "IN" },
         },
         // Kitchen - LOW risk (safe buy, for comparison)
         {
@@ -175,7 +175,7 @@ function getDemoOrders() {
             status: "delivered" as const,
             created_at: new Date(Date.now() - 8 * 86400000).toISOString(),
             delivery_date: new Date(Date.now() - 5 * 86400000).toISOString(),
-            address: { name: "John Doe", street: "123 Main St", city: "New York", state: "NY", zip: "10001", country: "US" },
+            address: { name: "Rahul Sharma", street: "42 MG Road, Indiranagar", city: "Bangalore", state: "KA", zip: "560038", country: "IN" },
         },
         // In transit (shows delivery progress bar)
         {
@@ -186,7 +186,7 @@ function getDemoOrders() {
             status: "shipped" as const,
             created_at: new Date(Date.now() - 1 * 86400000).toISOString(),
             delivery_date: new Date(Date.now() + 1 * 86400000).toISOString(),
-            address: { name: "John Doe", street: "123 Main St", city: "New York", state: "NY", zip: "10001", country: "US" },
+            address: { name: "Rahul Sharma", street: "42 MG Road, Indiranagar", city: "Bangalore", state: "KA", zip: "560038", country: "IN" },
         },
         // Very high value electronics $1299 → RETURN_REQUIRED
         {
@@ -197,7 +197,7 @@ function getDemoOrders() {
             status: "delivered" as const,
             created_at: new Date(Date.now() - 9 * 86400000).toISOString(),
             delivery_date: new Date(Date.now() - 6 * 86400000).toISOString(),
-            address: { name: "John Doe", street: "123 Main St", city: "New York", state: "NY", zip: "10001", country: "US" },
+            address: { name: "Rahul Sharma", street: "42 MG Road, Indiranagar", city: "Bangalore", state: "KA", zip: "560038", country: "IN" },
         },
         // High value home $749 → RETURN_REQUIRED
         {
@@ -208,7 +208,7 @@ function getDemoOrders() {
             status: "delivered" as const,
             created_at: new Date(Date.now() - 12 * 86400000).toISOString(),
             delivery_date: new Date(Date.now() - 9 * 86400000).toISOString(),
-            address: { name: "John Doe", street: "123 Main St", city: "New York", state: "NY", zip: "10001", country: "US" },
+            address: { name: "Rahul Sharma", street: "42 MG Road, Indiranagar", city: "Bangalore", state: "KA", zip: "560038", country: "IN" },
         },
         // Mid electronics $249 → RETURN_REQUIRED
         {
@@ -219,7 +219,7 @@ function getDemoOrders() {
             status: "delivered" as const,
             created_at: new Date(Date.now() - 11 * 86400000).toISOString(),
             delivery_date: new Date(Date.now() - 8 * 86400000).toISOString(),
-            address: { name: "John Doe", street: "123 Main St", city: "New York", state: "NY", zip: "10001", country: "US" },
+            address: { name: "Rahul Sharma", street: "42 MG Road, Indiranagar", city: "Bangalore", state: "KA", zip: "560038", country: "IN" },
         },
         // Furniture $1395 → RETURN_REQUIRED (very high value)
         {
@@ -230,7 +230,7 @@ function getDemoOrders() {
             status: "delivered" as const,
             created_at: new Date(Date.now() - 14 * 86400000).toISOString(),
             delivery_date: new Date(Date.now() - 7 * 86400000).toISOString(),
-            address: { name: "John Doe", street: "123 Main St", city: "New York", state: "NY", zip: "10001", country: "US" },
+            address: { name: "Rahul Sharma", street: "42 MG Road, Indiranagar", city: "Bangalore", state: "KA", zip: "560038", country: "IN" },
         },
         // Clothing $139 → RETURN_REQUIRED
         {
@@ -241,7 +241,7 @@ function getDemoOrders() {
             status: "delivered" as const,
             created_at: new Date(Date.now() - 13 * 86400000).toISOString(),
             delivery_date: new Date(Date.now() - 10 * 86400000).toISOString(),
-            address: { name: "John Doe", street: "123 Main St", city: "New York", state: "NY", zip: "10001", country: "US" },
+            address: { name: "Rahul Sharma", street: "42 MG Road, Indiranagar", city: "Bangalore", state: "KA", zip: "560038", country: "IN" },
         },
         // Electronics $329 → RETURN_REQUIRED
         {
@@ -252,7 +252,7 @@ function getDemoOrders() {
             status: "delivered" as const,
             created_at: new Date(Date.now() - 15 * 86400000).toISOString(),
             delivery_date: new Date(Date.now() - 12 * 86400000).toISOString(),
-            address: { name: "John Doe", street: "123 Main St", city: "New York", state: "NY", zip: "10001", country: "US" },
+            address: { name: "Rahul Sharma", street: "42 MG Road, Indiranagar", city: "Bangalore", state: "KA", zip: "560038", country: "IN" },
         },
     ];
 }
