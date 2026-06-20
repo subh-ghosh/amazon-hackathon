@@ -33,7 +33,7 @@ VPC-3 Product & Business Layer
 ## 🛡️ Service #1: Return Prevention Engine
 **VPC:** VPC-1 — Intelligence Layer
 **Status:** ✅ Live (AWS ECS Fargate)
-**Base URL:** `http://Circul-Preve-Rs6gi1hesUgp-476733633.us-east-1.elb.amazonaws.com`
+**Base URL:** `http://Circul-Preve-LR6DbKamKWdv-928899529.us-east-1.elb.amazonaws.com`
 
 | Method | Endpoint | Purpose |
 |:---|:---|:---|
@@ -45,7 +45,7 @@ VPC-3 Product & Business Layer
 ## 🔍 Service #2: Truth Discovery Engine
 **VPC:** VPC-1 — Intelligence Layer
 **Status:** ✅ Live (AWS ECS Fargate) — *Validation & Security Hardened* 🔒
-**Base URL:** `http://Circul-Truth-HR7ES9usthBv-33182633.us-east-1.elb.amazonaws.com`
+**Base URL:** `http://Circul-Truth-h1F0FkRvcVsk-801111338.us-east-1.elb.amazonaws.com`
 
 | Method | Endpoint | Purpose |
 |:---|:---|:---|
@@ -58,7 +58,7 @@ VPC-3 Product & Business Layer
 ## 🛡️ Service #3: Fraud & Trust Engine
 **VPC:** VPC-1 — Intelligence Layer
 **Status:** ✅ Live (AWS ECS Fargate)
-**Base URL:** `http://Circul-Fraud-Q25TuVtGjWhU-36938543.us-east-1.elb.amazonaws.com`
+**Base URL:** `http://Circul-Fraud-XcBUDzI1MwrU-1950216713.us-east-1.elb.amazonaws.com`
 
 | Method | Endpoint | Purpose |
 |:---|:---|:---|
@@ -72,7 +72,7 @@ VPC-3 Product & Business Layer
 ## 📦 Service #4: Product Digital Twin
 **VPC:** VPC-3 — Product & Business Layer
 **Status:** ✅ Live (AWS ECS Fargate)
-**Base URL:** `http://Circul-Digit-XXDMcCWoqhd0-1019952249.us-east-1.elb.amazonaws.com`
+**Base URL:** `http://Circul-Digit-1KUgWt1Obxuk-628222820.us-east-1.elb.amazonaws.com`
 
 | Method | Endpoint | Purpose |
 |:---|:---|:---|
@@ -88,7 +88,7 @@ VPC-3 Product & Business Layer
 ## 🔮 Service #5: Future Simulator
 **VPC:** VPC-2 — Recovery Layer
 **Status:** ✅ Live (AWS ECS Fargate)
-**Base URL:** `http://Circul-Simul-a4nmYbuxVUrr-319139381.us-east-1.elb.amazonaws.com`
+**Base URL:** `http://Circul-Simul-4WKIzeeG23Pg-1522722278.us-east-1.elb.amazonaws.com`
 
 | Method | Endpoint | Purpose |
 |:---|:---|:---|
@@ -101,7 +101,7 @@ VPC-3 Product & Business Layer
 ## ⚖️ Service #6: Recovery Optimizer
 **VPC:** VPC-2 — Recovery Layer
 **Status:** ✅ Live (AWS ECS Fargate)
-**Base URL:** `http://Circul-Optim-mcZ0NzPDZK07-890558390.us-east-1.elb.amazonaws.com`
+**Base URL:** `http://Circul-Optim-VznHSwftfNgj-1405514615.us-east-1.elb.amazonaws.com`
 
 | Method | Endpoint | Purpose |
 |:---|:---|:---|
@@ -114,7 +114,7 @@ VPC-3 Product & Business Layer
 ## 🚚 Service #7: Reverse Logistics Optimizer
 **VPC:** VPC-2 — Recovery Layer
 **Status:** ✅ Live (AWS ECS Fargate)
-**Base URL:** `http://Circul-Logis-hgIeVqBbAk0h-362510022.us-east-1.elb.amazonaws.com`
+**Base URL:** `http://Circul-Logis-tlTDwNs1Omzx-39457157.us-east-1.elb.amazonaws.com`
 
 | Method | Endpoint | Purpose |
 |:---|:---|:---|
@@ -127,7 +127,7 @@ VPC-3 Product & Business Layer
 ## 💸 Service #8: Returnless Refund Engine
 **VPC:** VPC-2 — Recovery Layer
 **Status:** ✅ Live (AWS ECS Fargate) — *Validation & Security Hardened* 🔒
-**Base URL:** `http://Circul-Retur-AkanfcKdPytd-593568738.us-east-1.elb.amazonaws.com`
+**Base URL:** `http://Circul-Retur-3aJGuOitxrQQ-1157813753.us-east-1.elb.amazonaws.com`
 
 | Method | Endpoint | Purpose |
 |:---|:---|:---|
@@ -141,7 +141,7 @@ VPC-3 Product & Business Layer
 ## 🔄 Service #9: Circular Routing Engine
 **VPC:** VPC-4 — Central Knowledge Platform (Cross-Layer Circular Economy)
 **Status:** ✅ Live (AWS ECS Fargate) — *Validation & Security Hardened* 🔒
-**Base URL:** `http://Circul-Circu-sybvn5Ar6ipQ-119322148.us-east-1.elb.amazonaws.com`
+**Base URL:** `http://Circul-Circu-jsU6YMlH3H2K-853712911.us-east-1.elb.amazonaws.com`
 
 | Method | Endpoint | Purpose |
 |:---|:---|:---|
@@ -156,7 +156,7 @@ VPC-3 Product & Business Layer
 ## ♻️ Service #10: Packaging Intelligence
 **VPC:** VPC-1 — Intelligence Layer
 **Status:** ✅ Live (AWS ECS Fargate) — *Validation & Security Hardened* 🔒
-**Base URL:** `http://Circul-Packa-AN1B5mVKsku9-408281128.us-east-1.elb.amazonaws.com`
+**Base URL:** `http://Circul-Packa-ZPto7mjaCRIO-560627207.us-east-1.elb.amazonaws.com`
 
 | Method | Endpoint | Purpose |
 |:---|:---|:---|
@@ -169,7 +169,7 @@ VPC-3 Product & Business Layer
 ## 📈 Service #11: Seller Intelligence Engine
 **VPC:** VPC-3 — Product & Business Layer
 **Status:** ✅ Live (AWS ECS Fargate) — *Validation & Security Hardened* 🔒
-**Base URL:** `http://Circul-Selle-Q7zRyEczbzCg-2088084796.us-east-1.elb.amazonaws.com`
+**Base URL:** `http://Circul-Selle-VYLlrHB2ylcJ-1969622883.us-east-1.elb.amazonaws.com`
 
 | Method | Endpoint | Purpose |
 |:---|:---|:---|
@@ -183,7 +183,7 @@ VPC-3 Product & Business Layer
 ## 🧠 Service #12: Learning & Knowledge Graph
 **VPC:** VPC-4 — Central Knowledge Platform
 **Status:** ✅ Live (AWS ECS Fargate + Neptune Graph DB)
-**Base URL:** `http://Circul-Graph-ye0M61dV1dYT-1449212263.us-east-1.elb.amazonaws.com`
+**Base URL:** `http://Circul-Graph-IIxBpeJf0S3j-1441021229.us-east-1.elb.amazonaws.com`
 
 | Method | Endpoint | Purpose |
 |:---|:---|:---|

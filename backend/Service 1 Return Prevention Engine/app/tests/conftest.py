@@ -3,7 +3,7 @@ import requests
 import json
 import os
 
-BASE_URL = "http://Circul-Preve-Rs6gi1hesUgp-476733633.us-east-1.elb.amazonaws.com"
+BASE_URL = "http://Circul-Preve-LR6DbKamKWdv-928899529.us-east-1.elb.amazonaws.com"
 
 @pytest.fixture
 def base_url():

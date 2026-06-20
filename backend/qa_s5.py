@@ -3,7 +3,7 @@ import time
 import concurrent.futures
 import numpy as np
 
-BASE_URL = "http://Circul-Simul-a4nmYbuxVUrr-319139381.us-east-1.elb.amazonaws.com"
+BASE_URL = "http://Circul-Simul-4WKIzeeG23Pg-1522722278.us-east-1.elb.amazonaws.com"
 results = []
 
 def run_test(category, name, fn):

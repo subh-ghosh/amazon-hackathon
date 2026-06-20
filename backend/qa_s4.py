@@ -4,7 +4,7 @@ import concurrent.futures
 import numpy as np
 import uuid
 
-BASE_URL = "http://Circul-Digit-XXDMcCWoqhd0-1019952249.us-east-1.elb.amazonaws.com"
+BASE_URL = "http://Circul-Digit-1KUgWt1Obxuk-628222820.us-east-1.elb.amazonaws.com"
 results = []
 
 def run_test(category, name, fn):

@@ -6,7 +6,7 @@
 **Freeze Policy:** All contracts below are strictly backward compatible. No breaking changes are permitted.
 
 ## 2. Base URL
-`http://Circul-Graph-ye0M61dV1dYT-1449212263.us-east-1.elb.amazonaws.com`
+`http://Circul-Graph-IIxBpeJf0S3j-1441021229.us-east-1.elb.amazonaws.com`
 
 ## 3. Authentication Strategy
 Currently using internal VPC boundary security for Hackathon. Production relies on AWS IAM role validation and internal API Gateway JWT Bearer tokens.

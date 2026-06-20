@@ -15,7 +15,7 @@ class TestLiveService12Integration(unittest.TestCase):
         self.original_url = settings.GRAPH_SERVICE_URL
         self.original_mock = settings.MOCK_AWS
         
-        settings.GRAPH_SERVICE_URL = "http://Circul-Graph-ye0M61dV1dYT-1449212263.us-east-1.elb.amazonaws.com"
+        settings.GRAPH_SERVICE_URL = "http://Circul-Graph-IIxBpeJf0S3j-1441021229.us-east-1.elb.amazonaws.com"
         settings.MOCK_AWS = False
         self.client = GraphClient()
 

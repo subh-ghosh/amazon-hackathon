@@ -1,7 +1,7 @@
 import requests
 import json
 
-BASE_URL = "http://Circul-Optim-mcZ0NzPDZK07-890558390.us-east-1.elb.amazonaws.com"
+BASE_URL = "http://Circul-Optim-VznHSwftfNgj-1405514615.us-east-1.elb.amazonaws.com"
 OPTIMIZE_URL = f"{BASE_URL}/api/v1/recovery/optimize"
 
 def print_result(tc_name, expected, res):

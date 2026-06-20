@@ -4,7 +4,7 @@ import time
 import concurrent.futures
 import numpy as np
 
-BASE_URL = "http://Circul-Retur-AkanfcKdPytd-593568738.us-east-1.elb.amazonaws.com"
+BASE_URL = "http://Circul-Retur-3aJGuOitxrQQ-1157813753.us-east-1.elb.amazonaws.com"
 
 # --- Phase 3: Infra Tests ---
 @pytest.mark.parametrize("endpoint", ["/health", "/live", "/ready", "/docs", "/openapi.json", "/metrics"])
