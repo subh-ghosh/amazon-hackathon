@@ -2,7 +2,7 @@
 
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { CheckCircle, Loader2, RefreshCw, Banknote, Headphones, Truck, Gift, DollarSign, Leaf, Camera, Check, Box } from "lucide-react";
+import { CheckCircle, Loader2, RefreshCw, Banknote, Headphones, Truck, Gift, IndianRupee, Leaf, Camera, Check, Box } from "lucide-react";
 import { getProductById } from "@/data/products";
 import { truthService, fraudService, returnlessService, packagingService, sellerService } from "@/api/services";
 import type { TruthAnalyzeResponse, FraudScoreResponse, ReturnlessEvaluateResponse } from "@/api/types";
@@ -107,7 +107,14 @@ function ReturnPreventionContent() {
 
         // S8: The critical call — determines which options to show
         const productPrice = product?.price || 100;
-        const shippingCost = Math.max(8.50, (product?.weight_kg || 1.0) * 8 + 4);
+        // Indian reverse logistics cost (in USD for backend):
+        // Light items (0-1kg): ₹70-100 ($0.85-1.20)
+        // Medium (1-3kg): ₹100-200 ($1.20-2.40)
+        // Heavy (3-5kg): ₹150-350 ($1.80-4.20)
+        // Bulky (5-20kg): ₹250-900 ($3.00-10.80)
+        // Formula: base ₹60 ($0.72) + ₹50/kg ($0.60/kg), with reverse pickup surcharge 1.3x
+        const weightKg = product?.weight_kg || 1.0;
+        const shippingCost = Math.round(((0.72 + weightKg * 0.60) * 1.3) * 100) / 100;
 
         // Force dramatic score override to ensure demo stability
         const fraudScore = persona === "SUSPICIOUS" ? 85 : 15;
@@ -361,8 +368,8 @@ function ReturnPreventionContent() {
                             onClick={handleConfirm}
                             disabled={!selectedResolution || (showVerification && !isVerified)}
                             className={`px-8 py-3 rounded-md font-bold text-sm shadow-sm transition-colors ${selectedResolution && (!showVerification || isVerified)
-                                    ? "bg-[#FF9900] hover:bg-[#FFB84D] text-[#131A22]"
-                                    : "bg-gray-200 text-gray-500 cursor-not-allowed"
+                                ? "bg-[#FF9900] hover:bg-[#FFB84D] text-[#131A22]"
+                                : "bg-gray-200 text-gray-500 cursor-not-allowed"
                                 }`}
                         >
                             {showVerification && isVerified ? "Finalize Resolution" : "Confirm selection"}
@@ -459,7 +466,7 @@ function buildResolutionOptions(s8Data: ReturnlessEvaluateResponse | null, produ
         const partialAmount = productPrice * 0.30;
         options.push({
             id: "partial_refund",
-            icon: <DollarSign size={22} className="text-amber-600" />,
+            icon: <IndianRupee size={22} className="text-amber-600" />,
             title: `₹${Math.round(partialAmount * 83).toLocaleString("en-IN")} partial refund — keep the item`,
             subtitle: "No return needed. We apply a discount instead.",
             detail: "Refund issued within 3-5 business days",
@@ -512,7 +519,7 @@ function buildResolutionOptions(s8Data: ReturnlessEvaluateResponse | null, produ
     else if (decision === "PARTIAL_REFUND") {
         options.push({
             id: "partial_refund",
-            icon: <DollarSign size={22} className="text-amber-600" />,
+            icon: <IndianRupee size={22} className="text-amber-600" />,
             title: `₹${Math.round((refund || (productPrice * 0.5)) * 83).toLocaleString("en-IN")} partial refund — keep the item`,
             subtitle: reason || "No return needed",
             detail: "Refund issued within 3-5 business days",
