@@ -10,3 +10,4 @@ requests-aws4auth>=1.2.3
 pytest>=7.4.3
 httpx>=0.25.1
 pydantic-settings>=2.0.0
+mangum>=0.17.0

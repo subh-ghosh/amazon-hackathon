@@ -8,3 +8,10 @@ app.include_router(simulation_router, prefix="/api/v1/simulation", tags=["Simula
 @app.get("/health")
 def health_check():
     return {"status": "healthy", "service": "Future Simulator"}
+
+# Lambda handler for serverless deployment
+try:
+    from mangum import Mangum
+    handler = Mangum(app)
+except ImportError:
+    pass  # Running in ECS, mangum not needed

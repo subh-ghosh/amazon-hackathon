@@ -70,3 +70,7 @@ if __name__ == "__main__":
     import uvicorn
     # Start the server locally on port 8001
     uvicorn.run("main:app", host="0.0.0.0", port=8001, reload=True)
+
+# Lambda serverless handler
+from mangum import Mangum
+handler = Mangum(app)

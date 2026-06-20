@@ -21,3 +21,7 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 @app.get("/health")
 def health_check():
     return {"status": "healthy", "service": "Recovery Optimizer"}
+
+# Lambda serverless handler
+from mangum import Mangum
+handler = Mangum(app)

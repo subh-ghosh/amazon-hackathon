@@ -9,3 +9,10 @@ app.include_router(logistics_router, prefix="/api/v1/logistics", tags=["Logistic
 @app.get("/health")
 def health_check():
     return {"status": "healthy", "service": "Reverse Logistics Optimizer"}
+
+# Lambda handler for serverless deployment
+try:
+    from mangum import Mangum
+    handler = Mangum(app)
+except ImportError:
+    pass  # Running in ECS, mangum not needed

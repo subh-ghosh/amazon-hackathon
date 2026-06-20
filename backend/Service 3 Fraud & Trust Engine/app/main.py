@@ -22,3 +22,10 @@ def health_check():
 @app.get("/metrics")
 def metrics():
     return {"status": "healthy", "metrics_collected": True}
+
+# Lambda handler for serverless deployment
+try:
+    from mangum import Mangum
+    handler = Mangum(app)
+except ImportError:
+    pass  # Running in ECS, mangum not needed

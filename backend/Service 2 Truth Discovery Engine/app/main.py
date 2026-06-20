@@ -44,3 +44,10 @@ if __name__ == "__main__":
     import uvicorn
     # Local dev runner
     uvicorn.run("main:app", host="0.0.0.0", port=8001, reload=True)
+
+# Lambda handler for serverless deployment
+try:
+    from mangum import Mangum
+    handler = Mangum(app)
+except ImportError:
+    pass  # Running in ECS, mangum not needed

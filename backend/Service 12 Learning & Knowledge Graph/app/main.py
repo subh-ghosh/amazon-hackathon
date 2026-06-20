@@ -103,3 +103,7 @@ async def root():
         "docs": "/docs",
         "health": "/health",
     }
+
+# Lambda serverless handler
+from mangum import Mangum
+handler = Mangum(app)
