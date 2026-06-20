@@ -97,7 +97,7 @@ function ReturnJourneyContent() {
         // Step 5: Refund issued
         updateStep(5, "in_progress");
         await new Promise((r) => setTimeout(r, 800));
-        updateStep(5, "completed", `$${(product?.price || 150).toFixed(2)} refund initiated to your payment method`);
+        updateStep(5, "completed", `₹${Math.round((product?.price || 150) * 83).toLocaleString("en-IN")} refund initiated to your payment method`);
     }
 
     function updateStep(index: number, status: "completed" | "in_progress", detail?: string) {
@@ -115,7 +115,7 @@ function ReturnJourneyContent() {
                     <img src={product.image} alt={product.title} className="w-14 h-14 object-cover rounded" />
                     <div>
                         <p className="text-sm font-medium text-gray-900 line-clamp-1">{product.title}</p>
-                        <p className="text-xs text-gray-500">${product.price.toFixed(2)}</p>
+                        <p className="text-xs text-gray-500">₹{Math.round(product.price * 83).toLocaleString("en-IN")}</p>
                     </div>
                 </div>
             )}

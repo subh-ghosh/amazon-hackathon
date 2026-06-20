@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useMemo, type ReactNode } from "react";
+import { useState, useCallback, useMemo, useEffect, type ReactNode } from "react";
 import { StoreContext, type AppState, type AppStore, type PersonaType } from "./useStore";
 import type { CartItem, Order, Product, Address } from "@/api/types";
 
@@ -8,20 +8,37 @@ function generateId(): string {
     return `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
 }
 
-export function StoreProvider({ children }: { children: ReactNode }) {
-    const [state, setState] = useState<AppState>({
+const STORAGE_KEY = "amazon-slc-store";
+
+function getInitialState(): AppState {
+    if (typeof window !== "undefined") {
+        try {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) return JSON.parse(saved);
+        } catch { /* ignore */ }
+    }
+    return {
         cart: [],
         orders: [],
         customer_id: "CUST-GOOD-001",
         persona: "TRUSTED",
-        greenCredits: 150, // Starting balance (returning customer)
+        greenCredits: 150,
         greenHistory: [
             { action: "Welcome bonus", credits: 100, timestamp: new Date(Date.now() - 7 * 86400000).toISOString() },
             { action: "Chose sustainable packaging", credits: 10, timestamp: new Date(Date.now() - 3 * 86400000).toISOString() },
             { action: "Bought Renewed item", credits: 50, timestamp: new Date(Date.now() - 1 * 86400000).toISOString() },
             { action: "Redeemed: $5 off order", credits: -10, timestamp: new Date(Date.now() - 86400000).toISOString() },
         ],
-    });
+    };
+}
+
+export function StoreProvider({ children }: { children: ReactNode }) {
+    const [state, setState] = useState<AppState>(getInitialState);
+
+    // Persist to localStorage on every state change
+    useEffect(() => {
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch { /* ignore */ }
+    }, [state]);
 
     const setPersona = useCallback((persona: PersonaType) => {
         setState((prev) => ({

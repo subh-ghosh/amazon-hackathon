@@ -11,8 +11,8 @@ class SimulatorStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        # VPC-2: Recovery Domain (shared with S6 + S7)
-        vpc = ec2.Vpc.from_lookup(self, "RecoveryVpc", vpc_id="vpc-09cbbfc645f9e53da")
+        # VPC: Default VPC
+        vpc = ec2.Vpc.from_lookup(self, "DefaultVpc", is_default=True)
 
         # 2. ECS Fargate Cluster & Service
         cluster = ecs.Cluster(self, "SimulatorCluster", vpc=vpc)
@@ -21,7 +21,7 @@ class SimulatorStack(Stack):
             cluster=cluster,
             cpu=256,
             memory_limit_mib=512,
-            desired_count=2,
+            desired_count=1,
             task_image_options=ecs_patterns.ApplicationLoadBalancedTaskImageOptions(
                 image=ecs.ContainerImage.from_asset("../"), # Points to Dockerfile in parent dir
                 container_port=8005,
@@ -29,6 +29,7 @@ class SimulatorStack(Stack):
                     "ENVIRONMENT": "production"
                 }
             ),
+            assign_public_ip=True,
             public_load_balancer=True
         )
 

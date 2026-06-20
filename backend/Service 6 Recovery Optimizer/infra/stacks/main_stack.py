@@ -12,10 +12,7 @@ class OptimizerStack(Stack):
         super().__init__(scope, construct_id, **kwargs)
 
         # 1. VPC
-        vpc = ec2.Vpc(self, "OptimizerVpc",
-            max_azs=2,
-            nat_gateways=1
-        )
+        vpc = ec2.Vpc.from_lookup(self, "DefaultVpc", is_default=True)
 
         # 2. ECS Fargate Cluster & Service
         cluster = ecs.Cluster(self, "OptimizerCluster", vpc=vpc)
@@ -24,14 +21,15 @@ class OptimizerStack(Stack):
             cluster=cluster,
             cpu=256,
             memory_limit_mib=512,
-            desired_count=2,
+            desired_count=1,
             task_image_options=ecs_patterns.ApplicationLoadBalancedTaskImageOptions(
-                image=ecs.ContainerImage.from_asset("../"), # Points to Dockerfile
+                image=ecs.ContainerImage.from_asset("../"),
                 container_port=8006,
                 environment={
                     "ENVIRONMENT": "production"
                 }
             ),
+            assign_public_ip=True,
             public_load_balancer=True
         )
 

@@ -42,7 +42,7 @@ export default function ReturnRequestPage({ params }: { params: { orderId: strin
                 <img src={product.image} alt={product.title} className="w-14 h-14 object-cover rounded" />
                 <div>
                     <p className="text-sm font-medium text-gray-900 line-clamp-1">{product.title}</p>
-                    <p className="text-xs text-gray-500">${product.price.toFixed(2)}</p>
+                    <p className="text-xs text-gray-500">₹{Math.round(product.price * 83).toLocaleString("en-IN")}</p>
                 </div>
             </div>
 
@@ -53,8 +53,8 @@ export default function ReturnRequestPage({ params }: { params: { orderId: strin
                         key={reason.value}
                         onClick={() => setSelected(reason.value)}
                         className={`w-full flex items-center gap-4 p-4 rounded-lg border-2 transition-all text-left ${selected === reason.value
-                                ? "border-[#007185] bg-[#F0FAFA]"
-                                : "border-gray-200 hover:border-gray-300 bg-white"
+                            ? "border-[#007185] bg-[#F0FAFA]"
+                            : "border-gray-200 hover:border-gray-300 bg-white"
                             }`}
                     >
                         <div className={`${selected === reason.value ? "text-[#007185]" : "text-gray-400"}`}>

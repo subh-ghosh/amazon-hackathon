@@ -401,7 +401,7 @@ function buildResolutionOptions(s8Data: ReturnlessEvaluateResponse | null, produ
             icon: <Gift size={22} className="text-emerald-600" />,
             title: decision === "REFUND_AND_DONATE" ? "Instant full refund — please donate or keep" : "Instant full refund — keep the item",
             subtitle: "No need to return it. Refund is immediate.",
-            detail: `$${(refund || productPrice).toFixed(2)} back to your payment method`,
+            detail: `₹${Math.round((refund || productPrice) * 83).toLocaleString("en-IN")} back to your payment method`,
         });
         // Replacement
         options.push({
@@ -425,7 +425,7 @@ function buildResolutionOptions(s8Data: ReturnlessEvaluateResponse | null, produ
             icon: <Truck size={22} className="text-gray-500" />,
             title: "Ship it back instead",
             subtitle: "Standard return process",
-            detail: `$${productPrice.toFixed(2)} refund after inspection`,
+            detail: `₹${Math.round(productPrice * 83).toLocaleString("en-IN")} refund after inspection`,
         });
     }
     // === REFUND_AND_RECYCLE ===
@@ -435,7 +435,7 @@ function buildResolutionOptions(s8Data: ReturnlessEvaluateResponse | null, produ
             icon: <Leaf size={22} className="text-emerald-600" />,
             title: "Instant full refund — please safely recycle",
             subtitle: "Help reduce emissions by recycling locally",
-            detail: `$${(refund || productPrice).toFixed(2)} back to your payment method`,
+            detail: `₹${Math.round((refund || productPrice) * 83).toLocaleString("en-IN")} back to your payment method`,
         });
         options.push({
             id: "replacement",
@@ -460,7 +460,7 @@ function buildResolutionOptions(s8Data: ReturnlessEvaluateResponse | null, produ
         options.push({
             id: "partial_refund",
             icon: <DollarSign size={22} className="text-amber-600" />,
-            title: `$${partialAmount.toFixed(2)} partial refund — keep the item`,
+            title: `₹${Math.round(partialAmount * 83).toLocaleString("en-IN")} partial refund — keep the item`,
             subtitle: "No return needed. We apply a discount instead.",
             detail: "Refund issued within 3-5 business days",
         });
@@ -478,7 +478,7 @@ function buildResolutionOptions(s8Data: ReturnlessEvaluateResponse | null, produ
             icon: <Truck size={22} className="text-gray-500" />,
             title: "Full refund — return item",
             subtitle: "Ship back with a prepaid label",
-            detail: `$${productPrice.toFixed(2)} refund after item is received and inspected`,
+            detail: `₹${Math.round(productPrice * 83).toLocaleString("en-IN")} refund after inspection`,
         });
     }
     // === MANUAL_REVIEW / HIGH_RISK: Suspected fraud, strictly enforce physical return ===
@@ -488,7 +488,7 @@ function buildResolutionOptions(s8Data: ReturnlessEvaluateResponse | null, produ
             icon: <Truck size={22} className="text-gray-500" />,
             title: "Return for full refund",
             subtitle: "Standard return with prepaid label",
-            detail: `$${productPrice.toFixed(2)} refund after item is received and inspected`,
+            detail: `₹${Math.round(productPrice * 83).toLocaleString("en-IN")} refund after inspection`,
         });
         options.push({
             id: "tech_support",
@@ -513,7 +513,7 @@ function buildResolutionOptions(s8Data: ReturnlessEvaluateResponse | null, produ
         options.push({
             id: "partial_refund",
             icon: <DollarSign size={22} className="text-amber-600" />,
-            title: `$${(refund || (productPrice * 0.5)).toFixed(2)} partial refund — keep the item`,
+            title: `₹${Math.round((refund || (productPrice * 0.5)) * 83).toLocaleString("en-IN")} partial refund — keep the item`,
             subtitle: reason || "No return needed",
             detail: "Refund issued within 3-5 business days",
         });
@@ -529,7 +529,7 @@ function buildResolutionOptions(s8Data: ReturnlessEvaluateResponse | null, produ
             icon: <Truck size={22} className="text-gray-500" />,
             title: "Return for full refund",
             subtitle: "Standard return with prepaid label",
-            detail: `$${productPrice.toFixed(2)} back after inspection`,
+            detail: `₹${Math.round(productPrice * 83).toLocaleString("en-IN")} back after inspection`,
         });
     }
     // === Fallback (Safety net) ===
@@ -539,7 +539,7 @@ function buildResolutionOptions(s8Data: ReturnlessEvaluateResponse | null, produ
             icon: <Truck size={22} className="text-gray-500" />,
             title: "Return for full refund",
             subtitle: "Standard return process",
-            detail: `$${productPrice.toFixed(2)} back after inspection`,
+            detail: `₹${Math.round(productPrice * 83).toLocaleString("en-IN")} back after inspection`,
         });
     }
 

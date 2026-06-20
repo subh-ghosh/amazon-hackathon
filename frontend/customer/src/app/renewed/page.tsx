@@ -12,6 +12,9 @@ export default function RenewedPage() {
         ...p,
         renewedPrice: Math.round(p.price * 0.70 * 100) / 100,
         savings: Math.round(p.price * 0.30 * 100) / 100,
+        inrPrice: Math.round(p.price * 83),
+        inrRenewed: Math.round(p.price * 0.70 * 83),
+        inrSavings: Math.round(p.price * 0.30 * 83),
         grade: p.rating >= 4.6 ? "Excellent" : p.rating >= 4.3 ? "Very Good" : "Good",
     }));
 
@@ -54,16 +57,16 @@ export default function RenewedPage() {
                     {renewedProducts.map((product) => (
                         <div key={product.product_id} className="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow bg-white">
                             <div className="relative">
-                                <Link href={`/product/${product.product_id}`}>
+                                <Link href={`/product/${product.product_id}?variant=renewed`}>
                                     <img src={product.image} alt={product.title} className="w-full aspect-square object-cover" />
                                 </Link>
                                 <div className="absolute top-2 left-2 bg-[#CC0C39] text-white text-[11px] font-bold px-2 py-0.5 rounded">
-                                    {Math.round((product.savings / product.price) * 100)}% off
+                                    {Math.round((product.inrSavings / product.inrPrice) * 100)}% off
                                 </div>
                             </div>
 
                             <div className="p-4">
-                                <Link href={`/product/${product.product_id}`}>
+                                <Link href={`/product/${product.product_id}?variant=renewed`}>
                                     <h3 className="text-sm text-gray-900 line-clamp-2 hover:text-[#C7511F] mb-1">{product.title}</h3>
                                 </Link>
 
@@ -77,11 +80,12 @@ export default function RenewedPage() {
                                 </div>
 
                                 <div className="flex items-baseline gap-2 mb-1">
-                                    <span className="text-lg font-bold">${product.renewedPrice.toFixed(2)}</span>
-                                    <span className="text-sm text-gray-400 line-through">${product.price.toFixed(2)}</span>
+                                    <span className="text-lg font-bold">₹{product.inrRenewed.toLocaleString("en-IN")}</span>
+                                    <span className="text-sm text-gray-400 line-through">₹{product.inrPrice.toLocaleString("en-IN")}</span>
                                 </div>
 
                                 <p className="text-xs text-gray-500 mb-1">Condition: <span className="text-gray-700 font-medium">{product.grade}</span></p>
+                                <p className="text-xs text-emerald-700 font-medium mb-1">You save ₹{product.inrSavings.toLocaleString("en-IN")}</p>
                                 <p className="text-xs text-gray-500 mb-3">FREE delivery</p>
 
                                 <button onClick={() => handleAddRenewed(product, product.renewedPrice)}

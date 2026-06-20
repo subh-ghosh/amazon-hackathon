@@ -170,20 +170,20 @@ export default function CheckoutPage() {
                         <div className="space-y-2 text-sm">
                             <div className="flex justify-between">
                                 <span className="text-gray-600">Items ({cart.reduce((s, i) => s + i.quantity, 0)}):</span>
-                                <span>${total.toFixed(2)}</span>
+                                <span>₹{Math.round(total * 83).toLocaleString("en-IN")}</span>
                             </div>
                             <div className="flex justify-between">
                                 <span className="text-gray-600">Shipping:</span>
                                 <span className="text-green-700">FREE</span>
                             </div>
                             <div className="flex justify-between">
-                                <span className="text-gray-600">Tax:</span>
-                                <span>${tax.toFixed(2)}</span>
+                                <span className="text-gray-600">GST (18%):</span>
+                                <span>₹{Math.round(tax * 83).toLocaleString("en-IN")}</span>
                             </div>
                             <hr />
                             <div className="flex justify-between font-bold text-lg text-red-700">
                                 <span>Order total:</span>
-                                <span>${grandTotal.toFixed(2)}</span>
+                                <span>₹{Math.round(grandTotal * 83).toLocaleString("en-IN")}</span>
                             </div>
                         </div>
                     </div>

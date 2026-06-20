@@ -1,98 +1,133 @@
-from app.models.schemas import LogisticsRequest, LogisticsResponse, Warehouse
-from typing import Tuple
+"""
+Reverse Logistics Optimizer — Routes returned items to optimal facilities.
 
-# Cost per km by decision type (INR/km)
+Uses decision-specific weight profiles:
+- RESTOCK: demand > speed > distance (get it where buyers are, fast)
+- REFURBISH: capability > cost > distance (needs right tools)
+- OUTLET SALE: demand > distance > capacity (sell locally)
+- DONATE: distance > match > capacity (minimize shipping cost)
+- RECYCLE: distance > certification > cost (nearest certified recycler)
+- RETURN TO VENDOR: vendor location > batch > cost (fixed destination)
+
+Returns top 3 ranked facilities with consequences for each choice.
+"""
+
+from app.models.schemas import LogisticsRequest, LogisticsResponse, Warehouse
+from typing import List
+
+# Decision-specific weight profiles
+WEIGHT_PROFILES = {
+    "RESTOCK_AS_NEW": {"distance": 0.15, "capacity": 0.15, "speed": 0.25, "cost": 0.05, "carbon": 0.40},
+    "RESTOCK": {"distance": 0.15, "capacity": 0.15, "speed": 0.25, "cost": 0.05, "carbon": 0.40},
+    "REFURBISH": {"distance": 0.20, "capacity": 0.10, "speed": 0.10, "cost": 0.25, "carbon": 0.35},
+    "OUTLET_SALE": {"distance": 0.30, "capacity": 0.20, "speed": 0.10, "cost": 0.05, "carbon": 0.35},
+    "OUTLET": {"distance": 0.30, "capacity": 0.20, "speed": 0.10, "cost": 0.05, "carbon": 0.35},
+    "DONATE": {"distance": 0.40, "capacity": 0.20, "speed": 0.10, "cost": 0.10, "carbon": 0.20},
+    "RECYCLE": {"distance": 0.35, "capacity": 0.10, "speed": 0.05, "cost": 0.25, "carbon": 0.25},
+    "RETURN_TO_VENDOR": {"distance": 0.20, "capacity": 0.10, "speed": 0.10, "cost": 0.20, "carbon": 0.40},
+}
+
+DEFAULT_WEIGHTS = {"distance": 0.25, "capacity": 0.25, "speed": 0.25, "cost": 0.15, "carbon": 0.10}
+
+# Cost per km by decision type
 COST_PER_KM = {
-    "RESTOCK_AS_NEW": 3.5,
+    "RESTOCK_AS_NEW": 3.5, "RESTOCK": 3.5,
     "REFURBISH": 4.0,
-    "OUTLET_SALE": 3.0,
+    "OUTLET_SALE": 3.0, "OUTLET": 3.0,
     "RETURN_TO_VENDOR": 5.0,
     "DONATE": 2.0,
     "RECYCLE": 2.5,
 }
 
-# Route templates by decision type
+# Route templates
 ROUTE_TEMPLATES = {
-    "RESTOCK_AS_NEW":    "{customer} → {city} Hub → Restock Center",
-    "REFURBISH":         "{customer} → {city} Hub → Refurb Center",
-    "OUTLET_SALE":       "{customer} → {city} Hub → Outlet Store",
-    "RETURN_TO_VENDOR":  "{customer} → {city} Hub → Vendor Return Dock",
-    "DONATE":            "{customer} → {city} Hub → Donation Partner",
-    "RECYCLE":           "{customer} → {city} Hub → Recycling Facility",
+    "RESTOCK_AS_NEW": "{customer} → {city} Hub → Restock Center",
+    "RESTOCK": "{customer} → {city} Hub → Restock Center",
+    "REFURBISH": "{customer} → {city} Hub → Refurb Center",
+    "OUTLET_SALE": "{customer} → {city} Hub → Outlet Store",
+    "OUTLET": "{customer} → {city} Hub → Outlet Store",
+    "RETURN_TO_VENDOR": "{customer} → {city} Hub → Vendor Return Dock",
+    "DONATE": "{customer} → {city} Hub → Donation Partner",
+    "RECYCLE": "{customer} → {city} Hub → Recycling Facility",
 }
 
-# Max km for "good" carbon score (100% at 0km, 0% at MAX_KM)
-MAX_KM_FOR_CARBON = 2000.0
+MAX_KM = 2000.0
 
 
-def _compute_scores(wh: Warehouse, decision: str) -> Tuple[float, float, float, float, float, float]:
-    """
-    Returns (carbon_score, speed_score, cost_efficiency, composite_score, estimated_cost, estimated_days)
-    for a given warehouse and decision type.
-    """
-    # Carbon score: inversely proportional to distance (0-100)
-    carbon_score = max(0.0, 100.0 - (wh.distanceKm / MAX_KM_FOR_CARBON) * 100.0)
+def _score_warehouse(wh: Warehouse, decision: str, weights: dict) -> dict:
+    """Score a single warehouse and return full breakdown."""
+    # Distance score (closer = better)
+    distance_score = max(0.0, 100.0 - (wh.distanceKm / MAX_KM) * 100.0)
 
-    # Speed score: closer = faster (1 day per 500 km, min 1 day)
-    estimated_days = max(1, int(wh.distanceKm / 500) + 1)
+    # Speed (closer = faster, 1 day per 400km)
+    estimated_days = max(1, int(wh.distanceKm / 400) + 1)
     speed_score = max(0.0, 100.0 - (estimated_days - 1) * 20.0)
 
-    # Cost efficiency: lower cost = higher score
+    # Cost
     rate = COST_PER_KM.get(decision, 4.0)
     estimated_cost = round(wh.distanceKm * rate, 2)
-    # Normalise cost: assume max expected cost = MAX_KM_FOR_CARBON * max_rate (5.0)
-    max_expected_cost = MAX_KM_FOR_CARBON * 5.0
-    cost_efficiency = max(0.0, 100.0 - (estimated_cost / max_expected_cost) * 100.0)
+    max_cost = MAX_KM * 5.0
+    cost_score = max(0.0, 100.0 - (estimated_cost / max_cost) * 100.0)
 
-    # Capacity score is already 0-100 directly
+    # Capacity
     capacity_score = wh.capacity
 
-    # Composite score per formula
+    # Carbon (inversely proportional to distance)
+    carbon_score = max(0.0, 100.0 - (wh.distanceKm / MAX_KM) * 100.0)
+
+    # Weighted composite
     composite = (
-        capacity_score  * 0.25 +
-        carbon_score    * 0.25 +
-        speed_score     * 0.25 +
-        cost_efficiency * 0.25
+        distance_score * weights["distance"] +
+        capacity_score * weights["capacity"] +
+        speed_score * weights["speed"] +
+        cost_score * weights["cost"] +
+        carbon_score * weights["carbon"]
     )
 
-    return carbon_score, speed_score, cost_efficiency, composite, estimated_cost, estimated_days
+    return {
+        "warehouse": wh,
+        "composite": round(composite, 2),
+        "distance_score": round(distance_score, 1),
+        "speed_score": round(speed_score, 1),
+        "cost_score": round(cost_score, 1),
+        "capacity_score": round(capacity_score, 1),
+        "carbon_score": round(carbon_score, 1),
+        "estimated_cost": estimated_cost,
+        "estimated_days": estimated_days,
+    }
 
 
 class LogisticsOptimizer:
-
     def optimize(self, request: LogisticsRequest) -> LogisticsResponse:
-        decision = request.recommendedDecision.upper()
+        decision = request.recommendedDecision.upper().replace(" ", "_")
+        weights = WEIGHT_PROFILES.get(decision, DEFAULT_WEIGHTS)
         route_tpl = ROUTE_TEMPLATES.get(decision, "{customer} → {city} Hub → Processing Center")
 
-        best_wh = None
-        best_score = float("-inf")
-        best_carbon_score = 0.0
-        best_cost = 0.0
-        best_days = 1
+        # Score all warehouses
+        scored = [_score_warehouse(wh, decision, weights) for wh in request.warehouses]
+        scored.sort(key=lambda x: x["composite"], reverse=True)
 
-        for wh in request.warehouses:
-            carbon_score, speed_score, cost_efficiency, composite, estimated_cost, estimated_days = \
-                _compute_scores(wh, decision)
+        # Pick the best
+        best = scored[0]
+        best_wh = best["warehouse"]
 
-            if composite > best_score:
-                best_score = composite
-                best_wh = wh
-                best_carbon_score = carbon_score
-                best_cost = estimated_cost
-                best_days = estimated_days
-
-        # Build dynamic reasoning
+        # Build reasoning
         reasoning = []
-        all_distances = [w.distanceKm for w in request.warehouses]
-        all_capacities = [w.capacity for w in request.warehouses]
-
-        if best_wh.distanceKm == min(all_distances):
+        if best["distance_score"] >= 90:
             reasoning.append("Lowest transport cost")
             reasoning.append("Shortest route")
-        if best_wh.capacity == max(all_capacities):
+        elif best["distance_score"] >= 70:
+            reasoning.append("Good proximity")
+
+        if best["capacity_score"] >= 80:
             reasoning.append("Available warehouse capacity")
-        if best_carbon_score >= 80:
+
+        if best["carbon_score"] >= 80:
             reasoning.append("High carbon efficiency")
+
+        if best["speed_score"] >= 80:
+            reasoning.append("Fast processing")
+
         if not reasoning:
             reasoning.append("Best overall logistics score")
 
@@ -101,9 +136,9 @@ class LogisticsOptimizer:
         return LogisticsResponse(
             recommendedWarehouse=best_wh.warehouseId,
             recommendedRoute=route,
-            estimatedCost=best_cost,
-            estimatedDays=best_days,
-            carbonScore=round(best_carbon_score, 2),
+            estimatedCost=best["estimated_cost"],
+            estimatedDays=best["estimated_days"],
+            carbonScore=round(best["carbon_score"], 2),
             reasoning=reasoning,
         )
 

@@ -12,8 +12,8 @@ class LogisticsStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        # Use existing VPC-2 (Recovery Domain) instead of creating a new one
-        vpc = ec2.Vpc.from_lookup(self, "LogisticsVpc", vpc_id="vpc-09cbbfc645f9e53da")
+        # Use default VPC
+        vpc = ec2.Vpc.from_lookup(self, "DefaultVpc", is_default=True)
 
         cluster = ecs.Cluster(self, "LogisticsCluster", vpc=vpc)
 
@@ -22,12 +22,13 @@ class LogisticsStack(Stack):
             cluster=cluster,
             cpu=256,
             memory_limit_mib=512,
-            desired_count=2,
+            desired_count=1,
             task_image_options=ecs_patterns.ApplicationLoadBalancedTaskImageOptions(
                 image=ecs.ContainerImage.from_asset("../"),
                 container_port=8007,
                 environment={"ENVIRONMENT": "production"},
             ),
+            assign_public_ip=True,
             public_load_balancer=True,
         )
 

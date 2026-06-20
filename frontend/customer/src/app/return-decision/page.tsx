@@ -49,7 +49,7 @@ function ReturnDecisionContent() {
             <div className="bg-gray-50 rounded-lg p-5 mb-6 animate-slide-up">
                 <div className="space-y-3">
                     <DetailRow label="Return ID" value={returnId} />
-                    <DetailRow label="Refund amount" value={`$${decision === "partial_refund" ? (refundAmount * 0.5).toFixed(2) : refundAmount.toFixed(2)}`} highlight />
+                    <DetailRow label="Refund amount" value={`₹${Math.round((decision === "partial_refund" ? refundAmount * 0.5 : refundAmount) * 83).toLocaleString("en-IN")}`} highlight />
                     <DetailRow label="Timeline" value={isReturn ? "5-7 business days after delivery" : "3-5 business days"} />
                 </div>
             </div>
@@ -70,10 +70,10 @@ function ReturnDecisionContent() {
                             </div>
                             <MapPin className={`mt-0.5 ${dropoffMethod === "dropoff" ? "text-[#007185]" : "text-gray-400"}`} size={20} />
                             <div>
-                                <p className="text-sm font-medium text-gray-900">Drop-off at Whole Foods / Amazon Hub</p>
-                                <p className="text-xs text-gray-500 mt-0.5">Faster processing. Box-free, label-free return.</p>
+                                <p className="text-sm font-medium text-gray-900">Drop-off at Amazon Easy Store / Pickup Point</p>
+                                <p className="text-xs text-gray-500 mt-0.5">Faster processing. No box needed, label-free return.</p>
                                 <div className="mt-2 flex items-center gap-1.5 text-xs font-medium text-emerald-700 bg-emerald-50 px-2 py-1 rounded inline-flex">
-                                    <Tag size={12} /> Earn $2 Amazon Promo Credit
+                                    <Tag size={12} /> Earn ₹50 Amazon Pay cashback
                                 </div>
                             </div>
                             <div className={`ml-auto mt-0.5 w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${dropoffMethod === "dropoff" ? "border-[#007185]" : "border-gray-300"}`}>
@@ -81,7 +81,7 @@ function ReturnDecisionContent() {
                             </div>
                         </button>
 
-                        {/* Option 2: Home Collection (Expensive/Slower) */}
+                        {/* Option 2: Home Collection */}
                         <button
                             onClick={() => setDropoffMethod("pickup")}
                             className={`w-full flex items-start gap-3 p-4 rounded-lg border-2 text-left transition-all ${dropoffMethod === "pickup" ? "border-[#007185] bg-[#F0FAFA]" : "border-gray-200 hover:border-gray-300 bg-white"
@@ -89,8 +89,8 @@ function ReturnDecisionContent() {
                         >
                             <Home className={`mt-0.5 ${dropoffMethod === "pickup" ? "text-[#007185]" : "text-gray-400"}`} size={20} />
                             <div>
-                                <p className="text-sm font-medium text-gray-900">Home Collection (UPS Pickup)</p>
-                                <p className="text-xs text-gray-500 mt-0.5">Slower processing. Requires box and label.</p>
+                                <p className="text-sm font-medium text-gray-900">Schedule Home Pickup</p>
+                                <p className="text-xs text-gray-500 mt-0.5">Delivery associate will collect from your address. Pack in original box.</p>
                             </div>
                             <div className={`ml-auto mt-0.5 w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${dropoffMethod === "pickup" ? "border-[#007185]" : "border-gray-300"}`}>
                                 {dropoffMethod === "pickup" && <div className="w-2.5 h-2.5 rounded-full bg-[#007185]" />}
@@ -115,7 +115,7 @@ function ReturnDecisionContent() {
                     <img src={product.image} alt={product.title} className="w-12 h-12 object-cover rounded" />
                     <div>
                         <p className="text-sm font-medium text-gray-900 line-clamp-1">{product.title}</p>
-                        <p className="text-xs text-gray-500">${product.price.toFixed(2)}</p>
+                        <p className="text-xs text-gray-500">₹{Math.round(product.price * 83).toLocaleString("en-IN")}</p>
                     </div>
                 </div>
             )}
@@ -180,10 +180,10 @@ function getSubtitle(decision: string): string {
 
 function getNextSteps(decision: string): string[] {
     switch (decision) {
-        case "keep_refund": return ["Refund will appear on your statement in 3-5 business days", "No further action needed", "You may keep or donate the item"];
-        case "replacement": return ["Replacement ships within 24 hours", "You'll receive a tracking number by email", "No need to return the original item"];
-        case "tech_support": return ["A specialist will call or email you", "Have your order number ready", "Support hours: 8am–10pm"];
-        case "return": return ["A prepaid label has been sent to your email", "Pack the item securely and drop off at any carrier location", "Refund processes after inspection (typically 2-3 days)"];
+        case "keep_refund": return ["Refund will appear on your payment method in 3-5 business days", "No further action needed", "You may keep or donate the item"];
+        case "replacement": return ["Replacement ships within 24 hours", "You'll receive a tracking number via SMS and email", "No need to return the original item"];
+        case "tech_support": return ["A specialist will call or email you", "Have your order number ready", "Support hours: 8am–10pm IST"];
+        case "return": return ["A prepaid return label has been emailed to you", "Pack the item securely and drop off at nearest Amazon Easy Store or schedule home pickup", "Refund processes after inspection (typically 2-3 days)"];
         default: return ["We'll send a confirmation email shortly"];
     }
 }

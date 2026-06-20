@@ -14,10 +14,8 @@ class DigitalTwinStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        # Create VPC-3: Product & Business Layer
-        vpc = ec2.Vpc(self, "ProductBusinessVpc", max_azs=2, nat_gateways=1)
-        Tags.of(vpc).add("DomainName", "VPC-3-ProductBusiness")
-        Tags.of(vpc).add("Name", "CircularIntelligenceOS/VPC-3-ProductBusinessLayer")
+        # Use default VPC
+        vpc = ec2.Vpc.from_lookup(self, "DefaultVpc", is_default=True)
 
         # DynamoDB Table for Digital Twin
         table = dynamodb.Table(self, "ProductDigitalTwinTable",
@@ -34,7 +32,7 @@ class DigitalTwinStack(Stack):
             cluster=cluster,
             cpu=256,
             memory_limit_mib=512,
-            desired_count=2,
+            desired_count=1,
             task_image_options=ecs_patterns.ApplicationLoadBalancedTaskImageOptions(
                 image=ecs.ContainerImage.from_asset("../"),
                 container_port=8004,
@@ -44,6 +42,7 @@ class DigitalTwinStack(Stack):
                     "AWS_REGION": self.region
                 },
             ),
+            assign_public_ip=True,
             public_load_balancer=True,
         )
 

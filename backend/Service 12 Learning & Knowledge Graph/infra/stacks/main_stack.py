@@ -15,11 +15,8 @@ class HackathonStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        # 1. VPC (Using 1 NAT Gateway to save costs while still allowing outbound internet)
-        vpc = ec2.Vpc(self, "CircularOsVpc",
-            max_azs=2,
-            nat_gateways=1
-        )
+        # 1. VPC - use default VPC
+        vpc = ec2.Vpc.from_lookup(self, "DefaultVpc", is_default=True)
 
         # 2. DynamoDB Tables
         tables = ["ReturnEvents", "FraudScores", "ProductTwinReferences", "RecoveryDecisions"]
@@ -32,27 +29,26 @@ class HackathonStack(Stack):
                 removal_policy=RemovalPolicy.DESTROY
             )
 
-        # 3. EventBridge Bus
-        bus = events.EventBus(self, "CircularIntelligenceBus",
-            event_bus_name="circular-intelligence-bus"
-        )
+        # 3. EventBridge Bus (already created, reference it)
+        bus = events.EventBus.from_event_bus_name(self, "CircularIntelligenceBus", "circular-intelligence-bus")
 
         # 4. ECS Fargate Cluster & Service
         cluster = ecs.Cluster(self, "GraphServiceCluster", vpc=vpc)
         
         fargate_service = ecs_patterns.ApplicationLoadBalancedFargateService(self, "GraphService",
             cluster=cluster,
-            cpu=512,  # Bumped CPU to run 2 containers
-            memory_limit_mib=1024, # Bumped memory for Gremlin Java server
+            cpu=512,
+            memory_limit_mib=1024,
             desired_count=1,
             task_image_options=ecs_patterns.ApplicationLoadBalancedTaskImageOptions(
-                image=ecs.ContainerImage.from_asset("../"), # FastAPI
-                container_port=8000,  # <-- FIX: Tell the Load Balancer that FastAPI is on port 8000
+                image=ecs.ContainerImage.from_asset("../"),
+                container_port=8000,
                 environment={
                     "NEPTUNE_ENDPOINT": "localhost",
-                    "EVENT_BUS_NAME": bus.event_bus_name
+                    "EVENT_BUS_NAME": "circular-intelligence-bus"
                 }
             ),
+            assign_public_ip=True,
             public_load_balancer=True
         )
 

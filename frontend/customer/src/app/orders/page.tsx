@@ -32,7 +32,7 @@ export default function OrdersPage() {
                                 </div>
                                 <div>
                                     <p className="uppercase text-[10px] text-gray-500">Total</p>
-                                    <p className="text-gray-900">${order.total.toFixed(2)}</p>
+                                    <p className="text-gray-900">₹{Math.round(order.total * 83).toLocaleString("en-IN")}</p>
                                 </div>
                                 <div>
                                     <p className="uppercase text-[10px] text-gray-500">Ship to</p>

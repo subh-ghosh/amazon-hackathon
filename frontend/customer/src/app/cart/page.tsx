@@ -61,13 +61,13 @@ export default function CartPage() {
                                         </button>
                                     </div>
                                 </div>
-                                <p className="font-bold text-base">${(item.product.price * item.quantity).toFixed(2)}</p>
+                                <p className="font-bold text-base">₹{Math.round(item.product.price * item.quantity * 83).toLocaleString("en-IN")}</p>
                             </div>
                         ))}
 
                         <div className="text-right mt-4">
                             <p className="text-lg">
-                                Subtotal ({cart.reduce((s, i) => s + i.quantity, 0)} items): <span className="font-bold">${total.toFixed(2)}</span>
+                                Subtotal ({cart.reduce((s, i) => s + i.quantity, 0)} items): <span className="font-bold">₹{Math.round(total * 83).toLocaleString("en-IN")}</span>
                             </p>
                         </div>
                     </div>
@@ -96,7 +96,7 @@ export default function CartPage() {
                 <div className="lg:col-span-3">
                     <div className="bg-white border border-gray-200 rounded-lg p-4 sticky top-[120px]">
                         <p className="text-lg mb-3">
-                            Subtotal ({cart.reduce((s, i) => s + i.quantity, 0)} items): <span className="font-bold">${total.toFixed(2)}</span>
+                            Subtotal ({cart.reduce((s, i) => s + i.quantity, 0)} items): <span className="font-bold">₹{Math.round(total * 83).toLocaleString("en-IN")}</span>
                         </p>
                         <button onClick={() => router.push("/checkout")} className="btn-amazon w-full">
                             Proceed to checkout

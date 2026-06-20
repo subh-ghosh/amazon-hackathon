@@ -28,16 +28,17 @@ class InfraStack(Stack):
             cluster=cluster,
             cpu=256,
             memory_limit_mib=512,
-            desired_count=2,
+            desired_count=1,
             task_image_options=ecs_patterns.ApplicationLoadBalancedTaskImageOptions(
                 image=ecs.ContainerImage.from_asset("../"),
                 container_port=8000,
                 environment={
                     "AWS_DEFAULT_REGION": self.region,
                     "EVENT_BUS_NAME": bus.event_bus_name,
-                    "SERVICE_12_URL": "http://Circul-Graph-ye0M61dV1dYT-1449212263.us-east-1.elb.amazonaws.com"
+                    "SERVICE_12_URL": ""
                 }
             ),
+            assign_public_ip=True,
             public_load_balancer=True
         )
 
@@ -49,7 +50,7 @@ class InfraStack(Stack):
 
         # 6. Auto Scaling (Min 2, Max 10, Target CPU 70%)
         scaling = fraud_service.service.auto_scale_task_count(
-            min_capacity=2,
+            min_capacity=1,
             max_capacity=10
         )
         scaling.scale_on_cpu_utilization("CpuScaling",

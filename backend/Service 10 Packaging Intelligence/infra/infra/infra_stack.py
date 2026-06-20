@@ -15,7 +15,7 @@ class InfraStack(Stack):
         super().__init__(scope, construct_id, **kwargs)
 
         # 1. VPC (Lookup shared VPC-1 Intelligence Layer)
-        vpc = ec2.Vpc.from_lookup(self, "PackagingServiceVpc", vpc_id="vpc-0b310e0778dadae8a")
+        vpc = ec2.Vpc.from_lookup(self, "DefaultVpc", is_default=True)
 
         # 2. Existing EventBridge Bus Reference
         bus = events.EventBus.from_event_bus_name(self, "Bus", "circular-intelligence-bus")
@@ -28,16 +28,17 @@ class InfraStack(Stack):
             cluster=cluster,
             cpu=256,
             memory_limit_mib=512,
-            desired_count=2,
+            desired_count=1,
             task_image_options=ecs_patterns.ApplicationLoadBalancedTaskImageOptions(
                 image=ecs.ContainerImage.from_asset("../", exclude=["infra", ".venv", "tests", "cdk.out"]),
                 container_port=8010,
                 environment={
                     "AWS_DEFAULT_REGION": self.region,
                     "EVENT_BUS_NAME": bus.event_bus_name,
-                    "SERVICE_12_URL": "http://Circul-Graph-ye0M61dV1dYT-1449212263.us-east-1.elb.amazonaws.com"
+                    "SERVICE_12_URL": ""
                 }
             ),
+            assign_public_ip=True,
             public_load_balancer=True
         )
 
@@ -49,7 +50,7 @@ class InfraStack(Stack):
 
         # 6. Auto Scaling (Min 2, Max 10, Target CPU 70%)
         scaling = packaging_service.service.auto_scale_task_count(
-            min_capacity=2,
+            min_capacity=1,
             max_capacity=10
         )
         scaling.scale_on_cpu_utilization("CpuScaling",
