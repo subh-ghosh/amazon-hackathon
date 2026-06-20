@@ -121,9 +121,8 @@ function ReturnPreventionContent() {
         const trustScore = persona === "SUSPICIOUS" ? 20 : 90;
 
         let currentCondition = "USED";
-        // Remote API ONLY recognizes DAMAGED for recycling!
         if (reason === "hazardous" || reason === "defective") currentCondition = "DAMAGED";
-        else if (reason === "wrong_size") currentCondition = "LIKE_NEW";
+        else if (reason === "wrong_size" || reason === "changed_mind") currentCondition = "LIKE_NEW";
 
         try {
             const returnlessResult = await returnlessService.evaluate({

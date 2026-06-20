@@ -214,10 +214,10 @@ class EvaluationEngine:
                 "Logistics Cost Avoidance": 30
             }
         elif (
-            18.0 <= request.orderValue < 60.0 and
+            18.0 <= request.orderValue < 80.0 and
             request.customerTrustScore >= 60
         ):
-            # India: Items ₹1500-₹5000 ($18-$60) — partial refund option
+            # India: Items ₹1500-₹6600 ($18-$80) — partial refund option
             # Customer keeps item, gets 30-50% back. Amazon saves reverse logistics.
             decision = "PARTIAL_REFUND"
             business_reason = "Moderate value item. Partial refund saves reverse logistics while compensating customer."
