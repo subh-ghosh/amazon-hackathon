@@ -45,9 +45,9 @@ export default function GreenCreditsPage() {
                 {/* Redeem */}
                 <h2 className="text-lg font-bold text-gray-900 mb-4">Redeem rewards</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8">
-                    <RedeemCard title="$5 off your order" cost={200} available={greenCredits >= 200} />
+                    <RedeemCard title="₹500 off your order" cost={200} available={greenCredits >= 200} />
                     <RedeemCard title="Free next-day delivery" cost={150} available={greenCredits >= 150} />
-                    <RedeemCard title="$10 off Renewed" cost={300} available={greenCredits >= 300} />
+                    <RedeemCard title="₹1,000 off Renewed" cost={300} available={greenCredits >= 300} />
                 </div>
 
                 {/* History */}

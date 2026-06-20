@@ -27,7 +27,7 @@ function getInitialState(): AppState {
             { action: "Welcome bonus", credits: 100, timestamp: new Date(Date.now() - 7 * 86400000).toISOString() },
             { action: "Chose sustainable packaging", credits: 10, timestamp: new Date(Date.now() - 3 * 86400000).toISOString() },
             { action: "Bought Renewed item", credits: 50, timestamp: new Date(Date.now() - 1 * 86400000).toISOString() },
-            { action: "Redeemed: $5 off order", credits: -10, timestamp: new Date(Date.now() - 86400000).toISOString() },
+            { action: "Redeemed: ₹500 off order", credits: -10, timestamp: new Date(Date.now() - 86400000).toISOString() },
         ],
     };
 }

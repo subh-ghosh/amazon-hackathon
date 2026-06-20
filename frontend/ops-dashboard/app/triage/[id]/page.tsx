@@ -510,7 +510,7 @@ export default function TriageDetailPage({ params }: { params: Promise<{ id: str
                               {isRecommended && <Badge className="bg-indigo-100 text-indigo-700 border-indigo-200 text-[10px]">Recommended</Badge>}
                             </div>
                             <div className="flex items-center gap-6 text-sm text-slate-600">
-                              <span className="font-bold text-slate-900">${scenario.recoveryValue.toFixed(0)}</span>
+                              <span className="font-bold text-slate-900">₹{Math.round(scenario.recoveryValue * 83).toLocaleString("en-IN")}</span>
                               <span>{(scenario.confidence * 100).toFixed(0)}%</span>
                               <span>{scenario.processingTimeDays}d</span>
                               <span className={scenario.carbonImpact <= 0 ? "text-emerald-600" : "text-amber-600"}>{scenario.carbonImpact <= 0 ? "-" : "+"}{Math.abs(scenario.carbonImpact).toFixed(1)}kg CO₂</span>
@@ -527,7 +527,7 @@ export default function TriageDetailPage({ params }: { params: Promise<{ id: str
                   <div className="mt-5 pt-5 border-t border-slate-100">
                     <div className="grid grid-cols-4 gap-3">
                       <div className="text-center p-3 bg-slate-50 rounded-lg">
-                        <p className="text-xl font-bold text-slate-900">${selectedScenario.recoveryValue.toFixed(0)}</p>
+                        <p className="text-xl font-bold text-slate-900">₹{Math.round(selectedScenario.recoveryValue * 83).toLocaleString("en-IN")}</p>
                         <p className="text-[10px] text-slate-500 uppercase">Recovery</p>
                       </div>
                       <div className="text-center p-3 bg-slate-50 rounded-lg">
@@ -600,7 +600,7 @@ export default function TriageDetailPage({ params }: { params: Promise<{ id: str
                       </div>
                       {isSelected && routingType !== "vendor" && (
                         <div className="mt-3 pt-3 border-t border-slate-100 grid grid-cols-3 gap-2 text-center">
-                          <div><p className="text-sm font-bold text-slate-900">${cons.cost.toFixed(0)}</p><p className="text-[9px] text-slate-500">Shipping Cost</p></div>
+                          <div><p className="text-sm font-bold text-slate-900">₹{Math.round(cons.cost * 83).toLocaleString("en-IN")}</p><p className="text-[9px] text-slate-500">Shipping Cost</p></div>
                           <div><p className="text-sm font-bold text-slate-900">{cons.days}d</p><p className="text-[9px] text-slate-500">Transit Time</p></div>
                           <div><p className="text-sm font-bold text-emerald-700">{cons.carbon}kg</p><p className="text-[9px] text-slate-500">CO₂ Emission</p></div>
                         </div>
@@ -666,15 +666,15 @@ export default function TriageDetailPage({ params }: { params: Promise<{ id: str
                         {isSelected && (
                           <div className="mt-3 pt-3 border-t border-slate-100">
                             <div className="grid grid-cols-4 gap-2 text-center">
-                              <div><p className="text-sm font-bold text-amber-700">${cons.shippingCost.toFixed(1)}</p><p className="text-[9px] text-slate-500">Shipping Cost</p></div>
+                              <div><p className="text-sm font-bold text-amber-700">₹{Math.round(cons.shippingCost * 83).toLocaleString("en-IN")}</p><p className="text-[9px] text-slate-500">Shipping Cost</p></div>
                               <div><p className="text-sm font-bold text-slate-900">{cons.deliveryDays}d</p><p className="text-[9px] text-slate-500">Delivery</p></div>
                               <div><p className="text-sm font-bold text-emerald-700">{cons.co2}kg</p><p className="text-[9px] text-slate-500">CO₂ (last mile)</p></div>
-                              <div><p className="text-sm font-bold text-blue-700">${cons.netMargin.toFixed(0)}</p><p className="text-[9px] text-slate-500">Net Margin</p></div>
+                              <div><p className="text-sm font-bold text-blue-700">₹{Math.round(cons.netMargin * 83).toLocaleString("en-IN")}</p><p className="text-[9px] text-slate-500">Net Margin</p></div>
                             </div>
                             {!isFirst && (
                               <div className="mt-2 p-2 bg-amber-50 border border-amber-100 rounded text-xs text-amber-800 flex items-center gap-1.5">
                                 <ShieldAlert size={12} className="flex-shrink-0" />
-                                vs Recommended: +${shippingDelta.toFixed(1)} shipping, {deliveryDelta > 0 ? "+" : ""}{deliveryDelta}d delivery, {marginDelta >= 0 ? "+" : ""}{marginDelta.toFixed(0)} margin
+                                vs Recommended: +${shippingDelta.toFixed(1)} shipping, {deliveryDelta > 0 ? "+" : ""}{deliveryDelta}d delivery, {marginDelta >= 0 ? "+" : ""}{Math.round(marginDelta * 83)} margin
                               </div>
                             )}
                           </div>
@@ -758,7 +758,7 @@ export default function TriageDetailPage({ params }: { params: Promise<{ id: str
               <div className="flex items-center justify-between gap-4">
                 <div className="flex items-center gap-5">
                   <div>
-                    <p className="text-2xl font-bold text-slate-900">${finalRecovery.toFixed(2)}</p>
+                    <p className="text-2xl font-bold text-slate-900">₹{Math.round(finalRecovery * 83).toLocaleString("en-IN")}</p>
                     <p className="text-[10px] text-slate-500 uppercase">Final Net Recovery</p>
                   </div>
                   <div className="h-8 w-px bg-slate-200" />
