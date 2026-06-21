@@ -25,7 +25,7 @@ export function Header() {
     return (
         <header className="sticky top-0 z-50">
             <div className="bg-[#131921] text-white">
-                <div className="max-w-[1500px] mx-auto px-4 flex items-center h-[60px] gap-3">
+                <div className="max-w-[1500px] mx-auto px-3 sm:px-4 flex items-center h-[60px] gap-2 sm:gap-3">
                     <Link href="/" className="flex-shrink-0 px-2 py-1 hover:outline hover:outline-1 hover:outline-white rounded flex items-baseline gap-0.5">
                         <span className="text-[22px] font-bold tracking-tight">amazon</span>
                         <span className="text-[11px] text-gray-300">.in</span>

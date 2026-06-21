@@ -71,7 +71,7 @@ export function ProductCard({ product }: ProductCardProps) {
                     {insight.message}
                 </p>
 
-                <button onClick={() => addToCart(product)} className="btn-amazon w-full mt-auto text-sm">
+                <button onClick={() => addToCart(product)} className="btn-amazon w-full mt-auto text-sm min-h-[44px]">
                     Add to Cart
                 </button>
             </div>

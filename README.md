@@ -2,16 +2,19 @@
 
 > **HackOn with Amazon 2026** — Team KKR (Kolkata Kode Riders)
 
+> ⚠️ **IMPORTANT NOTE FOR JUDGES:** Our original Vercel account was blocked due to usage limits. All demo links have been migrated to new deployments below. The submission document may contain old URLs — please use the links in this README as the authoritative source. All services are fully live and operational.
+
 An intelligent ecosystem where returned or unused products automatically find their next best owner — through resale, refurbishment, donation, or recycling.
 
-## Live Demo
+## 🚀 Live Demo (Updated Links)
 
 | Application | URL | Audience |
 |-------------|-----|----------|
-| Customer Experience | [amazon-hackathon-phi.vercel.app](https://amazon-hackathon-phi.vercel.app/) | Shoppers |
-| Executive Dashboard | [amazon-hackathon-pjt3.vercel.app](https://amazon-hackathon-pjt3.vercel.app/) | Leadership |
-| Operations Dashboard | [amazon-hackathon-udpw.vercel.app](https://amazon-hackathon-udpw.vercel.app/) | Warehouse Ops |
-| Seller Dashboard | [amazon-hackathon-lct1.vercel.app](https://amazon-hackathon-lct1.vercel.app/) | Third-party Sellers |
+| 🏠 **Project Landing Page** | [amazon-hackathon-landing.vercel.app](https://amazon-hackathon-landing-61n9tjqoacm7rgdvlxrqpenbzyds.vercel.app/) | Overview |
+| 🛒 Customer Experience | [amazon-hackathon-customer-3kyjo2sy1.vercel.app](https://amazon-hackathon-customer-3kyjo2sy1.vercel.app/) | Shoppers |
+| 📊 Executive Dashboard | [amazon-hackathon-executive-5rtjgoynw.vercel.app](https://amazon-hackathon-executive-5rtjgoynw.vercel.app/) | Leadership |
+| 🏭 Operations Dashboard | [amazon-hackathon-mcga0yax3-subartaghosh2025-5634s-projects.vercel.app](https://amazon-hackathon-mcga0yax3-subartaghosh2025-5634s-projects.vercel.app/) | Warehouse Ops |
+| 📦 Seller Dashboard | [amazon-hackathon-seller-j9z8oijvv.vercel.app](https://amazon-hackathon-seller-j9z8oijvv.vercel.app/) | Third-party Sellers |
 
 ## Architecture
 

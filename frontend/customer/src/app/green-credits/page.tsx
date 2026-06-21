@@ -19,7 +19,7 @@ export default function GreenCreditsPage() {
 
             <div className="max-w-[900px] mx-auto px-4 py-8">
                 {/* Balance */}
-                <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8 flex items-center justify-between">
+                <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 sm:p-6 mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                     <div>
                         <p className="text-sm text-gray-500 mb-1">Your balance</p>
                         <div className="flex items-baseline gap-2">
@@ -28,7 +28,7 @@ export default function GreenCreditsPage() {
                         </div>
                     </div>
                     <div className="flex items-center gap-2 text-sm text-emerald-700 bg-emerald-50 px-4 py-2 rounded-lg border border-emerald-200">
-                        <Leaf size={16} />
+                        <Leaf size={16} className="flex-shrink-0" />
                         <span>You&apos;ve helped extend the life of 6 products</span>
                     </div>
                 </div>

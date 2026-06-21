@@ -98,10 +98,10 @@ Return received → Fraud check → Quality grading → Recovery decision
 
 **Live deployed across 4 applications:**
 
-- Customer App: https://amazon-hackathon-phi.vercel.app/
-- Executive Dashboard: https://amazon-hackathon-pjt3.vercel.app/
-- Operations Dashboard: https://amazon-hackathon-udpw.vercel.app/
-- Seller Dashboard: https://amazon-hackathon-lct1.vercel.app/
+- Customer App: https://amazon-hackathon-customer-3kyjo2sy1.vercel.app/
+- Executive Dashboard: https://amazon-hackathon-executive-5rtjgoynw.vercel.app/
+- Operations Dashboard: https://amazon-hackathon-mcga0yax3-subartaghosh2025-5634s-projects.vercel.app/
+- Seller Dashboard: https://amazon-hackathon-seller-j9z8oijvv.vercel.app/
 
 **Backend: 12 microservices live on AWS ECS Fargate**
 
@@ -205,10 +205,10 @@ In 1-3 years, this becomes Amazon's **Circular Commerce Operating System** — t
 - GitHub: https://github.com/subh-ghosh/amazon-hackathon
 - Demo Video: [URL]
 - Live Apps:
-  - Customer: https://amazon-hackathon-phi.vercel.app/
-  - Executive Dashboard: https://amazon-hackathon-pjt3.vercel.app/
-  - Operations Dashboard: https://amazon-hackathon-udpw.vercel.app/
-  - Seller Dashboard: https://amazon-hackathon-lct1.vercel.app/
+  - Customer: https://amazon-hackathon-customer-3kyjo2sy1.vercel.app/
+  - Executive Dashboard: https://amazon-hackathon-executive-5rtjgoynw.vercel.app/
+  - Operations Dashboard: https://amazon-hackathon-mcga0yax3-subartaghosh2025-5634s-projects.vercel.app/
+  - Seller Dashboard: https://amazon-hackathon-seller-j9z8oijvv.vercel.app/
 
 ---
 

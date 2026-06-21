@@ -32,10 +32,10 @@ export default function CartPage() {
                         <hr className="my-3" />
 
                         {cart.map((item) => (
-                            <div key={item.product.product_id} className="flex gap-4 py-4 border-b border-gray-100 last:border-0">
+                            <div key={item.product.product_id} className="flex gap-3 sm:gap-4 py-4 border-b border-gray-100 last:border-0">
                                 <img
                                     src={item.product.image} alt={item.product.title}
-                                    className="w-[150px] h-[150px] object-cover rounded cursor-pointer"
+                                    className="w-[100px] h-[100px] sm:w-[150px] sm:h-[150px] object-cover rounded cursor-pointer flex-shrink-0"
                                     onClick={() => router.push(`/product/${item.product.product_id}`)}
                                 />
                                 <div className="flex-1">
@@ -94,11 +94,11 @@ export default function CartPage() {
 
                 {/* Checkout */}
                 <div className="lg:col-span-3">
-                    <div className="bg-white border border-gray-200 rounded-lg p-4 sticky top-[120px]">
+                    <div className="bg-white border border-gray-200 rounded-lg p-4 lg:sticky lg:top-[120px]">
                         <p className="text-lg mb-3">
                             Subtotal ({cart.reduce((s, i) => s + i.quantity, 0)} items): <span className="font-bold">₹{Math.round(total * 83).toLocaleString("en-IN")}</span>
                         </p>
-                        <button onClick={() => router.push("/checkout")} className="btn-amazon w-full">
+                        <button onClick={() => router.push("/checkout")} className="btn-amazon w-full min-h-[44px]">
                             Proceed to checkout
                         </button>
                     </div>

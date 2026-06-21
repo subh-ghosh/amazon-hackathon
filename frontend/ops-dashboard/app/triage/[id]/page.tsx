@@ -500,16 +500,16 @@ export default function TriageDetailPage({ params }: { params: Promise<{ id: str
                       const isRecommended = normalizedDecision.length > 0 && (normalizedDecision.includes(normalizedScenario) || normalizedScenario.includes(normalizedDecision));
                       return (
                         <button key={scenario.scenario} onClick={() => setSelectedScenario(scenario)}
-                          className={`w-full text-left p-4 rounded-lg border-2 transition-all ${isSelected ? "border-indigo-500 bg-indigo-50" : "border-slate-200 hover:border-slate-300"}`}>
-                          <div className="flex items-center justify-between">
+                          className={`w-full text-left p-3 sm:p-4 rounded-lg border-2 transition-all ${isSelected ? "border-indigo-500 bg-indigo-50" : "border-slate-200 hover:border-slate-300"}`}>
+                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                             <div className="flex items-center gap-3">
-                              <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${isSelected ? "border-indigo-500" : "border-slate-300"}`}>
+                              <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${isSelected ? "border-indigo-500" : "border-slate-300"}`}>
                                 {isSelected && <div className="w-2 h-2 rounded-full bg-indigo-500" />}
                               </div>
-                              <span className="font-medium text-slate-900">{scenario.scenario}</span>
+                              <span className="font-medium text-slate-900 text-sm sm:text-base">{scenario.scenario}</span>
                               {isRecommended && <Badge className="bg-indigo-100 text-indigo-700 border-indigo-200 text-[10px]">Recommended</Badge>}
                             </div>
-                            <div className="flex items-center gap-6 text-sm text-slate-600">
+                            <div className="flex items-center gap-3 sm:gap-6 text-xs sm:text-sm text-slate-600 ml-7 sm:ml-0 flex-wrap">
                               <span className="font-bold text-slate-900">₹{Math.round(scenario.recoveryValue * 83).toLocaleString("en-IN")}</span>
                               <span>{(scenario.confidence * 100).toFixed(0)}%</span>
                               <span>{scenario.processingTimeDays}d</span>
@@ -525,7 +525,7 @@ export default function TriageDetailPage({ params }: { params: Promise<{ id: str
                 {/* Live metrics for selected option */}
                 {selectedScenario && (
                   <div className="mt-5 pt-5 border-t border-slate-100">
-                    <div className="grid grid-cols-4 gap-3">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                       <div className="text-center p-3 bg-slate-50 rounded-lg">
                         <p className="text-xl font-bold text-slate-900">₹{Math.round(selectedScenario.recoveryValue * 83).toLocaleString("en-IN")}</p>
                         <p className="text-[10px] text-slate-500 uppercase">Recovery</p>
@@ -583,18 +583,18 @@ export default function TriageDetailPage({ params }: { params: Promise<{ id: str
                   const isFirst = i === 0;
                   return (
                     <button key={dest.id} onClick={() => setSelectedRoute(i)}
-                      className={`w-full text-left p-4 rounded-lg border-2 transition-all ${isSelected ? "border-emerald-500 bg-emerald-50" : "border-slate-200 hover:border-slate-300"}`}>
-                      <div className="flex items-center justify-between">
+                      className={`w-full text-left p-3 sm:p-4 rounded-lg border-2 transition-all ${isSelected ? "border-emerald-500 bg-emerald-50" : "border-slate-200 hover:border-slate-300"}`}>
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                         <div className="flex items-center gap-3">
-                          <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${isSelected ? "border-emerald-500" : "border-slate-300"}`}>
+                          <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${isSelected ? "border-emerald-500" : "border-slate-300"}`}>
                             {isSelected && <div className="w-2 h-2 rounded-full bg-emerald-500" />}
                           </div>
-                          <div>
-                            <div className="flex items-center gap-2">
-                              <span className="font-medium text-slate-900">{dest.name}</span>
+                          <div className="min-w-0">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <span className="font-medium text-slate-900 text-sm sm:text-base">{dest.name}</span>
                               {isFirst && <Badge className="bg-emerald-100 text-emerald-700 border-emerald-200 text-[10px]">Recommended</Badge>}
                             </div>
-                            <span className="text-xs text-slate-500">{dest.detail}</span>
+                            <span className="text-xs text-slate-500 break-words">{dest.detail}</span>
                           </div>
                         </div>
                       </div>
@@ -644,28 +644,28 @@ export default function TriageDetailPage({ params }: { params: Promise<{ id: str
                     const marginDelta = cons.netMargin - recommendedBuyerCons.netMargin;
                     return (
                       <button key={buyer.orderId} onClick={() => setSelectedBuyer(i)}
-                        className={`w-full text-left p-4 rounded-lg border-2 transition-all ${isSelected ? "border-blue-500 bg-blue-50" : "border-slate-200 hover:border-slate-300"}`}>
-                        <div className="flex items-center justify-between">
+                        className={`w-full text-left p-3 sm:p-4 rounded-lg border-2 transition-all ${isSelected ? "border-blue-500 bg-blue-50" : "border-slate-200 hover:border-slate-300"}`}>
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                           <div className="flex items-center gap-3">
-                            <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${isSelected ? "border-blue-500" : "border-slate-300"}`}>
+                            <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${isSelected ? "border-blue-500" : "border-slate-300"}`}>
                               {isSelected && <div className="w-2 h-2 rounded-full bg-blue-500" />}
                             </div>
-                            <div>
-                              <div className="flex items-center gap-2">
+                            <div className="min-w-0">
+                              <div className="flex items-center gap-2 flex-wrap">
                                 <span className="font-medium text-slate-900">{buyer.customerName}</span>
                                 {buyer.isPrime && <Badge className="bg-blue-100 text-blue-700 border-blue-200 text-[9px]">Prime</Badge>}
                                 {isFirst && <Badge className="bg-blue-100 text-blue-700 border-blue-200 text-[10px]">Recommended</Badge>}
                               </div>
-                              <span className="text-xs text-slate-500">{buyer.city} • {buyer.distanceFromFacilityKm}km from facility • Order {buyer.orderId}</span>
+                              <span className="text-xs text-slate-500 break-words">{buyer.city} • {buyer.distanceFromFacilityKm}km from facility • Order {buyer.orderId}</span>
                             </div>
                           </div>
-                          <div className="text-right">
+                          <div className="text-right ml-7 sm:ml-0">
                             <p className="text-xs text-slate-500">{buyer.productMatch}% match • Waiting {buyer.waitingDays}d</p>
                           </div>
                         </div>
                         {isSelected && (
                           <div className="mt-3 pt-3 border-t border-slate-100">
-                            <div className="grid grid-cols-4 gap-2 text-center">
+                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
                               <div><p className="text-sm font-bold text-amber-700">₹{Math.round(cons.shippingCost * 83).toLocaleString("en-IN")}</p><p className="text-[9px] text-slate-500">Shipping Cost</p></div>
                               <div><p className="text-sm font-bold text-slate-900">{cons.deliveryDays}d</p><p className="text-[9px] text-slate-500">Delivery</p></div>
                               <div><p className="text-sm font-bold text-emerald-700">{cons.co2}kg</p><p className="text-[9px] text-slate-500">CO₂ (last mile)</p></div>
@@ -739,9 +739,9 @@ export default function TriageDetailPage({ params }: { params: Promise<{ id: str
 
         return (
           <div className="fixed bottom-0 left-0 right-0 border-t border-slate-200 bg-white/95 backdrop-blur-xl py-3 px-4 z-40 shadow-lg">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
               {/* Top row: breakdown */}
-              <div className="flex items-center justify-between gap-4 mb-2">
+              <div className="flex items-center justify-between gap-4 mb-2 overflow-x-auto">
                 <div className="flex items-center gap-1 text-xs text-slate-600 flex-wrap">
                   {breakdown.map((item, i) => (
                     <span key={i} className="flex items-center gap-0.5">
@@ -749,19 +749,19 @@ export default function TriageDetailPage({ params }: { params: Promise<{ id: str
                       <span className={item.isPositive ? "text-emerald-700 font-medium" : "text-amber-700 font-medium"}>
                         {item.value >= 0 ? "+" : ""}{item.value < 0 ? "-" : ""}₹{Math.round(Math.abs(item.value) * 83).toLocaleString("en-IN")}
                       </span>
-                      <span className="text-slate-400">{item.label}</span>
+                      <span className="text-slate-400 whitespace-nowrap">{item.label}</span>
                     </span>
                   ))}
                 </div>
               </div>
               {/* Bottom row: final numbers + action */}
-              <div className="flex items-center justify-between gap-4">
-                <div className="flex items-center gap-5">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+                <div className="flex items-center gap-3 sm:gap-5 flex-wrap">
                   <div>
-                    <p className="text-2xl font-bold text-slate-900">₹{Math.round(finalRecovery * 83).toLocaleString("en-IN")}</p>
+                    <p className="text-xl sm:text-2xl font-bold text-slate-900">₹{Math.round(finalRecovery * 83).toLocaleString("en-IN")}</p>
                     <p className="text-[10px] text-slate-500 uppercase">Final Net Recovery</p>
                   </div>
-                  <div className="h-8 w-px bg-slate-200" />
+                  <div className="hidden sm:block h-8 w-px bg-slate-200" />
                   <div className="text-center">
                     <p className={`text-sm font-bold ${recoveryRate >= 70 ? "text-emerald-700" : recoveryRate >= 40 ? "text-amber-700" : "text-red-600"}`}>{recoveryRate}%</p>
                     <p className="text-[10px] text-slate-500">Recovery Rate</p>
@@ -781,7 +781,7 @@ export default function TriageDetailPage({ params }: { params: Promise<{ id: str
                   )}
                 </div>
                 <button onClick={handleExecute} disabled={isRouting}
-                  className="px-8 py-2.5 text-sm font-bold text-white bg-slate-900 rounded-lg hover:bg-slate-800 shadow-md flex items-center gap-2">
+                  className="w-full sm:w-auto px-6 sm:px-8 py-2.5 text-sm font-bold text-white bg-slate-900 rounded-lg hover:bg-slate-800 shadow-md flex items-center justify-center gap-2 min-h-[44px]">
                   {isRouting ? <><Loader2 size={16} className="animate-spin" />Routing...</> : <>Execute: {selectedScenario.scenario}</>}
                 </button>
               </div>

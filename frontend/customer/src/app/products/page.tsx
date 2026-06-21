@@ -74,7 +74,7 @@ function ProductListingContent() {
 
 export default function ProductListingPage() {
     return (
-        <Suspense fallback={<div className="max-w-[1500px] mx-auto px-4 py-6"><div className="skeleton h-8 w-48 mb-4" /><div className="grid grid-cols-4 gap-4">{Array.from({ length: 8 }).map((_, i) => <div key={i} className="skeleton h-72" />)}</div></div>}>
+        <Suspense fallback={<div className="max-w-[1500px] mx-auto px-4 py-6"><div className="skeleton h-8 w-48 mb-4" /><div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">{Array.from({ length: 8 }).map((_, i) => <div key={i} className="skeleton h-72" />)}</div></div>}>
             <ProductListingContent />
         </Suspense>
     );

@@ -14,7 +14,7 @@ export function AiExecutiveSummary({ summary }: { summary: AiSummary }) {
           <p className="text-lg font-medium text-slate-800 leading-snug mb-6">
             "{summary.headline}"
           </p>
-          
+
           <div className="grid gap-4 sm:grid-cols-2 mb-6">
             <div className="bg-white rounded-lg p-4 border shadow-sm">
               <div className="flex items-center gap-2 text-amber-700 font-semibold text-sm mb-1">
@@ -33,7 +33,7 @@ export function AiExecutiveSummary({ summary }: { summary: AiSummary }) {
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-2 border-t pt-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 border-t pt-4">
           <div>
             <p className="text-xs text-slate-500 uppercase font-semibold">Recovered This Week</p>
             <p className="text-lg font-bold text-slate-900">{summary.stats.recovered}</p>

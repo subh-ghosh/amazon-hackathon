@@ -92,18 +92,18 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
     return (
         <div className="max-w-[1500px] mx-auto px-4 py-6">
             {/* Breadcrumb */}
-            <nav className="text-sm text-[#007185] mb-4 flex gap-1">
+            <nav className="text-sm text-[#007185] mb-4 flex gap-1 flex-wrap">
                 <span className="hover:text-[#C7511F] hover:underline cursor-pointer" onClick={() => router.push("/")}>Amazon</span>
                 <span className="text-gray-400">›</span>
                 <span className="hover:text-[#C7511F] hover:underline cursor-pointer" onClick={() => router.push(`/products?category=${product.category}`)}>{product.category}</span>
                 <span className="text-gray-400">›</span>
-                <span className="text-gray-500">{product.brand}</span>
+                <span className="text-gray-500 truncate">{product.brand}</span>
             </nav>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 {/* Image */}
                 <div className="lg:col-span-5">
-                    <div className="sticky top-[120px] bg-white border border-gray-200 rounded-lg p-6">
+                    <div className="lg:sticky lg:top-[120px] bg-white border border-gray-200 rounded-lg p-4 sm:p-6">
                         <img src={product.image} alt={product.title} className="w-full aspect-square object-cover rounded" />
                     </div>
                 </div>
@@ -156,7 +156,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
                         <div className="flex items-center gap-2 mb-2">
                             <span className="text-sm font-bold">Offers</span>
                         </div>
-                        <div className="grid grid-cols-3 gap-2">
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                             <div className="border border-gray-200 rounded-lg p-2.5">
                                 <p className="text-xs font-bold text-gray-900">No Cost EMI</p>
                                 <p className="text-[11px] text-gray-600 line-clamp-2">EMI from ₹{emi.toLocaleString("en-IN")} on select cards</p>
@@ -173,7 +173,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
                     </div>
 
                     {/* Service badges row */}
-                    <div className="flex items-center gap-4 mb-4 pb-4 border-b border-gray-200 text-xs text-gray-600">
+                    <div className="grid grid-cols-4 gap-2 mb-4 pb-4 border-b border-gray-200 text-xs text-gray-600">
                         <div className="text-center">
                             <Truck size={16} className="mx-auto mb-1 text-gray-500" />
                             <p>Free Delivery</p>
@@ -296,23 +296,25 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
                     {/* Product specifications table */}
                     <div className="mb-4 pb-4 border-t border-gray-200 pt-4">
                         <h3 className="font-bold text-base mb-3">Technical Details</h3>
-                        <table className="w-full text-sm">
-                            <tbody className="divide-y divide-gray-100">
-                                <tr><td className="py-2 pr-4 text-gray-500 font-medium w-1/3">Brand</td><td className="py-2 text-gray-900">{product.brand}</td></tr>
-                                <tr><td className="py-2 pr-4 text-gray-500 font-medium">Category</td><td className="py-2 text-gray-900">{product.category}</td></tr>
-                                <tr><td className="py-2 pr-4 text-gray-500 font-medium">Weight</td><td className="py-2 text-gray-900">{product.weight_kg} kg</td></tr>
-                                <tr><td className="py-2 pr-4 text-gray-500 font-medium">Dimensions</td><td className="py-2 text-gray-900">{product.length_cm} × {product.width_cm} × {product.height_cm} cm</td></tr>
-                                <tr><td className="py-2 pr-4 text-gray-500 font-medium">Packaging</td><td className="py-2 text-gray-900 capitalize">{product.packaging_material} ({product.packaging_weight_kg} kg)</td></tr>
-                                <tr><td className="py-2 pr-4 text-gray-500 font-medium">Seller</td><td className="py-2 text-[#007185]">{product.brand} India Official</td></tr>
-                                <tr><td className="py-2 pr-4 text-gray-500 font-medium">Item ID</td><td className="py-2 text-gray-900 font-mono text-xs">{product.product_id}</td></tr>
-                            </tbody>
-                        </table>
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-sm">
+                                <tbody className="divide-y divide-gray-100">
+                                    <tr><td className="py-2 pr-4 text-gray-500 font-medium w-1/3">Brand</td><td className="py-2 text-gray-900">{product.brand}</td></tr>
+                                    <tr><td className="py-2 pr-4 text-gray-500 font-medium">Category</td><td className="py-2 text-gray-900">{product.category}</td></tr>
+                                    <tr><td className="py-2 pr-4 text-gray-500 font-medium">Weight</td><td className="py-2 text-gray-900">{product.weight_kg} kg</td></tr>
+                                    <tr><td className="py-2 pr-4 text-gray-500 font-medium">Dimensions</td><td className="py-2 text-gray-900">{product.length_cm} × {product.width_cm} × {product.height_cm} cm</td></tr>
+                                    <tr><td className="py-2 pr-4 text-gray-500 font-medium">Packaging</td><td className="py-2 text-gray-900 capitalize">{product.packaging_material} ({product.packaging_weight_kg} kg)</td></tr>
+                                    <tr><td className="py-2 pr-4 text-gray-500 font-medium">Seller</td><td className="py-2 text-[#007185]">{product.brand} India Official</td></tr>
+                                    <tr><td className="py-2 pr-4 text-gray-500 font-medium">Item ID</td><td className="py-2 text-gray-900 font-mono text-xs break-all">{product.product_id}</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
                 {/* Buy Box */}
                 <div className="lg:col-span-3">
-                    <div className="border border-gray-300 rounded-lg p-5 sticky top-[120px]">
+                    <div className="border border-gray-300 rounded-lg p-4 sm:p-5 lg:sticky lg:top-[120px]">
                         <p className="text-[28px] font-light mb-1">₹{inrPrice.toLocaleString("en-IN")}</p>
                         <p className="text-xs text-gray-500 mb-2">M.R.P.: <span className="line-through">₹{mrp.toLocaleString("en-IN")}</span> ({discount}% off)</p>
                         <div className="flex items-center gap-2 mb-1">
@@ -346,8 +348,8 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
                             const cartProduct = isRenewed ? { ...product, price: product.price * 0.70 } : product;
                             addToCart(cartProduct);
                             if (isRenewed) earnCredits("Purchased Renewed item", 50);
-                        }} className="btn-amazon w-full mb-2">Add to Cart</button>
-                        <button onClick={handleBuyNow} className="btn-buy-now w-full">Buy Now</button>
+                        }} className="btn-amazon w-full mb-2 min-h-[44px]">Add to Cart</button>
+                        <button onClick={handleBuyNow} className="btn-buy-now w-full min-h-[44px]">Buy Now</button>
 
                         <div className="mt-4 pt-4 border-t border-gray-200 space-y-1.5 text-xs text-gray-600">
                             <div className="flex justify-between"><span>Ships from</span><span className="text-[#007185]">Amazon</span></div>

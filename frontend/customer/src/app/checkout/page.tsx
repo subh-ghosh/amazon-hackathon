@@ -154,11 +154,11 @@ export default function CheckoutPage() {
 
                 {/* Right - Order Summary */}
                 <div>
-                    <div className="bg-white rounded-xl p-4 shadow-sm sticky top-[120px]">
+                    <div className="bg-white rounded-xl p-4 shadow-sm lg:sticky lg:top-[120px]">
                         <button
                             onClick={handlePlaceOrder}
                             disabled={processing}
-                            className="btn-amazon w-full mb-4 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="btn-amazon w-full mb-4 disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
                         >
                             {processing ? "Processing..." : "Place your order"}
                         </button>

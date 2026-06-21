@@ -4,12 +4,12 @@ import type { KpiMetric } from "@/types/executive-impact";
 
 export function ExecutiveKpiRow({ kpis }: { kpis: KpiMetric[] }) {
   return (
-    <div className="grid gap-4 grid-cols-2 lg:grid-cols-5">
+    <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-5">
       {kpis.map((kpi) => {
         const isUp = kpi.trend === "up";
         const TrendIcon = isUp ? ArrowUpRight : ArrowDownRight;
         const trendColor = isUp ? "text-emerald-600" : "text-rose-600";
-        
+
         return (
           <Card key={kpi.label}>
             <CardContent className="p-5">

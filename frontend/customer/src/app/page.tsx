@@ -80,7 +80,7 @@ export default function HomePage() {
             <div className="max-w-[1500px] mx-auto px-4 mb-6">
                 <div className="bg-white rounded-lg border border-gray-200 p-5">
                     <h2 className="text-lg font-bold text-gray-900 mb-3">Shop by Category</h2>
-                    <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
                         {CATEGORIES.map((cat) => (
                             <Link
                                 key={cat}

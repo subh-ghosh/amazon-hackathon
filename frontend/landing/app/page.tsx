@@ -23,10 +23,10 @@ export default function LandingPage() {
                     </p>
 
                     <div className="flex flex-wrap justify-center gap-4">
-                        <a href="https://amazon-hackathon-phi.vercel.app" target="_blank" className="px-8 py-4 bg-[#FF9900] text-[#131921] font-bold rounded-full hover:bg-[#FFB84D] transition-all animate-pulse-glow">
+                        <a href="https://amazon-hackathon-customer-3kyjo2sy1.vercel.app" target="_blank" className="px-8 py-4 bg-[#FF9900] text-[#131921] font-bold rounded-full hover:bg-[#FFB84D] transition-all animate-pulse-glow min-h-[44px] flex items-center">
                             Try Live Demo →
                         </a>
-                        <a href="https://github.com/subh-ghosh/amazon-hackathon" target="_blank" className="px-8 py-4 bg-white/5 border border-white/20 text-white font-medium rounded-full hover:bg-white/10 transition-all">
+                        <a href="https://github.com/subh-ghosh/amazon-hackathon" target="_blank" className="px-8 py-4 bg-white/5 border border-white/20 text-white font-medium rounded-full hover:bg-white/10 transition-all min-h-[44px] flex items-center">
                             View on GitHub
                         </a>
                     </div>
@@ -97,7 +97,7 @@ export default function LandingPage() {
                     <p className="text-sm font-medium text-[#FF9900] uppercase tracking-wider mb-4">Architecture</p>
                     <h2 className="text-3xl md:text-4xl font-bold text-white mb-12">12 microservices. Fully serverless.</h2>
 
-                    <div className="bg-white/5 border border-white/10 rounded-2xl p-8 font-mono text-sm">
+                    <div className="bg-white/5 border border-white/10 rounded-2xl p-4 sm:p-8 font-mono text-xs sm:text-sm">
                         <pre className="text-gray-300 overflow-x-auto whitespace-pre">{`
 ┌─────────────────────────────────────────────────────────────┐
 │              FRONTEND (Next.js 14 + Vercel)                  │
@@ -121,7 +121,7 @@ export default function LandingPage() {
                     </div>
 
                     {/* Tech Stack */}
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+                    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-8">
                         {[
                             { tech: "Next.js 14", role: "Frontend" },
                             { tech: "Python / FastAPI", role: "Backend" },
@@ -149,10 +149,10 @@ export default function LandingPage() {
 
                     <div className="grid md:grid-cols-2 gap-6">
                         {[
-                            { name: "Customer Experience", url: "https://amazon-hackathon-phi.vercel.app", desc: "Shop with AI purchase guidance, intelligent returns, certified renewed marketplace", audience: "Shoppers" },
-                            { name: "Operations Dashboard", url: "https://amazon-hackathon-udpw.vercel.app", desc: "Real-time triage, recovery scenarios, demand-aware buyer matching", audience: "Warehouse Ops" },
-                            { name: "Executive Dashboard", url: "https://amazon-hackathon-pjt3.vercel.app", desc: "Revenue recovery, sustainability KPIs, circular economy metrics", audience: "Leadership" },
-                            { name: "Seller Dashboard", url: "https://amazon-hackathon-lct1.vercel.app", desc: "Return cause analytics, packaging intelligence, actionable insights", audience: "Sellers" },
+                            { name: "Customer Experience", url: "https://amazon-hackathon-customer-3kyjo2sy1.vercel.app", desc: "Shop with AI purchase guidance, intelligent returns, certified renewed marketplace", audience: "Shoppers" },
+                            { name: "Operations Dashboard", url: "https://amazon-hackathon-mcga0yax3-subartaghosh2025-5634s-projects.vercel.app", desc: "Real-time triage, recovery scenarios, demand-aware buyer matching", audience: "Warehouse Ops" },
+                            { name: "Executive Dashboard", url: "https://amazon-hackathon-executive-5rtjgoynw.vercel.app", desc: "Revenue recovery, sustainability KPIs, circular economy metrics", audience: "Leadership" },
+                            { name: "Seller Dashboard", url: "https://amazon-hackathon-seller-j9z8oijvv.vercel.app", desc: "Return cause analytics, packaging intelligence, actionable insights", audience: "Sellers" },
                         ].map((app) => (
                             <a key={app.name} href={app.url} target="_blank" className="group bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-[#FF9900]/50 hover:bg-white/[0.03] transition-all">
                                 <div className="flex items-center justify-between mb-3">
@@ -199,7 +199,7 @@ export default function LandingPage() {
                     <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Kolkata Kode Riders</h2>
                     <p className="text-gray-400 mb-12">Vellore Institute of Technology, Vellore</p>
 
-                    <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-2xl mx-auto">
                         {[
                             { name: "Subarta Ghosh", role: "Cloud & Backend" },
                             { name: "Arhit Basu", role: "Backend" },
@@ -225,7 +225,7 @@ export default function LandingPage() {
                         <p className="text-xs text-gray-600">HackOn with Amazon 2026 · Theme: AI-Powered Returns & Sustainable Resale</p>
                     </div>
                     <div className="flex gap-4">
-                        <a href="https://amazon-hackathon-phi.vercel.app" target="_blank" className="px-6 py-3 bg-[#FF9900] text-[#131921] font-bold text-sm rounded-full hover:bg-[#FFB84D] transition-all">
+                        <a href="https://amazon-hackathon-customer-3kyjo2sy1.vercel.app" target="_blank" className="px-6 py-3 bg-[#FF9900] text-[#131921] font-bold text-sm rounded-full hover:bg-[#FFB84D] transition-all">
                             Live Demo
                         </a>
                         <a href="https://github.com/subh-ghosh/amazon-hackathon" target="_blank" className="px-6 py-3 bg-white/5 border border-white/20 text-white text-sm font-medium rounded-full hover:bg-white/10 transition-all">
