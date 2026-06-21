@@ -10,7 +10,7 @@ An intelligent ecosystem where returned or unused products automatically find th
 
 | Application | URL | Audience |
 |-------------|-----|----------|
-| 🏠 **Project Landing Page** | [amazon-hackathon-landing.vercel.app](https://amazon-hackathon-landing-61n9tjqoacm7rgdvlxrqpenbzyds.vercel.app/) | Overview |
+| 🏠 **Project Landing Page** | [amazon-hackathon-landing.vercel.app](https://amazon-hackathon-landing.vercel.app/) | Overview |
 | 🛒 Customer Experience | [amazon-hackathon-customer-3kyjo2sy1.vercel.app](https://amazon-hackathon-customer-3kyjo2sy1.vercel.app/) | Shoppers |
 | 📊 Executive Dashboard | [amazon-hackathon-executive-5rtjgoynw.vercel.app](https://amazon-hackathon-executive-5rtjgoynw.vercel.app/) | Leadership |
 | 🏭 Operations Dashboard | [amazon-hackathon-mcga0yax3-subartaghosh2025-5634s-projects.vercel.app](https://amazon-hackathon-mcga0yax3-subartaghosh2025-5634s-projects.vercel.app/) | Warehouse Ops |
