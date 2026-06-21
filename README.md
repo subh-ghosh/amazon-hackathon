@@ -16,6 +16,8 @@ An intelligent ecosystem where returned or unused products automatically find th
 | 🏭 Operations Dashboard | [amazon-hackathon-mcga0yax3-subartaghosh2025-5634s-projects.vercel.app](https://amazon-hackathon-mcga0yax3-subartaghosh2025-5634s-projects.vercel.app/) | Warehouse Ops |
 | 📦 Seller Dashboard | [amazon-hackathon-seller-j9z8oijvv.vercel.app](https://amazon-hackathon-seller-j9z8oijvv.vercel.app/) | Third-party Sellers |
 
+> 💡 **Architecture Migration Note (Important for Judges):** Please note that the backend architecture described in our original submission PDF (ECS Fargate, Neptune, ALB) has been completely rewritten. We quickly realized the original design exhausted our AWS Free Tier credits. Because we are constantly learning and adapting, we successfully migrated our entire 12-microservice backend to a **100% Serverless Architecture** (AWS Lambda, API Gateway, DynamoDB On-Demand). This new setup scales to zero and costs practically $0 when idle. We sincerely apologize for the inconvenience and any confusion between the submission document and this live repository!
+
 ## Architecture
 
 ```
@@ -25,18 +27,18 @@ An intelligent ecosystem where returned or unused products automatically find th
 └───────────────────────────┬─────────────────────────────┘
                             │ Server-side proxy
 ┌───────────────────────────▼─────────────────────────────┐
-│            12 MICROSERVICES (AWS ECS Fargate)            │
+│           12 MICROSERVICES (AWS Lambda HTTP APIs)       │
 ├─────────────────┬─────────────────┬─────────────────────┤
 │ INTELLIGENCE    │ RECOVERY        │ PLATFORM            │
 │ S1  Prevention  │ S5  Simulator   │ S4  Digital Twin    │
 │ S2  Root Cause  │ S6  Optimizer   │ S11 Seller Intel    │
 │ S3  Fraud       │ S7  Logistics   │ S12 Knowledge Graph │
-│ S10 Packaging   │ S8  Returnless  │     (Neptune DB)    │
+│ S10 Packaging   │ S8  Returnless  │     (DynamoDB)      │
 │                 │ S9  Circular    │                     │
 └─────────────────┴─────────────────┴─────────────────────┘
                             │
 ┌───────────────────────────▼─────────────────────────────┐
-│  AWS: ECS Fargate · ALB · DynamoDB · Neptune · CDK      │
+│  AWS: Lambda · API Gateway · DynamoDB · CDK (Serverless)│
 └─────────────────────────────────────────────────────────┘
 ```
 
