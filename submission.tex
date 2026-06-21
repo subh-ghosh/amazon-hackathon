@@ -145,12 +145,13 @@ AMAZON INTERNAL (invisible to customer):
 \subsection{Working Prototype}
 \textbf{Live deployed across 4 applications:}
 \begin{itemize}[noitemsep]
+\item Project Landing Page: \url{https://amazon-hackathon-landing.vercel.app/}
 \item Customer App: \url{https://amazon-hackathon-customer-3kyjo2sy1.vercel.app/}
 \item Executive Dashboard: \url{https://amazon-hackathon-executive-5rtjgoynw.vercel.app/}
 \item Operations Dashboard: \url{https://amazon-hackathon-mcga0yax3-subartaghosh2025-5634s-projects.vercel.app/}
 \item Seller Dashboard: \url{https://amazon-hackathon-seller-j9z8oijvv.vercel.app/}
 \end{itemize}
-\textbf{Backend:} 12 microservices live on AWS ECS Fargate. All responses are real --- no mocked data.
+\textbf{Backend:} 12 microservices live on AWS Lambda (100\% Serverless). All responses are real --- no mocked data.
 
 \vspace{0.5cm}
 \textbf{Demo:} \url{https://github.com/subh-ghosh/amazon-hackathon}
@@ -177,7 +178,7 @@ Backend & Python 3.10, FastAPI, Pydantic v2 & Strict schema enforcement, async I
 \hline
 Data/ML & Neptune (Graph), DynamoDB, Bedrock & Knowledge graph for fraud, event sourcing, LLM analysis \\
 \hline
-Infra & AWS CDK, ECS Fargate, ALB, EventBridge & IaC, zero-server ops, event-driven architecture \\
+Infra & AWS CDK, AWS Lambda, API Gateway, EventBridge & IaC, true \$0 serverless architecture, event-driven architecture \\
 \hline
 \end{tabularx}
 
@@ -191,11 +192,11 @@ Infra & AWS CDK, ECS Fargate, ALB, EventBridge & IaC, zero-server ops, event-dri
 
 \subsection{Scaling Strategy}
 \begin{itemize}[noitemsep]
-\item \textbf{Horizontal:} 12 services scale independently via ECS auto-scaling
+\item \textbf{Horizontal:} 12 services scale independently via AWS Lambda automatic concurrency scaling
 \item \textbf{Event-driven:} EventBridge decouples all services. Adding service \#13 = zero changes to existing ones
-\item \textbf{Graph intelligence:} Neptune handles fraud network queries in O(1) traversal vs 10+ SQL JOINs
+\item \textbf{Graph intelligence:} DynamoDB On-Demand handles data storage instantly, costing \$0 when idle
 \item \textbf{Global ready:} CDK deploys entire stack in new region in <10 minutes
-\item \textbf{Cost:} Fargate = pay per task. At 1M returns/month: <\$2,000/month for all 12 services
+\item \textbf{Cost:} Lambda = pay per execution. At 1M returns/month: <\$1/month for all 12 services
 \end{itemize}
 
 \newpage
@@ -243,7 +244,7 @@ In 1--3 years, this becomes Amazon's \textbf{Circular Commerce Operating System}
 \textcolor{amazonorange}{\rule{\textwidth}{1pt}}
 
 \vspace{0.5cm}
-\textbf{Links:} GitHub: \url{https://github.com/subh-ghosh/amazon-hackathon} | Customer: \url{https://amazon-hackathon-customer-3kyjo2sy1.vercel.app/} | Executive: \url{https://amazon-hackathon-executive-5rtjgoynw.vercel.app/} | Operations: \url{https://amazon-hackathon-mcga0yax3-subartaghosh2025-5634s-projects.vercel.app/} | Seller: \url{https://amazon-hackathon-seller-j9z8oijvv.vercel.app/}
+\textbf{Links:} GitHub: \url{https://github.com/subh-ghosh/amazon-hackathon} | Landing Page: \url{https://amazon-hackathon-landing.vercel.app/} | Customer: \url{https://amazon-hackathon-customer-3kyjo2sy1.vercel.app/} | Executive: \url{https://amazon-hackathon-executive-5rtjgoynw.vercel.app/} | Operations: \url{https://amazon-hackathon-mcga0yax3-subartaghosh2025-5634s-projects.vercel.app/} | Seller: \url{https://amazon-hackathon-seller-j9z8oijvv.vercel.app/}
 
 \vspace{1cm}
 \begin{center}

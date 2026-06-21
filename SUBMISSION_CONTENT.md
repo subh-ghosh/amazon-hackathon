@@ -98,12 +98,13 @@ Return received → Fraud check → Quality grading → Recovery decision
 
 **Live deployed across 4 applications:**
 
+- Project Landing Page: https://amazon-hackathon-landing.vercel.app/
 - Customer App: https://amazon-hackathon-customer-3kyjo2sy1.vercel.app/
 - Executive Dashboard: https://amazon-hackathon-executive-5rtjgoynw.vercel.app/
 - Operations Dashboard: https://amazon-hackathon-mcga0yax3-subartaghosh2025-5634s-projects.vercel.app/
 - Seller Dashboard: https://amazon-hackathon-seller-j9z8oijvv.vercel.app/
 
-**Backend: 12 microservices live on AWS ECS Fargate**
+**Backend: 12 microservices live on AWS Lambda (100% Serverless)**
 
 All endpoints are live and responding. The frontend calls real backend services through server-side proxies — no mocked data.
 
@@ -121,19 +122,19 @@ All endpoints are live and responding. The frontend calls real backend services 
 └────────────────────────────┬────────────────────────────────┘
                              │ Server-side proxy (no CORS)
 ┌────────────────────────────▼────────────────────────────────┐
-│               12 MICROSERVICES (AWS ECS Fargate)              │
+│               12 MICROSERVICES (AWS Lambda HTTP APIs)              │
 ├──────────────────┬──────────────────┬───────────────────────┤
 │ INTELLIGENCE     │ RECOVERY         │ PLATFORM              │
 │ S1  Prevention   │ S5  Simulator    │ S4  Digital Twin      │
 │ S2  Root Cause   │ S6  Optimizer    │ S11 Seller Intel      │
 │ S3  Fraud/Trust  │ S7  Logistics    │ S12 Knowledge Graph   │
-│ S10 Packaging    │ S8  Returnless   │     (Neptune DB)      │
+│ S10 Packaging    │ S8  Returnless   │     (DynamoDB)      │
 │                  │ S9  Circular     │                       │
 └──────────────────┴──────────────────┴───────────────────────┘
                              │
 ┌────────────────────────────▼────────────────────────────────┐
 │                    AWS INFRASTRUCTURE                         │
-│  ECS Fargate · ALB · DynamoDB · Neptune · EventBridge · CDK │
+│  Lambda · API Gateway · DynamoDB · EventBridge · CDK (Serverless) │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -143,8 +144,8 @@ All endpoints are live and responding. The frontend calls real backend services 
 |-------|-----------|-----|
 | Frontend | Next.js 14, TypeScript, Tailwind CSS | SSR for proxy routes, type-safe API contracts, rapid UI iteration |
 | Backend | Python 3.10, FastAPI, Pydantic v2 | Strict schema enforcement (extra="forbid"), async I/O, auto OpenAPI docs |
-| Data/ML | Amazon Neptune (Graph), DynamoDB, Bedrock | Knowledge graph for fraud networks, event sourcing, LLM root cause analysis |
-| Infra | AWS CDK, ECS Fargate, ALB, EventBridge | Infrastructure-as-code, zero-server management, event-driven architecture |
+| Data/ML | DynamoDB, Bedrock | Event sourcing, fast lookups, LLM root cause analysis, event sourcing, LLM root cause analysis |
+| Infra | AWS CDK, AWS Lambda, API Gateway, EventBridge | Infrastructure-as-code, true $0 serverless architecture, event-driven architecture |
 
 ### Key Algorithms & Complexity
 
@@ -158,11 +159,11 @@ All endpoints are live and responding. The frontend calls real backend services 
 
 ### Scaling Strategy
 
-- **Horizontal**: Each of the 12 services scales independently via ECS auto-scaling. A spike in returns doesn't affect product browsing.
+- **Horizontal**: Each of the 12 services scales independently via AWS Lambda automatic concurrency scaling. A spike in returns doesn't affect product browsing.
 - **Event-driven**: Services communicate via EventBridge — fully decoupled. Adding a 13th service requires zero changes to existing ones.
-- **Graph intelligence**: Neptune handles relationship queries that would require 10+ JOINs in SQL — fraud network detection in O(1) traversal.
-- **Global ready**: ALB + ECS Fargate in any region. CDK deploys the entire stack in a new region in under 10 minutes.
-- **Cost efficiency**: Fargate = pay only for running tasks. No idle EC2 instances. At 1M returns/month, estimated cost: <$2,000/month for all 12 services.
+- **Graph intelligence**: DynamoDB On-Demand handles all our data storage instantly, costing $0 when idle.
+- **Global ready**: API Gateway + AWS Lambda in any region. CDK deploys the entire stack in a new region in under 10 minutes.
+- **Cost efficiency**: Lambda = pay per millisecond of execution. $0/month base cost. At 1M returns/month, estimated cost: <$1/month for all 12 services using the free tier.
 
 ---
 
@@ -205,6 +206,7 @@ In 1-3 years, this becomes Amazon's **Circular Commerce Operating System** — t
 - GitHub: https://github.com/subh-ghosh/amazon-hackathon
 - Demo Video: [URL]
 - Live Apps:
+  - Project Landing Page: https://amazon-hackathon-landing.vercel.app/
   - Customer: https://amazon-hackathon-customer-3kyjo2sy1.vercel.app/
   - Executive Dashboard: https://amazon-hackathon-executive-5rtjgoynw.vercel.app/
   - Operations Dashboard: https://amazon-hackathon-mcga0yax3-subartaghosh2025-5634s-projects.vercel.app/
