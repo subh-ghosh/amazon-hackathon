@@ -3,8 +3,8 @@
   "expiration": false,
   "isDynamicRoute": false,
   "htmlSize": 11549,
-  "group": 4,
-  "bypassToken": "2c528aa847e26517a004e2cc8bbf331c",
+  "group": 5,
+  "bypassToken": "9f6c03516b6430e22572653adfecf4c9",
   "experimentalBypassFor": [
     {
       "type": "header",

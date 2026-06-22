@@ -100,7 +100,7 @@ export default function LandingPage() {
                     <div className="bg-white/5 border border-white/10 rounded-2xl p-4 sm:p-8 font-mono text-xs sm:text-sm">
                         <pre className="text-gray-300 overflow-x-auto whitespace-pre">{`
 ┌─────────────────────────────────────────────────────────────┐
-│              FRONTEND (Next.js 14 + Vercel)                  │
+│              FRONTEND (Next.js 14 + Cloudflare Pages)                  │
 │   Customer  ·  Seller Central  ·  Operations  ·  Executive  │
 └────────────────────────────┬────────────────────────────────┘
                              │ Server-side proxy
@@ -162,7 +162,7 @@ export default function LandingPage() {
                                 <p className="text-sm text-gray-400 leading-relaxed">{app.desc}</p>
                                 <div className="mt-4 flex items-center gap-2 text-xs text-[#FF9900] opacity-0 group-hover:opacity-100 transition-opacity">
                                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                                    Live on Vercel
+                                    Live on Cloudflare Edge
                                 </div>
                             </a>
                         ))}

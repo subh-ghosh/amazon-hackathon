@@ -117,7 +117,7 @@ All endpoints are live and responding. The frontend calls real backend services 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                    CUSTOMER EXPERIENCE                        │
-│  Next.js 14 + TypeScript + Tailwind (Vercel)                │
+│  Next.js 14 + TypeScript + Tailwind (Cloudflare Pages)                │
 │  [Customer App] [Seller Central] [Ops Dashboard] [Executive]│
 └────────────────────────────┬────────────────────────────────┘
                              │ Server-side proxy (no CORS)
