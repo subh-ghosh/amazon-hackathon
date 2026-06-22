@@ -2,6 +2,10 @@
 
 > **HackOn with Amazon 2026** — Team KKR (Kolkata Kode Riders)
 
+> ⚠️ **IMPORTANT NOTE FOR JUDGES:** Our original Vercel hosting was suspended due to usage limits. All frontends have been migrated to **Cloudflare Pages** for maximum reliability. The original submission document may contain old Vercel URLs — **please use the links in this README as the authoritative source.** All services are fully live and operational.
+
+> 💡 **Architecture Note:** Our backend runs on a **100% Serverless Architecture** (AWS Lambda, API Gateway, DynamoDB On-Demand) deployed via AWS CDK. Frontends are hosted on **Cloudflare Pages** for maximum reliability and global edge performance. The entire platform scales to zero and costs practically $0 when idle.
+
 An intelligent ecosystem where returned or unused products automatically find their next best owner — through resale, refurbishment, donation, or recycling.
 
 ## 🚀 Live Demo
@@ -14,9 +18,6 @@ An intelligent ecosystem where returned or unused products automatically find th
 | 🏭 Operations Dashboard | [amazon-hackathon-ops-dashboard.pages.dev](https://amazon-hackathon-ops-dashboard.pages.dev/) | Warehouse Ops |
 | 📦 Seller Dashboard | [amazon-hackathon-seller-dashboard.pages.dev](https://amazon-hackathon-seller-dashboard.pages.dev/) | Third-party Sellers |
 
-> ⚠️ **IMPORTANT NOTE FOR JUDGES:** Our original Vercel hosting was suspended due to usage limits. All frontends have been migrated to **Cloudflare Pages** for maximum reliability. The original submission document may contain old Vercel URLs — **please use the links in this README as the authoritative source.** All services are fully live and operational.
-
-> 💡 **Architecture Note:** Our backend runs on a **100% Serverless Architecture** (AWS Lambda, API Gateway, DynamoDB On-Demand) deployed via AWS CDK. Frontends are hosted on **Cloudflare Pages** for maximum reliability and global edge performance. The entire platform scales to zero and costs practically $0 when idle.
 
 ## Architecture
 
