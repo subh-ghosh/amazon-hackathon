@@ -98,11 +98,11 @@ Return received → Fraud check → Quality grading → Recovery decision
 
 **Live deployed across 4 applications:**
 
-- Project Landing Page: https://amazon-hackathon-landing.pages.dev/
-- Customer App: https://amazon-hackathon-customer.pages.dev/
-- Executive Dashboard: https://amazon-hackathon-executive-dashboard.pages.dev/
-- Operations Dashboard: https://amazon-hackathon-ops-dashboard.pages.dev/
-- Seller Dashboard: https://amazon-hackathon-seller-dashboard.pages.dev/
+- Project Landing Page: https://hackathon-landing.pages.dev/
+- Customer App: https://hackathon-customer.pages.dev/
+- Executive Dashboard: https://hackathon-executive.pages.dev/
+- Operations Dashboard: https://hackathon-ops.pages.dev/
+- Seller Dashboard: https://hackathon-seller.pages.dev/
 
 **Backend: 12 microservices live on AWS Lambda (100% Serverless)**
 
@@ -206,11 +206,11 @@ In 1-3 years, this becomes Amazon's **Circular Commerce Operating System** — t
 - GitHub: https://github.com/subh-ghosh/amazon-hackathon
 - Demo Video: [URL]
 - Live Apps:
-  - Project Landing Page: https://amazon-hackathon-landing.pages.dev/
-  - Customer: https://amazon-hackathon-customer.pages.dev/
-  - Executive Dashboard: https://amazon-hackathon-executive-dashboard.pages.dev/
-  - Operations Dashboard: https://amazon-hackathon-ops-dashboard.pages.dev/
-  - Seller Dashboard: https://amazon-hackathon-seller-dashboard.pages.dev/
+  - Project Landing Page: https://hackathon-landing.pages.dev/
+  - Customer: https://hackathon-customer.pages.dev/
+  - Executive Dashboard: https://hackathon-executive.pages.dev/
+  - Operations Dashboard: https://hackathon-ops.pages.dev/
+  - Seller Dashboard: https://hackathon-seller.pages.dev/
 
 ---
 

@@ -12,11 +12,11 @@ An intelligent ecosystem where returned or unused products automatically find th
 
 | Application | URL | Audience |
 |-------------|-----|----------|
-| 🏠 **Project Landing Page** | [amazon-hackathon-landing.pages.dev](https://amazon-hackathon-landing.pages.dev/) | Overview |
-| 🛒 Customer Experience | [amazon-hackathon-customer.pages.dev](https://amazon-hackathon-customer.pages.dev/) | Shoppers |
-| 📊 Executive Dashboard | [amazon-hackathon-executive-dashboard.pages.dev](https://amazon-hackathon-executive-dashboard.pages.dev/) | Leadership |
-| 🏭 Operations Dashboard | [amazon-hackathon-ops-dashboard.pages.dev](https://amazon-hackathon-ops-dashboard.pages.dev/) | Warehouse Ops |
-| 📦 Seller Dashboard | [amazon-hackathon-seller-dashboard.pages.dev](https://amazon-hackathon-seller-dashboard.pages.dev/) | Third-party Sellers |
+| 🏠 **Project Landing Page** | [hackathon-landing.pages.dev](https://hackathon-landing.pages.dev/) | Overview |
+| 🛒 Customer Experience | [hackathon-customer.pages.dev](https://hackathon-customer.pages.dev/) | Shoppers |
+| 📊 Executive Dashboard | [hackathon-executive.pages.dev](https://hackathon-executive.pages.dev/) | Leadership |
+| 🏭 Operations Dashboard | [hackathon-ops.pages.dev](https://hackathon-ops.pages.dev/) | Warehouse Ops |
+| 📦 Seller Dashboard | [hackathon-seller.pages.dev](https://hackathon-seller.pages.dev/) | Third-party Sellers |
 
 
 ## Architecture
