@@ -12,7 +12,7 @@ An intelligent ecosystem where returned or unused products automatically find th
 
 | Application | URL | Audience |
 |-------------|-----|----------|
-| 🏠 **Project Landing Page** | [hackathon-landing.pages.dev](https://hackathon-landing.pages.dev/) | Overview |
+| 🏠 **Project Landing Page** | [hackathon-landing-6p9.pages.dev](https://hackathon-landing-6p9.pages.dev/) | Overview |
 | 🛒 Customer Experience | [hackathon-customer.pages.dev](https://hackathon-customer.pages.dev/) | Shoppers |
 | 📊 Executive Dashboard | [hackathon-executive.pages.dev](https://hackathon-executive.pages.dev/) | Leadership |
 | 🏭 Operations Dashboard | [hackathon-ops.pages.dev](https://hackathon-ops.pages.dev/) | Warehouse Ops |

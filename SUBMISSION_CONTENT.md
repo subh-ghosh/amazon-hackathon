@@ -98,7 +98,7 @@ Return received → Fraud check → Quality grading → Recovery decision
 
 **Live deployed across 4 applications:**
 
-- Project Landing Page: https://hackathon-landing.pages.dev/
+- Project Landing Page: https://hackathon-landing-6p9.pages.dev/
 - Customer App: https://hackathon-customer.pages.dev/
 - Executive Dashboard: https://hackathon-executive.pages.dev/
 - Operations Dashboard: https://hackathon-ops.pages.dev/
@@ -206,7 +206,7 @@ In 1-3 years, this becomes Amazon's **Circular Commerce Operating System** — t
 - GitHub: https://github.com/subh-ghosh/amazon-hackathon
 - Demo Video: [URL]
 - Live Apps:
-  - Project Landing Page: https://hackathon-landing.pages.dev/
+  - Project Landing Page: https://hackathon-landing-6p9.pages.dev/
   - Customer: https://hackathon-customer.pages.dev/
   - Executive Dashboard: https://hackathon-executive.pages.dev/
   - Operations Dashboard: https://hackathon-ops.pages.dev/
