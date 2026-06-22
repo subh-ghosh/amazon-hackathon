@@ -1,0 +1,1 @@
+var a={},s=(_,e,t)=>(a.__NEXT_FONT_MANIFEST=_.__NEXT_FONT_MANIFEST='{"pages":{},"app":{"/home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/src/app/layout":["static/media/e4af272ccee01ff0-s.p.woff2"]},"appUsingSizeAdjust":true,"pagesUsingSizeAdjust":false}',a.__REACT_LOADABLE_MANIFEST=_.__REACT_LOADABLE_MANIFEST="{}",a);export{s as __getNamedExports};

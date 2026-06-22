@@ -10,11 +10,11 @@ An intelligent ecosystem where returned or unused products automatically find th
 
 | Application | URL | Audience |
 |-------------|-----|----------|
-| 🏠 **Project Landing Page** | [amazon-hackathon-landing.vercel.app](https://amazon-hackathon-landing.vercel.app/) | Overview |
-| 🛒 Customer Experience | [amazon-hackathon-customer-3kyjo2sy1.vercel.app](https://amazon-hackathon-customer-3kyjo2sy1.vercel.app/) | Shoppers |
-| 📊 Executive Dashboard | [amazon-hackathon-executive-5rtjgoynw.vercel.app](https://amazon-hackathon-executive-5rtjgoynw.vercel.app/) | Leadership |
-| 🏭 Operations Dashboard | [amazon-hackathon-mcga0yax3-subartaghosh2025-5634s-projects.vercel.app](https://amazon-hackathon-mcga0yax3-subartaghosh2025-5634s-projects.vercel.app/) | Warehouse Ops |
-| 📦 Seller Dashboard | [amazon-hackathon-seller-j9z8oijvv.vercel.app](https://amazon-hackathon-seller-j9z8oijvv.vercel.app/) | Third-party Sellers |
+| 🏠 **Project Landing Page** | [amazon-hackathon-landing.vercel.app](https://amazon-hackathon-landing.pages.dev/) | Overview |
+| 🛒 Customer Experience | [amazon-hackathon-customer-3kyjo2sy1.vercel.app](https://amazon-hackathon-customer.pages.dev/) | Shoppers |
+| 📊 Executive Dashboard | [amazon-hackathon-executive-5rtjgoynw.vercel.app](https://amazon-hackathon-executive-dashboard.pages.dev/) | Leadership |
+| 🏭 Operations Dashboard | [amazon-hackathon-mcga0yax3-subartaghosh2025-5634s-projects.vercel.app](https://amazon-hackathon-ops-dashboard.pages.dev/) | Warehouse Ops |
+| 📦 Seller Dashboard | [amazon-hackathon-seller-j9z8oijvv.vercel.app](https://amazon-hackathon-seller-dashboard.pages.dev/) | Third-party Sellers |
 
 > 💡 **Architecture Migration Note (Important for Judges):** Please note that the backend architecture described in our original submission PDF (ECS Fargate, Neptune, ALB) has been completely rewritten. We quickly realized the original design exhausted our AWS Free Tier credits. Because we are constantly learning and adapting, we successfully migrated our entire 12-microservice backend to a **100% Serverless Architecture** (AWS Lambda, API Gateway, DynamoDB On-Demand). This new setup scales to zero and costs practically $0 when idle. We sincerely apologize for the inconvenience and any confusion between the submission document and this live repository!
 

@@ -1,0 +1,18 @@
+{
+  "runtime": "edge",
+  "name": "api/proxy/[service]/[[...path]]",
+  "deploymentTarget": "v8-worker",
+  "entrypoint": "index.js",
+  "assets": [],
+  "framework": {
+    "slug": "nextjs",
+    "version": "14.2.15"
+  },
+  "environment": {
+    "__NEXT_BUILD_ID": "UVGInTiJDdoD4nGTYGRPM",
+    "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "+3/o+STg2qyPh2R+ZQTDlg1FGPkg8Fp+qn52XdUtCmk=",
+    "__NEXT_PREVIEW_MODE_ID": "2c528aa847e26517a004e2cc8bbf331c",
+    "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "89980373496565ea4db3d53c28e9bbcacb933bab45a90161b7dd4d4b80910469",
+    "__NEXT_PREVIEW_MODE_SIGNING_KEY": "c39bd86cd4e62d8c9c10f5c8f175742b5113f0b5874779dab2977133d04a4218"
+  }
+}
