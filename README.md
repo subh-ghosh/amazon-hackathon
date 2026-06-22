@@ -2,9 +2,9 @@
 
 > **HackOn with Amazon 2026** — Team KKR (Kolkata Kode Riders)
 
-> ⚠️ **IMPORTANT NOTE FOR JUDGES:** Our original Vercel hosting was suspended due to usage limits. All frontends have been migrated to **Cloudflare Pages** for maximum reliability. The original submission document may contain old Vercel URLs — **please use the links in this README as the authoritative source.** All services are fully live and operational.
+> ⚠️ **IMPORTANT NOTE FOR JUDGES:** Our original Vercel hosting was suspended due to usage limits. All frontends have been migrated to **Netlify** for maximum reliability. The original submission document may contain old Vercel URLs — **please use the links in this README as the authoritative source.** All services are fully live and operational.
 
-> 💡 **Architecture Note:** Our backend runs on a **100% Serverless Architecture** (AWS Lambda, API Gateway, DynamoDB On-Demand) deployed via AWS CDK. Frontends are hosted on **Cloudflare Pages** for maximum reliability and global edge performance. The entire platform scales to zero and costs practically $0 when idle.
+> 💡 **Architecture Note:** Our backend runs on a **100% Serverless Architecture** (AWS Lambda, API Gateway, DynamoDB On-Demand) deployed via AWS CDK. Frontends are hosted on **Netlify** for maximum reliability and global edge performance. The entire platform scales to zero and costs practically $0 when idle.
 
 An intelligent ecosystem where returned or unused products automatically find their next best owner — through resale, refurbishment, donation, or recycling.
 
@@ -12,11 +12,11 @@ An intelligent ecosystem where returned or unused products automatically find th
 
 | Application | URL | Audience |
 |-------------|-----|----------|
-| 🏠 **Project Landing Page** | [hackathon-landing-6p9.pages.dev](https://hackathon-landing-6p9.pages.dev/) | Overview |
-| 🛒 Customer Experience | [hackathon-customer.pages.dev](https://hackathon-customer.pages.dev/) | Shoppers |
-| 📊 Executive Dashboard | [hackathon-executive.pages.dev](https://hackathon-executive.pages.dev/) | Leadership |
-| 🏭 Operations Dashboard | [hackathon-ops.pages.dev](https://hackathon-ops.pages.dev/) | Warehouse Ops |
-| 📦 Seller Dashboard | [hackathon-seller.pages.dev](https://hackathon-seller.pages.dev/) | Third-party Sellers |
+| 🏠 **Project Landing Page** | [slc-landing.netlify.app](https://slc-landing.netlify.app/) | Overview |
+| 🛒 Customer Experience | [slc-customer.netlify.app](https://slc-customer.netlify.app/) | Shoppers |
+| 📊 Executive Dashboard | [slc-executive.netlify.app](https://slc-executive.netlify.app/) | Leadership |
+| 🏭 Operations Dashboard | [slc-ops.netlify.app](https://slc-ops.netlify.app/) | Warehouse Ops |
+| 📦 Seller Dashboard | [slc-seller.netlify.app](https://slc-seller.netlify.app/) | Third-party Sellers |
 
 
 ## Architecture
@@ -24,7 +24,7 @@ An intelligent ecosystem where returned or unused products automatically find th
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │  FRONTEND (Next.js 14 + TypeScript + Tailwind)              │
-│  Hosted on Cloudflare Pages (Global Edge Network)           │
+│  Hosted on Netlify (Global Edge Network)           │
 │  Customer · Seller Central · Operations · Executive         │
 └───────────────────────────┬─────────────────────────────────┘
                             │ Server-side proxy
@@ -69,7 +69,7 @@ An intelligent ecosystem where returned or unused products automatically find th
 | Layer | Technology |
 |-------|-----------|
 | Frontend | Next.js 14, TypeScript, Tailwind CSS |
-| Hosting | Cloudflare Pages (Edge Network) |
+| Hosting | Netlify (Edge Network) |
 | Backend | Python 3.10, FastAPI, Pydantic v2 |
 | Data | DynamoDB On-Demand, EventBridge |
 | Infra | AWS CDK, AWS Lambda, API Gateway |

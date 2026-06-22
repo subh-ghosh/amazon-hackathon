@@ -98,11 +98,11 @@ Return received → Fraud check → Quality grading → Recovery decision
 
 **Live deployed across 4 applications:**
 
-- Project Landing Page: https://hackathon-landing-6p9.pages.dev/
-- Customer App: https://hackathon-customer.pages.dev/
-- Executive Dashboard: https://hackathon-executive.pages.dev/
-- Operations Dashboard: https://hackathon-ops.pages.dev/
-- Seller Dashboard: https://hackathon-seller.pages.dev/
+- Project Landing Page: https://slc-landing.netlify.app/
+- Customer App: https://slc-customer.netlify.app/
+- Executive Dashboard: https://slc-executive.netlify.app/
+- Operations Dashboard: https://slc-ops.netlify.app/
+- Seller Dashboard: https://slc-seller.netlify.app/
 
 **Backend: 12 microservices live on AWS Lambda (100% Serverless)**
 
@@ -117,7 +117,7 @@ All endpoints are live and responding. The frontend calls real backend services 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                    CUSTOMER EXPERIENCE                        │
-│  Next.js 14 + TypeScript + Tailwind (Cloudflare Pages)                │
+│  Next.js 14 + TypeScript + Tailwind (Netlify)                │
 │  [Customer App] [Seller Central] [Ops Dashboard] [Executive]│
 └────────────────────────────┬────────────────────────────────┘
                              │ Server-side proxy (no CORS)
@@ -206,11 +206,11 @@ In 1-3 years, this becomes Amazon's **Circular Commerce Operating System** — t
 - GitHub: https://github.com/subh-ghosh/amazon-hackathon
 - Demo Video: [URL]
 - Live Apps:
-  - Project Landing Page: https://hackathon-landing-6p9.pages.dev/
-  - Customer: https://hackathon-customer.pages.dev/
-  - Executive Dashboard: https://hackathon-executive.pages.dev/
-  - Operations Dashboard: https://hackathon-ops.pages.dev/
-  - Seller Dashboard: https://hackathon-seller.pages.dev/
+  - Project Landing Page: https://slc-landing.netlify.app/
+  - Customer: https://slc-customer.netlify.app/
+  - Executive Dashboard: https://slc-executive.netlify.app/
+  - Operations Dashboard: https://slc-ops.netlify.app/
+  - Seller Dashboard: https://slc-seller.netlify.app/
 
 ---
 

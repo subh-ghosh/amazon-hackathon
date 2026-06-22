@@ -23,7 +23,7 @@ export default function LandingPage() {
                     </p>
 
                     <div className="flex flex-wrap justify-center gap-4">
-                        <a href="https://hackathon-customer.pages.dev" target="_blank" className="px-8 py-4 bg-[#FF9900] text-[#131921] font-bold rounded-full hover:bg-[#FFB84D] transition-all animate-pulse-glow min-h-[44px] flex items-center">
+                        <a href="https://slc-customer.netlify.app" target="_blank" className="px-8 py-4 bg-[#FF9900] text-[#131921] font-bold rounded-full hover:bg-[#FFB84D] transition-all animate-pulse-glow min-h-[44px] flex items-center">
                             Try Live Demo →
                         </a>
                         <a href="https://github.com/subh-ghosh/amazon-hackathon" target="_blank" className="px-8 py-4 bg-white/5 border border-white/20 text-white font-medium rounded-full hover:bg-white/10 transition-all min-h-[44px] flex items-center">
@@ -100,7 +100,7 @@ export default function LandingPage() {
                     <div className="bg-white/5 border border-white/10 rounded-2xl p-4 sm:p-8 font-mono text-xs sm:text-sm">
                         <pre className="text-gray-300 overflow-x-auto whitespace-pre">{`
 ┌─────────────────────────────────────────────────────────────┐
-│              FRONTEND (Next.js 14 + Cloudflare Pages)                  │
+│              FRONTEND (Next.js 14 + Netlify)                  │
 │   Customer  ·  Seller Central  ·  Operations  ·  Executive  │
 └────────────────────────────┬────────────────────────────────┘
                              │ Server-side proxy
@@ -149,10 +149,10 @@ export default function LandingPage() {
 
                     <div className="grid md:grid-cols-2 gap-6">
                         {[
-                            { name: "Customer Experience", url: "https://hackathon-customer.pages.dev", desc: "Shop with AI purchase guidance, intelligent returns, certified renewed marketplace", audience: "Shoppers" },
-                            { name: "Operations Dashboard", url: "https://hackathon-ops.pages.dev", desc: "Real-time triage, recovery scenarios, demand-aware buyer matching", audience: "Warehouse Ops" },
-                            { name: "Executive Dashboard", url: "https://hackathon-executive.pages.dev", desc: "Revenue recovery, sustainability KPIs, circular economy metrics", audience: "Leadership" },
-                            { name: "Seller Dashboard", url: "https://hackathon-seller.pages.dev", desc: "Return cause analytics, packaging intelligence, actionable insights", audience: "Sellers" },
+                            { name: "Customer Experience", url: "https://slc-customer.netlify.app", desc: "Shop with AI purchase guidance, intelligent returns, certified renewed marketplace", audience: "Shoppers" },
+                            { name: "Operations Dashboard", url: "https://slc-ops.netlify.app", desc: "Real-time triage, recovery scenarios, demand-aware buyer matching", audience: "Warehouse Ops" },
+                            { name: "Executive Dashboard", url: "https://slc-executive.netlify.app", desc: "Revenue recovery, sustainability KPIs, circular economy metrics", audience: "Leadership" },
+                            { name: "Seller Dashboard", url: "https://slc-seller.netlify.app", desc: "Return cause analytics, packaging intelligence, actionable insights", audience: "Sellers" },
                         ].map((app) => (
                             <a key={app.name} href={app.url} target="_blank" className="group bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-[#FF9900]/50 hover:bg-white/[0.03] transition-all">
                                 <div className="flex items-center justify-between mb-3">
@@ -162,7 +162,7 @@ export default function LandingPage() {
                                 <p className="text-sm text-gray-400 leading-relaxed">{app.desc}</p>
                                 <div className="mt-4 flex items-center gap-2 text-xs text-[#FF9900] opacity-0 group-hover:opacity-100 transition-opacity">
                                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                                    Live on Cloudflare Edge
+                                    Live on Netlify Edge
                                 </div>
                             </a>
                         ))}
@@ -225,7 +225,7 @@ export default function LandingPage() {
                         <p className="text-xs text-gray-600">HackOn with Amazon 2026 · Theme: AI-Powered Returns & Sustainable Resale</p>
                     </div>
                     <div className="flex gap-4">
-                        <a href="https://hackathon-customer.pages.dev" target="_blank" className="px-6 py-3 bg-[#FF9900] text-[#131921] font-bold text-sm rounded-full hover:bg-[#FFB84D] transition-all">
+                        <a href="https://slc-customer.netlify.app" target="_blank" className="px-6 py-3 bg-[#FF9900] text-[#131921] font-bold text-sm rounded-full hover:bg-[#FFB84D] transition-all">
                             Live Demo
                         </a>
                         <a href="https://github.com/subh-ghosh/amazon-hackathon" target="_blank" className="px-6 py-3 bg-white/5 border border-white/20 text-white text-sm font-medium rounded-full hover:bg-white/10 transition-all">

@@ -45,7 +45,7 @@ export function OperationalImpact({ data }: { data: OperationalMetrics }) {
             ))}
           </ul>
 
-          <Link href="https://hackathon-ops.pages.dev/" target="_blank" className="flex items-center justify-center w-full gap-2 rounded-lg bg-cyan-950 text-white px-4 py-2.5 text-sm font-semibold hover:bg-cyan-900 transition-colors">
+          <Link href="https://slc-ops.netlify.app/" target="_blank" className="flex items-center justify-center w-full gap-2 rounded-lg bg-cyan-950 text-white px-4 py-2.5 text-sm font-semibold hover:bg-cyan-900 transition-colors">
             Open Returns Operations
             <ArrowRight className="size-4" />
           </Link>

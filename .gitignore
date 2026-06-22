@@ -9,3 +9,6 @@ __pycache__/
 venv/
 cdk.out/
 .pytest_cache/
+
+# Local Netlify folder
+.netlify
