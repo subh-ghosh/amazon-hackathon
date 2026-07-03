@@ -1,15 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Activity, TrendingUp } from "lucide-react";
+import { Activity } from "lucide-react";
 
 import { AiInsightsBanner } from "@/components/dashboard/ai-insights-banner";
 import { KpiCard } from "@/components/dashboard/kpi-card";
 import { ReturnCausesChart } from "@/components/dashboard/return-causes-chart";
 import { ProductInsightsTable } from "@/components/dashboard/product-insights-table";
-import { IssuesCard } from "@/components/dashboard/issues-card";
 import { RecoveryIntelligence } from "@/components/dashboard/recovery-intelligence";
-import { ActionCenter } from "@/components/dashboard/action-center";
+import { ProductDetailPanel } from "@/components/dashboard/product-detail-panel";
 
 import {
   Card,
@@ -21,7 +20,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 
 import { sellerAnalytics as defaultSellerAnalytics } from "@/data/seller-analytics";
-import type { SellerAnalytics } from "@/types/seller-analytics";
+import type { SellerAnalytics, ProductInsight } from "@/types/seller-analytics";
 
 type Resource<T> = {
   data: T | null;
@@ -31,6 +30,7 @@ type Resource<T> = {
 };
 
 export function SellerDashboardView() {
+  const [selectedProduct, setSelectedProduct] = useState<ProductInsight | null>(null);
   const [analytics, setAnalytics] = useState<Resource<SellerAnalytics>>({
     data: null,
     loading: true,
@@ -60,11 +60,11 @@ export function SellerDashboardView() {
         const merged: SellerAnalytics = {
           ...defaultSellerAnalytics,
           kpis: [
-            { label: "Return Rate", value: `${liveData.returnsPer100Orders?.toFixed(1) || "6.8"}%`, change: 0.7, trend: "down", comparison: "live S11", tone: "emerald" },
-            { label: "Seller Health", value: `${liveData.sellerHealthScore || 87}/100`, change: 0, trend: "up", comparison: "live S11", tone: "blue" },
-            { label: "Fraud Risk", value: `${liveData.fraudRiskScore || 5}/100`, change: 0, trend: "down", comparison: "live S11", tone: "emerald" },
-            { label: "Sustainability", value: `${liveData.sustainabilityScore || 85}/100`, change: 0, trend: "up", comparison: "live S11", tone: "emerald" },
-            { label: "Seller Tier", value: liveData.sellerTier || "GOLD", change: 0, trend: "up", comparison: "live S11", tone: "blue" },
+            { label: "Return Rate", value: `${liveData.returnsPer100Orders?.toFixed(1) || "6.8"}%`, change: 0.7, trend: "down", comparison: "vs. last month", tone: "emerald" },
+            { label: "Seller Health", value: `${liveData.sellerHealthScore || 87}/100`, change: 0, trend: "up", comparison: "vs. last month", tone: "blue" },
+            { label: "Fraud Risk", value: `${liveData.fraudRiskScore || 5}/100`, change: 0, trend: "down", comparison: "vs. last month", tone: "emerald" },
+            { label: "Sustainability", value: `${liveData.sustainabilityScore || 85}/100`, change: 0, trend: "up", comparison: "vs. last month", tone: "emerald" },
+            { label: "Seller Tier", value: liveData.sellerTier || "GOLD", change: 0, trend: "up", comparison: "vs. last month", tone: "blue" },
           ],
           aiInsights: {
             highlights: liveData.recommendations?.slice(0, 3) || defaultSellerAnalytics.aiInsights.highlights,
@@ -105,16 +105,34 @@ export function SellerDashboardView() {
 
   const data = analytics.data;
 
+  // ───────── Product Detail View ─────────
+  if (selectedProduct) {
+    return (
+      <div key={selectedProduct.sku} className="animate-fadeIn">
+        <ProductDetailPanel
+          product={selectedProduct}
+          onBack={() => setSelectedProduct(null)}
+        />
+      </div>
+    );
+  }
+
+  // ───────── Main Dashboard View ─────────
   return (
-    <div className="space-y-8 pb-12">
-      {/* Intelligence Header */}
+    <div className="space-y-8 pb-12 animate-fadeIn">
+
+      {/* ━━━━━━━━━━━ ZONE 1: EXECUTIVE SUMMARY ━━━━━━━━━━━ */}
       <section>
         <AiInsightsBanner insights={data.aiInsights} />
       </section>
 
-      {/* SECTION 1 - KPI OVERVIEW */}
       <section>
-        <h3 className="text-lg font-semibold text-slate-900 mb-4">KPI Overview</h3>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold text-slate-900">Store Overview</h3>
+          {analytics.demoMode && (
+            <Badge className="border-amber-200 bg-amber-50 text-amber-700 text-[10px]">Demo Data</Badge>
+          )}
+        </div>
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5" aria-label="Seller performance indicators">
           {data.kpis.map((kpi) => (
             <KpiCard key={kpi.label} kpi={kpi} />
@@ -122,50 +140,36 @@ export function SellerDashboardView() {
         </div>
       </section>
 
-      {/* SECTION 2 - RETURN ANALYTICS */}
-      <section className="grid gap-6 xl:grid-cols-2">
-        <div className="flex flex-col gap-6">
+      {/* ━━━━━━━━━━━ ZONE 2: OVERALL ANALYTICS ━━━━━━━━━━━ */}
+      <section className="grid gap-6 xl:grid-cols-5">
+        {/* Return Causes: wider */}
+        <div className="xl:col-span-3">
           <ReturnCausesChart causes={data.returnCauses} />
         </div>
-        <div>
+        {/* Monthly Trend: narrower */}
+        <div className="xl:col-span-2">
           <ReturnTrendCard trend={data.monthlyTrend} />
         </div>
       </section>
 
-      {/* SECTION 3 - PRODUCT INSIGHTS */}
+      {/* ━━━━━━━━━━━ ZONE 3: PRODUCT CATALOG ━━━━━━━━━━━ */}
       <section>
-        <ProductInsightsTable products={data.productInsights} />
-      </section>
-
-      {/* SECTION 4 & 5 - PACKAGING & LISTING INTELLIGENCE */}
-      <section className="grid gap-6 lg:grid-cols-2">
-        <IssuesCard
-          title="Packaging Intelligence"
-          description="Packaging patterns contributing to damage and returns."
-          issues={data.packagingProblems}
-          type="packaging"
-        />
-        <IssuesCard
-          title="Listing Intelligence"
-          description="Content gaps creating expectation and compatibility issues."
-          issues={data.listingProblems}
-          type="listing"
+        <ProductInsightsTable
+          products={data.productInsights}
+          onSelectProduct={setSelectedProduct}
         />
       </section>
 
-      {/* SECTION 6 - RECOVERY INTELLIGENCE */}
+      {/* ━━━━━━━━━━━ ZONE 4: OVERALL RECOVERY ━━━━━━━━━━━ */}
       <section>
         <RecoveryIntelligence data={data.recoveryIntelligence} />
       </section>
 
-      {/* SECTION 7 - SELLER ACTION CENTER */}
-      <section>
-        <ActionCenter recommendations={data.recommendations} />
-      </section>
     </div>
   );
 }
 
+/* ────────── Return Trend Card (inline) ────────── */
 function ReturnTrendCard({ trend }: { trend: SellerAnalytics["monthlyTrend"] }) {
   const first = trend[0]?.returns ?? 0;
   const last = trend[trend.length - 1]?.returns ?? 0;
@@ -219,6 +223,7 @@ function ReturnTrendCard({ trend }: { trend: SellerAnalytics["monthlyTrend"] }) 
   );
 }
 
+/* ────────── Status Card (loading / error) ────────── */
 function StatusCard({
   title,
   detail,

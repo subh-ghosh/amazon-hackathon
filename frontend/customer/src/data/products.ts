@@ -283,7 +283,7 @@ export const PRODUCTS: Product[] = [
         title: "Hanes ComfortSoft Socks 6-Pack - Men's",
         category: "Clothing",
         brand: "Hanes",
-        price: 12.99,
+        price: 3.99,
         seller_id: "SELLER-014",
         warehouse_id: "WH-CENTRAL-01",
         image: "https://images.unsplash.com/photo-1586350977771-b3b0abd50c82?w=500&h=500&fit=crop",

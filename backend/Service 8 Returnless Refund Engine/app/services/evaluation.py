@@ -89,17 +89,17 @@ class EvaluationEngine:
         category_clean = request.category.strip().lower()
         
         # Indian market thresholds (in USD equivalent for API compatibility)
-        # In India, Amazon requires return for items above ₹2500-5000 depending on category
-        # ₹2500 ≈ $30, ₹5000 ≈ $60, ₹1500 ≈ $18
-        max_value_threshold = 60.0  # Default: ₹5000 equivalent
+        # In India, Amazon requires return for items above ₹1200-3000 depending on category
+        # ₹1200 ≈ $14.50, ₹2000 ≈ $24, ₹3000 ≈ $36, ₹400 ≈ $4.80
+        max_value_threshold = 24.0  # Default: ₹2000 equivalent
         if category_clean == "electronics":
-            max_value_threshold = 40.0  # ₹3300 — electronics are worth returning
+            max_value_threshold = 14.5  # ₹1200 — electronics are worth returning
         elif category_clean in ("grocery", "beauty"):
-            max_value_threshold = 1000.0  # Hygiene rules — never require return
+            max_value_threshold = 1200.0  # Hygiene rules — never require return
         elif category_clean in ("apparel", "clothing", "footwear"):
-            max_value_threshold = 75.0  # ₹6200 — clothing is hard to resell
+            max_value_threshold = 24.0  # ₹2000 — clothing is hard to resell
         elif category_clean in ("home goods", "home", "kitchen"):
-            max_value_threshold = 100.0  # ₹8300 — bulky items expensive to ship back
+            max_value_threshold = 36.0  # ₹3000 — bulky items expensive to ship back
             
         if request.sellerPolicyOverrides and request.sellerPolicyOverrides.maxReturnlessValue is not None:
             max_value_threshold = request.sellerPolicyOverrides.maxReturnlessValue
@@ -171,26 +171,26 @@ class EvaluationEngine:
                     "Hygiene Return Mandate": 40
                 }
         elif (
-            request.orderValue < 18.0 and
+            request.orderValue < 4.8 and
             request.fraudRiskScore < 20
         ):
-            # India: Items under ₹1500 ($18) — returnless refund (keep item)
+            # India: Items under ₹400 ($4.80) — returnless refund (keep item)
             # Recovery value is negative after reverse logistics + inspection
             decision = "RETURNLESS_REFUND"
             business_reason = "Low-value item where return logistics cost exceeds recovery value."
             rules_triggered.append("LowValueReturnlessRule")
             raw_factors = {
-                "Low Item Value": int(max(1, 18 - request.orderValue) * 5),
+                "Low Item Value": int(max(1, 4.8 - request.orderValue) * 20),
                 "Low Fraud Risk": max(1, 100 - request.fraudRiskScore),
                 "Customer Trust": request.customerTrustScore
             }
         elif (
-            request.orderValue < 35.0 and
+            request.orderValue < 9.6 and
             request.condition in ("NEW", "LIKE_NEW") and
             request.customerTrustScore >= 70 and
             (not request.sellerPolicyOverrides or request.sellerPolicyOverrides.allowDonation is not False)
         ):
-            # India: Items ₹1500-₹2900 ($18-$35) in good condition — donate & refund
+            # India: Items ₹400-₹800 ($4.80-$9.60) in good condition — donate & refund
             decision = "REFUND_AND_DONATE"
             business_reason = "Low-moderate value item in good condition. Donation saves logistics cost and helps community."
             rules_triggered.append("DonationEligibleRule")
@@ -200,11 +200,11 @@ class EvaluationEngine:
                 "Logistics Cost Avoidance": 30
             }
         elif (
-            request.orderValue < 35.0 and
+            request.orderValue < 9.6 and
             request.condition in ("DAMAGED", "USED") and
             (not request.sellerPolicyOverrides or request.sellerPolicyOverrides.allowRecycling is not False)
         ):
-            # India: Items ₹1500-₹2900 ($18-$35) in poor condition — recycle & refund
+            # India: Items ₹400-₹800 ($4.80-$9.60) in poor condition — recycle & refund
             decision = "REFUND_AND_RECYCLE"
             business_reason = "Low-moderate value item in poor condition. Recycling is more sustainable than return shipping."
             rules_triggered.append("RecyclingEligibleRule")
@@ -214,10 +214,10 @@ class EvaluationEngine:
                 "Logistics Cost Avoidance": 30
             }
         elif (
-            18.0 <= request.orderValue < 80.0 and
+            4.8 <= request.orderValue < 30.0 and
             request.customerTrustScore >= 60
         ):
-            # India: Items ₹1500-₹6600 ($18-$80) — partial refund option
+            # India: Items ₹400-₹2500 ($4.80-$30.00) — partial refund option
             # Customer keeps item, gets 30-50% back. Amazon saves reverse logistics.
             decision = "PARTIAL_REFUND"
             business_reason = "Moderate value item. Partial refund saves reverse logistics while compensating customer."

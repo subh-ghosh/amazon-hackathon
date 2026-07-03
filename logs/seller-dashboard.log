@@ -1,0 +1,221 @@
+
+> @relife/seller-dashboard@1.0.0 dev
+> next dev -p 3002
+
+   ▲ Next.js 15.5.19
+   - Local:        http://localhost:3002
+   - Network:      http://10.147.82.96:3002
+
+ ✓ Starting...
+ ✓ Ready in 4.1s
+ ○ Compiling / ...
+ ✓ Compiled / in 5.4s (627 modules)
+ GET / 200 in 6169ms
+ ○ Compiling /api/proxy/[service]/[[...path]] ...
+ ✓ Compiled /api/proxy/[service]/[[...path]] in 2.2s (497 modules)
+ GET / 200 in 85ms
+ POST /api/proxy/s11/api/v1/seller/analyze 200 in 12200ms
+ GET / 200 in 522ms
+Proxy error for https://oyxnydwp28.execute-api.us-east-1.amazonaws.com/api/v1/seller/analyze: Error: fetch failed
+    at context.fetch (/home/subh/Desktop/amazon/amazon-hackathon/frontend/seller-dashboard/node_modules/next/dist/server/web/sandbox/context.js:321:60)
+    at dedupeFetch (webpack-internal:///(rsc)/./node_modules/next/dist/esm/server/lib/dedupe-fetch.js:65:24)
+    at doOriginalFetch (webpack-internal:///(rsc)/./node_modules/next/dist/esm/server/lib/patch-fetch.js:584:24)
+    at eval (webpack-internal:///(rsc)/./node_modules/next/dist/esm/server/lib/patch-fetch.js:839:24)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async proxyRequest (webpack-internal:///(rsc)/./app/api/proxy/[service]/[[...path]]/route.ts:55:26)
+    at async AppRouteRouteModule.do (webpack-internal:///(rsc)/./node_modules/next/dist/esm/server/route-modules/app-route/module.js:399:23)
+    at async AppRouteRouteModule.handle (webpack-internal:///(rsc)/./node_modules/next/dist/esm/server/route-modules/app-route/module.js:490:26)
+    at async EdgeRouteModuleWrapper.handler (webpack-internal:///(rsc)/./node_modules/next/dist/esm/server/web/edge-route-module-wrapper.js:101:19)
+    at async adapter (webpack-internal:///(rsc)/./node_modules/next/dist/esm/server/web/adapter.js:212:16)
+    at async /home/subh/Desktop/amazon/amazon-hackathon/frontend/seller-dashboard/node_modules/next/dist/server/web/sandbox/sandbox.js:112:26
+    at async runWithTaggedErrors (/home/subh/Desktop/amazon/amazon-hackathon/frontend/seller-dashboard/node_modules/next/dist/server/web/sandbox/sandbox.js:109:9)
+    at async DevServer.runEdgeFunction (/home/subh/Desktop/amazon/amazon-hackathon/frontend/seller-dashboard/node_modules/next/dist/server/next-server.js:1367:24)
+    at async NextNodeServer.handleCatchallRenderRequest (/home/subh/Desktop/amazon/amazon-hackathon/frontend/seller-dashboard/node_modules/next/dist/server/next-server.js:362:41)
+    at async DevServer.handleRequestImpl (/home/subh/Desktop/amazon/amazon-hackathon/frontend/seller-dashboard/node_modules/next/dist/server/base-server.js:917:17)
+    at async /home/subh/Desktop/amazon/amazon-hackathon/frontend/seller-dashboard/node_modules/next/dist/server/dev/next-dev-server.js:400:20
+    at async Span.traceAsyncFn (/home/subh/Desktop/amazon/amazon-hackathon/frontend/seller-dashboard/node_modules/next/dist/trace/trace.js:157:20)
+    at async DevServer.handleRequest (/home/subh/Desktop/amazon/amazon-hackathon/frontend/seller-dashboard/node_modules/next/dist/server/dev/next-dev-server.js:396:24)
+    at async invokeRender (/home/subh/Desktop/amazon/amazon-hackathon/frontend/seller-dashboard/node_modules/next/dist/server/lib/router-server.js:240:21)
+    at async handleRequest (/home/subh/Desktop/amazon/amazon-hackathon/frontend/seller-dashboard/node_modules/next/dist/server/lib/router-server.js:437:24)
+    at async requestHandlerImpl (/home/subh/Desktop/amazon/amazon-hackathon/frontend/seller-dashboard/node_modules/next/dist/server/lib/router-server.js:485:13)
+    at async Server.requestListener (/home/subh/Desktop/amazon/amazon-hackathon/frontend/seller-dashboard/node_modules/next/dist/server/lib/start-server.js:226:13) {
+  
+}
+ POST /api/proxy/s11/api/v1/seller/analyze 503 in 10583ms
+ ✓ Compiled in 707ms (268 modules)
+ GET / 200 in 191ms
+ GET / 200 in 209ms
+ ✓ Compiled in 649ms (628 modules)
+ GET / 200 in 311ms
+ GET / 200 in 316ms
+ ✓ Compiled in 817ms (658 modules)
+ GET / 200 in 234ms
+ GET / 200 in 240ms
+ POST /api/proxy/s11/api/v1/seller/analyze 200 in 4634ms
+ POST /api/proxy/s11/api/v1/seller/analyze 200 in 4847ms
+ GET / 200 in 266ms
+ POST /api/proxy/s11/api/v1/seller/analyze 200 in 1994ms
+ ✓ Compiled in 639ms (628 modules)
+ GET / 200 in 204ms
+ GET / 200 in 201ms
+ POST /api/proxy/s11/api/v1/seller/analyze 200 in 5069ms
+ POST /api/proxy/s11/api/v1/seller/analyze 200 in 5086ms
+ ✓ Compiled in 326ms (614 modules)
+ GET / 200 in 228ms
+ GET / 200 in 229ms
+ ✓ Compiled in 333ms (628 modules)
+ GET / 200 in 194ms
+ ✓ Compiled in 431ms (632 modules)
+ GET / 200 in 201ms
+ POST /api/proxy/s11/api/v1/seller/analyze 200 in 2506ms
+ GET / 200 in 300ms
+ POST /api/proxy/s11/api/v1/seller/analyze 200 in 4173ms
+ ✓ Compiled in 845ms (628 modules)
+ GET / 200 in 940ms
+ GET / 200 in 831ms
+ POST /api/proxy/s11/api/v1/seller/analyze 200 in 7426ms
+ POST /api/proxy/s11/api/v1/seller/analyze 200 in 7477ms
+ ✓ Compiled in 383ms (614 modules)
+ GET / 200 in 295ms
+ GET / 200 in 314ms
+ ✓ Compiled in 211ms (268 modules)
+ GET / 200 in 147ms
+ GET / 200 in 150ms
+ ✓ Compiled in 721ms (632 modules)
+ GET / 200 in 198ms
+ GET / 200 in 204ms
+ ✓ Compiled in 540ms (638 modules)
+ GET / 200 in 184ms
+ GET / 200 in 191ms
+ POST /api/proxy/s11/api/v1/seller/analyze 200 in 3421ms
+ POST /api/proxy/s11/api/v1/seller/analyze 200 in 3440ms
+ GET / 200 in 323ms
+ POST /api/proxy/s11/api/v1/seller/analyze 200 in 2474ms
+ ✓ Compiled in 634ms (634 modules)
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET / 200 in 769ms
+ GET / 200 in 780ms
+ GET / 200 in 560ms
+ GET / 200 in 565ms
+ GET / 200 in 567ms
+ GET / 200 in 192ms
+ POST /api/proxy/s11/api/v1/seller/analyze 200 in 3255ms
+ POST /api/proxy/s11/api/v1/seller/analyze 200 in 3571ms
+ POST /api/proxy/s11/api/v1/seller/analyze 200 in 3367ms
+ GET / 200 in 217ms
+ POST /api/proxy/s11/api/v1/seller/analyze 200 in 3032ms
+ ✓ Compiled in 370ms (634 modules)
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET / 200 in 575ms
+ GET / 200 in 570ms
+ GET / 200 in 224ms
+ POST /api/proxy/s11/api/v1/seller/analyze 200 in 562ms
+ POST /api/proxy/s11/api/v1/seller/analyze 200 in 2671ms
+ POST /api/proxy/s11/api/v1/seller/analyze 200 in 2678ms
+ GET / 200 in 96ms
+ POST /api/proxy/s11/api/v1/seller/analyze 200 in 2619ms
+ GET / 200 in 139ms
+ POST /api/proxy/s11/api/v1/seller/analyze 200 in 5422ms
+ ✓ Compiled in 501ms (634 modules)
+ GET / 200 in 457ms
+ GET / 200 in 466ms
+ GET / 200 in 175ms
+ GET / 200 in 123ms
+ ✓ Compiled in 380ms (634 modules)
+ GET / 200 in 291ms
+ GET / 200 in 302ms
+ GET / 200 in 196ms
+ GET / 200 in 140ms
+ ✓ Compiled in 871ms (640 modules)
+ GET / 200 in 328ms
+ GET / 200 in 318ms
+ GET / 200 in 153ms
+ GET / 200 in 94ms
+ ✓ Compiled in 389ms (640 modules)
+ GET / 200 in 319ms
+ GET / 200 in 339ms
+ GET / 200 in 183ms
+ GET / 200 in 104ms
+ ✓ Compiled in 632ms (640 modules)
+ GET / 200 in 280ms
+ GET / 200 in 299ms
+ GET / 200 in 169ms
+ GET / 200 in 128ms
+ ✓ Compiled in 409ms (640 modules)
+ GET / 200 in 314ms
+ GET / 200 in 318ms
+ GET / 200 in 163ms
+ GET / 200 in 107ms
+ GET / 200 in 224ms
+ POST /api/proxy/s11/api/v1/seller/analyze 200 in 2583ms
+ GET / 200 in 152ms
+Proxy error for https://oyxnydwp28.execute-api.us-east-1.amazonaws.com/api/v1/seller/analyze: Error: fetch failed
+    at context.fetch (/home/subh/Desktop/amazon/amazon-hackathon/frontend/seller-dashboard/node_modules/next/dist/server/web/sandbox/context.js:321:60)
+    at dedupeFetch (webpack-internal:///(rsc)/./node_modules/next/dist/esm/server/lib/dedupe-fetch.js:65:24)
+    at doOriginalFetch (webpack-internal:///(rsc)/./node_modules/next/dist/esm/server/lib/patch-fetch.js:584:24)
+    at eval (webpack-internal:///(rsc)/./node_modules/next/dist/esm/server/lib/patch-fetch.js:839:24)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async proxyRequest (webpack-internal:///(rsc)/./app/api/proxy/[service]/[[...path]]/route.ts:55:26)
+    at async AppRouteRouteModule.do (webpack-internal:///(rsc)/./node_modules/next/dist/esm/server/route-modules/app-route/module.js:399:23)
+    at async AppRouteRouteModule.handle (webpack-internal:///(rsc)/./node_modules/next/dist/esm/server/route-modules/app-route/module.js:490:26)
+    at async EdgeRouteModuleWrapper.handler (webpack-internal:///(rsc)/./node_modules/next/dist/esm/server/web/edge-route-module-wrapper.js:101:19)
+    at async adapter (webpack-internal:///(rsc)/./node_modules/next/dist/esm/server/web/adapter.js:212:16)
+    at async /home/subh/Desktop/amazon/amazon-hackathon/frontend/seller-dashboard/node_modules/next/dist/server/web/sandbox/sandbox.js:112:26
+    at async runWithTaggedErrors (/home/subh/Desktop/amazon/amazon-hackathon/frontend/seller-dashboard/node_modules/next/dist/server/web/sandbox/sandbox.js:109:9)
+    at async DevServer.runEdgeFunction (/home/subh/Desktop/amazon/amazon-hackathon/frontend/seller-dashboard/node_modules/next/dist/server/next-server.js:1367:24)
+    at async NextNodeServer.handleCatchallRenderRequest (/home/subh/Desktop/amazon/amazon-hackathon/frontend/seller-dashboard/node_modules/next/dist/server/next-server.js:362:41)
+    at async DevServer.handleRequestImpl (/home/subh/Desktop/amazon/amazon-hackathon/frontend/seller-dashboard/node_modules/next/dist/server/base-server.js:917:17)
+    at async /home/subh/Desktop/amazon/amazon-hackathon/frontend/seller-dashboard/node_modules/next/dist/server/dev/next-dev-server.js:400:20
+    at async Span.traceAsyncFn (/home/subh/Desktop/amazon/amazon-hackathon/frontend/seller-dashboard/node_modules/next/dist/trace/trace.js:157:20)
+    at async DevServer.handleRequest (/home/subh/Desktop/amazon/amazon-hackathon/frontend/seller-dashboard/node_modules/next/dist/server/dev/next-dev-server.js:396:24)
+    at async invokeRender (/home/subh/Desktop/amazon/amazon-hackathon/frontend/seller-dashboard/node_modules/next/dist/server/lib/router-server.js:240:21)
+    at async handleRequest (/home/subh/Desktop/amazon/amazon-hackathon/frontend/seller-dashboard/node_modules/next/dist/server/lib/router-server.js:437:24)
+    at async requestHandlerImpl (/home/subh/Desktop/amazon/amazon-hackathon/frontend/seller-dashboard/node_modules/next/dist/server/lib/router-server.js:485:13)
+    at async Server.requestListener (/home/subh/Desktop/amazon/amazon-hackathon/frontend/seller-dashboard/node_modules/next/dist/server/lib/start-server.js:226:13) {
+  
+}
+ POST /api/proxy/s11/api/v1/seller/analyze 503 in 10537ms
+ ✓ Compiled in 1252ms (644 modules)
+ GET / 200 in 307ms
+ GET / 200 in 311ms
+ GET / 200 in 142ms
+ GET / 200 in 83ms
+ ✓ Compiled in 422ms (645 modules)
+ GET / 200 in 299ms
+ GET / 200 in 295ms
+ GET / 200 in 113ms
+ GET / 200 in 88ms
+ ✓ Compiled in 334ms (645 modules)
+ GET / 200 in 299ms
+ GET / 200 in 295ms
+ GET / 200 in 156ms
+ GET / 200 in 110ms
+ ✓ Compiled in 514ms (645 modules)
+ GET / 200 in 468ms
+ GET / 200 in 459ms
+ GET / 200 in 190ms
+ GET / 200 in 87ms
+ ✓ Compiled in 637ms (645 modules)
+ GET / 200 in 379ms
+ GET / 200 in 376ms
+ GET / 200 in 171ms
+ GET / 200 in 103ms
+ ✓ Compiled in 1036ms (645 modules)
+ GET / 200 in 340ms
+ GET / 200 in 346ms
+ GET / 200 in 125ms
+ GET / 200 in 73ms
+ ✓ Compiled in 555ms (643 modules)
+ GET / 200 in 345ms
+ GET / 200 in 361ms
+ GET / 200 in 137ms
+ GET / 200 in 79ms
+ ✓ Compiled in 391ms (643 modules)
+ GET / 200 in 349ms
+ GET / 200 in 342ms
+ GET / 200 in 146ms
+ GET / 200 in 90ms
+ GET / 200 in 264ms
+ POST /api/proxy/s11/api/v1/seller/analyze 200 in 5189ms

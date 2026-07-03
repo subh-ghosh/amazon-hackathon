@@ -45,7 +45,7 @@ export function RecoveryIntelligence({ data }: { data: RecoveryIntelligenceType 
         </div>
 
         {/* Legend and Details */}
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {categories.filter(c => c.data.percentage > 0).map((cat) => (
             <div key={cat.label} className="rounded-lg border p-4 shadow-sm flex flex-col justify-between">
               <div>

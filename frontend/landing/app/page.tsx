@@ -180,7 +180,7 @@ export default function LandingPage() {
                         {[
                             { title: "Native Payload Compatibility", desc: "Output of Service A passes directly as input to Service B without transformation. True pipeline: S5→S6→S7→S9." },
                             { title: "Demand-Aware Direct Fulfillment", desc: "Returned items skip warehouse entirely — matched to nearby buyers in real-time, saving ₹1,800+ per item." },
-                            { title: "Indian Cost Matrix", desc: "Decision engine calibrated for Indian logistics economics. Returnless refund for items under ₹1,500 where return cost exceeds recovery value." },
+                            { title: "Indian Cost Matrix", desc: "Decision engine calibrated for Indian logistics economics. Returnless refund for items under ₹400 where return cost exceeds recovery value." },
                             { title: "Zero-Cost Serverless", desc: "All 12 services run on AWS Lambda. Pay only per request. ₹0/month when no users." },
                         ].map((item) => (
                             <div key={item.title} className="bg-white/5 border border-white/10 rounded-2xl p-6">

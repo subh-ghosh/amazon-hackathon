@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2025/dev/Debian) (preloaded format=pdflatex 2026.4.6)  22 JUN 2026 21:12
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2025/dev/Debian) (preloaded format=pdflatex 2026.4.6)  22 JUN 2026 22:52
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -325,4 +325,193 @@ LaTeX Font Info:    ... okay on input line 28.
 *geometry* verbose mode - [ preamble ] result:
 * driver: pdftex
 * paper: a4paper
-* lay
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(71.13188pt, 455.24411pt, 71.13188pt)
+* v-part:(T,H,B)=(71.13188pt, 702.78308pt, 71.13188pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=455.24411pt
+* \textheight=702.78308pt
+* \oddsidemargin=-1.1381pt
+* \evensidemargin=-1.1381pt
+* \topmargin=-38.1381pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=11.0pt
+* \footskip=30.0pt
+* \marginparwidth=50.0pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count290
+\scratchdimen=\dimen169
+\scratchbox=\box57
+\nofMPsegments=\count291
+\nofMParguments=\count292
+\everyMPshowfont=\toks25
+\MPscratchCnt=\count293
+\MPscratchDim=\dimen170
+\MPnumerator=\count294
+\makeMPintoPDFobject=\count295
+\everyMPtoPDFconversion=\toks26
+) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+85.
+
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+Package hyperref Info: Link coloring ON on input line 28.
+
+(/home/subh/Desktop/amazon/amazon-hackathon/submission.out)
+(/home/subh/Desktop/amazon/amazon-hackathon/submission.out)
+\@outlinefile=\write3
+\openout3 = `submission.out'.
+
+
+
+LaTeX Warning: File `images/00-hackon-cover.png' not found on input line 33.
+
+
+! Package pdftex.def Error: File `images/00-hackon-cover.png' not found: using 
+draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.33 ...th=\textwidth]{images/00-hackon-cover.png}
+                                                  
+? 
+! Emergency stop.
+ ...                                              
+                                                  
+l.33 ...th=\textwidth]{images/00-hackon-cover.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+ 
+Here is how much of TeX's memory you used:
+ 10549 strings out of 475178
+ 164782 string characters out of 5766540
+ 573917 words of memory out of 5000000
+ 33451 multiletter control sequences out of 15000+600000
+ 559137 words of font info for 37 fonts, out of 8000000 for 9000
+ 14 hyphenation exceptions out of 8191
+ 75i,1n,79p,300b,152s stack positions out of 10000i,1000n,20000p,200000b,200000s
+!  ==> Fatal error occurred, no output PDF file produced!
+> on input line 81.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 81.
+
+
+[3{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
+
+[4]
+
+LaTeX Warning: File `images/03-architecture-diagram.png' not found on input lin
+e 167.
+
+
+! Package pdftex.def Error: File `images/03-architecture-diagram.png' not found
+: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.167 ...idth]{images/03-architecture-diagram.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 183--183
+[]|\OT1/cmr/m/n/10.95 Neptune (Graph), Dy-namoDB,
+ []
+
+
+Underfull \hbox (badness 3407) in paragraph at lines 183--183
+[]|\OT1/cmr/m/n/10.95 Knowledge graph for fraud, event
+ []
+
+
+Underfull \hbox (badness 1014) in paragraph at lines 183--183
+[]|\OT1/cmr/m/n/10.95 IaC, true \TS1/cmr/m/n/10.95 $\OT1/cmr/m/n/10.95 0 server
+-less ar-chi-tec-ture,
+ []
+
+
+
+[5]
+
+[6]
+Overfull \hbox (17.0pt too wide) in paragraph at lines 244--245
+[][][][] 
+ []
+
+
+Overfull \hbox (22.38167pt too wide) in paragraph at lines 247--248
+\OT1/cmr/m/n/10.95 | Ex-ec-u-tive: [][]$\OT1/cmtt/m/n/10.95 https : / / slc-[]e
+xecutive . netlify . app/$[][] \OT1/cmr/m/n/10.95 | Op-er-a-tions: [][]$\OT1/cm
+tt/m/n/10.95 https : / / slc-[]ops . netlify .
+ []
+
+
+
+[7] (/home/subh/Desktop/amazon/amazon-hackathon/submission.aux)
+ ***********
+LaTeX2e <2024-11-01> patch level 2
+L3 programming layer <2025-01-18>
+ ***********
+
+
+Package rerunfilecheck Warning: File `submission.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `submission.out':
+(rerunfilecheck)             Before: D41D8CD98F00B204E9800998ECF8427E;0
+(rerunfilecheck)             After:  3B41D3509FD1E08A39F97E74B69B77C3;2927.
+ ) 
+Here is how much of TeX's memory you used:
+ 10704 strings out of 475178
+ 167996 string characters out of 5766540
+ 589917 words of memory out of 5000000
+ 33552 multiletter control sequences out of 15000+600000
+ 564853 words of font info for 56 fonts, out of 8000000 for 9000
+ 14 hyphenation exceptions out of 8191
+ 75i,12n,79p,493b,580s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
+r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/shar
+e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texli
+ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/f
+onts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/t
+ype1/public/amsfonts/cm/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
+ublic/amsfonts/cm/cmtt10.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm
+1095.pfb></usr/share/texmf/fonts/type1/public/cm-super/sftt1095.pfb>
+Output written on /home/subh/Desktop/amazon/amazon-hackathon/submission.pdf (7 
+pages, 152335 bytes).
+PDF statistics:
+ 142 PDF objects out of 1000 (max. 8388607)
+ 111 compressed objects within 2 object streams
+ 37 named destinations out of 1000 (max. 500000)
+ 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+

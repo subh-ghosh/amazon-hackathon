@@ -17,16 +17,6 @@ export interface ReturnCause {
   change: number;
 }
 
-export interface ProductInsight {
-  sku: string;
-  name: string;
-  orders: number;
-  returns: number;
-  returnRate: number;
-  healthScore: number;
-  topComplaints: string[];
-}
-
 export interface SellerIssue {
   title: string;
   detail: string;
@@ -61,6 +51,24 @@ export interface MonthlyTrend {
 
 export interface AiInsights {
   highlights: string[];
+}
+
+export interface ProductInsight {
+  sku: string;
+  name: string;
+  category: string;
+  price: number;
+  orders: number;
+  returns: number;
+  returnRate: number;
+  healthScore: number;
+  topComplaints: string[];
+  returnCauses: ReturnCause[];
+  packagingIssues: SellerIssue[];
+  listingIssues: SellerIssue[];
+  recovery: RecoveryIntelligence;
+  recommendations: ActionRecommendation[];
+  monthlyTrend: MonthlyTrend[];
 }
 
 export interface SellerAnalytics {

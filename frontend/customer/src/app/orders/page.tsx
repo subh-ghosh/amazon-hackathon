@@ -122,7 +122,7 @@ function getDemoOrders() {
             delivery_date: new Date(Date.now() - 1 * 86400000).toISOString(),
             address: { name: "Rahul Sharma", street: "42 MG Road, Indiranagar", city: "Bangalore", state: "KA", zip: "560038", country: "IN" },
         },
-        // Clothing - $69.50, above $40 threshold → RETURN_REQUIRED
+        // Clothing - $69.50, above $24.00 (₹2,000) threshold → RETURN_REQUIRED
         {
             order_id: "113-9912847-1928374",
             customer_id: "CUST-DEMO-001",
@@ -144,7 +144,7 @@ function getDemoOrders() {
             delivery_date: new Date(Date.now() - 3 * 86400000).toISOString(),
             address: { name: "Rahul Sharma", street: "42 MG Road, Indiranagar", city: "Bangalore", state: "KA", zip: "560038", country: "IN" },
         },
-        // LOW VALUE - $24.99, below $40 → RETURNLESS_REFUND (keep item)
+        // MODERATE VALUE - $24.99, between $4.80 and $30.00 → PARTIAL_REFUND / DONATE / RECYCLE
         {
             order_id: "113-2291038-9182746",
             customer_id: "CUST-DEMO-001",
@@ -155,11 +155,11 @@ function getDemoOrders() {
             delivery_date: new Date(Date.now() - 4 * 86400000).toISOString(),
             address: { name: "Rahul Sharma", street: "42 MG Road, Indiranagar", city: "Bangalore", state: "KA", zip: "560038", country: "IN" },
         },
-        // VERY LOW VALUE - $12.99 → RETURNLESS_REFUND (definite keep)
+        // VERY LOW VALUE - $3.99, below $4.80 (₹400) → RETURNLESS_REFUND (definite keep)
         {
             order_id: "113-4428173-7291038",
             customer_id: "CUST-DEMO-001",
-            items: [{ product: PRODUCTS[13], quantity: 1 }], // Hanes Socks $12.99
+            items: [{ product: PRODUCTS[13], quantity: 1 }], // Hanes Socks $3.99
             total: PRODUCTS[13].price,
             status: "delivered" as const,
             created_at: new Date(Date.now() - 10 * 86400000).toISOString(),

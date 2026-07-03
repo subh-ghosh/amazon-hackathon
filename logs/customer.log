@@ -1,0 +1,47 @@
+
+> circular-intelligence-customer@1.0.0 dev
+> next dev
+
+  ▲ Next.js 14.2.15
+  - Local:        http://localhost:3000
+
+ ✓ Starting...
+ ✓ Ready in 4.7s
+ ○ Compiling / ...
+ ✓ Compiled / in 5.4s (554 modules)
+ GET / 200 in 5893ms
+ ✓ Compiled in 432ms (281 modules)
+ ○ Compiling /product/[id] ...
+ ✓ Compiled /product/[id] in 5.2s (781 modules)
+ ✓ Compiled /api/proxy/[service]/[[...path]] in 422ms (598 modules)
+ POST /api/proxy/s10/api/v1/packaging/analyze 200 in 5165ms
+ POST /api/proxy/s11/api/v1/seller/analyze 200 in 5350ms
+ POST /api/proxy/s10/api/v1/packaging/analyze 200 in 5393ms
+ POST /api/proxy/s11/api/v1/seller/analyze 200 in 5405ms
+ POST /api/proxy/s1/api/v1/prevention/analyze 200 in 5668ms
+ POST /api/proxy/s1/api/v1/prevention/analyze 200 in 5729ms
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ✓ Compiled in 947ms (1044 modules)
+ GET / 200 in 624ms
+ ✓ Compiled in 652ms (291 modules)
+ ○ Compiling /orders ...
+ ✓ Compiled /orders in 885ms (551 modules)
+ GET /orders 200 in 1149ms
+ ○ Compiling /return/[orderId]/[productId] ...
+ ✓ Compiled /return/[orderId]/[productId] in 801ms (802 modules)
+ ○ Compiling /return-prevention ...
+ ✓ Compiled /return-prevention in 698ms (586 modules)
+ ✓ Compiled /api/proxy/[service]/[[...path]] in 267ms (908 modules)
+ POST /api/proxy/s2/api/v1/truth/analyze 500 in 6379ms
+ POST /api/proxy/s2/api/v1/truth/analyze 500 in 6374ms
+ POST /api/proxy/s3/api/v1/fraud/score 200 in 4884ms
+ POST /api/proxy/s3/api/v1/fraud/score 200 in 4884ms
+ POST /api/proxy/s11/api/v1/seller/analyze 200 in 3646ms
+ POST /api/proxy/s10/api/v1/packaging/analyze 200 in 3787ms
+ POST /api/proxy/s11/api/v1/seller/analyze 200 in 3797ms
+ POST /api/proxy/s10/api/v1/packaging/analyze 200 in 4217ms
+ POST /api/proxy/s8/api/v1/returnless/evaluate 200 in 3946ms
+ POST /api/proxy/s8/api/v1/returnless/evaluate 200 in 4830ms
+ ○ Compiling /return-decision ...
+ ✓ Compiled /return-decision in 1082ms (602 modules)
+ ✓ Compiled in 753ms (616 modules)

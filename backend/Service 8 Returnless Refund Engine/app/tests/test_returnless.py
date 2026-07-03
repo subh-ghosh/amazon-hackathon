@@ -437,7 +437,7 @@ def test_grocery_hygiene_recycle():
         "requestId": "RR503",
         "customerId": "CUST1",
         "productId": "PROD1",
-        "orderValue": 30.0,
+        "orderValue": 8.0,
         "returnShippingCost": 2.0,
         "fraudRiskScore": 5,
         "returnRiskScore": 5,
@@ -460,8 +460,8 @@ def test_donation_eligible():
         "requestId": "RR504",
         "customerId": "CUST_TRUSTED",
         "productId": "PROD_DONATION",
-        "orderValue": 45.0,
-        "returnShippingCost": 20.0,  # > 40% of item value
+        "orderValue": 8.0,
+        "returnShippingCost": 4.0,  # > 40% of item value
         "fraudRiskScore": 5,
         "returnRiskScore": 5,
         "condition": "NEW",
@@ -483,8 +483,8 @@ def test_recycling_damaged_item():
         "requestId": "RR505",
         "customerId": "CUST_TRUSTED",
         "productId": "PROD_DAMAGED",
-        "orderValue": 35.0,
-        "returnShippingCost": 15.0,  # > 40%
+        "orderValue": 8.0,
+        "returnShippingCost": 4.0,  # > 40%
         "fraudRiskScore": 5,
         "returnRiskScore": 5,
         "condition": "DAMAGED",
@@ -505,8 +505,8 @@ def test_low_value_returnless_refund():
         "requestId": "RR506",
         "customerId": "CUST1",
         "productId": "PROD1",
-        "orderValue": 15.0,  # < $25
-        "returnShippingCost": 6.0,  # >= 30%
+        "orderValue": 4.0,  # < $4.8
+        "returnShippingCost": 2.0,  # >= 30%
         "fraudRiskScore": 10,  # < 20
         "returnRiskScore": 10,
         "condition": "OPEN_BOX",
@@ -527,8 +527,8 @@ def test_moderate_value_partial_refund():
         "requestId": "RR507",
         "customerId": "CUST1",
         "productId": "PROD1",
-        "orderValue": 50.0,  # Moderate
-        "returnShippingCost": 20.0,  # >= 30%
+        "orderValue": 15.0,  # Moderate (between 4.8 and 30.0)
+        "returnShippingCost": 6.0,  # >= 30%
         "fraudRiskScore": 15,
         "returnRiskScore": 15,
         "condition": "OPEN_BOX",
@@ -541,21 +541,21 @@ def test_moderate_value_partial_refund():
     assert response.status_code == 200
     data = response.json()
     assert data["decision"] == "PARTIAL_REFUND"
-    assert data["refundAmount"] == 25.0  # 50%
+    assert data["refundAmount"] == 7.5  # 50%
     assert data["recommendedAction"] == "KEEP_ITEM"
 
 
 # --- Seller Policy Overrides Tests ---
 
 def test_seller_override_max_value():
-    # Standard threshold for Apparel is $50. Let's override to $20.
-    # A $30 order will now trigger RETURN_REQUIRED instead of RETURNLESS_REFUND.
+    # Standard threshold for Apparel is $24. Let's override to $2.0.
+    # A $4.0 order will now trigger RETURN_REQUIRED instead of RETURNLESS_REFUND.
     payload = {
         "requestId": "RR601",
         "customerId": "CUST1",
         "productId": "PROD1",
-        "orderValue": 30.0,
-        "returnShippingCost": 12.0,
+        "orderValue": 4.0,
+        "returnShippingCost": 2.0,
         "fraudRiskScore": 5,
         "returnRiskScore": 5,
         "condition": "NEW",
@@ -564,7 +564,7 @@ def test_seller_override_max_value():
         "category": "Apparel",
         "weightKg": 1.0,
         "sellerPolicyOverrides": {
-            "maxReturnlessValue": 20.0  # Overrides Apparel's $50 standard
+            "maxReturnlessValue": 2.0  # Overrides Apparel's standard
         }
     }
     response = client.post("/api/v1/returnless/evaluate", json=payload)
@@ -578,8 +578,8 @@ def test_seller_override_deny_donation():
         "requestId": "RR602",
         "customerId": "CUST_TRUSTED",
         "productId": "PROD_DONATION",
-        "orderValue": 45.0,
-        "returnShippingCost": 20.0,
+        "orderValue": 8.0,
+        "returnShippingCost": 4.0,
         "fraudRiskScore": 5,
         "returnRiskScore": 5,
         "condition": "NEW",
@@ -630,8 +630,8 @@ def test_batch_evaluate_sync():
                 "requestId": "RR701",
                 "customerId": "CUST1",
                 "productId": "PROD1",
-                "orderValue": 15.0,
-                "returnShippingCost": 6.0,
+                "orderValue": 4.0,
+                "returnShippingCost": 2.0,
                 "fraudRiskScore": 10,
                 "returnRiskScore": 10,
                 "condition": "NEW",
@@ -671,8 +671,8 @@ def test_batch_evaluate_async_flow():
                 "requestId": "RR703",
                 "customerId": "CUST1",
                 "productId": "PROD1",
-                "orderValue": 15.0,
-                "returnShippingCost": 6.0,
+                "orderValue": 4.0,
+                "returnShippingCost": 2.0,
                 "fraudRiskScore": 10,
                 "returnRiskScore": 10,
                 "condition": "NEW",
@@ -716,8 +716,8 @@ def test_analytics_dashboard_metrics():
         "requestId": "RR801",
         "customerId": "CUST1",
         "productId": "PROD1",
-        "orderValue": 15.0,
-        "returnShippingCost": 6.0,
+        "orderValue": 4.0,
+        "returnShippingCost": 2.0,
         "fraudRiskScore": 10,
         "returnRiskScore": 10,
         "condition": "NEW",
@@ -750,15 +750,15 @@ def test_analytics_dashboard_metrics():
     assert data["totalEvaluations"] == 2
     assert data["decisionDistribution"]["RETURNLESS_REFUND"] == 1
     assert data["decisionDistribution"]["RETURN_REQUIRED"] == 1
-    assert data["totalRefundValue"] == 15.0  # ONLY the returnless refund gets refunded value (Return required gets 0.0)
+    assert data["totalRefundValue"] == 4.0  # ONLY the returnless refund gets refunded value (Return required gets 0.0)
 
 def test_decision_lookup_by_id():
     p1 = {
         "requestId": "RR900_LOOKUP",
         "customerId": "CUST1",
         "productId": "PROD1",
-        "orderValue": 15.0,
-        "returnShippingCost": 6.0,
+        "orderValue": 4.0,
+        "returnShippingCost": 2.0,
         "fraudRiskScore": 10,
         "returnRiskScore": 10,
         "condition": "NEW",
@@ -785,16 +785,16 @@ def test_decision_lookup_not_found():
 
 test_cases_configs = [
     # requestId, orderValue, shipping, fraudScore, condition, category, expectedDecision
-    ("T1", 10.0, 5.0, 5, "NEW", "Apparel", "RETURNLESS_REFUND"),
+    ("T1", 4.0, 2.0, 5, "NEW", "Apparel", "RETURNLESS_REFUND"),
     ("T2", 100.0, 5.0, 5, "NEW", "Apparel", "RETURN_REQUIRED"),
-    ("T3", 25.0, 12.0, 5, "NEW", "Grocery", "REFUND_AND_RECYCLE"),
-    ("T4", 50.0, 25.0, 5, "NEW", "Home Goods", "REFUND_AND_DONATE"),
-    ("T5", 50.0, 25.0, 5, "DAMAGED", "Home Goods", "REFUND_AND_RECYCLE"),
+    ("T3", 8.0, 4.0, 5, "NEW", "Grocery", "REFUND_AND_RECYCLE"),
+    ("T4", 8.0, 4.0, 5, "NEW", "Home Goods", "REFUND_AND_DONATE"),
+    ("T5", 8.0, 4.0, 5, "DAMAGED", "Home Goods", "REFUND_AND_RECYCLE"),
     ("T6", 12.0, 1.0, 5, "NEW", "Apparel", "RETURN_REQUIRED"),
-    ("T7", 60.0, 25.0, 5, "NEW", "Apparel", "RETURN_REQUIRED"),  # > $50 Apparel threshold
-    ("T8", 30.0, 10.0, 5, "NEW", "Electronics", "RETURN_REQUIRED"), # > $35 Electronics threshold
+    ("T7", 60.0, 25.0, 5, "NEW", "Apparel", "RETURN_REQUIRED"),  # > standard Apparel threshold
+    ("T8", 30.0, 10.0, 5, "NEW", "Electronics", "RETURN_REQUIRED"), # > standard Electronics threshold
     ("T9", 20.0, 8.0, 70, "NEW", "Apparel", "MANUAL_REVIEW"),      # Fraud score > 60
-    ("T10", 15.0, 5.0, 5, "NEW", "Apparel", "RETURNLESS_REFUND"),
+    ("T10", 4.0, 2.0, 5, "NEW", "Apparel", "RETURNLESS_REFUND"),
 ]
 
 # Adding 70 more test definitions programmatically to assert counts and rule variants
@@ -802,8 +802,8 @@ for i in range(11, 85):
     # Dynamic values to trigger different outcomes
     # e.g., low fraud returnless refund path
     req_id = f"T{i}"
-    order_val = 10.0 + (i % 10)
-    ship_cost = 5.0 + (i % 5)
+    order_val = 2.0 + (i % 10) * 0.25
+    ship_cost = 0.5 + (i % 5) * 0.25
     fraud = 5
     cond = "NEW"
     cat = "Apparel"

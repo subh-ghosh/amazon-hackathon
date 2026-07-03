@@ -5,6 +5,10 @@ import {
   PackageX,
   RotateCcw,
   WalletCards,
+  ShieldAlert,
+  Leaf,
+  Trophy,
+  TrendingDown,
   type LucideIcon,
 } from "lucide-react";
 
@@ -16,40 +20,54 @@ interface KpiCardProps {
   kpi: SellerKpi;
 }
 
+// Map each KPI label to a specific contextual icon
+const labelIconMap: Record<string, LucideIcon> = {
+  "Return Rate": TrendingDown,
+  "Revenue Lost to Returns": PackageX,
+  "Revenue Recovered": WalletCards,
+  "Fraud Incidents": ShieldAlert,
+  "Fraud Risk": ShieldAlert,
+  "Packaging Score": RotateCcw,
+  "Seller Health": Trophy,
+  "Sustainability": Leaf,
+  "Seller Tier": Trophy,
+};
+
 const toneStyles: Record<
   SellerKpi["tone"],
-  { icon: string; trend: string; iconComponent: LucideIcon }
+  { icon: string; trend: string; fallbackIcon: LucideIcon }
 > = {
   emerald: {
     icon: "bg-emerald-50 text-emerald-700",
     trend: "text-emerald-700",
-    iconComponent: RotateCcw,
+    fallbackIcon: RotateCcw,
   },
   blue: {
     icon: "bg-blue-50 text-blue-700",
-    trend: "text-emerald-700",
-    iconComponent: PackageX,
+    trend: "text-blue-700",
+    fallbackIcon: PackageX,
   },
   amber: {
     icon: "bg-amber-50 text-amber-700",
-    trend: "text-emerald-700",
-    iconComponent: WalletCards,
+    trend: "text-amber-700",
+    fallbackIcon: WalletCards,
   },
   rose: {
     icon: "bg-rose-50 text-rose-700",
     trend: "text-rose-700",
-    iconComponent: AlertTriangle,
+    fallbackIcon: AlertTriangle,
   },
   slate: {
     icon: "bg-slate-50 text-slate-700",
     trend: "text-slate-700",
-    iconComponent: PackageX,
+    fallbackIcon: PackageX,
   },
 };
 
 export function KpiCard({ kpi }: KpiCardProps) {
   const style = toneStyles[kpi.tone];
-  const Icon = style.iconComponent;
+  const Icon = labelIconMap[kpi.label] ?? style.fallbackIcon;
+  const hasChange = kpi.change !== 0;
   const TrendIcon = kpi.trend === "up" ? ArrowUpRight : ArrowDownRight;
 
   return (
@@ -67,10 +85,14 @@ export function KpiCard({ kpi }: KpiCardProps) {
           </div>
         </div>
         <div className="mt-5 flex items-center gap-1.5 text-xs">
-          <span className={cn("flex items-center font-semibold", style.trend)}>
-            <TrendIcon className="mr-0.5 size-3.5" aria-hidden="true" />
-            {kpi.change}%
-          </span>
+          {hasChange ? (
+            <span className={cn("flex items-center font-semibold", style.trend)}>
+              <TrendIcon className="mr-0.5 size-3.5" aria-hidden="true" />
+              {kpi.change}%
+            </span>
+          ) : (
+            <span className="font-semibold text-slate-400">—</span>
+          )}
           <span className="text-slate-400">{kpi.comparison}</span>
         </div>
       </CardContent>

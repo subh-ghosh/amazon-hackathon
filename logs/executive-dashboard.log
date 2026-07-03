@@ -1,0 +1,19 @@
+
+> @relife/executive-dashboard@1.0.0 dev
+> next dev -p 3004
+
+   ▲ Next.js 15.5.19
+   - Local:        http://localhost:3004
+   - Network:      http://10.147.82.96:3004
+
+ ✓ Starting...
+ ✓ Ready in 4.8s
+ ○ Compiling / ...
+ ✓ Compiled / in 6.8s (689 modules)
+ GET / 200 in 7420ms
+ ○ Compiling /api/proxy/[service]/[[...path]] ...
+ ✓ Compiled /api/proxy/[service]/[[...path]] in 1805ms (508 modules)
+ GET / 200 in 187ms
+ GET /api/proxy/s12/api/v1/intelligence/analytics/recovery-effectiveness 200 in 6534ms
+ GET /api/proxy/s12/api/v1/intelligence/analytics/top-return-causes 200 in 6546ms
+ GET /api/proxy/s9/api/v1/logistics/analytics 200 in 11566ms
