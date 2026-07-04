@@ -15,6 +15,7 @@ from app.models.schemas import (
 from app.services.evaluation import EvaluationEngine
 from app.services.job_manager import job_manager
 from app.services.rate_limiter import api_rate_limiter
+from app.services.persistence import persistence
 
 # Set up logger
 logger = logging.getLogger("returnless_refund_service")
@@ -31,6 +32,11 @@ class DecisionCacheStore:
     def get(self, request_id: str) -> Optional[EvaluateResponse]:
         with self._lock:
             data = self._cache.get(request_id)
+            if not data:
+                persisted = persistence.get_decision(request_id)
+                if persisted:
+                    data = {"response": EvaluateResponse(**persisted)}
+                    self._cache[request_id] = data
             if data:
                 return data["response"]
             return None
@@ -41,77 +47,60 @@ class DecisionCacheStore:
                 "response": response,
                 "customerId": customer_id
             }
+            persistence.put_decision(request_id, customer_id, response.model_dump(mode="json"))
 
     def get_customer_history(self, customer_id: str) -> List[str]:
         with self._lock:
-            return [
+            local_history = [
                 item["response"].decision
                 for item in self._cache.values()
                 if item["customerId"] == customer_id
             ]
+            persisted_history = persistence.get_customer_history(customer_id)
+            return persisted_history or local_history
 
     def clear(self):
         with self._lock:
             self._cache.clear()
+            persistence.clear()
 
 
 class AnalyticsStore:
     def __init__(self):
-        self.total_evaluations = 0
-        self.decision_distribution = {
-            "RETURNLESS_REFUND": 0,
-            "RETURN_REQUIRED": 0,
-            "PARTIAL_REFUND": 0,
-            "REFUND_AND_DONATE": 0,
-            "REFUND_AND_RECYCLE": 0,
-            "MANUAL_REVIEW": 0
-        }
-        self.total_refund_value = 0.0
-        self.total_estimated_savings = 0.0
-        self.total_co2_saved = 0.0
-        self.total_waste_diverted = 0.0
-        self.manual_review_count = 0
-        self.total_order_value_shielded = 0.0
         self._lock = threading.RLock()
 
     def record_evaluation(self, res: EvaluateResponse, order_value: float, fraud_score: int):
         with self._lock:
-            self.total_evaluations += 1
+            summary = persistence.get_analytics()
+            summary["totalEvaluations"] += 1
             dec = res.decision
-            self.decision_distribution[dec] = self.decision_distribution.get(dec, 0) + 1
-            self.total_refund_value += res.refundAmount
-            self.total_estimated_savings += res.estimatedSavings
-            self.total_co2_saved += res.estimatedCO2Saved
-            self.total_waste_diverted += res.estimatedWasteDivertedKg
+            decision_distribution = summary["decisionDistribution"]
+            decision_distribution[dec] = decision_distribution.get(dec, 0) + 1
+            summary["totalRefundValue"] += res.refundAmount
+            summary["totalEstimatedSavings"] += res.estimatedSavings
+            summary["totalCO2Saved"] += res.estimatedCO2Saved
+            summary["totalWasteDiverted"] += res.estimatedWasteDivertedKg
             if dec == "MANUAL_REVIEW":
-                self.manual_review_count += 1
-                self.total_order_value_shielded += order_value
+                stats = summary["fraudPreventionStatistics"]
+                stats["manualReviewCount"] += 1
+                stats["totalOrderValueShielded"] += order_value
+            persistence.put_analytics(summary)
 
     def get_summary(self) -> dict:
         with self._lock:
-            return {
-                "totalEvaluations": self.total_evaluations,
-                "decisionDistribution": dict(self.decision_distribution),
-                "totalRefundValue": round(self.total_refund_value, 2),
-                "totalEstimatedSavings": round(self.total_estimated_savings, 2),
-                "totalCO2Saved": round(self.total_co2_saved, 2),
-                "totalWasteDiverted": round(self.total_waste_diverted, 2),
-                "fraudPreventionStatistics": {
-                    "manualReviewCount": self.manual_review_count,
-                    "totalOrderValueShielded": round(self.total_order_value_shielded, 2)
-                }
-            }
+            summary = persistence.get_analytics()
+            summary["totalRefundValue"] = round(summary["totalRefundValue"], 2)
+            summary["totalEstimatedSavings"] = round(summary["totalEstimatedSavings"], 2)
+            summary["totalCO2Saved"] = round(summary["totalCO2Saved"], 2)
+            summary["totalWasteDiverted"] = round(summary["totalWasteDiverted"], 2)
+            summary["fraudPreventionStatistics"]["totalOrderValueShielded"] = round(
+                summary["fraudPreventionStatistics"]["totalOrderValueShielded"], 2
+            )
+            return summary
 
     def clear(self):
         with self._lock:
-            self.total_evaluations = 0
-            self.decision_distribution = {k: 0 for k in self.decision_distribution}
-            self.total_refund_value = 0.0
-            self.total_estimated_savings = 0.0
-            self.total_co2_saved = 0.0
-            self.total_waste_diverted = 0.0
-            self.manual_review_count = 0
-            self.total_order_value_shielded = 0.0
+            persistence.reset_analytics()
 
 
 # Initialize store instances

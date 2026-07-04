@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "cdk": "^2.1129.0"
+  },
+  "_npx": {
+    "packages": [
+      "cdk"
+    ]
+  }
+}

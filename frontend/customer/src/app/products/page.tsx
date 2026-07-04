@@ -2,9 +2,9 @@
 
 import { useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
-import { PRODUCTS, searchProducts, getProductsByCategory } from "@/data/products";
 import { ProductCard } from "@/components/ProductCard";
 import type { Product } from "@/api/types";
+import { useCatalog } from "@/lib/catalog";
 
 type SortOption = "featured" | "price-asc" | "price-desc" | "rating";
 
@@ -22,19 +22,32 @@ function ProductListingContent() {
     const query = searchParams.get("q");
     const category = searchParams.get("category");
     const [sort, setSort] = useState<SortOption>("featured");
+    const { products: catalog, loading, error } = useCatalog();
 
-    let products = PRODUCTS;
+    let products = catalog;
     let title = "All Products";
 
     if (query) {
-        products = searchProducts(query);
+        const needle = query.toLowerCase();
+        products = catalog.filter((product) =>
+            [product.title, product.brand, product.category, product.description]
+                .some((value) => value.toLowerCase().includes(needle)),
+        );
         title = `Results for "${query}"`;
     } else if (category) {
-        products = getProductsByCategory(category);
+        products = catalog.filter((product) => product.category === category);
         title = category;
     }
 
     const sorted = sortProducts(products, sort);
+
+    if (loading) {
+        return <div className="max-w-[1500px] mx-auto px-4 py-6 text-sm text-slate-600">Loading database-backed catalog...</div>;
+    }
+
+    if (error) {
+        return <div className="max-w-[1500px] mx-auto px-4 py-6 text-sm text-red-700">{error}</div>;
+    }
 
     return (
         <div className="max-w-[1500px] mx-auto px-4 py-6">

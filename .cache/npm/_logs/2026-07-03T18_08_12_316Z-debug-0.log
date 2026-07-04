@@ -1,0 +1,22 @@
+0 verbose cli /home/subh/.nvm/versions/node/v24.14.0/bin/node /home/subh/.nvm/versions/node/v24.14.0/lib/node_modules/npm/bin/npm-cli.js
+1 info using npm@11.9.0
+2 info using node@v24.14.0
+3 silly config load:file:/home/subh/.nvm/versions/node/v24.14.0/lib/node_modules/npm/npmrc
+4 silly config load:file:/home/subh/Desktop/amazon/amazon-hackathon/.npmrc
+5 silly config load:file:/home/subh/Desktop/amazon/amazon-hackathon/.home/.npmrc
+6 silly config load:file:/home/subh/.nvm/versions/node/v24.14.0/etc/npmrc
+7 verbose title npm exec cdk deploy CircularOS-Serverless --app venv/bin/python app.py --require-approval never
+8 verbose argv "exec" "--" "cdk" "deploy" "CircularOS-Serverless" "--app" "venv/bin/python app.py" "--require-approval" "never"
+9 verbose logfile logs-max:10 dir:/home/subh/Desktop/amazon/amazon-hackathon/.cache/npm/_logs/2026-07-03T18_08_12_316Z-
+10 verbose logfile /home/subh/Desktop/amazon/amazon-hackathon/.cache/npm/_logs/2026-07-03T18_08_12_316Z-debug-0.log
+11 silly logfile done cleaning log files
+12 silly packumentCache heap:2348810240 maxSize:587202560 maxEntrySize:293601280
+13 http fetch GET 200 https://registry.npmjs.org/cdk 1578ms (cache revalidated)
+14 silly packumentCache heap:2348810240 maxSize:587202560 maxEntrySize:293601280
+15 silly packumentCache heap:2348810240 maxSize:587202560 maxEntrySize:293601280
+16 verbose cwd /home/subh/Desktop/amazon/amazon-hackathon/backend/infra-lambda
+17 verbose os Linux 6.17.0-35-generic
+18 verbose node v24.14.0
+19 verbose npm  v11.9.0
+20 verbose exit 1
+21 verbose code 1

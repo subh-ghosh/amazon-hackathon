@@ -5,15 +5,21 @@ import { ReturnsKpis } from "@/components/dashboard/returns-kpis";
 import { RecoveryPipeline } from "@/components/dashboard/recovery-pipeline";
 import { InspectionTable } from "@/components/dashboard/inspection-table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { operationsData as defaultData } from "@/data/operations-data";
 import type { OperationsData } from "@/types/operations";
 
 export function OperationsDashboardView() {
   const [data, setData] = useState<OperationsData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     Promise.all([
+      fetch("/api/operations", { cache: "no-store" }).then(async (response) => {
+        if (!response.ok) {
+          throw new Error(`Operations snapshot failed with status ${response.status}`);
+        }
+        return response.json() as Promise<OperationsData>;
+      }),
       fetch("/api/proxy/s9/api/v1/logistics/analytics").then(r => r.json()).catch(() => null),
       fetch("/api/proxy/s5/api/v1/simulation/run", {
         method: "POST",
@@ -30,8 +36,8 @@ export function OperationsDashboardView() {
           sellerTrustScore: 0.92,
         }),
       }).then(r => r.json()).catch(() => null),
-    ]).then(([analyticsData, simData]) => {
-      const merged = { ...defaultData };
+    ]).then(([snapshot, analyticsData, simData]) => {
+      const merged = structuredClone(snapshot);
 
       // Enrich pipeline with live S9 data
       if (analyticsData && analyticsData.totalOptimizations) {
@@ -61,8 +67,15 @@ export function OperationsDashboardView() {
 
       setData(merged);
       setLoading(false);
+    }).catch((loadError) => {
+      setError(loadError instanceof Error ? loadError.message : "Failed to load operations dashboard.");
+      setLoading(false);
     });
   }, []);
+
+  if (error) {
+    return <StatusCard title="Operations snapshot unavailable" detail={error} />;
+  }
 
   if (loading || !data) {
     return <StatusCard title="Loading facility operations..." />;
@@ -88,14 +101,14 @@ export function OperationsDashboardView() {
   );
 }
 
-function StatusCard({ title }: { title: string }) {
+function StatusCard({ title, detail }: { title: string; detail?: string }) {
   return (
     <Card>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent className="flex items-center justify-between gap-4">
-        <p className="text-sm text-slate-500">Connecting to facility live feed...</p>
+        <p className="text-sm text-slate-500">{detail ?? "Connecting to facility live feed..."}</p>
       </CardContent>
     </Card>
   );

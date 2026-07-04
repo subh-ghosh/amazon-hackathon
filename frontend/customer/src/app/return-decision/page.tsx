@@ -3,9 +3,9 @@
 import { Suspense, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { CheckCircle, ArrowRight, MapPin, Clock, Tag, Home } from "lucide-react";
-import { getProductById } from "@/data/products";
 import { useState } from "react";
 import { useStore } from "@/hooks/useStore";
+import { useProduct } from "@/lib/catalog";
 
 function ReturnDecisionContent() {
     const searchParams = useSearchParams();
@@ -15,7 +15,7 @@ function ReturnDecisionContent() {
     const returnId = searchParams.get("returnId") || "RET-DEMO";
     const productId = searchParams.get("productId") || "PROD-002";
     const decision = searchParams.get("decision") || "keep_refund";
-    const product = getProductById(productId);
+    const { product, loading: productLoading, error: productError } = useProduct(productId);
     const [dropoffMethod, setDropoffMethod] = useState<"dropoff" | "pickup">("dropoff");
     const [credited, setCredited] = useState(false);
 
@@ -36,6 +36,14 @@ function ReturnDecisionContent() {
     }, [decision, credited, earnCredits]);
     const pickupDate = new Date();
     pickupDate.setDate(pickupDate.getDate() + 2);
+
+    if (productLoading) {
+        return <div className="max-w-[600px] mx-auto px-4 py-12 text-sm text-slate-600">Loading return decision...</div>;
+    }
+
+    if (productError) {
+        return <div className="max-w-[600px] mx-auto px-4 py-12 text-sm text-red-700">{productError}</div>;
+    }
 
     return (
         <div className="max-w-[600px] mx-auto px-4 py-12">

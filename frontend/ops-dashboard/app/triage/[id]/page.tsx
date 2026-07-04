@@ -11,8 +11,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { operationsData } from "@/data/operations-data";
-import type { TriageItemDetails } from "@/types/operations";
+import type { OperationsData, TriageItemDetails } from "@/types/operations";
 
 interface Scenario {
   scenario: string;
@@ -241,7 +240,8 @@ const destinationsByType: Record<RoutingType, DestinationOption[]> = {
 export default function TriageDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const router = useRouter();
-  const data: TriageItemDetails = operationsData.triageDetails[id] || operationsData.triageDetails["RET-9921-A"];
+  const [snapshot, setSnapshot] = useState<OperationsData | null>(null);
+  const [snapshotError, setSnapshotError] = useState<string | null>(null);
 
   const [loading, setLoading] = useState(true);
   const [scenarios, setScenarios] = useState<Scenario[]>([]);
@@ -252,6 +252,7 @@ export default function TriageDetailPage({ params }: { params: Promise<{ id: str
   const [selectedRoute, setSelectedRoute] = useState<number>(0);
   const [selectedBuyer, setSelectedBuyer] = useState<number>(0);
   const [isRouting, setIsRouting] = useState(false);
+  const data: TriageItemDetails | null = snapshot ? (snapshot.triageDetails[id] || Object.values(snapshot.triageDetails)[0] || null) : null;
 
   // Get destinations based on the selected recovery scenario
   const routingType = selectedScenario ? getRoutingType(selectedScenario.scenario) : "warehouse";
@@ -316,9 +317,35 @@ export default function TriageDetailPage({ params }: { params: Promise<{ id: str
     return { cost, days, carbon, capacity: dest.capacity };
   }
 
-  useEffect(() => { runPipeline(); }, []);
+  useEffect(() => {
+    fetch("/api/operations", { cache: "no-store" })
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error(`Operations snapshot failed with status ${response.status}`);
+        }
+        return response.json() as Promise<OperationsData>;
+      })
+      .then((result) => {
+        setSnapshot(result);
+      })
+      .catch((error) => {
+        setSnapshotError(error instanceof Error ? error.message : "Failed to load triage details.");
+        setLoading(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
+    runPipeline();
+  }, [data]);
 
   async function runPipeline() {
+    if (!data) {
+      return;
+    }
+
     setLoading(true);
 
     // S5: Get all recovery scenarios
@@ -428,6 +455,32 @@ export default function TriageDetailPage({ params }: { params: Promise<{ id: str
   );
   const valueDelta = selectedScenario && recommendedScenario
     ? selectedScenario.recoveryValue - recommendedScenario.recoveryValue : 0;
+
+  if (snapshotError) {
+    return (
+      <main className="mx-auto max-w-4xl px-4 py-10">
+        <Card>
+          <CardHeader>
+            <CardTitle>Triage snapshot unavailable</CardTitle>
+          </CardHeader>
+          <CardContent className="text-sm text-red-700">{snapshotError}</CardContent>
+        </Card>
+      </main>
+    );
+  }
+
+  if (!data) {
+    return (
+      <main className="mx-auto max-w-4xl px-4 py-10">
+        <Card>
+          <CardHeader>
+            <CardTitle>Loading triage details...</CardTitle>
+          </CardHeader>
+          <CardContent className="text-sm text-slate-500">Fetching the selected return from the operations snapshot.</CardContent>
+        </Card>
+      </main>
+    );
+  }
 
   return (
     <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 pb-32">

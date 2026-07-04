@@ -60,14 +60,6 @@ async def top_return_causes(
     graph: GraphService = Depends(get_graph_service),
 ):
     data = graph.top_return_causes(limit)
-    if getattr(graph.neptune, "_opencypher_offline", False) or not data:
-        # Hackathon Demo fallback!
-        return {"status": "ok", "data": [
-            {"cause_id": "RC_DEF", "category": "Defective Item", "frequency": 142},
-            {"cause_id": "RC_INAD", "category": "Not As Described", "frequency": 89},
-            {"cause_id": "RC_SIZE", "category": "Wrong Size", "frequency": 45},
-            {"cause_id": "RC_LATE", "category": "Arrived Late", "frequency": 22}
-        ]}
     return {"status": "ok", "data": data}
 
 
@@ -80,13 +72,6 @@ async def fraudulent_products(
     graph: GraphService = Depends(get_graph_service),
 ):
     data = graph.most_fraudulent_products(limit)
-    if getattr(graph.neptune, "_opencypher_offline", False) or not data:
-        # Hackathon Demo fallback!
-        return {"status": "ok", "data": [
-            {"product_id": "PROD-1029", "title": "Wireless Earbuds Pro", "fraud_incidents": 34},
-            {"product_id": "PROD-5511", "title": "Smart Watch Series 8", "fraud_incidents": 21},
-            {"product_id": "PROD-8822", "title": "Gaming GPU RTX 4090", "fraud_incidents": 15}
-        ]}
     return {"status": "ok", "data": data}
 
 
@@ -99,11 +84,6 @@ async def seller_return_analysis(
     graph: GraphService = Depends(get_graph_service),
 ):
     data = graph.seller_return_analysis(limit)
-    if getattr(graph.neptune, "_opencypher_offline", False) or not data:
-        return {"status": "ok", "data": [
-            {"seller_id": "SEL-44A", "seller_name": "Tech Haven Official", "defective_returns": 56},
-            {"seller_id": "SEL-99B", "seller_name": "Global Gadgets Inc", "defective_returns": 32}
-        ]}
     return {"status": "ok", "data": data}
 
 
@@ -115,12 +95,6 @@ async def recovery_effectiveness(
     graph: GraphService = Depends(get_graph_service),
 ):
     data = graph.recovery_effectiveness()
-    if getattr(graph.neptune, "_opencypher_offline", False) or not data:
-        return {"status": "ok", "data": [
-            {"root_cause": "Defective Item", "action_type": "REFURBISH", "occurrences": 85, "avg_value_recovered": 120.50},
-            {"root_cause": "Wrong Size", "action_type": "RESELL_AS_NEW", "occurrences": 42, "avg_value_recovered": 45.00},
-            {"root_cause": "Not As Described", "action_type": "LIQUIDATE", "occurrences": 30, "avg_value_recovered": 15.25}
-        ]}
     return {"status": "ok", "data": data}
 
 

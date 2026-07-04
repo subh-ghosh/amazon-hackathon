@@ -45,6 +45,89 @@ class AllServicesLambdaStack(Stack):
             removal_policy=RemovalPolicy.DESTROY
         )
 
+        fraud_scores_table = dynamodb.Table(self, "FraudScoresLambdaTable",
+            table_name="CircularOS-FraudScores",
+            partition_key=dynamodb.Attribute(name="EntityID", type=dynamodb.AttributeType.STRING),
+            sort_key=dynamodb.Attribute(name="Timestamp", type=dynamodb.AttributeType.STRING),
+            billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST,
+            removal_policy=RemovalPolicy.DESTROY
+        )
+
+        returnless_decisions_table = dynamodb.Table(self, "ReturnlessDecisionsLambdaTable",
+            table_name="CircularOS-ReturnlessDecisions",
+            partition_key=dynamodb.Attribute(name="requestId", type=dynamodb.AttributeType.STRING),
+            billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST,
+            removal_policy=RemovalPolicy.DESTROY
+        )
+        returnless_jobs_table = dynamodb.Table(self, "ReturnlessJobsLambdaTable",
+            table_name="CircularOS-ReturnlessJobs",
+            partition_key=dynamodb.Attribute(name="jobId", type=dynamodb.AttributeType.STRING),
+            billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST,
+            removal_policy=RemovalPolicy.DESTROY
+        )
+        returnless_rate_limits_table = dynamodb.Table(self, "ReturnlessRateLimitsLambdaTable",
+            table_name="CircularOS-ReturnlessRateLimits",
+            partition_key=dynamodb.Attribute(name="clientIp", type=dynamodb.AttributeType.STRING),
+            billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST,
+            removal_policy=RemovalPolicy.DESTROY
+        )
+        returnless_analytics_table = dynamodb.Table(self, "ReturnlessAnalyticsLambdaTable",
+            table_name="CircularOS-ReturnlessAnalytics",
+            partition_key=dynamodb.Attribute(name="metricId", type=dynamodb.AttributeType.STRING),
+            billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST,
+            removal_policy=RemovalPolicy.DESTROY
+        )
+
+        routing_decisions_table = dynamodb.Table(self, "CircularRoutingDecisionsLambdaTable",
+            table_name="CircularOS-CircularRoutingDecisions",
+            partition_key=dynamodb.Attribute(name="decisionId", type=dynamodb.AttributeType.STRING),
+            billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST,
+            removal_policy=RemovalPolicy.DESTROY
+        )
+        routing_analytics_table = dynamodb.Table(self, "CircularRoutingAnalyticsLambdaTable",
+            table_name="CircularOS-CircularRoutingAnalytics",
+            partition_key=dynamodb.Attribute(name="metricId", type=dynamodb.AttributeType.STRING),
+            billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST,
+            removal_policy=RemovalPolicy.DESTROY
+        )
+        routing_audit_table = dynamodb.Table(self, "CircularRoutingAuditLambdaTable",
+            table_name="CircularOS-CircularRoutingAudit",
+            partition_key=dynamodb.Attribute(name="auditId", type=dynamodb.AttributeType.STRING),
+            billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST,
+            removal_policy=RemovalPolicy.DESTROY
+        )
+
+        customer_sessions_table = dynamodb.Table(self, "CustomerSessionsLambdaTable",
+            table_name="CircularOS-CustomerSessions",
+            partition_key=dynamodb.Attribute(name="sessionId", type=dynamodb.AttributeType.STRING),
+            billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST,
+            removal_policy=RemovalPolicy.DESTROY
+        )
+        product_catalog_table = dynamodb.Table(self, "ProductCatalogLambdaTable",
+            table_name="CircularOS-ProductCatalog",
+            partition_key=dynamodb.Attribute(name="product_id", type=dynamodb.AttributeType.STRING),
+            billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST,
+            removal_policy=RemovalPolicy.DESTROY
+        )
+        operations_snapshots_table = dynamodb.Table(self, "OperationsSnapshotsLambdaTable",
+            table_name="CircularOS-OperationsSnapshots",
+            partition_key=dynamodb.Attribute(name="snapshotId", type=dynamodb.AttributeType.STRING),
+            billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST,
+            removal_policy=RemovalPolicy.DESTROY
+        )
+        executive_snapshots_table = dynamodb.Table(self, "ExecutiveSnapshotsLambdaTable",
+            table_name="CircularOS-ExecutiveSnapshots",
+            partition_key=dynamodb.Attribute(name="snapshotId", type=dynamodb.AttributeType.STRING),
+            billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST,
+            removal_policy=RemovalPolicy.DESTROY
+        )
+        seller_analytics_table = dynamodb.Table(self, "SellerAnalyticsLambdaTable",
+            table_name="CircularOS-SellerAnalytics",
+            partition_key=dynamodb.Attribute(name="sellerId", type=dynamodb.AttributeType.STRING),
+            billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST,
+            removal_policy=RemovalPolicy.DESTROY
+        )
+
         # DynamoDB tables for S12
         for tbl in ["ReturnEventsLambda", "FraudScoresLambda", "RecoveryDecisionsLambda"]:
             dynamodb.Table(self, tbl,
@@ -71,7 +154,13 @@ class AllServicesLambdaStack(Stack):
                 environment={
                     "ENVIRONMENT": "production",
                     "AWS_REGION_NAME": self.region,
-                    "DYNAMODB_TABLE_NAME": "ProductDigitalTwinLambda" if svc["name"] == "s4" else "",
+                    "DYNAMODB_TABLE_NAME": twin_table.table_name if svc["name"] == "s4" else "",
+                    "DYNAMODB_TABLE": fraud_scores_table.table_name if svc["name"] == "s3" else "",
+                    "DYNAMODB_DECISIONS_TABLE": returnless_decisions_table.table_name if svc["name"] == "s8" else (routing_decisions_table.table_name if svc["name"] == "s9" else ""),
+                    "DYNAMODB_JOBS_TABLE": returnless_jobs_table.table_name if svc["name"] == "s8" else "",
+                    "DYNAMODB_RATE_LIMITS_TABLE": returnless_rate_limits_table.table_name if svc["name"] == "s8" else "",
+                    "DYNAMODB_ANALYTICS_TABLE": returnless_analytics_table.table_name if svc["name"] == "s8" else (routing_analytics_table.table_name if svc["name"] == "s9" else ""),
+                    "DYNAMODB_AUDIT_TABLE": routing_audit_table.table_name if svc["name"] == "s9" else "",
                     "NEPTUNE_ENDPOINT": "disabled",
                 },
             )
@@ -79,6 +168,17 @@ class AllServicesLambdaStack(Stack):
             # Grant DynamoDB access for S4
             if svc["name"] == "s4":
                 twin_table.grant_read_write_data(fn)
+            if svc["name"] == "s3":
+                fraud_scores_table.grant_read_write_data(fn)
+            if svc["name"] == "s8":
+                returnless_decisions_table.grant_read_write_data(fn)
+                returnless_jobs_table.grant_read_write_data(fn)
+                returnless_rate_limits_table.grant_read_write_data(fn)
+                returnless_analytics_table.grant_read_write_data(fn)
+            if svc["name"] == "s9":
+                routing_decisions_table.grant_read_write_data(fn)
+                routing_analytics_table.grant_read_write_data(fn)
+                routing_audit_table.grant_read_write_data(fn)
 
             # API Gateway HTTP API (cheapest, fastest)
             api = apigwv2.HttpApi(self, f"Api-{svc['name']}",
@@ -92,3 +192,24 @@ class AllServicesLambdaStack(Stack):
                 value=api.url or "",
                 description=f"API URL for {svc['dir']}"
             )
+
+        CfnOutput(self, "CustomerSessionsTableName",
+            value=customer_sessions_table.table_name,
+            description="DynamoDB table used by the customer frontend session store"
+        )
+        CfnOutput(self, "ProductCatalogTableName",
+            value=product_catalog_table.table_name,
+            description="DynamoDB table used by the customer frontend catalog API"
+        )
+        CfnOutput(self, "OperationsSnapshotsTableName",
+            value=operations_snapshots_table.table_name,
+            description="DynamoDB table used by the operations dashboard API"
+        )
+        CfnOutput(self, "ExecutiveSnapshotsTableName",
+            value=executive_snapshots_table.table_name,
+            description="DynamoDB table used by the executive dashboard API"
+        )
+        CfnOutput(self, "SellerAnalyticsTableName",
+            value=seller_analytics_table.table_name,
+            description="DynamoDB table used by the seller dashboard API"
+        )

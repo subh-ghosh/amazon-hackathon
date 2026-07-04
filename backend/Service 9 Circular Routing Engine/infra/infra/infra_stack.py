@@ -4,7 +4,8 @@ from aws_cdk import (
     aws_ecs as ecs,
     aws_ecs_patterns as ecs_patterns,
     aws_events as events,
-    aws_iam as iam,
+    aws_dynamodb as dynamodb,
+    RemovalPolicy,
     CfnOutput,
     Duration
 )
@@ -22,6 +23,28 @@ class CircularRoutingServiceStack(Stack):
         # 2. Existing EventBridge Bus Reference
         bus = events.EventBus.from_event_bus_name(self, "Bus", "circular-intelligence-bus")
 
+        decisions_table = dynamodb.Table(
+            self, "CircularRoutingDecisionsTable",
+            table_name="CircularOS-CircularRoutingDecisions",
+            partition_key=dynamodb.Attribute(name="decisionId", type=dynamodb.AttributeType.STRING),
+            billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST,
+            removal_policy=RemovalPolicy.DESTROY,
+        )
+        analytics_table = dynamodb.Table(
+            self, "CircularRoutingAnalyticsTable",
+            table_name="CircularOS-CircularRoutingAnalytics",
+            partition_key=dynamodb.Attribute(name="metricId", type=dynamodb.AttributeType.STRING),
+            billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST,
+            removal_policy=RemovalPolicy.DESTROY,
+        )
+        audit_table = dynamodb.Table(
+            self, "CircularRoutingAuditTable",
+            table_name="CircularOS-CircularRoutingAudit",
+            partition_key=dynamodb.Attribute(name="auditId", type=dynamodb.AttributeType.STRING),
+            billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST,
+            removal_policy=RemovalPolicy.DESTROY,
+        )
+
         # 3. ECS Cluster
         cluster = ecs.Cluster(self, "CircularRoutingServiceCluster", vpc=vpc)
 
@@ -36,8 +59,12 @@ class CircularRoutingServiceStack(Stack):
                 container_port=8009,
                 environment={
                     "AWS_DEFAULT_REGION": self.region,
+                    "AWS_REGION": self.region,
                     "EVENT_BUS_NAME": bus.event_bus_name,
-                    "SERVICE_12_URL": ""
+                    "SERVICE_12_URL": "",
+                    "DYNAMODB_DECISIONS_TABLE": decisions_table.table_name,
+                    "DYNAMODB_ANALYTICS_TABLE": analytics_table.table_name,
+                    "DYNAMODB_AUDIT_TABLE": audit_table.table_name,
                 }
             ),
             assign_public_ip=True,
@@ -63,6 +90,9 @@ class CircularRoutingServiceStack(Stack):
 
         # 7. IAM Permissions
         bus.grant_put_events_to(routing_service.task_definition.task_role)
+        decisions_table.grant_read_write_data(routing_service.task_definition.task_role)
+        analytics_table.grant_read_write_data(routing_service.task_definition.task_role)
+        audit_table.grant_read_write_data(routing_service.task_definition.task_role)
 
         # 8. Output
         CfnOutput(self, "CircularRoutingServiceURL", value=f"http://{routing_service.load_balancer.load_balancer_dns_name}")

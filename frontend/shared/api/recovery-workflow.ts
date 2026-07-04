@@ -116,18 +116,13 @@ async function postJson<T>(
   body: unknown,
   serviceName: string,
   logLabel: "S2" | "S3" | "S5" | "S6" | "S7",
-  fallback: T,
+  _fallback: T,
   options: { allowFallback?: boolean } = {},
 ): Promise<DemoAwarePayload<T>> {
-  const allowFallback = options.allowFallback ?? true;
+  const allowFallback = options.allowFallback ?? false;
 
-  if (isDemoModeForced() && allowFallback) {
-    return {
-      data: fallback,
-      demoMode: true,
-      source: `${logLabel} fallback`,
-      message: `${serviceName} skipped because DEMO_MODE is enabled.`,
-    };
+  if (isDemoModeForced()) {
+    throw new Error(`${serviceName} skipped because DEMO_MODE is enabled, and fallback mode is disabled.`);
   }
 
   const controller = new AbortController();
@@ -182,17 +177,8 @@ async function postJson<T>(
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
 
-    if (!allowFallback) {
-      throw error;
-    }
-
     if (error instanceof Error && error.name === "AbortError") {
-      return {
-        data: fallback,
-        demoMode: true,
-        source: `${logLabel} fallback`,
-        message: `${serviceName} timed out. Using demo fallback data.`,
-      };
+      throw new Error(`${serviceName} timed out.`);
     }
 
     if (error instanceof TypeError) {
@@ -205,22 +191,14 @@ async function postJson<T>(
         error: error.message,
       });
 
-      return {
-        data: fallback,
-        demoMode: true,
-        source: `${logLabel} fallback`,
-        message:
-          `${serviceName} could not be reached from the browser. ` +
-          `Using demo fallback data. Browser error: ${error.message}`,
-      };
+      throw new Error(`${serviceName} could not be reached from the browser. Browser error: ${error.message}`);
     }
 
-    return {
-      data: fallback,
-      demoMode: true,
-      source: `${logLabel} fallback`,
-      message: `${message} Using demo fallback data.`,
-    };
+    if (!allowFallback) {
+      throw error instanceof Error ? error : new Error(message);
+    }
+
+    throw new Error(message);
   } finally {
     globalThis.clearTimeout(timeout);
   }
@@ -246,6 +224,7 @@ export function runFutureSimulator(product: ProductDetailsPayload) {
     "Service #5 Future Simulator",
     "S5",
     fallbackSimulationPayload(product),
+    { allowFallback: false },
   );
 }
 
@@ -260,6 +239,7 @@ export function runRecoveryOptimizer(
     "Service #6 Recovery Optimizer",
     "S6",
     fallbackOptimizerPayload(product, scenarios),
+    { allowFallback: false },
   );
 }
 
@@ -274,6 +254,7 @@ export function runReverseLogistics(
     "Service #7 Reverse Logistics",
     "S7",
     fallbackLogisticsPayload(product, decision),
+    { allowFallback: false },
   );
 }
 
@@ -285,6 +266,7 @@ export function discoverTruth(product: ProductDetailsPayload) {
     "Service #2 Truth Discovery",
     "S2",
     fallbackTruthDiscoveryPayload(product),
+    { allowFallback: false },
   );
 }
 

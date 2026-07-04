@@ -1,7 +1,6 @@
 import { CalendarDays, Download } from "lucide-react";
 
 import { SellerDashboardView } from "@/components/dashboard/seller-dashboard-view";
-import { sellerAnalytics } from "@/data/seller-analytics";
 
 export default function SellerDashboard() {
   return (
@@ -18,7 +17,7 @@ export default function SellerDashboard() {
         <div className="flex flex-wrap items-center gap-2">
           <div className="flex h-10 items-center gap-2 rounded-md border bg-white px-3 text-sm font-medium text-slate-600 shadow-sm">
             <CalendarDays className="size-4 text-slate-400" aria-hidden="true" />
-            {sellerAnalytics.reportingPeriod}
+            Live seller snapshot
           </div>
           <button
             type="button"

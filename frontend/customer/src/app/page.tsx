@@ -2,13 +2,23 @@
 
 import Link from "next/link";
 import { ShieldCheck, Leaf, Truck, RotateCcw } from "lucide-react";
-import { PRODUCTS, CATEGORIES } from "@/data/products";
 import { ProductCard } from "@/components/ProductCard";
+import { useCatalog } from "@/lib/catalog";
+import type { Product } from "@/api/types";
 
 export default function HomePage() {
-    const featured = PRODUCTS.slice(0, 4);
-    const trending = PRODUCTS.slice(4, 8);
-    const recommended = PRODUCTS.slice(8, 12);
+    const { products, categories, loading, error } = useCatalog();
+    const featured = products.slice(0, 4);
+    const trending = products.slice(4, 8);
+    const recommended = products.slice(8, 12);
+
+    if (loading) {
+        return <CatalogStatus title="Loading live catalog..." detail="Fetching product inventory from the backing database." />;
+    }
+
+    if (error) {
+        return <CatalogStatus title="Catalog unavailable" detail={error} />;
+    }
 
     return (
         <div className="bg-[#EAEDED]">
@@ -81,7 +91,7 @@ export default function HomePage() {
                 <div className="bg-white rounded-lg border border-gray-200 p-5">
                     <h2 className="text-lg font-bold text-gray-900 mb-3">Shop by Category</h2>
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
-                        {CATEGORIES.map((cat) => (
+                        {categories.map((cat) => (
                             <Link
                                 key={cat}
                                 href={`/products?category=${encodeURIComponent(cat)}`}
@@ -149,7 +159,7 @@ export default function HomePage() {
     );
 }
 
-function Section({ title, products }: { title: string; products: typeof PRODUCTS }) {
+function Section({ title, products }: { title: string; products: Product[] }) {
     return (
         <div className="max-w-[1500px] mx-auto px-4 mb-6">
             <div className="bg-white rounded-lg border border-gray-200 p-5">
@@ -164,6 +174,17 @@ function Section({ title, products }: { title: string; products: typeof PRODUCTS
                         <ProductCard key={product.product_id} product={product} />
                     ))}
                 </div>
+            </div>
+        </div>
+    );
+}
+
+function CatalogStatus({ title, detail }: { title: string; detail: string }) {
+    return (
+        <div className="min-h-screen bg-[#EAEDED] px-4 py-12">
+            <div className="mx-auto max-w-2xl rounded-xl border bg-white p-6 shadow-sm">
+                <h1 className="text-xl font-semibold text-slate-900">{title}</h1>
+                <p className="mt-2 text-sm text-slate-600">{detail}</p>
             </div>
         </div>
     );

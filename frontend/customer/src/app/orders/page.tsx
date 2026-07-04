@@ -3,19 +3,16 @@
 import { useRouter } from "next/navigation";
 import { Package } from "lucide-react";
 import { useStore } from "@/hooks/useStore";
-import { PRODUCTS } from "@/data/products";
 
 export default function OrdersPage() {
     const router = useRouter();
     const { orders } = useStore();
 
-    const displayOrders = [...orders, ...getDemoOrders()];
-
     return (
         <div className="max-w-[1000px] mx-auto px-4 py-6">
             <h1 className="text-xl font-bold text-gray-900 mb-6">Your Orders</h1>
 
-            {displayOrders.length === 0 ? (
+            {orders.length === 0 ? (
                 <div className="text-center py-12 bg-white border border-gray-200 rounded-lg">
                     <Package size={40} className="mx-auto text-gray-300 mb-4" />
                     <p className="text-gray-600 mb-4">No orders yet</p>
@@ -23,7 +20,7 @@ export default function OrdersPage() {
                 </div>
             ) : (
                 <div className="space-y-4">
-                    {displayOrders.map((order) => (
+                    {orders.map((order) => (
                         <div key={order.order_id} className="bg-white border border-gray-200 rounded-lg overflow-hidden">
                             <div className="bg-[#F0F2F2] px-5 py-3 border-b border-gray-200 flex flex-wrap gap-4 text-xs text-gray-600">
                                 <div>
@@ -96,163 +93,4 @@ export default function OrdersPage() {
 
 function formatDate(date: string): string {
     return new Date(date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
-}
-
-function getDemoOrders() {
-    return [
-        // Electronics - LOW risk, high seller trust (safe buy demo)
-        {
-            order_id: "113-4958271-8473625",
-            customer_id: "CUST-DEMO-001",
-            items: [{ product: PRODUCTS[0], quantity: 1 }], // Sony headphones $348
-            total: PRODUCTS[0].price,
-            status: "delivered" as const,
-            created_at: new Date(Date.now() - 5 * 86400000).toISOString(),
-            delivery_date: new Date(Date.now() - 2 * 86400000).toISOString(),
-            address: { name: "Rahul Sharma", street: "42 MG Road, Indiranagar", city: "Bangalore", state: "KA", zip: "560038", country: "IN" },
-        },
-        // Footwear - HIGH risk, $150 → RETURN_REQUIRED
-        {
-            order_id: "113-7823491-3847561",
-            customer_id: "CUST-DEMO-001",
-            items: [{ product: PRODUCTS[1], quantity: 1 }], // Nike shoes $150
-            total: PRODUCTS[1].price,
-            status: "delivered" as const,
-            created_at: new Date(Date.now() - 3 * 86400000).toISOString(),
-            delivery_date: new Date(Date.now() - 1 * 86400000).toISOString(),
-            address: { name: "Rahul Sharma", street: "42 MG Road, Indiranagar", city: "Bangalore", state: "KA", zip: "560038", country: "IN" },
-        },
-        // Clothing - $69.50, above $24.00 (₹2,000) threshold → RETURN_REQUIRED
-        {
-            order_id: "113-9912847-1928374",
-            customer_id: "CUST-DEMO-001",
-            items: [{ product: PRODUCTS[4], quantity: 1 }], // Levi's jeans $69.50
-            total: PRODUCTS[4].price,
-            status: "delivered" as const,
-            created_at: new Date(Date.now() - 4 * 86400000).toISOString(),
-            delivery_date: new Date(Date.now() - 1 * 86400000).toISOString(),
-            address: { name: "Rahul Sharma", street: "42 MG Road, Indiranagar", city: "Bangalore", state: "KA", zip: "560038", country: "IN" },
-        },
-        // Clothing - $230, HIGH risk → RETURN_REQUIRED
-        {
-            order_id: "113-5567382-4738291",
-            customer_id: "CUST-DEMO-001",
-            items: [{ product: PRODUCTS[7], quantity: 1 }], // North Face jacket $230
-            total: PRODUCTS[7].price,
-            status: "delivered" as const,
-            created_at: new Date(Date.now() - 6 * 86400000).toISOString(),
-            delivery_date: new Date(Date.now() - 3 * 86400000).toISOString(),
-            address: { name: "Rahul Sharma", street: "42 MG Road, Indiranagar", city: "Bangalore", state: "KA", zip: "560038", country: "IN" },
-        },
-        // MODERATE VALUE - $24.99, between $4.80 and $30.00 → PARTIAL_REFUND / DONATE / RECYCLE
-        {
-            order_id: "113-2291038-9182746",
-            customer_id: "CUST-DEMO-001",
-            items: [{ product: PRODUCTS[12], quantity: 1 }], // Amazon Essentials T-Shirt $24.99
-            total: PRODUCTS[12].price,
-            status: "delivered" as const,
-            created_at: new Date(Date.now() - 7 * 86400000).toISOString(),
-            delivery_date: new Date(Date.now() - 4 * 86400000).toISOString(),
-            address: { name: "Rahul Sharma", street: "42 MG Road, Indiranagar", city: "Bangalore", state: "KA", zip: "560038", country: "IN" },
-        },
-        // VERY LOW VALUE - $3.99, below $4.80 (₹400) → RETURNLESS_REFUND (definite keep)
-        {
-            order_id: "113-4428173-7291038",
-            customer_id: "CUST-DEMO-001",
-            items: [{ product: PRODUCTS[13], quantity: 1 }], // Hanes Socks $3.99
-            total: PRODUCTS[13].price,
-            status: "delivered" as const,
-            created_at: new Date(Date.now() - 10 * 86400000).toISOString(),
-            delivery_date: new Date(Date.now() - 7 * 86400000).toISOString(),
-            address: { name: "Rahul Sharma", street: "42 MG Road, Indiranagar", city: "Bangalore", state: "KA", zip: "560038", country: "IN" },
-        },
-        // Kitchen - LOW risk (safe buy, for comparison)
-        {
-            order_id: "113-6618294-3847291",
-            customer_id: "CUST-DEMO-001",
-            items: [{ product: PRODUCTS[2], quantity: 1 }], // Instant Pot $89.95
-            total: PRODUCTS[2].price,
-            status: "delivered" as const,
-            created_at: new Date(Date.now() - 8 * 86400000).toISOString(),
-            delivery_date: new Date(Date.now() - 5 * 86400000).toISOString(),
-            address: { name: "Rahul Sharma", street: "42 MG Road, Indiranagar", city: "Bangalore", state: "KA", zip: "560038", country: "IN" },
-        },
-        // In transit (shows delivery progress bar)
-        {
-            order_id: "113-8834729-5829104",
-            customer_id: "CUST-DEMO-001",
-            items: [{ product: PRODUCTS[5], quantity: 1 }], // Kindle $139.99
-            total: PRODUCTS[5].price,
-            status: "shipped" as const,
-            created_at: new Date(Date.now() - 1 * 86400000).toISOString(),
-            delivery_date: new Date(Date.now() + 1 * 86400000).toISOString(),
-            address: { name: "Rahul Sharma", street: "42 MG Road, Indiranagar", city: "Bangalore", state: "KA", zip: "560038", country: "IN" },
-        },
-        // Very high value electronics $1299 → RETURN_REQUIRED
-        {
-            order_id: "113-3347281-9283746",
-            customer_id: "CUST-DEMO-001",
-            items: [{ product: PRODUCTS[3], quantity: 1 }], // Samsung Galaxy S24 $1299
-            total: PRODUCTS[3].price,
-            status: "delivered" as const,
-            created_at: new Date(Date.now() - 9 * 86400000).toISOString(),
-            delivery_date: new Date(Date.now() - 6 * 86400000).toISOString(),
-            address: { name: "Rahul Sharma", street: "42 MG Road, Indiranagar", city: "Bangalore", state: "KA", zip: "560038", country: "IN" },
-        },
-        // High value home $749 → RETURN_REQUIRED
-        {
-            order_id: "113-7712938-4829103",
-            customer_id: "CUST-DEMO-001",
-            items: [{ product: PRODUCTS[6], quantity: 1 }], // Dyson Vacuum $749
-            total: PRODUCTS[6].price,
-            status: "delivered" as const,
-            created_at: new Date(Date.now() - 12 * 86400000).toISOString(),
-            delivery_date: new Date(Date.now() - 9 * 86400000).toISOString(),
-            address: { name: "Rahul Sharma", street: "42 MG Road, Indiranagar", city: "Bangalore", state: "KA", zip: "560038", country: "IN" },
-        },
-        // Mid electronics $249 → RETURN_REQUIRED
-        {
-            order_id: "113-1192847-5738201",
-            customer_id: "CUST-DEMO-001",
-            items: [{ product: PRODUCTS[8], quantity: 1 }], // AirPods Pro $249
-            total: PRODUCTS[8].price,
-            status: "delivered" as const,
-            created_at: new Date(Date.now() - 11 * 86400000).toISOString(),
-            delivery_date: new Date(Date.now() - 8 * 86400000).toISOString(),
-            address: { name: "Rahul Sharma", street: "42 MG Road, Indiranagar", city: "Bangalore", state: "KA", zip: "560038", country: "IN" },
-        },
-        // Furniture $1395 → RETURN_REQUIRED (very high value)
-        {
-            order_id: "113-9928374-1029384",
-            customer_id: "CUST-DEMO-001",
-            items: [{ product: PRODUCTS[9], quantity: 1 }], // Herman Miller Chair $1395
-            total: PRODUCTS[9].price,
-            status: "delivered" as const,
-            created_at: new Date(Date.now() - 14 * 86400000).toISOString(),
-            delivery_date: new Date(Date.now() - 7 * 86400000).toISOString(),
-            address: { name: "Rahul Sharma", street: "42 MG Road, Indiranagar", city: "Bangalore", state: "KA", zip: "560038", country: "IN" },
-        },
-        // Clothing $139 → RETURN_REQUIRED
-        {
-            order_id: "113-4482019-8372910",
-            customer_id: "CUST-DEMO-001",
-            items: [{ product: PRODUCTS[10], quantity: 1 }], // Patagonia Sweater $139
-            total: PRODUCTS[10].price,
-            status: "delivered" as const,
-            created_at: new Date(Date.now() - 13 * 86400000).toISOString(),
-            delivery_date: new Date(Date.now() - 10 * 86400000).toISOString(),
-            address: { name: "Rahul Sharma", street: "42 MG Road, Indiranagar", city: "Bangalore", state: "KA", zip: "560038", country: "IN" },
-        },
-        // Electronics $329 → RETURN_REQUIRED
-        {
-            order_id: "113-5519283-7461029",
-            customer_id: "CUST-DEMO-001",
-            items: [{ product: PRODUCTS[11], quantity: 1 }], // Bose Speaker $329
-            total: PRODUCTS[11].price,
-            status: "delivered" as const,
-            created_at: new Date(Date.now() - 15 * 86400000).toISOString(),
-            delivery_date: new Date(Date.now() - 12 * 86400000).toISOString(),
-            address: { name: "Rahul Sharma", street: "42 MG Road, Indiranagar", city: "Bangalore", state: "KA", zip: "560038", country: "IN" },
-        },
-    ];
 }

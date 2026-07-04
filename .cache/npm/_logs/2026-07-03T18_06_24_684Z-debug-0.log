@@ -1,0 +1,50 @@
+0 verbose cli /home/subh/.nvm/versions/node/v24.14.0/bin/node /home/subh/.nvm/versions/node/v24.14.0/lib/node_modules/npm/bin/npm-cli.js
+1 info using npm@11.9.0
+2 info using node@v24.14.0
+3 silly config load:file:/home/subh/.nvm/versions/node/v24.14.0/lib/node_modules/npm/npmrc
+4 silly config load:file:/home/subh/Desktop/amazon/amazon-hackathon/.npmrc
+5 silly config load:file:/home/subh/Desktop/amazon/amazon-hackathon/.home/.npmrc
+6 silly config load:file:/home/subh/.nvm/versions/node/v24.14.0/etc/npmrc
+7 verbose title npm exec cdk deploy CircularOS-Serverless --require-approval never
+8 verbose argv "exec" "--" "cdk" "deploy" "CircularOS-Serverless" "--require-approval" "never"
+9 verbose logfile logs-max:10 dir:/home/subh/Desktop/amazon/amazon-hackathon/.cache/npm/_logs/2026-07-03T18_06_24_684Z-
+10 verbose logfile /home/subh/Desktop/amazon/amazon-hackathon/.cache/npm/_logs/2026-07-03T18_06_24_684Z-debug-0.log
+11 silly logfile done cleaning log files
+12 silly packumentCache heap:2348810240 maxSize:587202560 maxEntrySize:293601280
+13 http fetch GET 200 https://registry.npmjs.org/npm 4728ms
+14 http fetch GET 200 https://registry.npmjs.org/cdk 5013ms (cache miss)
+15 silly packumentCache heap:2348810240 maxSize:587202560 maxEntrySize:293601280
+16 silly packumentCache heap:2348810240 maxSize:587202560 maxEntrySize:293601280
+17 warn exec The following package was not found and will be installed: cdk@2.1129.0
+18 silly idealTree buildDeps
+19 silly fetch manifest cdk@2.1129.0
+20 silly packumentCache full:https://registry.npmjs.org/cdk cache-miss
+21 http fetch GET 200 https://registry.npmjs.org/cdk 1265ms (cache miss)
+22 silly packumentCache full:https://registry.npmjs.org/cdk set size:undefined disposed:false
+23 silly placeDep ROOT cdk@2.1129.0 OK for:  want: 2.1129.0
+24 silly fetch manifest aws-cdk@2.1129.0
+25 silly packumentCache full:https://registry.npmjs.org/aws-cdk cache-miss
+26 http fetch GET 200 https://registry.npmjs.org/aws-cdk 2405ms (cache miss)
+27 silly packumentCache full:https://registry.npmjs.org/aws-cdk set size:undefined disposed:false
+28 silly placeDep ROOT aws-cdk@2.1129.0 OK for: cdk@2.1129.0 want: 2.1129.0
+29 silly reify moves {}
+30 silly audit bulk request { cdk: [ '2.1129.0' ], 'aws-cdk': [ '2.1129.0' ] }
+31 http cache aws-cdk@https://registry.npmjs.org/aws-cdk/-/aws-cdk-2.1129.0.tgz 0ms (cache hit)
+32 http cache cdk@https://registry.npmjs.org/cdk/-/cdk-2.1129.0.tgz 0ms (cache hit)
+33 silly tarball no local data for aws-cdk@https://registry.npmjs.org/aws-cdk/-/aws-cdk-2.1129.0.tgz. Extracting by manifest.
+34 silly tarball no local data for cdk@https://registry.npmjs.org/cdk/-/cdk-2.1129.0.tgz. Extracting by manifest.
+35 http fetch POST 200 https://registry.npmjs.org/-/npm/v1/security/advisories/bulk 466ms
+36 silly audit report {}
+37 http fetch GET 200 https://registry.npmjs.org/cdk/-/cdk-2.1129.0.tgz 1318ms (cache miss)
+38 http fetch GET 200 https://registry.npmjs.org/aws-cdk/-/aws-cdk-2.1129.0.tgz 34192ms (cache miss)
+39 verbose cwd /home/subh/Desktop/amazon/amazon-hackathon/backend/infra-lambda
+40 verbose os Linux 6.17.0-35-generic
+41 verbose node v24.14.0
+42 verbose npm  v11.9.0
+43 notice
+43 notice New minor version of npm available! 11.9.0 -> 11.18.0
+43 notice Changelog: https://github.com/npm/cli/releases/tag/v11.18.0
+43 notice To update run: npm install -g npm@11.18.0
+43 notice  { force: true, Symbol(proc-log.meta): true }
+44 verbose exit 1
+45 verbose code 1

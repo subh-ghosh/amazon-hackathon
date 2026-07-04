@@ -2,13 +2,15 @@
 
 import Link from "next/link";
 import { Star, Check, ShieldCheck, Leaf } from "lucide-react";
-import { PRODUCTS } from "@/data/products";
 import { useStore } from "@/hooks/useStore";
+import { useCatalog } from "@/lib/catalog";
+import type { Product } from "@/api/types";
 
 export default function RenewedPage() {
     const { addToCart, earnCredits } = useStore();
+    const { products, loading, error } = useCatalog();
 
-    const renewedProducts = PRODUCTS.map((p) => ({
+    const renewedProducts = products.map((p) => ({
         ...p,
         renewedPrice: Math.round(p.price * 0.70 * 100) / 100,
         savings: Math.round(p.price * 0.30 * 100) / 100,
@@ -18,10 +20,18 @@ export default function RenewedPage() {
         grade: p.rating >= 4.6 ? "Excellent" : p.rating >= 4.3 ? "Very Good" : "Good",
     }));
 
-    const handleAddRenewed = (product: typeof PRODUCTS[0], renewedPrice: number) => {
+    const handleAddRenewed = (product: Product, renewedPrice: number) => {
         addToCart({ ...product, price: renewedPrice }, 1);
         earnCredits("Purchased Renewed item", 50);
     };
+
+    if (loading) {
+        return <div className="min-h-screen bg-white px-4 py-12 text-sm text-slate-600">Loading renewed catalog from the database...</div>;
+    }
+
+    if (error) {
+        return <div className="min-h-screen bg-white px-4 py-12 text-sm text-red-700">{error}</div>;
+    }
 
     return (
         <div className="bg-white min-h-screen">

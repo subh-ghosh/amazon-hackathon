@@ -3,10 +3,10 @@
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { CheckCircle, Loader2, RefreshCw, Banknote, Headphones, Truck, Gift, IndianRupee, Leaf, Camera, Check, Box } from "lucide-react";
-import { getProductById } from "@/data/products";
 import { truthService, fraudService, returnlessService, packagingService, sellerService } from "@/api/services";
 import type { TruthAnalyzeResponse, FraudScoreResponse, ReturnlessEvaluateResponse } from "@/api/types";
 import { useStore } from "@/hooks/useStore";
+import { useProduct } from "@/lib/catalog";
 
 function ReturnPreventionContent() {
     const searchParams = useSearchParams();
@@ -18,7 +18,7 @@ function ReturnPreventionContent() {
     const reason = searchParams.get("reason") || "wrong_size";
     const comment = searchParams.get("comment") || "";
 
-    const product = getProductById(productId);
+    const { product, loading: productLoading, error: productError } = useProduct(productId);
 
     const [stage, setStage] = useState<"analyzing" | "results">("analyzing");
     const [truthData, setTruthData] = useState<TruthAnalyzeResponse | null>(null);
@@ -51,7 +51,12 @@ function ReturnPreventionContent() {
         persona === "TRUSTED" ? `CUST-GOOD-${Math.floor(Math.random() * 100000)}` : `CUST-FRAUD-${Math.floor(Math.random() * 100000)}`
     );
 
-    useEffect(() => { runAnalysis(); }, [persona, customerId]);
+    useEffect(() => {
+        if (!product) {
+            return;
+        }
+        runAnalysis();
+    }, [persona, customerId, product]);
 
     async function runAnalysis() {
         setStage("analyzing");
@@ -195,6 +200,14 @@ function ReturnPreventionContent() {
             displayCO2 = potentialCO2;
             displayWaste = potentialWaste;
         }
+    }
+
+    if (productLoading) {
+        return <div className="max-w-[700px] mx-auto px-4 py-8 text-sm text-slate-600">Loading return context from the catalog database...</div>;
+    }
+
+    if (productError) {
+        return <div className="max-w-[700px] mx-auto px-4 py-8 text-sm text-red-700">{productError}</div>;
     }
 
     return (

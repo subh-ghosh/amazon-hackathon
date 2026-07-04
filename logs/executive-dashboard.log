@@ -17,3 +17,7 @@
  GET /api/proxy/s12/api/v1/intelligence/analytics/recovery-effectiveness 200 in 6534ms
  GET /api/proxy/s12/api/v1/intelligence/analytics/top-return-causes 200 in 6546ms
  GET /api/proxy/s9/api/v1/logistics/analytics 200 in 11566ms
+ ✓ Compiled in 1792ms (265 modules)
+ ✓ Compiled in 692ms (690 modules)
+ ✓ Compiled in 870ms (687 modules)
+ ✓ Compiled in 861ms (687 modules)

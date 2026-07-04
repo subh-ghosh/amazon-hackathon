@@ -19,14 +19,12 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
-import { sellerAnalytics as defaultSellerAnalytics } from "@/data/seller-analytics";
 import type { SellerAnalytics, ProductInsight } from "@/types/seller-analytics";
 
 type Resource<T> = {
   data: T | null;
   loading: boolean;
   error: string | null;
-  demoMode: boolean;
 };
 
 export function SellerDashboardView() {
@@ -35,53 +33,62 @@ export function SellerDashboardView() {
     data: null,
     loading: true,
     error: null,
-    demoMode: false,
   });
 
   function loadSellerAnalytics() {
-    setAnalytics({ data: null, loading: true, error: null, demoMode: false });
+    setAnalytics({ data: null, loading: true, error: null });
 
-    fetch("/api/proxy/s11/api/v1/seller/analyze", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        sellerId: "SELLER-NORTHSTAR-01",
-        sellerName: "Northstar Electronics",
-        totalOrders: 5000,
-        totalReturns: 340,
-        fraudCases: 14,
-        averageRating: 4.2,
-        packagingScore: 72.0,
+    Promise.all([
+      fetch("/api/seller-analytics", { cache: "no-store" }).then(async (response) => {
+        if (!response.ok) {
+          throw new Error(`Seller snapshot failed with status ${response.status}`);
+        }
+        return response.json() as Promise<SellerAnalytics>;
       }),
-    })
-      .then((res) => res.json())
-      .then((liveData) => {
+      fetch("/api/proxy/s11/api/v1/seller/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sellerId: "SELLER-NORTHSTAR-01",
+          sellerName: "Northstar Electronics",
+          totalOrders: 5000,
+          totalReturns: 340,
+          fraudCases: 14,
+          averageRating: 4.2,
+          packagingScore: 72.0,
+        }),
+      }).then((res) => res.json()).catch(() => null),
+    ])
+      .then(([snapshot, liveData]) => {
         // Merge live S11 response into existing analytics structure
         const merged: SellerAnalytics = {
-          ...defaultSellerAnalytics,
+          ...structuredClone(snapshot),
           kpis: [
-            { label: "Return Rate", value: `${liveData.returnsPer100Orders?.toFixed(1) || "6.8"}%`, change: 0.7, trend: "down", comparison: "vs. last month", tone: "emerald" },
-            { label: "Seller Health", value: `${liveData.sellerHealthScore || 87}/100`, change: 0, trend: "up", comparison: "vs. last month", tone: "blue" },
-            { label: "Fraud Risk", value: `${liveData.fraudRiskScore || 5}/100`, change: 0, trend: "down", comparison: "vs. last month", tone: "emerald" },
-            { label: "Sustainability", value: `${liveData.sustainabilityScore || 85}/100`, change: 0, trend: "up", comparison: "vs. last month", tone: "emerald" },
-            { label: "Seller Tier", value: liveData.sellerTier || "GOLD", change: 0, trend: "up", comparison: "vs. last month", tone: "blue" },
+            { label: "Return Rate", value: `${liveData?.returnsPer100Orders?.toFixed(1) || "6.8"}%`, change: 0.7, trend: "down", comparison: "vs. last month", tone: "emerald" },
+            { label: "Seller Health", value: `${liveData?.sellerHealthScore || 87}/100`, change: 0, trend: "up", comparison: "vs. last month", tone: "blue" },
+            { label: "Fraud Risk", value: `${liveData?.fraudRiskScore || 5}/100`, change: 0, trend: "down", comparison: "vs. last month", tone: "emerald" },
+            { label: "Sustainability", value: `${liveData?.sustainabilityScore || 85}/100`, change: 0, trend: "up", comparison: "vs. last month", tone: "emerald" },
+            { label: "Seller Tier", value: liveData?.sellerTier || "GOLD", change: 0, trend: "up", comparison: "vs. last month", tone: "blue" },
           ],
           aiInsights: {
-            highlights: liveData.recommendations?.slice(0, 3) || defaultSellerAnalytics.aiInsights.highlights,
+            highlights: liveData?.recommendations?.slice(0, 3) || snapshot.aiInsights.highlights,
           },
-          recommendations: (liveData.priorityActions || defaultSellerAnalytics.recommendations.map(r => r.title)).map((action: string, i: number) => ({
+          recommendations: ((liveData?.priorityActions as string[] | undefined) || snapshot.recommendations.map((recommendation) => recommendation.title)).map((action: string, i: number) => ({
             id: `REC-${i + 1}`,
             priority: i === 0 ? "HIGH" : i === 1 ? "MEDIUM" : "LOW",
             title: action,
-            description: liveData.insights?.[i] || "",
-            impact: liveData.topIssues?.[i] || "Improves seller performance",
+            description: liveData?.insights?.[i] || "",
+            impact: liveData?.topIssues?.[i] || "Improves seller performance",
           })),
         };
-        setAnalytics({ data: merged, loading: false, error: null, demoMode: false });
+        setAnalytics({ data: merged, loading: false, error: null });
       })
-      .catch(() => {
-        // Fallback to static data if S11 fails
-        setAnalytics({ data: defaultSellerAnalytics, loading: false, error: null, demoMode: true });
+      .catch((error) => {
+        setAnalytics({
+          data: null,
+          loading: false,
+          error: error instanceof Error ? error.message : "Failed to load seller intelligence.",
+        });
       });
   }
 
@@ -129,9 +136,6 @@ export function SellerDashboardView() {
       <section>
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-slate-900">Store Overview</h3>
-          {analytics.demoMode && (
-            <Badge className="border-amber-200 bg-amber-50 text-amber-700 text-[10px]">Demo Data</Badge>
-          )}
         </div>
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5" aria-label="Seller performance indicators">
           {data.kpis.map((kpi) => (

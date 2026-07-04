@@ -5,17 +5,17 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Star, ShoppingCart, Zap, Check, Truck, ShieldCheck, Leaf, AlertTriangle, Info, MapPin } from "lucide-react";
-import { getProductById } from "@/data/products";
 import { useStore } from "@/hooks/useStore";
 import { preventionService, sellerService, packagingService } from "@/api/services";
 import type { PreventionAnalyzeResponse, SellerAnalyzeResponse, PackagingAnalyzeResponse } from "@/api/types";
+import { useProduct } from "@/lib/catalog";
 
 export default function ProductDetailPage({ params }: { params: { id: string } }) {
     const router = useRouter();
     const searchParams = useSearchParams();
     const isRenewed = searchParams.get("variant") === "renewed";
     const { addToCart, persona, earnCredits } = useStore();
-    const product = getProductById(params.id);
+    const { product, loading: productLoading, error: productError } = useProduct(params.id);
 
     const [prevention, setPrevention] = useState<PreventionAnalyzeResponse | null>(null);
     const [seller, setSeller] = useState<SellerAnalyzeResponse | null>(null);
@@ -70,6 +70,14 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
             setLoading(false);
         })();
     }, [product, persona]);
+
+    if (productError) {
+        return <div className="max-w-[1500px] mx-auto px-4 py-12 text-center"><p className="text-xl text-red-700">{productError}</p></div>;
+    }
+
+    if (productLoading) {
+        return <div className="max-w-[1500px] mx-auto px-4 py-12 text-center"><p className="text-xl text-gray-500">Loading product...</p></div>;
+    }
 
     if (!product) {
         return <div className="max-w-[1500px] mx-auto px-4 py-12 text-center"><p className="text-xl text-gray-500">Product not found</p></div>;

@@ -219,3 +219,11 @@ Proxy error for https://oyxnydwp28.execute-api.us-east-1.amazonaws.com/api/v1/se
  GET / 200 in 90ms
  GET / 200 in 264ms
  POST /api/proxy/s11/api/v1/seller/analyze 200 in 5189ms
+ ✓ Compiled in 2.5s (643 modules)
+ ✓ Compiled in 644ms (643 modules)
+ ✓ Compiled in 426ms (643 modules)
+ ✓ Compiled in 249ms (261 modules)
+ ✓ Compiled in 193ms (275 modules)
+ ✓ Compiled in 469ms (643 modules)
+ ✓ Compiled in 780ms (641 modules)
+ ✓ Compiled in 541ms (640 modules)

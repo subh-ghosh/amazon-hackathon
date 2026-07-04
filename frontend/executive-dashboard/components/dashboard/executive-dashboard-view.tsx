@@ -13,20 +13,26 @@ import { AiExecutiveSummary } from "@/components/dashboard/ai-executive-summary"
 import { OperationalImpact } from "@/components/dashboard/operational-impact";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { executiveDashboardData as defaultData } from "@/data/executive-impact";
 import type { ExecutiveDashboardData } from "@/types/executive-impact";
 
 export function ExecutiveDashboardView() {
   const [data, setData] = useState<ExecutiveDashboardData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     Promise.all([
+      fetch("/api/executive", { cache: "no-store" }).then(async (response) => {
+        if (!response.ok) {
+          throw new Error(`Executive snapshot failed with status ${response.status}`);
+        }
+        return response.json() as Promise<ExecutiveDashboardData>;
+      }),
       fetch("/api/proxy/s9/api/v1/logistics/analytics").then(r => r.json()).catch(() => null),
       fetch("/api/proxy/s12/api/v1/intelligence/analytics/top-return-causes").then(r => r.json()).catch(() => null),
       fetch("/api/proxy/s12/api/v1/intelligence/analytics/recovery-effectiveness").then(r => r.json()).catch(() => null),
-    ]).then(([s9Analytics, s12Causes, s12Recovery]) => {
-      const merged = { ...defaultData };
+    ]).then(([snapshot, s9Analytics, s12Causes, s12Recovery]) => {
+      const merged = structuredClone(snapshot);
 
       // Enrich with live S9 analytics
       if (s9Analytics && s9Analytics.totalOptimizations) {
@@ -65,8 +71,15 @@ export function ExecutiveDashboardView() {
 
       setData(merged);
       setLoading(false);
+    }).catch((loadError) => {
+      setError(loadError instanceof Error ? loadError.message : "Failed to load executive dashboard.");
+      setLoading(false);
     });
   }, []);
+
+  if (error) {
+    return <StatusCard title="Executive snapshot unavailable" detail={error} />;
+  }
 
   if (loading || !data) {
     return <StatusCard title="Loading executive intelligence..." />;
@@ -135,7 +148,7 @@ export function ExecutiveDashboardView() {
   );
 }
 
-function StatusCard({ title }: { title: string }) {
+function StatusCard({ title, detail }: { title: string; detail?: string }) {
   return (
     <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <Card>
@@ -143,7 +156,7 @@ function StatusCard({ title }: { title: string }) {
           <CardTitle>{title}</CardTitle>
         </CardHeader>
         <CardContent className="flex items-center justify-between gap-4">
-          <p className="text-sm text-slate-500">Connecting to global intelligence stream...</p>
+          <p className="text-sm text-slate-500">{detail ?? "Connecting to global intelligence stream..."}</p>
         </CardContent>
       </Card>
     </main>

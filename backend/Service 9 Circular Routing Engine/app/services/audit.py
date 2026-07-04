@@ -1,6 +1,7 @@
 import threading
 import uuid
 import datetime
+from app.services.persistence import persistence
 
 class AuditAndCacheService:
     def __init__(self):
@@ -25,18 +26,27 @@ class AuditAndCacheService:
                 "correlationId": correlation_id
             }
             self.audit_log.append(entry)
+            persistence.log_audit(entry)
 
     def cache_decision(self, decision_id: str, response: dict):
         with self._lock:
             self.decisions_cache[decision_id] = response
+            persistence.put_decision(decision_id, response)
 
     def get_decision(self, decision_id: str):
         with self._lock:
-            return self.decisions_cache.get(decision_id)
+            decision = self.decisions_cache.get(decision_id)
+            if decision:
+                return decision
+            persisted = persistence.get_decision(decision_id)
+            if persisted:
+                self.decisions_cache[decision_id] = persisted
+            return persisted
 
     def record_analytics(self, facility_type: str, facility_id: str, co2: float, circularity: int):
         with self._lock:
-            self.total_optimizations += 1
+            analytics = persistence.get_analytics()
+            analytics["totalOptimizations"] += 1
             
             # Simulated cost savings based on recovery route
             savings = 0.0
@@ -45,22 +55,27 @@ class AuditAndCacheService:
             elif facility_type == "RECYCLING":
                 savings = 12.00
             
-            self.total_cost_savings += savings
-            self.total_co2_saved += co2
-            self.total_circularity += circularity
+            analytics["totalCostSavings"] += savings
+            analytics["totalCO2Saved"] += co2
+            analytics["totalCircularity"] += circularity
             
-            self.facility_utilization[facility_id] = self.facility_utilization.get(facility_id, 0) + 1
-            self.recovery_path_distribution[facility_type] = self.recovery_path_distribution.get(facility_type, 0) + 1
+            facility_utilization = analytics["facilityUtilization"]
+            recovery_distribution = analytics["recoveryPathDistribution"]
+            facility_utilization[facility_id] = facility_utilization.get(facility_id, 0) + 1
+            recovery_distribution[facility_type] = recovery_distribution.get(facility_type, 0) + 1
+            persistence.put_analytics(analytics)
 
     def get_analytics(self):
         with self._lock:
+            analytics = persistence.get_analytics()
+            total = analytics["totalOptimizations"]
             return {
-                "totalOptimizations": self.total_optimizations,
-                "averageCostSavings": self.total_cost_savings / self.total_optimizations if self.total_optimizations > 0 else 0,
-                "averageCO2Saved": self.total_co2_saved / self.total_optimizations if self.total_optimizations > 0 else 0,
-                "circularityImpact": self.total_circularity / self.total_optimizations if self.total_optimizations > 0 else 0,
-                "facilityUtilization": self.facility_utilization.copy(),
-                "recoveryPathDistribution": self.recovery_path_distribution.copy()
+                "totalOptimizations": total,
+                "averageCostSavings": analytics["totalCostSavings"] / total if total > 0 else 0,
+                "averageCO2Saved": analytics["totalCO2Saved"] / total if total > 0 else 0,
+                "circularityImpact": analytics["totalCircularity"] / total if total > 0 else 0,
+                "facilityUtilization": dict(analytics["facilityUtilization"]),
+                "recoveryPathDistribution": dict(analytics["recoveryPathDistribution"])
             }
 
 audit_service = AuditAndCacheService()

@@ -4,8 +4,8 @@ export const runtime = 'edge';
 import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Ruler, AlertTriangle, Repeat, Eye, HelpCircle } from "lucide-react";
-import { getProductById } from "@/data/products";
 import type { ReturnReason } from "@/api/types";
+import { useProduct } from "@/lib/catalog";
 
 const REASONS: { value: ReturnReason; label: string; icon: React.ReactNode }[] = [
     { value: "wrong_size", label: "Wrong size or fit", icon: <Ruler size={24} /> },
@@ -19,10 +19,18 @@ export default function ReturnRequestPage({ params }: { params: { orderId: strin
     const router = useRouter();
     const orderId = params.orderId;
     const productId = params.productId;
-    const product = getProductById(productId);
+    const { product, loading, error } = useProduct(productId);
 
     const [selected, setSelected] = useState<ReturnReason | null>(null);
     const [comment, setComment] = useState("");
+
+    if (error) {
+        return <div className="max-w-[600px] mx-auto px-4 py-12 text-center"><p className="text-red-700">{error}</p></div>;
+    }
+
+    if (loading) {
+        return <div className="max-w-[600px] mx-auto px-4 py-12 text-center"><p className="text-gray-500">Loading product...</p></div>;
+    }
 
     if (!product) {
         return <div className="max-w-[600px] mx-auto px-4 py-12 text-center"><p className="text-gray-500">Product not found</p></div>;

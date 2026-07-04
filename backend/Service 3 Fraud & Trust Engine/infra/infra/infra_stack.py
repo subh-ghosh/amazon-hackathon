@@ -4,6 +4,8 @@ from aws_cdk import (
     aws_ecs as ecs,
     aws_ecs_patterns as ecs_patterns,
     aws_events as events,
+    aws_dynamodb as dynamodb,
+    RemovalPolicy,
     CfnOutput,
     Duration
 )
@@ -20,6 +22,16 @@ class InfraStack(Stack):
         # 2. Existing EventBridge Bus Reference
         bus = events.EventBus.from_event_bus_name(self, "Bus", "circular-intelligence-bus")
 
+        # 2b. Durable fraud score storage
+        fraud_table = dynamodb.Table(
+            self, "FraudScoresTable",
+            table_name="CircularOS-FraudScores",
+            partition_key=dynamodb.Attribute(name="EntityID", type=dynamodb.AttributeType.STRING),
+            sort_key=dynamodb.Attribute(name="Timestamp", type=dynamodb.AttributeType.STRING),
+            billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST,
+            removal_policy=RemovalPolicy.DESTROY,
+        )
+
         # 3. ECS Cluster
         cluster = ecs.Cluster(self, "FraudServiceCluster", vpc=vpc)
 
@@ -34,8 +46,10 @@ class InfraStack(Stack):
                 container_port=8000,
                 environment={
                     "AWS_DEFAULT_REGION": self.region,
+                    "AWS_REGION": self.region,
                     "EVENT_BUS_NAME": bus.event_bus_name,
-                    "SERVICE_12_URL": ""
+                    "SERVICE_12_URL": "",
+                    "DYNAMODB_TABLE": fraud_table.table_name,
                 }
             ),
             assign_public_ip=True,
@@ -61,6 +75,7 @@ class InfraStack(Stack):
 
         # 7. IAM Permissions
         bus.grant_put_events_to(fraud_service.task_definition.task_role)
+        fraud_table.grant_read_write_data(fraud_service.task_definition.task_role)
 
         # 8. Output
         CfnOutput(self, "FraudServiceURL", value=f"http://{fraud_service.load_balancer.load_balancer_dns_name}")

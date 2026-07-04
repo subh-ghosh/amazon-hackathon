@@ -16,3 +16,7 @@
  GET / 200 in 58ms
  POST /api/proxy/s5/api/v1/simulation/run 200 in 11332ms
  GET /api/proxy/s9/api/v1/logistics/analytics 200 in 16323ms
+ ✓ Compiled in 2.8s (608 modules)
+ ✓ Compiled in 779ms (605 modules)
+ ✓ Compiled in 311ms (257 modules)
+ ✓ Compiled in 708ms (605 modules)

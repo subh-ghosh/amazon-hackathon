@@ -3,8 +3,8 @@
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { CheckCircle, Loader2, Circle } from "lucide-react";
-import { getProductById } from "@/data/products";
 import { fraudService, simulatorService, recoveryService, logisticsService, circularService } from "@/api/services";
+import { useProduct } from "@/lib/catalog";
 
 interface TrackingStep {
     title: string;
@@ -17,7 +17,7 @@ function ReturnJourneyContent() {
     const router = useRouter();
     const returnId = searchParams.get("returnId") || "RET-DEMO";
     const productId = searchParams.get("productId") || "PROD-002";
-    const product = getProductById(productId);
+    const { product, loading: productLoading, error: productError } = useProduct(productId);
 
     const [steps, setSteps] = useState<TrackingStep[]>([
         { title: "Return request submitted", detail: "We received your return request", status: "completed" },
@@ -28,7 +28,12 @@ function ReturnJourneyContent() {
         { title: "Refund issued", detail: "Your refund has been processed", status: "pending" },
     ]);
 
-    useEffect(() => { runPipeline(); }, []);
+    useEffect(() => {
+        if (!product) {
+            return;
+        }
+        runPipeline();
+    }, [product]);
 
     async function runPipeline() {
         await new Promise((r) => setTimeout(r, 1000));
@@ -102,6 +107,14 @@ function ReturnJourneyContent() {
 
     function updateStep(index: number, status: "completed" | "in_progress", detail?: string) {
         setSteps((prev) => prev.map((s, i) => i === index ? { ...s, status, ...(detail ? { detail } : {}) } : s));
+    }
+
+    if (productLoading) {
+        return <div className="max-w-[600px] mx-auto px-4 py-8 text-sm text-slate-600">Loading return journey...</div>;
+    }
+
+    if (productError) {
+        return <div className="max-w-[600px] mx-auto px-4 py-8 text-sm text-red-700">{productError}</div>;
     }
 
     return (
