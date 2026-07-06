@@ -82,7 +82,7 @@ export function ExecutiveDashboardView() {
   }
 
   if (loading || !data) {
-    return <StatusCard title="Loading executive intelligence..." />;
+    return <StatusCard title="Loading..." />;
   }
 
   return (

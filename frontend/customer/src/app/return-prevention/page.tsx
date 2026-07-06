@@ -203,7 +203,7 @@ function ReturnPreventionContent() {
     }
 
     if (productLoading) {
-        return <div className="max-w-[700px] mx-auto px-4 py-8 text-sm text-slate-600">Loading return context from the catalog database...</div>;
+        return <div className="max-w-[700px] mx-auto px-4 py-8 text-sm text-slate-600">Loading...</div>;
     }
 
     if (productError) {

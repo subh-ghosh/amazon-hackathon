@@ -97,7 +97,7 @@ export function SellerDashboardView() {
   }, []);
 
   if (analytics.loading) {
-    return <StatusCard title="Loading seller intelligence..." />;
+    return <StatusCard title="Loading..." />;
   }
 
   if (analytics.error || !analytics.data) {
@@ -243,7 +243,7 @@ function StatusCard({
         <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent className="flex items-center justify-between gap-4">
-        <p className="text-sm text-slate-500">{detail ?? "Loading live data stream..."}</p>
+        <p className="text-sm text-slate-500">{detail ?? "Loading..."}</p>
         {onRetry && (
           <button
             type="button"

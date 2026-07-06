@@ -78,7 +78,7 @@ export function OperationsDashboardView() {
   }
 
   if (loading || !data) {
-    return <StatusCard title="Loading facility operations..." />;
+    return <StatusCard title="Loading..." />;
   }
 
   return (

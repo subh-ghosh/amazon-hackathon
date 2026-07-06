@@ -150,8 +150,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         return (
             <div className="min-h-screen bg-[#EAEDED] px-4 py-12">
                 <div className="mx-auto max-w-2xl rounded-xl border bg-white p-6 shadow-sm">
-                    <h1 className="text-xl font-semibold text-slate-900">Loading Persistent Store</h1>
-                    <p className="mt-2 text-sm text-slate-600">Hydrating customer session from the backing database.</p>
+                    <h1 className="text-xl font-semibold text-slate-900">Loading</h1>
+                    <p className="mt-2 text-sm text-slate-600">Please wait while we load your session.</p>
                 </div>
             </div>
         );

@@ -2,18 +2,18 @@ export const runtime = 'edge';
 import { NextRequest, NextResponse } from "next/server";
 
 const SERVICE_URLS: Record<string, string> = {
-    s1: "https://tvdo7qmc8h.execute-api.us-east-1.amazonaws.com",
-    s2: "https://x3pm62ptqi.execute-api.us-east-1.amazonaws.com",
-    s3: "https://86oljvteu5.execute-api.us-east-1.amazonaws.com",
-    s4: "https://y7eefpwok6.execute-api.us-east-1.amazonaws.com",
-    s5: "https://cupc0rhwo0.execute-api.us-east-1.amazonaws.com",
-    s6: "https://72247dj8k5.execute-api.us-east-1.amazonaws.com",
-    s7: "https://7dlvxxfg00.execute-api.us-east-1.amazonaws.com",
-    s8: "https://jsimnqww4h.execute-api.us-east-1.amazonaws.com",
-    s9: "https://0r29iejkgj.execute-api.us-east-1.amazonaws.com",
-    s10: "https://2bzxe922eg.execute-api.us-east-1.amazonaws.com",
-    s11: "https://oyxnydwp28.execute-api.us-east-1.amazonaws.com",
-    s12: "https://mbdbx9jqs7.execute-api.us-east-1.amazonaws.com",
+    s1: "http://Circul-Preve-LR6DbKamKWdv-928899529.us-east-1.elb.amazonaws.com",
+    s2: "http://Circul-Truth-h1F0FkRvcVsk-801111338.us-east-1.elb.amazonaws.com",
+    s3: "http://Circul-Fraud-XcBUDzI1MwrU-1950216713.us-east-1.elb.amazonaws.com",
+    s4: "http://Circul-Digit-1KUgWt1Obxuk-628222820.us-east-1.elb.amazonaws.com",
+    s5: "http://Circul-Simul-4WKIzeeG23Pg-1522722278.us-east-1.elb.amazonaws.com",
+    s6: "http://Circul-Optim-VznHSwftfNgj-1405514615.us-east-1.elb.amazonaws.com",
+    s7: "http://Circul-Logis-tlTDwNs1Omzx-39457157.us-east-1.elb.amazonaws.com",
+    s8: "http://Circul-Retur-3aJGuOitxrQQ-1157813753.us-east-1.elb.amazonaws.com",
+    s9: "http://Circul-Circu-jsU6YMlH3H2K-853712911.us-east-1.elb.amazonaws.com",
+    s10: "http://Circul-Packa-ZPto7mjaCRIO-560627207.us-east-1.elb.amazonaws.com",
+    s11: "http://Circul-Selle-VYLlrHB2ylcJ-1969622883.us-east-1.elb.amazonaws.com",
+    s12: "http://Circul-Graph-IIxBpeJf0S3j-1441021229.us-east-1.elb.amazonaws.com",
 };
 
 export async function GET(

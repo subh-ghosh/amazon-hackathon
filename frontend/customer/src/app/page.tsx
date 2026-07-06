@@ -13,7 +13,7 @@ export default function HomePage() {
     const recommended = products.slice(8, 12);
 
     if (loading) {
-        return <CatalogStatus title="Loading live catalog..." detail="Fetching product inventory from the backing database." />;
+        return <CatalogStatus title="Loading..." detail="Fetching products." />;
     }
 
     if (error) {

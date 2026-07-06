@@ -26,7 +26,7 @@ export default function RenewedPage() {
     };
 
     if (loading) {
-        return <div className="min-h-screen bg-white px-4 py-12 text-sm text-slate-600">Loading renewed catalog from the database...</div>;
+        return <div className="min-h-screen bg-white px-4 py-12 text-sm text-slate-600">Loading...</div>;
     }
 
     if (error) {
