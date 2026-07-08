@@ -7,10 +7,10 @@ import { Badge } from "@/components/ui/badge";
 import type { ProductInsight } from "@/types/seller-analytics";
 
 interface RufusActionPlanProps {
-  recommendations: ProductInsight["recommendations"];
+  product: ProductInsight;
 }
 
-export function RufusActionPlan({ recommendations }: RufusActionPlanProps) {
+export function RufusActionPlan({ product }: RufusActionPlanProps) {
   const [doneIds, setDoneIds] = useState<Set<string>>(new Set());
 
   const handleUpdate = (id: string) => {
@@ -42,11 +42,11 @@ export function RufusActionPlan({ recommendations }: RufusActionPlanProps) {
       
       <CardContent>
         <p className="text-sm text-slate-700 leading-relaxed mb-5 max-w-3xl">
-          Based on an analysis of your last 5,000 orders and 340 returns across the Indian network, S2 Truth Discovery has identified two high-impact actions to improve your EBITDA and Seller Tier status.
+          Based on an analysis of {product.orders.toLocaleString("en-IN")} orders and {product.returns.toLocaleString("en-IN")} returns for <strong>{product.name}</strong>, S2 Truth Discovery has identified {product.recommendations.length} high-impact actions to improve your recovery margin.
         </p>
 
         <div className="space-y-4 relative z-10">
-          {recommendations.map((rec) => {
+          {product.recommendations.map((rec) => {
             const isDone = doneIds.has(rec.id);
             const isPriority = rec.priority === "HIGH";
             const Icon = isPriority ? AlertTriangle : TrendingUp;

@@ -228,8 +228,8 @@ export function ProductDetailPanel({ product, onBack }: ProductDetailPanelProps)
       </Card>
 
       <div className="mt-8">
-        <RufusActionPlan recommendations={product.recommendations} />
-      </div>>
+        <RufusActionPlan product={product} />
+      </div>
     </div>
   );
 }
