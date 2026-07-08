@@ -59,17 +59,17 @@ export function RufusActionPlan() {
               </div>
               <div className="flex-1 space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <h4 className="text-sm font-semibold text-slate-900">Demographic Sizing Mismatch in South India</h4>
+                  <h4 className="text-sm font-semibold text-slate-900">Listing Specification Gap for Fire TV Stick 4K</h4>
                   <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200 text-[10px]">High Priority</Badge>
                 </div>
                 <p className="text-sm text-slate-600">
-                  <strong className="text-slate-800">Finding:</strong> 42% of your apparel returns in Bangalore and Chennai are tagged as 'Too Small'. 
+                  <strong className="text-slate-800">Finding:</strong> 18% of your Fire TV Stick 4K returns are tagged as 'Ordered by mistake' or 'Item not as described', primarily due to WiFi incompatibility. 
                 </p>
                 <div className="rounded-lg bg-slate-50 p-3 mt-2 border border-slate-100">
                   <div className="flex items-start gap-2">
                     <Lightbulb size={16} className="text-blue-600 mt-0.5 shrink-0" />
                     <p className="text-sm font-medium text-slate-800">
-                      <strong>Rufus Recommendation:</strong> Update your generic sizing chart to reflect localized South Asian demographics. Adding a "Fits smaller than expected" banner to SKUs 8842-A and 8842-B is predicted to reduce return rate by 14%.
+                      <strong>Rufus Recommendation:</strong> Update your product listing to explicitly state "Requires 5GHz WiFi for 4K streaming" and add a compatibility checker. Predicted to reduce these return reasons by 40%.
                     </p>
                   </div>
                   {!sizingUpdated ? (
@@ -79,9 +79,9 @@ export function RufusActionPlan() {
                       className="mt-3 flex items-center gap-1.5 text-xs font-semibold text-blue-600 hover:text-blue-800 transition-colors disabled:opacity-70"
                     >
                       {isUpdatingSizing ? (
-                        <><Loader2 size={14} className="animate-spin" /> Executing S11 Knowledge Graph Update...</>
+                        <><Loader2 size={14} className="animate-spin" /> Executing S12 Knowledge Graph Update...</>
                       ) : (
-                        <>Auto-Update Catalog Sizing via S11 <ArrowRight size={14} /></>
+                        <>Auto-Update Catalog Details via S12 <ArrowRight size={14} /></>
                       )}
                     </button>
                   ) : (
@@ -102,17 +102,17 @@ export function RufusActionPlan() {
               </div>
               <div className="flex-1 space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <h4 className="text-sm font-semibold text-slate-900">Packaging Downgrade Opportunity</h4>
+                  <h4 className="text-sm font-semibold text-slate-900">Packaging Upgrade Opportunity for Echo Show 10</h4>
                   <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-200 text-[10px]">Cost Savings</Badge>
                 </div>
                 <p className="text-sm text-slate-600">
-                  <strong className="text-slate-800">Finding:</strong> You are currently shipping soft goods (T-Shirts) in 3-ply corrugated cardboard boxes, leading to high dimensional weight costs. Damage rate for these items is under 0.1%.
+                  <strong className="text-slate-800">Finding:</strong> 40.4% of your returns for the Echo Show 10 are due to 'Damaged in transit' caused by insufficient internal cushioning.
                 </p>
                 <div className="rounded-lg bg-slate-50 p-3 mt-2 border border-slate-100">
                   <div className="flex items-start gap-2">
                     <Lightbulb size={16} className="text-blue-600 mt-0.5 shrink-0" />
                     <p className="text-sm font-medium text-slate-800">
-                      <strong>Rufus Recommendation:</strong> Switch to Amazon-certified recycled polybags for all apparel SKUs. This will save approximately ₹12 per unit in forward shipping and eliminate box-damage returns.
+                      <strong>Rufus Recommendation:</strong> Switch to reinforced corner packaging and add bubble wrap. This will save approximately ₹42,000 annually by reducing transit damage by 45%.
                     </p>
                   </div>
                   {!packagingUpdated ? (
