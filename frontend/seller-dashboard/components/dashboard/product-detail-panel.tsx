@@ -18,6 +18,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import type { ProductInsight } from "@/types/seller-analytics";
+import { RufusActionPlan } from "./rufus-action-plan";
 
 interface ProductDetailPanelProps {
   product: ProductInsight;
@@ -226,77 +227,9 @@ export function ProductDetailPanel({ product, onBack }: ProductDetailPanelProps)
         </CardContent>
       </Card>
 
-      {/* Recommended Actions */}
-      <Card className="border-blue-200">
-        <CardHeader className="bg-slate-50/80 border-b pb-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="size-5 text-blue-600" />
-              <CardTitle className="text-sm">Recommended Actions</CardTitle>
-            </div>
-            {doneIds.size > 0 && (
-              <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 border border-emerald-200 rounded-full px-2.5 py-0.5">
-                {doneIds.size}/{product.recommendations.length} done
-              </span>
-            )}
-          </div>
-          <CardDescription>Prioritized tasks to reduce returns for {product.name}.</CardDescription>
-        </CardHeader>
-        <CardContent className="p-0">
-          <ul className="divide-y">
-            {product.recommendations.map((rec) => {
-              const isDone = doneIds.has(rec.id);
-              return (
-                <li key={rec.id} className={cn(
-                  "flex flex-col p-4 sm:flex-row sm:items-start sm:justify-between gap-3 transition-colors",
-                  isDone ? "bg-emerald-50/40" : "hover:bg-slate-50/50"
-                )}>
-                  <div className="flex-1 space-y-1">
-                    <div className="flex items-center gap-2.5">
-                      <h4 className={cn("text-sm font-semibold", isDone ? "line-through text-slate-400" : "text-slate-900")}>
-                        {rec.title}
-                      </h4>
-                      <Badge className={cn("text-[10px]",
-                        isDone ? "border-emerald-200 bg-emerald-50 text-emerald-700" :
-                        rec.priority === "HIGH" ? "border-rose-200 bg-rose-50 text-rose-700" :
-                        rec.priority === "MEDIUM" ? "border-amber-200 bg-amber-50 text-amber-700" :
-                        "border-slate-200 bg-slate-50 text-slate-700"
-                      )}>
-                        {isDone ? "Done" : rec.priority}
-                      </Badge>
-                    </div>
-                    {!isDone && (
-                      <>
-                        <p className="text-xs text-slate-500">{rec.description}</p>
-                        <div className="mt-1.5 flex items-center gap-1.5 text-[11px] font-medium text-emerald-700">
-                          <AlertCircle className="size-3" />
-                          {rec.impact}
-                        </div>
-                      </>
-                    )}
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => toggleDone(rec.id)}
-                    className={cn(
-                      "shrink-0 flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-xs font-semibold shadow-sm transition-all",
-                      isDone
-                        ? "border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
-                        : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
-                    )}
-                  >
-                    {isDone ? (
-                      <><CheckCircle2 className="size-3.5" /> Auto-Applied</>
-                    ) : (
-                      "Auto-Remediate via S11"
-                    )}
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-        </CardContent>
-      </Card>
+      <div className="mt-8">
+        <RufusActionPlan recommendations={product.recommendations} />
+      </div>>
     </div>
   );
 }

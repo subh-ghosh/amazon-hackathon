@@ -4,29 +4,24 @@ import { useState } from "react";
 import { Sparkles, ArrowRight, Lightbulb, TrendingUp, AlertTriangle, Loader2, CheckCircle2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import type { ProductInsight } from "@/types/seller-analytics";
 
-export function RufusActionPlan() {
-  const [isUpdatingSizing, setIsUpdatingSizing] = useState(false);
-  const [sizingUpdated, setSizingUpdated] = useState(false);
+interface RufusActionPlanProps {
+  recommendations: ProductInsight["recommendations"];
+}
 
-  const [isUpdatingPackaging, setIsUpdatingPackaging] = useState(false);
-  const [packagingUpdated, setPackagingUpdated] = useState(false);
+export function RufusActionPlan({ recommendations }: RufusActionPlanProps) {
+  const [doneIds, setDoneIds] = useState<Set<string>>(new Set());
 
-  const handleUpdateSizing = () => {
-    setIsUpdatingSizing(true);
-    setTimeout(() => {
-      setIsUpdatingSizing(false);
-      setSizingUpdated(true);
-    }, 2000);
+  const handleUpdate = (id: string) => {
+    setDoneIds((prev) => {
+      const next = new Set(prev);
+      next.add(id);
+      return next;
+    });
   };
 
-  const handleUpdatePackaging = () => {
-    setIsUpdatingPackaging(true);
-    setTimeout(() => {
-      setIsUpdatingPackaging(false);
-      setPackagingUpdated(true);
-    }, 2000);
-  };
+  // removed hardcoded loading states
 
   return (
     <Card className="border-t-4 border-t-blue-600 bg-gradient-to-b from-blue-50/50 to-white overflow-hidden relative">
@@ -51,91 +46,52 @@ export function RufusActionPlan() {
         </p>
 
         <div className="space-y-4 relative z-10">
-          {/* Insight 1 */}
-          <div className="group relative rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-all hover:border-blue-300 hover:shadow-md">
-            <div className="flex items-start gap-4">
-              <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-700">
-                <AlertTriangle size={16} />
-              </div>
-              <div className="flex-1 space-y-1.5">
-                <div className="flex items-center justify-between">
-                  <h4 className="text-sm font-semibold text-slate-900">Listing Specification Gap for Fire TV Stick 4K</h4>
-                  <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200 text-[10px]">High Priority</Badge>
-                </div>
-                <p className="text-sm text-slate-600">
-                  <strong className="text-slate-800">Finding:</strong> 18% of your Fire TV Stick 4K returns are tagged as 'Ordered by mistake' or 'Item not as described', primarily due to WiFi incompatibility. 
-                </p>
-                <div className="rounded-lg bg-slate-50 p-3 mt-2 border border-slate-100">
-                  <div className="flex items-start gap-2">
-                    <Lightbulb size={16} className="text-blue-600 mt-0.5 shrink-0" />
-                    <p className="text-sm font-medium text-slate-800">
-                      <strong>Rufus Recommendation:</strong> Update your product listing to explicitly state "Requires 5GHz WiFi for 4K streaming" and add a compatibility checker. Predicted to reduce these return reasons by 40%.
-                    </p>
-                  </div>
-                  {!sizingUpdated ? (
-                    <button 
-                      onClick={handleUpdateSizing}
-                      disabled={isUpdatingSizing}
-                      className="mt-3 flex items-center gap-1.5 text-xs font-semibold text-blue-600 hover:text-blue-800 transition-colors disabled:opacity-70"
-                    >
-                      {isUpdatingSizing ? (
-                        <><Loader2 size={14} className="animate-spin" /> Executing S12 Knowledge Graph Update...</>
-                      ) : (
-                        <>Auto-Update Catalog Details via S12 <ArrowRight size={14} /></>
-                      )}
-                    </button>
-                  ) : (
-                    <div className="mt-3 flex items-center gap-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-md w-fit">
-                      <CheckCircle2 size={14} /> Catalog Successfully Updated
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
+          {recommendations.map((rec) => {
+            const isDone = doneIds.has(rec.id);
+            const isPriority = rec.priority === "HIGH";
+            const Icon = isPriority ? AlertTriangle : TrendingUp;
+            const iconBg = isPriority ? "bg-amber-100 text-amber-700" : "bg-emerald-100 text-emerald-700";
+            const badgeClass = isPriority ? "bg-amber-50 text-amber-700 border-amber-200" : "bg-emerald-50 text-emerald-700 border-emerald-200";
 
-          {/* Insight 2 */}
-          <div className="group relative rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-all hover:border-blue-300 hover:shadow-md">
-            <div className="flex items-start gap-4">
-              <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
-                <TrendingUp size={16} />
-              </div>
-              <div className="flex-1 space-y-1.5">
-                <div className="flex items-center justify-between">
-                  <h4 className="text-sm font-semibold text-slate-900">Packaging Upgrade Opportunity for Echo Show 10</h4>
-                  <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-200 text-[10px]">Cost Savings</Badge>
-                </div>
-                <p className="text-sm text-slate-600">
-                  <strong className="text-slate-800">Finding:</strong> 40.4% of your returns for the Echo Show 10 are due to 'Damaged in transit' caused by insufficient internal cushioning.
-                </p>
-                <div className="rounded-lg bg-slate-50 p-3 mt-2 border border-slate-100">
-                  <div className="flex items-start gap-2">
-                    <Lightbulb size={16} className="text-blue-600 mt-0.5 shrink-0" />
-                    <p className="text-sm font-medium text-slate-800">
-                      <strong>Rufus Recommendation:</strong> Switch to reinforced corner packaging and add bubble wrap. This will save approximately ₹42,000 annually by reducing transit damage by 45%.
-                    </p>
+            return (
+              <div key={rec.id} className="group relative rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-all hover:border-blue-300 hover:shadow-md">
+                <div className="flex items-start gap-4">
+                  <div className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${iconBg}`}>
+                    <Icon size={16} />
                   </div>
-                  {!packagingUpdated ? (
-                    <button 
-                      onClick={handleUpdatePackaging}
-                      disabled={isUpdatingPackaging}
-                      className="mt-3 flex items-center gap-1.5 text-xs font-semibold text-blue-600 hover:text-blue-800 transition-colors disabled:opacity-70"
-                    >
-                      {isUpdatingPackaging ? (
-                        <><Loader2 size={14} className="animate-spin" /> Pushing Override to Fulfillment Network...</>
-                      ) : (
-                        <>Apply FBA Packaging Override <ArrowRight size={14} /></>
-                      )}
-                    </button>
-                  ) : (
-                    <div className="mt-3 flex items-center gap-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-md w-fit">
-                      <CheckCircle2 size={14} /> FBA Requirements Updated
+                  <div className="flex-1 space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <h4 className="text-sm font-semibold text-slate-900">{rec.title}</h4>
+                      <Badge variant="outline" className={`${badgeClass} text-[10px]`}>{rec.priority} Priority</Badge>
                     </div>
-                  )}
+                    <p className="text-sm text-slate-600">
+                      <strong className="text-slate-800">Impact:</strong> {rec.impact}
+                    </p>
+                    <div className="rounded-lg bg-slate-50 p-3 mt-2 border border-slate-100">
+                      <div className="flex items-start gap-2">
+                        <Lightbulb size={16} className="text-blue-600 mt-0.5 shrink-0" />
+                        <p className="text-sm font-medium text-slate-800">
+                          <strong>Rufus Recommendation:</strong> {rec.description}
+                        </p>
+                      </div>
+                      {!isDone ? (
+                        <button 
+                          onClick={() => handleUpdate(rec.id)}
+                          className="mt-3 flex items-center gap-1.5 text-xs font-semibold text-blue-600 hover:text-blue-800 transition-colors"
+                        >
+                          Auto-Remediate via S11 <ArrowRight size={14} />
+                        </button>
+                      ) : (
+                        <div className="mt-3 flex items-center gap-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-md w-fit">
+                          <CheckCircle2 size={14} /> Action Successfully Applied
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
+            );
+          })}
 
         </div>
       </CardContent>

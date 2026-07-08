@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { Activity } from "lucide-react";
 
 import { AiInsightsBanner } from "@/components/dashboard/ai-insights-banner";
-import { RufusActionPlan } from "@/components/dashboard/rufus-action-plan";
 import { KpiCard } from "@/components/dashboard/kpi-card";
 import { ReturnCausesChart } from "@/components/dashboard/return-causes-chart";
 import { ProductInsightsTable } from "@/components/dashboard/product-insights-table";
@@ -132,7 +131,6 @@ export function SellerDashboardView() {
       {/* ━━━━━━━━━━━ ZONE 1: EXECUTIVE SUMMARY ━━━━━━━━━━━ */}
       <section className="space-y-6">
         <AiInsightsBanner insights={data.aiInsights} />
-        <RufusActionPlan />
       </section>
 
       <section>
