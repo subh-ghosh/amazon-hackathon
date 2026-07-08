@@ -61,7 +61,13 @@ function runAws(args, payload) {
   try {
     execFileSync("aws", [...args, `file://${tempPath}`], {
       stdio: "inherit",
-      env: { ...process.env, AWS_REGION: REGION },
+      env: { 
+        ...process.env, 
+        AWS_REGION: REGION,
+        LC_ALL: "en_US.UTF-8",
+        LANG: "en_US.UTF-8",
+        PYTHONIOENCODING: "UTF-8"
+      },
     });
   } finally {
     fs.unlinkSync(tempPath);

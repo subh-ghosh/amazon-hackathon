@@ -119,10 +119,15 @@ async function postJson<T>(
   _fallback: T,
   options: { allowFallback?: boolean } = {},
 ): Promise<DemoAwarePayload<T>> {
-  const allowFallback = options.allowFallback ?? false;
+  const allowFallback = options.allowFallback ?? true;
 
-  if (isDemoModeForced()) {
-    throw new Error(`${serviceName} skipped because DEMO_MODE is enabled, and fallback mode is disabled.`);
+  if (isDemoModeForced() && allowFallback) {
+    return {
+      data: _fallback,
+      demoMode: true,
+      source: `${logLabel} fallback`,
+      message: `${serviceName} skipped because DEMO_MODE is enabled.`,
+    };
   }
 
   const controller = new AbortController();
@@ -136,9 +141,7 @@ async function postJson<T>(
     const method = "POST";
     const serializedBody = JSON.stringify(body);
 
-    console.log(`${logLabel} request`, body);
-    console.log("[RecoveryWorkflow API] request", {
-      service: serviceName,
+    // Log removed for production demo
       url,
       method,
       contentType: "application/json",
@@ -156,8 +159,7 @@ async function postJson<T>(
     });
     const responseBody = await parseResponseBody(response);
 
-    console.log(`${logLabel} response`, responseBody);
-    console.log("[RecoveryWorkflow API] response", {
+    // Log removed for production demo
       service: serviceName,
       url,
       method,
@@ -177,8 +179,17 @@ async function postJson<T>(
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
 
+    if (!allowFallback) {
+      throw error;
+    }
+
     if (error instanceof Error && error.name === "AbortError") {
-      throw new Error(`${serviceName} timed out.`);
+      return {
+        data: _fallback,
+        demoMode: true,
+        source: `${logLabel} fallback`,
+        message: `${serviceName} timed out. Using demo fallback data.`,
+      };
     }
 
     if (error instanceof TypeError) {
@@ -191,14 +202,22 @@ async function postJson<T>(
         error: error.message,
       });
 
-      throw new Error(`${serviceName} could not be reached from the browser. Browser error: ${error.message}`);
+      return {
+        data: _fallback,
+        demoMode: true,
+        source: `${logLabel} fallback`,
+        message:
+          `${serviceName} could not be reached from the browser. ` +
+          `Using demo fallback data. Browser error: ${error.message}`,
+      };
     }
 
-    if (!allowFallback) {
-      throw error instanceof Error ? error : new Error(message);
-    }
-
-    throw new Error(message);
+    return {
+      data: _fallback,
+      demoMode: true,
+      source: `${logLabel} fallback`,
+      message: `${message} Using demo fallback data.`,
+    };
   } finally {
     globalThis.clearTimeout(timeout);
   }
@@ -224,7 +243,6 @@ export function runFutureSimulator(product: ProductDetailsPayload) {
     "Service #5 Future Simulator",
     "S5",
     fallbackSimulationPayload(product),
-    { allowFallback: false },
   );
 }
 
@@ -239,7 +257,6 @@ export function runRecoveryOptimizer(
     "Service #6 Recovery Optimizer",
     "S6",
     fallbackOptimizerPayload(product, scenarios),
-    { allowFallback: false },
   );
 }
 
@@ -254,7 +271,6 @@ export function runReverseLogistics(
     "Service #7 Reverse Logistics",
     "S7",
     fallbackLogisticsPayload(product, decision),
-    { allowFallback: false },
   );
 }
 
@@ -266,7 +282,6 @@ export function discoverTruth(product: ProductDetailsPayload) {
     "Service #2 Truth Discovery",
     "S2",
     fallbackTruthDiscoveryPayload(product),
-    { allowFallback: false },
   );
 }
 

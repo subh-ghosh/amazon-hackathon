@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Activity } from "lucide-react";
 
 import { AiInsightsBanner } from "@/components/dashboard/ai-insights-banner";
+import { RufusActionPlan } from "@/components/dashboard/rufus-action-plan";
 import { KpiCard } from "@/components/dashboard/kpi-card";
 import { ReturnCausesChart } from "@/components/dashboard/return-causes-chart";
 import { ProductInsightsTable } from "@/components/dashboard/product-insights-table";
@@ -19,12 +20,14 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
+import { sellerAnalytics as defaultSellerAnalytics } from "@/data/seller-analytics";
 import type { SellerAnalytics, ProductInsight } from "@/types/seller-analytics";
 
 type Resource<T> = {
   data: T | null;
   loading: boolean;
   error: string | null;
+  demoMode: boolean;
 };
 
 export function SellerDashboardView() {
@@ -33,10 +36,11 @@ export function SellerDashboardView() {
     data: null,
     loading: true,
     error: null,
+    demoMode: false,
   });
 
   function loadSellerAnalytics() {
-    setAnalytics({ data: null, loading: true, error: null });
+    setAnalytics({ data: null, loading: true, error: null, demoMode: false });
 
     Promise.all([
       fetch("/api/seller-analytics", { cache: "no-store" }).then(async (response) => {
@@ -81,14 +85,11 @@ export function SellerDashboardView() {
             impact: liveData?.topIssues?.[i] || "Improves seller performance",
           })),
         };
-        setAnalytics({ data: merged, loading: false, error: null });
+        setAnalytics({ data: merged, loading: false, error: null, demoMode: false });
       })
-      .catch((error) => {
-        setAnalytics({
-          data: null,
-          loading: false,
-          error: error instanceof Error ? error.message : "Failed to load seller intelligence.",
-        });
+      .catch(() => {
+        // Fallback to static data if DynamoDB or S11 fails
+        setAnalytics({ data: defaultSellerAnalytics, loading: false, error: null, demoMode: true });
       });
   }
 
@@ -97,7 +98,7 @@ export function SellerDashboardView() {
   }, []);
 
   if (analytics.loading) {
-    return <StatusCard title="Loading..." />;
+    return <StatusCard title="Loading seller intelligence..." />;
   }
 
   if (analytics.error || !analytics.data) {
@@ -129,13 +130,17 @@ export function SellerDashboardView() {
     <div className="space-y-8 pb-12 animate-fadeIn">
 
       {/* ━━━━━━━━━━━ ZONE 1: EXECUTIVE SUMMARY ━━━━━━━━━━━ */}
-      <section>
+      <section className="space-y-6">
         <AiInsightsBanner insights={data.aiInsights} />
+        <RufusActionPlan />
       </section>
 
       <section>
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-slate-900">Store Overview</h3>
+          {analytics.demoMode && (
+            <Badge className="border-amber-200 bg-amber-50 text-amber-700 text-[10px]">Demo Data</Badge>
+          )}
         </div>
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5" aria-label="Seller performance indicators">
           {data.kpis.map((kpi) => (
@@ -243,7 +248,7 @@ function StatusCard({
         <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent className="flex items-center justify-between gap-4">
-        <p className="text-sm text-slate-500">{detail ?? "Loading..."}</p>
+        <p className="text-sm text-slate-500">{detail ?? "Loading live data stream..."}</p>
         {onRetry && (
           <button
             type="button"

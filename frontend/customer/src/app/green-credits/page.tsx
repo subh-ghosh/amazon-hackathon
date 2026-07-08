@@ -12,24 +12,47 @@ export default function GreenCreditsPage() {
             {/* Header */}
             <div className="bg-[#232F3E] text-white">
                 <div className="max-w-[900px] mx-auto px-4 py-8">
-                    <h1 className="text-2xl font-bold mb-1">Amazon Sustainability Rewards</h1>
-                    <p className="text-gray-300 text-sm">Earn rewards for making choices that reduce waste and support the circular economy.</p>
+                    <h1 className="text-2xl font-bold mb-1 flex items-center gap-2"><Leaf className="text-emerald-400" /> Amazon Green Passport</h1>
+                    <p className="text-gray-300 text-sm">Your lifetime sustainability impact and rewards for supporting the circular economy.</p>
                 </div>
             </div>
 
             <div className="max-w-[900px] mx-auto px-4 py-8">
-                {/* Balance */}
-                <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 sm:p-6 mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                    <div>
-                        <p className="text-sm text-gray-500 mb-1">Your balance</p>
-                        <div className="flex items-baseline gap-2">
-                            <span className="text-4xl font-bold text-gray-900">{greenCredits}</span>
-                            <span className="text-sm text-gray-500">reward points</span>
+                {/* Balance & Impact Scorecard */}
+                <div className="bg-gray-50 border border-gray-200 rounded-lg p-5 sm:p-6 mb-8 shadow-sm">
+                    <div className="flex items-center justify-between border-b border-gray-200 pb-4 mb-4">
+                        <div>
+                            <p className="text-sm text-gray-500 mb-1">Your Sustainability Tier</p>
+                            <div className="flex items-center gap-2">
+                                <span className="text-xl font-bold text-emerald-700 uppercase tracking-wide">Earth Champion</span>
+                            </div>
+                        </div>
+                        <div className="text-right">
+                            <p className="text-sm text-gray-500 mb-1">Reward Balance</p>
+                            <div className="flex items-baseline gap-1 justify-end">
+                                <span className="text-3xl font-bold text-gray-900">{greenCredits}</span>
+                                <span className="text-xs text-gray-500 font-medium uppercase tracking-wider">Pts</span>
+                            </div>
                         </div>
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-emerald-700 bg-emerald-50 px-4 py-2 rounded-lg border border-emerald-200">
-                        <Leaf size={16} className="flex-shrink-0" />
-                        <span>You&apos;ve helped extend the life of 6 products</span>
+                    
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-2">
+                        <div className="bg-white p-3 rounded border border-gray-100">
+                            <p className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold mb-1">Products Saved</p>
+                            <p className="text-lg font-bold text-gray-900">14 <span className="text-xs font-normal text-gray-500">items</span></p>
+                        </div>
+                        <div className="bg-white p-3 rounded border border-gray-100">
+                            <p className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold mb-1">CO₂ Offset</p>
+                            <p className="text-lg font-bold text-emerald-600">82.4 <span className="text-xs font-normal text-emerald-600/70">kg</span></p>
+                        </div>
+                        <div className="bg-white p-3 rounded border border-gray-100">
+                            <p className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold mb-1">E-Waste Diverted</p>
+                            <p className="text-lg font-bold text-blue-600">4.2 <span className="text-xs font-normal text-blue-600/70">kg</span></p>
+                        </div>
+                        <div className="bg-white p-3 rounded border border-gray-100">
+                            <p className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold mb-1">Logistics Avoided</p>
+                            <p className="text-lg font-bold text-amber-600">6 <span className="text-xs font-normal text-amber-600/70">trips</span></p>
+                        </div>
                     </div>
                 </div>
 

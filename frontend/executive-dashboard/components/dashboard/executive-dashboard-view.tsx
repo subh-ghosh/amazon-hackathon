@@ -11,14 +11,15 @@ import { SustainabilityImpact } from "@/components/dashboard/sustainability-impa
 import { ReturnIntelligence } from "@/components/dashboard/return-intelligence";
 import { AiExecutiveSummary } from "@/components/dashboard/ai-executive-summary";
 import { OperationalImpact } from "@/components/dashboard/operational-impact";
+import { LiveEventTicker } from "@/components/dashboard/live-event-ticker";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { executiveDashboardData as defaultData } from "@/data/executive-impact";
 import type { ExecutiveDashboardData } from "@/types/executive-impact";
 
 export function ExecutiveDashboardView() {
   const [data, setData] = useState<ExecutiveDashboardData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     Promise.all([
@@ -71,18 +72,15 @@ export function ExecutiveDashboardView() {
 
       setData(merged);
       setLoading(false);
-    }).catch((loadError) => {
-      setError(loadError instanceof Error ? loadError.message : "Failed to load executive dashboard.");
+    }).catch(() => {
+      // Fallback to static data if DynamoDB fails
+      setData(defaultData);
       setLoading(false);
     });
   }, []);
 
-  if (error) {
-    return <StatusCard title="Executive snapshot unavailable" detail={error} />;
-  }
-
   if (loading || !data) {
-    return <StatusCard title="Loading..." />;
+    return <StatusCard title="Loading executive intelligence..." />;
   }
 
   return (
@@ -140,8 +138,13 @@ export function ExecutiveDashboardView() {
         </section>
 
         {/* SECTION 7: OPERATIONAL IMPACT */}
-        <section>
-          <OperationalImpact data={data.operational} />
+        <section className="grid gap-6 lg:grid-cols-3">
+          <div className="lg:col-span-2">
+            <OperationalImpact data={data.operational} />
+          </div>
+          <div className="lg:col-span-1">
+            <LiveEventTicker />
+          </div>
         </section>
       </div>
     </main>

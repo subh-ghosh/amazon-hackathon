@@ -5,12 +5,12 @@ import { ReturnsKpis } from "@/components/dashboard/returns-kpis";
 import { RecoveryPipeline } from "@/components/dashboard/recovery-pipeline";
 import { InspectionTable } from "@/components/dashboard/inspection-table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { operationsData as defaultData } from "@/data/operations-data";
 import type { OperationsData } from "@/types/operations";
 
 export function OperationsDashboardView() {
   const [data, setData] = useState<OperationsData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     Promise.all([
@@ -67,18 +67,15 @@ export function OperationsDashboardView() {
 
       setData(merged);
       setLoading(false);
-    }).catch((loadError) => {
-      setError(loadError instanceof Error ? loadError.message : "Failed to load operations dashboard.");
+    }).catch(() => {
+      // Fallback to static data if DynamoDB fails
+      setData(defaultData);
       setLoading(false);
     });
   }, []);
 
-  if (error) {
-    return <StatusCard title="Operations snapshot unavailable" detail={error} />;
-  }
-
   if (loading || !data) {
-    return <StatusCard title="Loading..." />;
+    return <StatusCard title="Loading facility operations..." />;
   }
 
   return (

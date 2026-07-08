@@ -1,0 +1,21 @@
+
+> circular-intelligence-customer@1.0.0 build
+> next build
+
+  ▲ Next.js 14.2.15
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+Failed to compile.
+
+./src/hooks/StoreProvider.tsx:54:29
+Type error: Property 'country' is missing in type '{ name: string; street: string; city: string; state: string; zip: string; }' but required in type 'Address'.
+
+[0m [90m 52 |[39m                             [32m"created_at"[39m[33m:[39m [32m"2026-07-02T20:55:56.536Z"[39m[33m,[39m[0m
+[0m [90m 53 |[39m                             [32m"delivery_date"[39m[33m:[39m [32m"2026-07-05T20:55:56.536Z"[39m[33m,[39m[0m
+[0m[31m[1m>[22m[39m[90m 54 |[39m                             [32m"address"[39m[33m:[39m {[0m
+[0m [90m    |[39m                             [31m[1m^[22m[39m[0m
+[0m [90m 55 |[39m                                       [32m"name"[39m[33m:[39m [32m"Rahul Sharma"[39m[33m,[39m[0m
+[0m [90m 56 |[39m                                       [32m"street"[39m[33m:[39m [32m"42 MG Road, Indiranagar"[39m[33m,[39m[0m
+[0m [90m 57 |[39m                                       [32m"city"[39m[33m:[39m [32m"Bangalore"[39m[33m,[39m[0m

@@ -286,9 +286,9 @@ export function ProductDetailPanel({ product, onBack }: ProductDetailPanelProps)
                     )}
                   >
                     {isDone ? (
-                      <><CheckCircle2 className="size-3.5" /> Done</>
+                      <><CheckCircle2 className="size-3.5" /> Auto-Applied</>
                     ) : (
-                      "Mark Done"
+                      "Auto-Remediate via S11"
                     )}
                   </button>
                 </li>

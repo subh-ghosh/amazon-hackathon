@@ -1,4 +1,5 @@
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
@@ -18,7 +19,7 @@ export async function GET() {
   );
 
   const products = ((response.Items ?? []) as Product[]).sort((left, right) =>
-    left.title.localeCompare(right.title),
+    left.product_id.localeCompare(right.product_id),
   );
   const categories = Array.from(new Set(products.map((product) => product.category))).sort();
 

@@ -6,51 +6,120 @@
   - Local:        http://localhost:3000
 
  ✓ Starting...
- ✓ Ready in 4.7s
+ ✓ Ready in 2.8s
  ○ Compiling / ...
- ✓ Compiled / in 5.4s (554 modules)
- GET / 200 in 5893ms
- ✓ Compiled in 432ms (281 modules)
- ○ Compiling /product/[id] ...
- ✓ Compiled /product/[id] in 5.2s (781 modules)
- ✓ Compiled /api/proxy/[service]/[[...path]] in 422ms (598 modules)
- POST /api/proxy/s10/api/v1/packaging/analyze 200 in 5165ms
- POST /api/proxy/s11/api/v1/seller/analyze 200 in 5350ms
- POST /api/proxy/s10/api/v1/packaging/analyze 200 in 5393ms
- POST /api/proxy/s11/api/v1/seller/analyze 200 in 5405ms
- POST /api/proxy/s1/api/v1/prevention/analyze 200 in 5668ms
- POST /api/proxy/s1/api/v1/prevention/analyze 200 in 5729ms
- ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
- ✓ Compiled in 947ms (1044 modules)
- GET / 200 in 624ms
- ✓ Compiled in 652ms (291 modules)
- ○ Compiling /orders ...
- ✓ Compiled /orders in 885ms (551 modules)
- GET /orders 200 in 1149ms
- ○ Compiling /return/[orderId]/[productId] ...
- ✓ Compiled /return/[orderId]/[productId] in 801ms (802 modules)
- ○ Compiling /return-prevention ...
- ✓ Compiled /return-prevention in 698ms (586 modules)
- ✓ Compiled /api/proxy/[service]/[[...path]] in 267ms (908 modules)
- POST /api/proxy/s2/api/v1/truth/analyze 500 in 6379ms
- POST /api/proxy/s2/api/v1/truth/analyze 500 in 6374ms
- POST /api/proxy/s3/api/v1/fraud/score 200 in 4884ms
- POST /api/proxy/s3/api/v1/fraud/score 200 in 4884ms
- POST /api/proxy/s11/api/v1/seller/analyze 200 in 3646ms
- POST /api/proxy/s10/api/v1/packaging/analyze 200 in 3787ms
- POST /api/proxy/s11/api/v1/seller/analyze 200 in 3797ms
- POST /api/proxy/s10/api/v1/packaging/analyze 200 in 4217ms
- POST /api/proxy/s8/api/v1/returnless/evaluate 200 in 3946ms
- POST /api/proxy/s8/api/v1/returnless/evaluate 200 in 4830ms
- ○ Compiling /return-decision ...
- ✓ Compiled /return-decision in 1082ms (602 modules)
- ✓ Compiled in 753ms (616 modules)
- ✓ Compiled in 3.7s (1114 modules)
- ✓ Compiled (1100 modules)
- ✓ Compiled in 636ms (805 modules)
- ✓ Compiled in 880ms (1101 modules)
- ✓ Compiled in 1461ms (1101 modules)
- ✓ Compiled in 1856ms (618 modules)
- ✓ Compiled in 1995ms (1101 modules)
- ✓ Compiled in 849ms (819 modules)
- ✓ Compiled in 1414ms (616 modules)
+ ✓ Compiled / in 2.8s (545 modules)
+ GET / 200 in 3334ms
+ ✓ Compiled in 486ms (281 modules)
+ ○ Compiling /api/store ...
+ ✓ Compiled /api/store in 2s (1102 modules)
+ GET /api/store 200 in 5380ms
+ GET /api/store 200 in 5395ms
+ ✓ Compiled /api/catalog in 340ms (1104 modules)
+ GET /api/catalog 200 in 3031ms
+ PUT /api/store 200 in 3000ms
+ GET /api/catalog 200 in 3311ms
+ PUT /api/store 200 in 3331ms
+ ✓ Compiled in 354ms (281 modules)
+ ✓ Compiled in 294ms (281 modules)
+ ✓ Compiled in 273ms (281 modules)
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 524ms (534 modules)
+ GET /_next/static/css/app/layout.css?v=1783493664404 404 in 662ms
+ ✓ Compiled in 211ms (283 modules)
+ ⨯ Error: Cannot find module './787.js'
+Require stack:
+- /home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/.next/server/webpack-runtime.js
+- /home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/.next/server/app/_not-found/page.js
+- /home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/server/require.js
+- /home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/server/load-components.js
+- /home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/build/utils.js
+- /home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/server/dev/hot-middleware.js
+- /home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/server/dev/hot-reloader-webpack.js
+- /home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/server/lib/router-server.js
+- /home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/server/lib/start-server.js
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1456:15)
+    at /home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/server/require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1066:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1071:22)
+    at Module._load (node:internal/modules/cjs/loader:1242:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at __webpack_require__.f.require (/home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/.next/server/webpack-runtime.js:198:28)
+    at /home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/.next/server/webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (/home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/.next/server/webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (/home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/.next/server/webpack-runtime.js:162:22)
+    at /home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/.next/server/app/page.js:1:13458
+    at Object.<anonymous> (/home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/.next/server/app/page.js:1:13506)
+    at Module._compile (node:internal/modules/cjs/loader:1812:14)
+    at Object..js (node:internal/modules/cjs/loader:1943:10)
+    at Module.load (node:internal/modules/cjs/loader:1533:32)
+    at Module._load (node:internal/modules/cjs/loader:1335:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at requirePage (/home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/server/require.js:109:84)
+    at /home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/server/load-components.js:98:84
+    at async loadComponentsImpl (/home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/server/load-components.js:98:26)
+    at async DevServer.findPageComponentsImpl (/home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/server/next-server.js:709:36)
+    at async DevServer.findPageComponents (/home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/server/dev/next-dev-server.js:577:20)
+    at async DevServer.renderPageComponent (/home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/server/base-server.js:1894:24)
+    at async DevServer.renderToResponseImpl (/home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/server/base-server.js:1946:32)
+    at async DevServer.pipeImpl (/home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/server/base-server.js:921:25)
+    at async NextNodeServer.handleCatchallRenderRequest (/home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/server/next-server.js:272:17)
+    at async DevServer.handleRequestImpl (/home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/server/base-server.js:817:17)
+    at async /home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/server/dev/next-dev-server.js:339:20
+    at async Span.traceAsyncFn (/home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/trace/trace.js:154:20)
+    at async DevServer.handleRequest (/home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/server/dev/next-dev-server.js:336:24)
+    at async invokeRender (/home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/server/lib/router-server.js:173:21)
+    at async handleRequest (/home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/server/lib/router-server.js:350:24)
+    at async requestHandlerImpl (/home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/server/lib/router-server.js:374:13)
+    at async Server.requestListener (/home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/server/lib/start-server.js:141:13) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/.next/server/webpack-runtime.js',
+    '/home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/.next/server/app/_not-found/page.js',
+    '/home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/server/require.js',
+    '/home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/server/load-components.js',
+    '/home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/build/utils.js',
+    '/home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/server/dev/hot-middleware.js',
+    '/home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/server/dev/hot-reloader-webpack.js',
+    '/home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js',
+    '/home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/server/lib/router-server.js',
+    '/home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/server/lib/start-server.js'
+  ],
+  page: '/'
+}
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 1784ms (760 modules)
+ GET / 200 in 66ms
+ GET /_next/static/css/app/layout.css?v=1783493677124 404 in 30ms
+ GET /_next/static/chunks/main-app.js?v=1783493677124 404 in 48ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 35ms
+ GET /_next/static/chunks/app/page.js 404 in 33ms
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/lucide-react' in /home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/.next/server for build dependencies doesn't lead to expected result '/home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/.next/server/vendor-chunks/lucide-react.js', but to 'Error: Can't resolve './vendor-chunks/lucide-react' in '/home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/.next/server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/lucide-react (expected /home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/.next/server/vendor-chunks/lucide-react.js)
+<w>  at file dependencies /home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/.next/server/webpack-runtime.js
+<w>  at file /home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/.next/server/webpack-runtime.js
+<w>  at file dependencies /home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/.next/server/pages/_error.js
+<w>  at file /home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/.next/server/pages/_error.js
+<w>  at file dependencies /home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/server/require.js
+<w>  at file /home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/server/require.js
+<w>  at file dependencies /home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/server/load-components.js
+<w>  at file /home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/server/load-components.js
+<w>  at file dependencies /home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/build/utils.js
+<w>  at file /home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/build/utils.js
+<w>  at file dependencies /home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at file /home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at resolve commonjs /home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, lstat '/home/subh/Desktop/amazon/amazon-hackathon/frontend/customer/.next/server/vendor-chunks/lucide-react.js'
+ ✓ Compiled in 371ms (465 modules)
+ ✓ Compiled in 310ms (465 modules)
+ ✓ Compiled in 288ms (465 modules)
+ ✓ Compiled in 231ms (465 modules)

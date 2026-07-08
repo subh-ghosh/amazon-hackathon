@@ -10,11 +10,11 @@ export const executiveDashboardData: ExecutiveDashboardData = {
     socialImpact: "486K Lives",
   },
   kpis: [
-    { label: "Returns Prevented", value: "1.25M", change: "+12.4%", trend: "up" },
-    { label: "Revenue Recovered", value: "₹4.82 Cr", change: "+18.6%", trend: "up" },
-    { label: "Returnless Savings", value: "₹1.28 Cr", change: "+8.2%", trend: "up" },
+    { label: "S8 Auto-Resolutions", value: "1.25M", change: "+12.4%", trend: "up" },
+    { label: "EBITDA Protected", value: "₹4.82 Cr", change: "+18.6%", trend: "up" },
+    { label: "Logistics Savings", value: "₹1.28 Cr", change: "+8.2%", trend: "up" },
     { label: "CO₂ Saved (Tons)", value: "18,420", change: "+24.1%", trend: "up" },
-    { label: "Fraud Prevented", value: "₹64.2L", change: "-4.3%", trend: "down" },
+    { label: "S3 Risk Interceptions", value: "₹64.2L", change: "-4.3%", trend: "down" },
   ],
   recoveryMix: [
     { label: "Restocked", units: 684200, percentage: 54, recoveredValue: 31600000, color: "bg-emerald-500" },

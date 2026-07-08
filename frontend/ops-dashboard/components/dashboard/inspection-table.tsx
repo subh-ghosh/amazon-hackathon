@@ -31,9 +31,9 @@ export function InspectionTable({ products }: { products: InspectionProduct[] })
     <Card>
       <CardHeader className="flex-row items-start justify-between space-y-0">
         <div>
-          <CardTitle>Inspection Queue</CardTitle>
+          <CardTitle>Algorithmic Triage Queue</CardTitle>
           <CardDescription className="mt-1.5">
-            Pending returned items awaiting visual inspection and intelligent triage.
+            Items pending physical induction and automated S6 decision generation.
           </CardDescription>
         </div>
         <Badge className="border-blue-200 bg-blue-50 text-blue-700">
@@ -96,7 +96,7 @@ export function InspectionTable({ products }: { products: InspectionProduct[] })
                   </TableCell>
                   <TableCell className="text-right">
                     <button className="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-600 hover:text-indigo-800 opacity-0 group-hover:opacity-100 transition-opacity">
-                      Open Triage <ExternalLink className="size-3" />
+                      Run S6 Triage <ExternalLink className="size-3" />
                     </button>
                   </TableCell>
                 </TableRow>

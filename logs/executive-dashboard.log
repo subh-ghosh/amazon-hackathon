@@ -4,20 +4,96 @@
 
    ▲ Next.js 15.5.19
    - Local:        http://localhost:3004
-   - Network:      http://10.147.82.96:3004
+   - Network:      http://10.77.86.96:3004
 
  ✓ Starting...
- ✓ Ready in 4.8s
+ ✓ Ready in 2.6s
  ○ Compiling / ...
- ✓ Compiled / in 6.8s (689 modules)
- GET / 200 in 7420ms
+ ✓ Compiled / in 5.4s (689 modules)
+ GET / 200 in 6010ms
  ○ Compiling /api/proxy/[service]/[[...path]] ...
- ✓ Compiled /api/proxy/[service]/[[...path]] in 1805ms (508 modules)
- GET / 200 in 187ms
- GET /api/proxy/s12/api/v1/intelligence/analytics/recovery-effectiveness 200 in 6534ms
- GET /api/proxy/s12/api/v1/intelligence/analytics/top-return-causes 200 in 6546ms
- GET /api/proxy/s9/api/v1/logistics/analytics 200 in 11566ms
- ✓ Compiled in 1792ms (265 modules)
- ✓ Compiled in 692ms (690 modules)
- ✓ Compiled in 870ms (687 modules)
- ✓ Compiled in 861ms (687 modules)
+ ✓ Compiled /api/proxy/[service]/[[...path]] in 5.8s (1745 modules)
+Proxy error for http://Circul-Circu-jsU6YMlH3H2K-853712911.us-east-1.elb.amazonaws.com/api/v1/logistics/analytics: Error: fetch failed
+    at context.fetch (/home/subh/Desktop/amazon/amazon-hackathon/frontend/executive-dashboard/node_modules/next/dist/server/web/sandbox/context.js:321:60)
+    at dedupeFetch (webpack-internal:///(rsc)/./node_modules/next/dist/esm/server/lib/dedupe-fetch.js:93:25)
+    at doOriginalFetch (webpack-internal:///(rsc)/./node_modules/next/dist/esm/server/lib/patch-fetch.js:584:24)
+    at eval (webpack-internal:///(rsc)/./node_modules/next/dist/esm/server/lib/patch-fetch.js:839:24)
+    at async proxyRequest (webpack-internal:///(rsc)/./app/api/proxy/[service]/[[...path]]/route.ts:57:26)
+    at async AppRouteRouteModule.do (webpack-internal:///(rsc)/./node_modules/next/dist/esm/server/route-modules/app-route/module.js:399:23)
+    at async AppRouteRouteModule.handle (webpack-internal:///(rsc)/./node_modules/next/dist/esm/server/route-modules/app-route/module.js:490:26)
+    at async EdgeRouteModuleWrapper.handler (webpack-internal:///(rsc)/./node_modules/next/dist/esm/server/web/edge-route-module-wrapper.js:101:19)
+    at async adapter (webpack-internal:///(rsc)/./node_modules/next/dist/esm/server/web/adapter.js:212:16)
+    at async /home/subh/Desktop/amazon/amazon-hackathon/frontend/executive-dashboard/node_modules/next/dist/server/web/sandbox/sandbox.js:112:26
+    at async runWithTaggedErrors (/home/subh/Desktop/amazon/amazon-hackathon/frontend/executive-dashboard/node_modules/next/dist/server/web/sandbox/sandbox.js:109:9)
+    at async DevServer.runEdgeFunction (/home/subh/Desktop/amazon/amazon-hackathon/frontend/executive-dashboard/node_modules/next/dist/server/next-server.js:1367:24)
+    at async NextNodeServer.handleCatchallRenderRequest (/home/subh/Desktop/amazon/amazon-hackathon/frontend/executive-dashboard/node_modules/next/dist/server/next-server.js:362:41)
+    at async DevServer.handleRequestImpl (/home/subh/Desktop/amazon/amazon-hackathon/frontend/executive-dashboard/node_modules/next/dist/server/base-server.js:917:17)
+    at async /home/subh/Desktop/amazon/amazon-hackathon/frontend/executive-dashboard/node_modules/next/dist/server/dev/next-dev-server.js:400:20
+    at async Span.traceAsyncFn (/home/subh/Desktop/amazon/amazon-hackathon/frontend/executive-dashboard/node_modules/next/dist/trace/trace.js:157:20)
+    at async DevServer.handleRequest (/home/subh/Desktop/amazon/amazon-hackathon/frontend/executive-dashboard/node_modules/next/dist/server/dev/next-dev-server.js:396:24)
+    at async invokeRender (/home/subh/Desktop/amazon/amazon-hackathon/frontend/executive-dashboard/node_modules/next/dist/server/lib/router-server.js:240:21)
+    at async handleRequest (/home/subh/Desktop/amazon/amazon-hackathon/frontend/executive-dashboard/node_modules/next/dist/server/lib/router-server.js:437:24)
+    at async requestHandlerImpl (/home/subh/Desktop/amazon/amazon-hackathon/frontend/executive-dashboard/node_modules/next/dist/server/lib/router-server.js:485:13)
+    at async Server.requestListener (/home/subh/Desktop/amazon/amazon-hackathon/frontend/executive-dashboard/node_modules/next/dist/server/lib/start-server.js:226:13) {
+  
+}
+ GET /api/proxy/s9/api/v1/logistics/analytics 503 in 6143ms
+Proxy error for http://Circul-Graph-IIxBpeJf0S3j-1441021229.us-east-1.elb.amazonaws.com/api/v1/intelligence/analytics/recovery-effectiveness: Error: fetch failed
+    at context.fetch (/home/subh/Desktop/amazon/amazon-hackathon/frontend/executive-dashboard/node_modules/next/dist/server/web/sandbox/context.js:321:60)
+    at dedupeFetch (webpack-internal:///(rsc)/./node_modules/next/dist/esm/server/lib/dedupe-fetch.js:93:25)
+    at doOriginalFetch (webpack-internal:///(rsc)/./node_modules/next/dist/esm/server/lib/patch-fetch.js:584:24)
+    at eval (webpack-internal:///(rsc)/./node_modules/next/dist/esm/server/lib/patch-fetch.js:839:24)
+    at async proxyRequest (webpack-internal:///(rsc)/./app/api/proxy/[service]/[[...path]]/route.ts:57:26)
+    at async AppRouteRouteModule.do (webpack-internal:///(rsc)/./node_modules/next/dist/esm/server/route-modules/app-route/module.js:399:23)
+    at async AppRouteRouteModule.handle (webpack-internal:///(rsc)/./node_modules/next/dist/esm/server/route-modules/app-route/module.js:490:26)
+    at async EdgeRouteModuleWrapper.handler (webpack-internal:///(rsc)/./node_modules/next/dist/esm/server/web/edge-route-module-wrapper.js:101:19)
+    at async adapter (webpack-internal:///(rsc)/./node_modules/next/dist/esm/server/web/adapter.js:212:16)
+    at async /home/subh/Desktop/amazon/amazon-hackathon/frontend/executive-dashboard/node_modules/next/dist/server/web/sandbox/sandbox.js:112:26
+    at async runWithTaggedErrors (/home/subh/Desktop/amazon/amazon-hackathon/frontend/executive-dashboard/node_modules/next/dist/server/web/sandbox/sandbox.js:109:9)
+    at async DevServer.runEdgeFunction (/home/subh/Desktop/amazon/amazon-hackathon/frontend/executive-dashboard/node_modules/next/dist/server/next-server.js:1367:24)
+    at async NextNodeServer.handleCatchallRenderRequest (/home/subh/Desktop/amazon/amazon-hackathon/frontend/executive-dashboard/node_modules/next/dist/server/next-server.js:362:41)
+    at async DevServer.handleRequestImpl (/home/subh/Desktop/amazon/amazon-hackathon/frontend/executive-dashboard/node_modules/next/dist/server/base-server.js:917:17)
+    at async /home/subh/Desktop/amazon/amazon-hackathon/frontend/executive-dashboard/node_modules/next/dist/server/dev/next-dev-server.js:400:20
+    at async Span.traceAsyncFn (/home/subh/Desktop/amazon/amazon-hackathon/frontend/executive-dashboard/node_modules/next/dist/trace/trace.js:157:20)
+    at async DevServer.handleRequest (/home/subh/Desktop/amazon/amazon-hackathon/frontend/executive-dashboard/node_modules/next/dist/server/dev/next-dev-server.js:396:24)
+    at async invokeRender (/home/subh/Desktop/amazon/amazon-hackathon/frontend/executive-dashboard/node_modules/next/dist/server/lib/router-server.js:240:21)
+    at async handleRequest (/home/subh/Desktop/amazon/amazon-hackathon/frontend/executive-dashboard/node_modules/next/dist/server/lib/router-server.js:437:24)
+    at async requestHandlerImpl (/home/subh/Desktop/amazon/amazon-hackathon/frontend/executive-dashboard/node_modules/next/dist/server/lib/router-server.js:485:13)
+    at async Server.requestListener (/home/subh/Desktop/amazon/amazon-hackathon/frontend/executive-dashboard/node_modules/next/dist/server/lib/start-server.js:226:13) {
+  
+}
+ GET /api/proxy/s12/api/v1/intelligence/analytics/recovery-effectiveness 503 in 6475ms
+Proxy error for http://Circul-Graph-IIxBpeJf0S3j-1441021229.us-east-1.elb.amazonaws.com/api/v1/intelligence/analytics/top-return-causes: Error: fetch failed
+    at context.fetch (/home/subh/Desktop/amazon/amazon-hackathon/frontend/executive-dashboard/node_modules/next/dist/server/web/sandbox/context.js:321:60)
+    at dedupeFetch (webpack-internal:///(rsc)/./node_modules/next/dist/esm/server/lib/dedupe-fetch.js:93:25)
+    at doOriginalFetch (webpack-internal:///(rsc)/./node_modules/next/dist/esm/server/lib/patch-fetch.js:584:24)
+    at eval (webpack-internal:///(rsc)/./node_modules/next/dist/esm/server/lib/patch-fetch.js:839:24)
+    at async proxyRequest (webpack-internal:///(rsc)/./app/api/proxy/[service]/[[...path]]/route.ts:57:26)
+    at async AppRouteRouteModule.do (webpack-internal:///(rsc)/./node_modules/next/dist/esm/server/route-modules/app-route/module.js:399:23)
+    at async AppRouteRouteModule.handle (webpack-internal:///(rsc)/./node_modules/next/dist/esm/server/route-modules/app-route/module.js:490:26)
+    at async EdgeRouteModuleWrapper.handler (webpack-internal:///(rsc)/./node_modules/next/dist/esm/server/web/edge-route-module-wrapper.js:101:19)
+    at async adapter (webpack-internal:///(rsc)/./node_modules/next/dist/esm/server/web/adapter.js:212:16)
+    at async /home/subh/Desktop/amazon/amazon-hackathon/frontend/executive-dashboard/node_modules/next/dist/server/web/sandbox/sandbox.js:112:26
+    at async runWithTaggedErrors (/home/subh/Desktop/amazon/amazon-hackathon/frontend/executive-dashboard/node_modules/next/dist/server/web/sandbox/sandbox.js:109:9)
+    at async DevServer.runEdgeFunction (/home/subh/Desktop/amazon/amazon-hackathon/frontend/executive-dashboard/node_modules/next/dist/server/next-server.js:1367:24)
+    at async NextNodeServer.handleCatchallRenderRequest (/home/subh/Desktop/amazon/amazon-hackathon/frontend/executive-dashboard/node_modules/next/dist/server/next-server.js:362:41)
+    at async DevServer.handleRequestImpl (/home/subh/Desktop/amazon/amazon-hackathon/frontend/executive-dashboard/node_modules/next/dist/server/base-server.js:917:17)
+    at async /home/subh/Desktop/amazon/amazon-hackathon/frontend/executive-dashboard/node_modules/next/dist/server/dev/next-dev-server.js:400:20
+    at async Span.traceAsyncFn (/home/subh/Desktop/amazon/amazon-hackathon/frontend/executive-dashboard/node_modules/next/dist/trace/trace.js:157:20)
+    at async DevServer.handleRequest (/home/subh/Desktop/amazon/amazon-hackathon/frontend/executive-dashboard/node_modules/next/dist/server/dev/next-dev-server.js:396:24)
+    at async invokeRender (/home/subh/Desktop/amazon/amazon-hackathon/frontend/executive-dashboard/node_modules/next/dist/server/lib/router-server.js:240:21)
+    at async handleRequest (/home/subh/Desktop/amazon/amazon-hackathon/frontend/executive-dashboard/node_modules/next/dist/server/lib/router-server.js:437:24)
+    at async requestHandlerImpl (/home/subh/Desktop/amazon/amazon-hackathon/frontend/executive-dashboard/node_modules/next/dist/server/lib/router-server.js:485:13)
+    at async Server.requestListener (/home/subh/Desktop/amazon/amazon-hackathon/frontend/executive-dashboard/node_modules/next/dist/server/lib/start-server.js:226:13) {
+  
+}
+ GET /api/proxy/s12/api/v1/intelligence/analytics/top-return-causes 503 in 6482ms
+ ✓ Compiled (1731 modules)
+ GET / 200 in 778ms
+ GET /api/executive 200 in 8862ms
+ ✓ Compiled in 565ms (676 modules)
+ GET / 200 in 249ms
+ ✓ Compiled in 365ms (279 modules)
+ GET / 200 in 85ms
+ ✓ Compiled in 780ms (704 modules)
+ GET / 200 in 166ms

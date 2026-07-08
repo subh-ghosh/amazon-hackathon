@@ -37,9 +37,9 @@ export function RecoveryPipeline({
   return (
     <Card className="overflow-hidden">
       <CardHeader>
-        <CardTitle>Processing pipeline</CardTitle>
+        <CardTitle>Automated Reverse Logistics Pipeline</CardTitle>
         <CardDescription>
-          Today&apos;s item flow from return intake to final recovery outcome.
+          Real-time item flow governed by S6 & S9 routing intelligence.
         </CardDescription>
       </CardHeader>
       <CardContent>

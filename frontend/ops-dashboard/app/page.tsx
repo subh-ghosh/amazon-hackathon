@@ -1,6 +1,7 @@
 import { Clock3, Radio } from "lucide-react";
 
 import { OperationsDashboardView } from "@/components/dashboard/operations-dashboard-view";
+import { operationsData } from "@/data/operations-data";
 
 export default function OperationsDashboard() {
   return (
@@ -17,7 +18,7 @@ export default function OperationsDashboard() {
         <div className="flex flex-wrap items-center gap-2">
           <div className="flex h-10 items-center gap-2 rounded-md border bg-white px-3 text-sm font-medium text-slate-600 shadow-sm">
             <Clock3 className="size-4 text-slate-400" aria-hidden="true" />
-            Live database snapshot
+            {operationsData.lastUpdated}
           </div>
           <div className="flex h-10 items-center gap-2 rounded-md border border-emerald-200 bg-emerald-50 px-3 text-sm font-semibold text-emerald-700">
             <Radio className="size-4" aria-hidden="true" />

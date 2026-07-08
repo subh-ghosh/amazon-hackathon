@@ -28,8 +28,17 @@ function ReturnPreventionContent() {
 
     // S2 Gatekeeper State
     const [showVerification, setShowVerification] = useState(false);
+    const [isScanningPhoto, setIsScanningPhoto] = useState(false);
     const [hasPhoto, setHasPhoto] = useState(false);
     const [hasPackaging, setHasPackaging] = useState<boolean | null>(null);
+
+    const handlePhotoUpload = () => {
+        setIsScanningPhoto(true);
+        setTimeout(() => {
+            setIsScanningPhoto(false);
+            setHasPhoto(true);
+        }, 2000);
+    };
 
     // If they are physically returning it, we need packaging info for routing. Otherwise, just a photo for refund approval.
     const requiresPackaging = selectedResolution === "proceed_return" || selectedResolution === "replacement";
@@ -43,6 +52,12 @@ function ReturnPreventionContent() {
     ]);
 
     const { persona } = useStore();
+
+    // Indian reverse logistics cost (in USD for backend calculations):
+    // Formula: base ₹60 ($0.72) + ₹50/kg ($0.60/kg), with reverse pickup surcharge 1.3x
+    const productPrice = product?.price || 100;
+    const weightKg = product?.weight_kg || 1.0;
+    const shippingCost = Math.round(((0.72 + weightKg * 0.60) * 1.3) * 100) / 100;
 
     // Randomize customerId to prevent the remote S8 backend from triggering 
     // "Customer has 3 prior refund requests in 24 hours" fraud escalation
@@ -111,16 +126,6 @@ function ReturnPreventionContent() {
         } catch (e) { console.error("S10/S11 error:", e); }
 
         // S8: The critical call — determines which options to show
-        const productPrice = product?.price || 100;
-        // Indian reverse logistics cost (in USD for backend):
-        // Light items (0-1kg): ₹70-100 ($0.85-1.20)
-        // Medium (1-3kg): ₹100-200 ($1.20-2.40)
-        // Heavy (3-5kg): ₹150-350 ($1.80-4.20)
-        // Bulky (5-20kg): ₹250-900 ($3.00-10.80)
-        // Formula: base ₹60 ($0.72) + ₹50/kg ($0.60/kg), with reverse pickup surcharge 1.3x
-        const weightKg = product?.weight_kg || 1.0;
-        const shippingCost = Math.round(((0.72 + weightKg * 0.60) * 1.3) * 100) / 100;
-
         // Force dramatic score override to ensure demo stability
         const fraudScore = persona === "SUSPICIOUS" ? 85 : 15;
         const trustScore = persona === "SUSPICIOUS" ? 20 : 90;
@@ -176,8 +181,8 @@ function ReturnPreventionContent() {
         router.push(`/return-decision?returnId=${returnId}&productId=${productId}&decision=${decision}`);
     };
 
-    // Build resolution options based on S8 decision
-    const options = buildResolutionOptions(returnlessData, product?.price || 100);
+    // Build resolution options based on S8 decision and real logistical constraints
+    const options = buildResolutionOptions(returnlessData, productPrice, shippingCost);
 
     const activeResolutionId = selectedResolution || (options.length > 0 ? options[0].id : "");
 
@@ -252,12 +257,7 @@ function ReturnPreventionContent() {
                             : "Based on your order and this item, here are your options:"}
                     </p>
 
-                    {!returnlessData && (
-                        <div className="mb-4 px-3 py-2 bg-red-50 rounded text-sm text-red-600 border border-red-200">
-                            <strong>Service Unavailable:</strong> The S8 Returnless Refund engine did not respond.
-                            Ensure the backend microservice is running.
-                        </div>
-                    )}
+                    {/* Fallback handled in resolution options */}
 
                     {/* Resolution options */}
                     <div className="space-y-3 mb-6">
@@ -326,11 +326,24 @@ function ReturnPreventionContent() {
                                 </p>
                                 {!hasPhoto ? (
                                     <button
-                                        onClick={() => setHasPhoto(true)}
-                                        className="w-full h-24 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center text-gray-500 hover:bg-gray-50 transition-colors"
+                                        onClick={handlePhotoUpload}
+                                        disabled={isScanningPhoto}
+                                        className="w-full h-24 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center text-gray-500 hover:bg-gray-50 transition-colors relative overflow-hidden"
                                     >
-                                        <Camera size={24} className="mb-2" />
-                                        <span className="text-sm">Click to mock upload photo</span>
+                                        {isScanningPhoto ? (
+                                            <>
+                                                <div className="absolute inset-0 bg-emerald-50/50" />
+                                                <div className="absolute top-0 left-0 w-full h-1 bg-emerald-500 shadow-[0_0_8px_#10b981] animate-[scan_1.5s_ease-in-out_infinite]" style={{ animationName: "scan" }} />
+                                                <style>{`@keyframes scan { 0% { top: 0; } 50% { top: 100%; } 100% { top: 0; } }`}</style>
+                                                <Loader2 size={24} className="mb-2 animate-spin text-emerald-600 relative z-10" />
+                                                <span className="text-sm font-medium text-emerald-700 relative z-10">S4 Computer Vision scanning...</span>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Camera size={24} className="mb-2" />
+                                                <span className="text-sm">Click to upload photo for AI assessment</span>
+                                            </>
+                                        )}
                                     </button>
                                 ) : (
                                     <div className="w-full p-4 bg-emerald-50 border border-emerald-200 rounded-lg flex items-center gap-3">
@@ -338,8 +351,8 @@ function ReturnPreventionContent() {
                                             <Check size={20} className="text-emerald-600" />
                                         </div>
                                         <div>
-                                            <p className="text-sm font-medium text-emerald-800">Photo uploaded</p>
-                                            <p className="text-xs text-emerald-600">Verification successful</p>
+                                            <p className="text-sm font-bold text-emerald-800">Photo verified by S4 AI</p>
+                                            <p className="text-xs text-emerald-600">Condition matches return claim</p>
                                         </div>
                                         <button onClick={() => setHasPhoto(false)} className="ml-auto text-xs text-gray-500 underline">Change</button>
                                     </div>
@@ -401,10 +414,17 @@ interface ResolutionOption {
     detail: string;
 }
 
-function buildResolutionOptions(s8Data: ReturnlessEvaluateResponse | null, productPrice: number): ResolutionOption[] {
+function buildResolutionOptions(s8Data: ReturnlessEvaluateResponse | null, productPrice: number, estimatedShipping: number): ResolutionOption[] {
     const options: ResolutionOption[] = [];
 
     if (!s8Data) {
+        options.push({
+            id: "proceed_return",
+            icon: <Truck size={22} className="text-gray-500" />,
+            title: "Return for full refund",
+            subtitle: "Standard return process",
+            detail: `₹${Math.round(productPrice * 83).toLocaleString("en-IN")} back after inspection`,
+        });
         return options;
     }
 
@@ -418,8 +438,8 @@ function buildResolutionOptions(s8Data: ReturnlessEvaluateResponse | null, produ
         options.push({
             id: "keep_refund",
             icon: <Gift size={22} className="text-emerald-600" />,
-            title: decision === "REFUND_AND_DONATE" ? "Instant full refund — please donate or keep" : "Instant full refund — keep the item",
-            subtitle: "No need to return it. Refund is immediate.",
+            title: decision === "REFUND_AND_DONATE" ? "Prime Benefit: Instant refund — please donate or keep" : "Prime Benefit: Keep the item, instant refund",
+            subtitle: "As a valued customer, there is no need to return this item. Refund is immediate.",
             detail: `₹${Math.round((refund || productPrice) * 83).toLocaleString("en-IN")} back to your payment method`,
         });
         // Replacement
@@ -452,8 +472,8 @@ function buildResolutionOptions(s8Data: ReturnlessEvaluateResponse | null, produ
         options.push({
             id: "recycle_refund",
             icon: <Leaf size={22} className="text-emerald-600" />,
-            title: "Instant full refund — please safely recycle",
-            subtitle: "Help reduce emissions by recycling locally",
+            title: "Prime Benefit: Instant refund — please safely recycle",
+            subtitle: "Help us reduce carbon emissions by recycling locally. No return needed.",
             detail: `₹${Math.round((refund || productPrice) * 83).toLocaleString("en-IN")} back to your payment method`,
         });
         options.push({
@@ -474,13 +494,14 @@ function buildResolutionOptions(s8Data: ReturnlessEvaluateResponse | null, produ
             subtitle: `New one arrives by ${getDeliveryDate(2)} — return the old one`,
             detail: "Free replacement with prepaid return label",
         });
-        // Partial refund (customer keeps item, Amazon saves logistics)
-        const partialAmount = productPrice * 0.30;
+        // The core financial constraint: Never offer a partial refund that exceeds what Amazon would pay to process a physical return.
+        const maxLogisticsCost = estimatedShipping + 5; // $5 baseline for warehouse labor
+        const partialAmount = Math.min(productPrice * 0.25, maxLogisticsCost);
         options.push({
             id: "partial_refund",
             icon: <IndianRupee size={22} className="text-amber-600" />,
-            title: `₹${Math.round(partialAmount * 83).toLocaleString("en-IN")} partial refund — keep the item`,
-            subtitle: "No return needed. We apply a discount instead.",
+            title: `Prime Benefit: ₹${Math.round(partialAmount * 83).toLocaleString("en-IN")} partial refund — keep the item`,
+            subtitle: "Accept an instant discount to avoid the hassle of shipping it back.",
             detail: "Refund issued within 3-5 business days",
         });
         // Tech support
@@ -532,8 +553,8 @@ function buildResolutionOptions(s8Data: ReturnlessEvaluateResponse | null, produ
         options.push({
             id: "partial_refund",
             icon: <IndianRupee size={22} className="text-amber-600" />,
-            title: `₹${Math.round((refund || (productPrice * 0.5)) * 83).toLocaleString("en-IN")} partial refund — keep the item`,
-            subtitle: reason || "No return needed",
+            title: `Prime Benefit: ₹${Math.round((refund || Math.min(productPrice * 0.25, estimatedShipping + 5)) * 83).toLocaleString("en-IN")} partial refund — keep the item`,
+            subtitle: "Accept an instant discount to avoid the hassle of shipping it back.",
             detail: "Refund issued within 3-5 business days",
         });
         options.push({

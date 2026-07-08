@@ -80,8 +80,8 @@ function ReturnDecisionContent() {
                             <div>
                                 <p className="text-sm font-medium text-gray-900">Drop-off at Amazon Easy Store / Pickup Point</p>
                                 <p className="text-xs text-gray-500 mt-0.5">Faster processing. No box needed, label-free return.</p>
-                                <div className="mt-2 flex items-center gap-1.5 text-xs font-medium text-emerald-700 bg-emerald-50 px-2 py-1 rounded inline-flex">
-                                    <Tag size={12} /> Earn ₹50 Amazon Pay cashback
+                                <div className="mt-2 flex items-center gap-1.5 text-xs font-medium text-emerald-700 bg-emerald-50 px-2 py-1 rounded inline-flex border border-emerald-100">
+                                    <Tag size={12} /> Prime Sustainability Reward: ₹50 Cashback
                                 </div>
                             </div>
                             <div className={`ml-auto mt-0.5 w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${dropoffMethod === "dropoff" ? "border-[#007185]" : "border-gray-300"}`}>

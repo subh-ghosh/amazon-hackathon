@@ -21,8 +21,7 @@ async function request<T = Service12Json>(
     const url = `${SERVICE12_BASE_URL}${path}`;
     const method = init?.method ?? "GET";
 
-    console.log("REQUEST", {
-      service: "Service #12",
+    // Log removed for production demo
       url,
       method,
       body: init?.body ? safeParseBody(init.body) : undefined,
@@ -39,8 +38,7 @@ async function request<T = Service12Json>(
     });
     const responseBody = await parseResponseBody(response);
 
-    console.log("RESPONSE", {
-      service: "Service #12",
+    // Log removed for production demo
       url,
       method,
       status: response.status,
