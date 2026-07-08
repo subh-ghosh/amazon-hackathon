@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   ArrowLeft,
   ArrowDownRight,
@@ -38,6 +38,10 @@ const currencyFormatter = new Intl.NumberFormat("en-IN", {
 });
 
 export function ProductDetailPanel({ product, onBack }: ProductDetailPanelProps) {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   const [doneIds, setDoneIds] = useState<Set<string>>(new Set());
 
   const toggleDone = (id: string) =>
