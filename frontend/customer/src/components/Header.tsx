@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useState } from "react";
-import { Search, ShoppingCart, MapPin, Leaf } from "lucide-react";
+import { Search, ShoppingCart, MapPin, Leaf, ShieldCheck } from "lucide-react";
 import { useStore } from "@/hooks/useStore";
 import type { PersonaType } from "@/hooks/useStore";
 
@@ -93,6 +93,9 @@ export function Header() {
                     </Link>
                     <Link href="/renewed" className={`px-3 py-1.5 rounded whitespace-nowrap ${pathname === "/renewed" ? "bg-[#3a4a5c] font-bold" : "hover:outline hover:outline-1 hover:outline-white"}`}>
                         Amazon Renewed
+                    </Link>
+                    <Link href="/p2p" className={`px-3 py-1.5 rounded whitespace-nowrap flex items-center gap-1 text-[#79C8C8] ${pathname === "/p2p" ? "bg-[#3a4a5c] font-bold" : "hover:outline hover:outline-1 hover:outline-white"}`}>
+                        <ShieldCheck size={14} /> Amazon P2P
                     </Link>
                     <Link href="/green-credits" className={`px-3 py-1.5 rounded whitespace-nowrap flex items-center gap-1 ${pathname === "/green-credits" ? "bg-[#3a4a5c] font-bold" : "hover:outline hover:outline-1 hover:outline-white"}`}>
                         <Leaf size={12} className="text-emerald-400" />{greenCredits} Credits

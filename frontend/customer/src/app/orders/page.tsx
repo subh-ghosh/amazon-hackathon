@@ -78,6 +78,11 @@ export default function OrdersPage() {
                                                 <button onClick={() => router.push(`/return/${order.order_id}/${item.product.product_id}`)} className="btn-secondary text-xs px-3 py-1.5">
                                                     Return or replace
                                                 </button>
+                                                {order.status === "delivered" && (
+                                                    <button onClick={() => router.push(`/resell/list?orderId=${order.order_id}&productId=${item.product.product_id}`)} className="btn-secondary text-xs px-3 py-1.5 border-[#007185] text-[#007185] hover:bg-[#F0FAFA]">
+                                                        Resell on Amazon P2P
+                                                    </button>
+                                                )}
                                             </div>
                                         </div>
                                     </div>
