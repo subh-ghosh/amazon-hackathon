@@ -47,7 +47,7 @@ export function RufusActionPlan() {
       
       <CardContent>
         <p className="text-sm text-slate-700 leading-relaxed mb-5 max-w-3xl">
-          Based on an analysis of your last 5,000 orders and 340 returns across the Indian network, S2 Truth Discovery has identified three high-impact actions to improve your EBITDA and Seller Tier status.
+          Based on an analysis of your last 5,000 orders and 340 returns across the Indian network, S2 Truth Discovery has identified two high-impact actions to improve your EBITDA and Seller Tier status.
         </p>
 
         <div className="space-y-4 relative z-10">
