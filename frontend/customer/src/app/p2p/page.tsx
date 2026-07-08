@@ -70,7 +70,7 @@ export default function P2PPage() {
                     {p2pListings.map((listing) => (
                         <div key={listing.product_id} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all border border-gray-200 flex flex-col">
                             <div className="relative group">
-                                <Link href={`/product/${listing.product_id}?variant=p2p`}>
+                                <Link href={`/p2p/${listing.product_id}`}>
                                     <img src={listing.image} alt={listing.title} className="w-full aspect-square object-cover" />
                                 </Link>
                                 <div className="absolute top-2 left-2 bg-black/70 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-1 rounded flex items-center gap-1">
@@ -79,7 +79,7 @@ export default function P2PPage() {
                             </div>
 
                             <div className="p-4 flex-1 flex flex-col">
-                                <Link href={`/product/${listing.product_id}?variant=p2p`}>
+                                <Link href={`/p2p/${listing.product_id}`}>
                                     <h3 className="text-sm font-medium text-gray-900 line-clamp-2 hover:text-[#C7511F] mb-2">{listing.title}</h3>
                                 </Link>
 

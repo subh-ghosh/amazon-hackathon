@@ -10,6 +10,8 @@ const EVENT_TEMPLATES = [
   { icon: CheckCircle2, color: "text-emerald-500", bg: "bg-emerald-50", text: "S12 Knowledge Graph auto-updated Seller Sizing Chart for SKU-99X." },
   { icon: Activity, color: "text-purple-500", bg: "bg-purple-50", text: "S5 Simulator executed 14,200 triage routes in the last 60 seconds." },
   { icon: Zap, color: "text-amber-500", bg: "bg-amber-50", text: "S4 Computer Vision verified 400 'Like-New' items, bypassing manual inspection." },
+  { icon: CheckCircle2, color: "text-emerald-500", bg: "bg-emerald-50", text: "[P2P-ESCROW] S4 AI verified condition of iPhone 15; funds released to Seller (CUST-042)." },
+  { icon: Activity, color: "text-purple-500", bg: "bg-purple-50", text: "[P2P-MATCH] Amazon verified P2P transaction facilitated. 5% inspection fee collected." },
 ];
 
 export function LiveEventTicker() {
