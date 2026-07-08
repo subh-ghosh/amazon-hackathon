@@ -440,7 +440,7 @@ function buildResolutionOptions(s8Data: ReturnlessEvaluateResponse | null, produ
             icon: <Gift size={22} className="text-emerald-600" />,
             title: decision === "REFUND_AND_DONATE" ? "Prime Benefit: Instant refund — please donate or keep" : "Prime Benefit: Keep the item, instant refund",
             subtitle: "As a valued customer, there is no need to return this item. Refund is immediate.",
-            detail: `₹${Math.round((refund || productPrice) * 83).toLocaleString("en-IN")} back to your payment method`,
+            detail: `₹${Math.round(Math.min(refund || productPrice, productPrice) * 83).toLocaleString("en-IN")} back to your payment method`,
         });
         // Replacement
         options.push({
@@ -474,7 +474,7 @@ function buildResolutionOptions(s8Data: ReturnlessEvaluateResponse | null, produ
             icon: <Leaf size={22} className="text-emerald-600" />,
             title: "Prime Benefit: Instant refund — please safely recycle",
             subtitle: "Help us reduce carbon emissions by recycling locally. No return needed.",
-            detail: `₹${Math.round((refund || productPrice) * 83).toLocaleString("en-IN")} back to your payment method`,
+            detail: `₹${Math.round(Math.min(refund || productPrice, productPrice) * 83).toLocaleString("en-IN")} back to your payment method`,
         });
         options.push({
             id: "replacement",
@@ -550,10 +550,12 @@ function buildResolutionOptions(s8Data: ReturnlessEvaluateResponse | null, produ
     }
     // === PARTIAL_REFUND ===
     else if (decision === "PARTIAL_REFUND") {
+        const maxPartialAllowed = Math.min(productPrice * 0.25, estimatedShipping + 5);
+        const finalPartialRefund = Math.min(refund || maxPartialAllowed, maxPartialAllowed);
         options.push({
             id: "partial_refund",
             icon: <IndianRupee size={22} className="text-amber-600" />,
-            title: `Prime Benefit: ₹${Math.round((refund || Math.min(productPrice * 0.25, estimatedShipping + 5)) * 83).toLocaleString("en-IN")} partial refund — keep the item`,
+            title: `Prime Benefit: ₹${Math.round(finalPartialRefund * 83).toLocaleString("en-IN")} partial refund — keep the item`,
             subtitle: "Accept an instant discount to avoid the hassle of shipping it back.",
             detail: "Refund issued within 3-5 business days",
         });

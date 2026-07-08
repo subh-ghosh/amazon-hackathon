@@ -19,8 +19,13 @@ function ReturnDecisionContent() {
     const [dropoffMethod, setDropoffMethod] = useState<"dropoff" | "pickup">("dropoff");
     const [credited, setCredited] = useState(false);
 
-    const isReturn = decision === "return";
+    const isReturn = decision === "return" || decision === "proceed_return";
     const refundAmount = product?.price || 150;
+    
+    // Enforce the same rigorous financial limit as the selection page
+    const estimatedShipping = product ? product.weight_kg * 4 : 5;
+    const maxPartialAllowed = Math.min(refundAmount * 0.25, estimatedShipping + 5);
+    const finalPartialRefund = Math.min(refundAmount, maxPartialAllowed);
 
     // Award credits based on decision
     useEffect(() => {
@@ -57,7 +62,7 @@ function ReturnDecisionContent() {
             <div className="bg-gray-50 rounded-lg p-5 mb-6 animate-slide-up">
                 <div className="space-y-3">
                     <DetailRow label="Return ID" value={returnId} />
-                    <DetailRow label="Refund amount" value={`₹${Math.round((decision === "partial_refund" ? refundAmount * 0.5 : refundAmount) * 83).toLocaleString("en-IN")}`} highlight />
+                    <DetailRow label="Refund amount" value={`₹${Math.round((decision === "partial_refund" ? finalPartialRefund : refundAmount) * 83).toLocaleString("en-IN")}`} highlight />
                     <DetailRow label="Timeline" value={isReturn ? "5-7 business days after delivery" : "3-5 business days"} />
                 </div>
             </div>
