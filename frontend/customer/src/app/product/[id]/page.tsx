@@ -14,6 +14,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
     const router = useRouter();
     const searchParams = useSearchParams();
     const isRenewed = searchParams.get("variant") === "renewed";
+    const isP2P = searchParams.get("variant") === "p2p";
     const { addToCart, persona, earnCredits } = useStore();
     const { product, loading: productLoading, error: productError } = useProduct(params.id);
 
@@ -84,7 +85,9 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
     }
 
     const handleBuyNow = () => {
-        const cartProduct = isRenewed ? { ...product, price: product.price * 0.70 } : product;
+        let cartProduct = product;
+        if (isRenewed) cartProduct = { ...product, price: product.price * 0.70 };
+        if (isP2P) cartProduct = { ...product, price: product.price * 0.65 + (product.price * 0.65 * 0.05) };
         addToCart(cartProduct);
         if (isRenewed) earnCredits("Purchased Renewed item", 50);
         router.push("/cart");
@@ -92,7 +95,10 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
 
     const isHighRisk = prevention?.riskLevel === "HIGH" || prevention?.riskLevel === "MEDIUM";
     const insights = buildInsights(prevention, seller, packaging, product);
-    const basePrice = isRenewed ? product.price * 0.70 : product.price;
+    let basePrice = product.price;
+    if (isRenewed) basePrice = product.price * 0.70;
+    if (isP2P) basePrice = (product.price * 0.65) + (product.price * 0.65 * 0.05); // Include 5% Amazon Fee
+    
     const inrPrice = Math.round(basePrice * 83);
     const mrp = Math.round(product.price * 83 * 1.25);
     const discount = Math.round(((mrp - inrPrice) / mrp) * 100);
@@ -128,8 +134,17 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
                             <p className="text-xs text-emerald-800">Professionally inspected, tested, and cleaned by Amazon-qualified suppliers. 90-day replacement guarantee.</p>
                         </div>
                     )}
+                    {isP2P && (
+                        <div className="mb-3 bg-blue-50 border border-blue-200 rounded-lg p-3 animate-fade-in">
+                            <div className="flex items-center gap-2 mb-1">
+                                <span className="text-xs font-bold text-white bg-blue-600 px-2 py-0.5 rounded flex items-center gap-1"><ShieldCheck size={12} /> Amazon P2P</span>
+                                <span className="text-xs text-blue-800 font-medium">Verified Customer Resale</span>
+                            </div>
+                            <p className="text-xs text-blue-800">Original Amazon Purchase. Verified by S4 AI before delivery. Money held in Amazon Escrow until you confirm condition.</p>
+                        </div>
+                    )}
                     <h1 className="text-[28px] font-light text-gray-900 leading-tight mb-2 tracking-tight">
-                        {isRenewed ? `(Renewed) ${product.title}` : product.title}
+                        {isRenewed ? `(Renewed) ${product.title}` : isP2P ? `(Used - Very Good) ${product.title}` : product.title}
                     </h1>
 
                     <span className="text-sm text-[#007185] hover:text-[#C7511F] cursor-pointer">Visit the {product.brand} Store</span>
@@ -326,6 +341,23 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
                     <div className="border border-gray-300 rounded-lg p-4 sm:p-5 lg:sticky lg:top-[120px]">
                         <p className="text-[28px] font-light mb-1">₹{inrPrice.toLocaleString("en-IN")}</p>
                         <p className="text-xs text-gray-500 mb-2">M.R.P.: <span className="line-through">₹{mrp.toLocaleString("en-IN")}</span> ({discount}% off)</p>
+                        
+                        {isP2P && (
+                            <div className="mb-4 pt-3 border-t border-gray-100">
+                                <p className="text-xs font-bold text-gray-900 mb-1">Seller Information</p>
+                                <div className="flex items-center gap-2 mb-2">
+                                    <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-xs font-bold text-gray-500">
+                                        RS
+                                    </div>
+                                    <div>
+                                        <p className="text-sm font-medium text-[#007185]">Rahul S.</p>
+                                        <p className="text-[10px] text-gray-500">Amazon Customer since 2019</p>
+                                    </div>
+                                </div>
+                                <button className="w-full btn-secondary text-xs py-1.5 mb-2">💬 Ask Seller a Question</button>
+                                <button className="w-full btn-secondary text-xs py-1.5">🤝 Make an Offer</button>
+                            </div>
+                        )}
                         <div className="flex items-center gap-2 mb-1">
                             <span className="text-[10px] font-bold text-white bg-[#232F3E] px-1.5 py-0.5 rounded">Fulfilled</span>
                         </div>
@@ -354,7 +386,9 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
                         )}
 
                         <button onClick={() => {
-                            const cartProduct = isRenewed ? { ...product, price: product.price * 0.70 } : product;
+                            let cartProduct = product;
+                            if (isRenewed) cartProduct = { ...product, price: product.price * 0.70 };
+                            if (isP2P) cartProduct = { ...product, price: product.price * 0.65 + (product.price * 0.65 * 0.05) };
                             addToCart(cartProduct);
                             if (isRenewed) earnCredits("Purchased Renewed item", 50);
                         }} className="btn-amazon w-full mb-2 min-h-[44px]">Add to Cart</button>
