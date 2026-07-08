@@ -6,7 +6,7 @@ export const sellerAnalytics: SellerAnalytics = {
   aiInsights: {
     highlights: [
       "32% of returns this month were caused by packaging issues.",
-      "Updating packaging for the Echo Show 10 could save ₹42,000 annually.",
+      "Updating VESA compatibility charts could save ₹18,000 annually.",
       "Your Electronics category has the highest recovery potential.",
     ],
   },
