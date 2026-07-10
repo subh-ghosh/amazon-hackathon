@@ -12,6 +12,7 @@ import { ReturnIntelligence } from "@/components/dashboard/return-intelligence";
 import { AiExecutiveSummary } from "@/components/dashboard/ai-executive-summary";
 import { OperationalImpact } from "@/components/dashboard/operational-impact";
 import { LiveEventTicker } from "@/components/dashboard/live-event-ticker";
+import { VisualInspectionAnalytics } from "@/components/dashboard/visual-inspection-analytics";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { executiveDashboardData as defaultData } from "@/data/executive-impact";
@@ -145,6 +146,11 @@ export function ExecutiveDashboardView() {
           <div className="lg:col-span-1">
             <LiveEventTicker />
           </div>
+        </section>
+
+        {/* SECTION 8: AI VISUAL INSPECTION INTELLIGENCE */}
+        <section>
+          <VisualInspectionAnalytics />
         </section>
       </div>
     </main>
