@@ -1,0 +1,16 @@
+FROM public.ecr.aws/lambda/python:3.11
+
+RUN yum update -y && \
+    yum install -y gcc gcc-c++ make zlib-devel libjpeg-devel libgomp && \
+    yum clean all
+
+COPY requirements.txt ${LAMBDA_TASK_ROOT}/
+RUN pip install --no-cache-dir -r ${LAMBDA_TASK_ROOT}/requirements.txt
+
+COPY . ${LAMBDA_TASK_ROOT}/
+
+# Generate dataset and train the model during the build phase
+RUN python ${LAMBDA_TASK_ROOT}/training/generate_dataset.py
+RUN python ${LAMBDA_TASK_ROOT}/training/train_model.py
+
+CMD ["app.handler"]

@@ -32,6 +32,7 @@ SERVICES = [
     {"name": "s11", "dir": "Service 11 Seller Intelligence Engine", "handler": "app.main.handler", "memory": 256, "timeout": 30},
     {"name": "s12", "dir": "Service 12 Learning & Knowledge Graph", "handler": "app.main.handler", "memory": 512, "timeout": 30},
     {"name": "s13", "dir": "Service 13 Damage Detection Engine", "handler": "app.main.handler", "memory": 2048, "timeout": 60},
+    {"name": "s14", "dir": "Service 14 Pre-Order Fraud Detection", "handler": "app.handler", "memory": 1024, "timeout": 60},
 ]
 
 

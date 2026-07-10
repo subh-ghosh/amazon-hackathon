@@ -12,7 +12,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+from mangum import Mangum
+
 app.include_router(fraud_router, prefix="/api/fraud")
+
+handler = Mangum(app)
 
 if __name__ == "__main__":
     import uvicorn
