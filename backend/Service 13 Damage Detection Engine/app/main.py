@@ -81,3 +81,7 @@ async def detect_product_damage(
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("main:app", host="0.0.0.0", port=8020, reload=True)
+
+# Lambda handler for serverless deployment
+from mangum import Mangum
+handler = Mangum(app)

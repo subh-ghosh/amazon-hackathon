@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Lock, Leaf, Truck } from "lucide-react";
+import { Turnstile } from '@marsidev/react-turnstile';
 import { useStore } from "@/hooks/useStore";
 import type { Address } from "@/api/types";
 
@@ -21,6 +22,8 @@ export default function CheckoutPage() {
     });
 
     const [processing, setProcessing] = useState(false);
+    const [turnstileToken, setTurnstileToken] = useState("");
+    const [fraudError, setFraudError] = useState("");
 
     if (cart.length === 0) {
         if (typeof window !== "undefined") {
@@ -31,10 +34,37 @@ export default function CheckoutPage() {
 
     const handlePlaceOrder = async () => {
         setProcessing(true);
-        // Simulate processing
-        await new Promise((resolve) => setTimeout(resolve, 1500));
-        const order = placeOrder(address);
-        router.push(`/order-success?id=${order.order_id}`);
+        setFraudError("");
+
+        if (!turnstileToken) {
+            setFraudError("Please wait for fraud verification to complete.");
+            setProcessing(false);
+            return;
+        }
+
+        try {
+            const verifyRes = await fetch('/api/verify-fraud', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token: turnstileToken }),
+            });
+
+            const verifyData = await verifyRes.json();
+            
+            if (!verifyData.success) {
+                setFraudError("Bot or suspicious activity detected. Order blocked.");
+                setProcessing(false);
+                return;
+            }
+
+            // Simulate processing
+            await new Promise((resolve) => setTimeout(resolve, 1500));
+            const order = placeOrder(address);
+            router.push(`/order-success?id=${order.order_id}`);
+        } catch (error) {
+            setFraudError("An error occurred during verification.");
+            setProcessing(false);
+        }
     };
 
     const tax = total * 0.08;
@@ -155,12 +185,26 @@ export default function CheckoutPage() {
                 {/* Right - Order Summary */}
                 <div>
                     <div className="bg-white rounded-xl p-4 shadow-sm lg:sticky lg:top-[120px]">
+                        <div className="mb-4 flex justify-center">
+                            <Turnstile 
+                                siteKey="0x4AAAAAADzWCx2ajYIFodrP" 
+                                onSuccess={(token) => {
+                                    setTurnstileToken(token);
+                                    setFraudError("");
+                                }} 
+                            />
+                        </div>
+                        {fraudError && (
+                            <div className="text-red-600 text-sm mb-3 font-bold text-center">
+                                {fraudError}
+                            </div>
+                        )}
                         <button
                             onClick={handlePlaceOrder}
-                            disabled={processing}
+                            disabled={processing || !turnstileToken}
                             className="btn-amazon w-full mb-4 disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
                         >
-                            {processing ? "Processing..." : "Place your order"}
+                            {processing ? "Verifying & Processing..." : "Place your order"}
                         </button>
                         <p className="text-xs text-gray-500 text-center mb-4">
                             By placing your order, you agree to Amazon&apos;s privacy notice and conditions of use.

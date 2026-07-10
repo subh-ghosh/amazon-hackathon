@@ -13,6 +13,7 @@ import { AiExecutiveSummary } from "@/components/dashboard/ai-executive-summary"
 import { OperationalImpact } from "@/components/dashboard/operational-impact";
 import { LiveEventTicker } from "@/components/dashboard/live-event-ticker";
 import { VisualInspectionAnalytics } from "@/components/dashboard/visual-inspection-analytics";
+import { FraudAnalytics } from "@/components/dashboard/fraud-analytics";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { executiveDashboardData as defaultData } from "@/data/executive-impact";
@@ -151,6 +152,11 @@ export function ExecutiveDashboardView() {
         {/* SECTION 8: AI VISUAL INSPECTION INTELLIGENCE */}
         <section>
           <VisualInspectionAnalytics />
+        </section>
+
+        {/* SECTION 9: PRE-ORDER FRAUD DETECTION ENGINE */}
+        <section>
+          <FraudAnalytics />
         </section>
       </div>
     </main>

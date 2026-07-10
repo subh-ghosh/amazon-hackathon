@@ -11,6 +11,7 @@ from aws_cdk import (
     aws_apigatewayv2 as apigwv2,
     aws_apigatewayv2_integrations as integrations,
     aws_dynamodb as dynamodb,
+    aws_ecr_assets as ecr_assets,
     RemovalPolicy,
 )
 from constructs import Construct
@@ -30,6 +31,7 @@ SERVICES = [
     {"name": "s10", "dir": "Service 10 Packaging Intelligence", "handler": "app.main.handler", "memory": 256, "timeout": 30},
     {"name": "s11", "dir": "Service 11 Seller Intelligence Engine", "handler": "app.main.handler", "memory": 256, "timeout": 30},
     {"name": "s12", "dir": "Service 12 Learning & Knowledge Graph", "handler": "app.main.handler", "memory": 512, "timeout": 30},
+    {"name": "s13", "dir": "Service 13 Damage Detection Engine", "handler": "app.main.handler", "memory": 2048, "timeout": 60},
 ]
 
 
@@ -148,6 +150,7 @@ class AllServicesLambdaStack(Stack):
                     service_path,
                     file="Dockerfile.lambda",
                     exclude=["infra", ".venv", "venv", "tests", "cdk.out", "__pycache__"],
+                    network_mode=ecr_assets.NetworkMode.HOST
                 ),
                 memory_size=svc["memory"],
                 timeout=Duration.seconds(svc["timeout"]),
